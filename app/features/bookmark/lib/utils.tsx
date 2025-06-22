@@ -1,0 +1,102 @@
+import React from 'react'
+import type { BookmarksAction, BookmarksState } from '../types/bookmark.types'
+import { ALL_CATEGORY_ID } from './constants'
+
+export function bookmarksReducer(
+  state: BookmarksState,
+  action: BookmarksAction,
+): BookmarksState {
+  switch (action.type) {
+    case 'CHANGE_TAB': {
+      const { tabId, categoryId } = action.payload
+      // 탭을 클릭하면 항상 해당 탭의 루트 카테고리를 선택하도록 설정합니다.
+      return {
+        ...state,
+        selectedTabId: tabId,
+        selectedCategoryId: categoryId || ALL_CATEGORY_ID, // categoryId가 없으면 '전체'로
+      }
+    }
+    case 'CHANGE_CATEGORY': {
+      const { categoryId, tabId } = action.payload
+      return {
+        ...state,
+        selectedCategoryId: categoryId,
+        selectedTabId: tabId || state.selectedTabId,
+      }
+    }
+    case 'SORT': {
+      const key = action.payload
+      const currentSortKey = state.sortKeyMap[state.selectedTabId]
+      const currentSortOrder = state.sortOrderMap[state.selectedTabId]
+      return {
+        ...state,
+        sortKeyMap: { ...state.sortKeyMap, [state.selectedTabId]: key },
+        sortOrderMap: {
+          ...state.sortOrderMap,
+          [state.selectedTabId]:
+            currentSortKey === key
+              ? currentSortOrder === 'asc'
+                ? 'desc'
+                : 'asc'
+              : 'asc',
+        },
+      }
+    }
+    case 'SEARCH': {
+      return {
+        ...state,
+        searchMap: { ...state.searchMap, [state.selectedTabId]: action.payload },
+      }
+    }
+    case 'CHANGE_ROWS_PER_PAGE': {
+      return {
+        ...state,
+        rowsPerPageMap: {
+          ...state.rowsPerPageMap,
+          [state.selectedTabId]: action.payload,
+        },
+        pageMap: { ...state.pageMap, [state.selectedTabId]: 1 }, // 페이지당 개수 변경 시 1페이지로
+      }
+    }
+    case 'CHANGE_PAGE': {
+      return {
+        ...state,
+        pageMap: { ...state.pageMap, [state.selectedTabId]: action.payload },
+      }
+    }
+    case 'OPEN_DETAIL': {
+      return {
+        ...state,
+        selectedBookmark: { ...action.payload, memo: '' },
+        isDetailDialogOpen: true,
+      }
+    }
+    case 'CLOSE_DETAIL': {
+      return {
+        ...state,
+        selectedBookmark: null,
+        isDetailDialogOpen: false,
+      }
+    }
+    default:
+      return state
+  }
+}
+
+export function highlightText(text: string, keyword: string) {
+  if (!keyword) return text
+  const regex = new RegExp(
+    `(${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`,
+    'gi',
+  )
+  const parts = text.split(regex)
+  return parts.map((part, i) =>
+    regex.test(part) ? (
+      <mark key={i} className="bg-yellow-200 text-black px-0 rounded-sm">
+        {part}
+      </mark>
+    ) : (
+      <span key={i}>{part}</span>
+    ),
+  )
+} 
