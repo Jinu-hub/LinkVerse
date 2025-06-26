@@ -117,4 +117,16 @@ export default [
       index("features/bookmark/screens/bookmarks.tsx"),
     ]),
   ]),
+
+  layout("features/tag/layouts/tag.layout.tsx", [
+    ...prefix("/tags", [
+      index("features/tag/screens/tags.tsx"),
+    ]),
+  ]),
+
+  layout("features/memo/layouts/memo.layout.tsx", [
+    ...prefix("/memos", [
+      index("features/memo/screens/memos.tsx"),
+    ]),
+  ]),
 ] satisfies RouteConfig;

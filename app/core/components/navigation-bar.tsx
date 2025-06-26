@@ -261,12 +261,28 @@ export function NavigationBar({
             Bookmarks
           </Link>
           <Link
+            to="/tags"
+            viewTransition
+            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+          >
+            Tags
+          </Link>
+          <Link
+            to="/memos"
+            viewTransition
+            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+          >
+            Memos
+          </Link>
+          {/*
+          <Link
             to="/blog"
             viewTransition
             className="text-muted-foreground hover:text-foreground text-sm transition-colors"
           >
             Blog
           </Link>
+          */}
           <Link
             to="/contact"
             viewTransition
@@ -274,6 +290,7 @@ export function NavigationBar({
           >
             Contact
           </Link>
+          {/*
           <Link
             to="/payments/checkout"
             viewTransition
@@ -281,7 +298,7 @@ export function NavigationBar({
           >
             Payments
           </Link>
-          
+
           <Separator orientation="vertical" />
           
           {/* Settings, theme switcher, and language switcher */}
@@ -315,14 +332,22 @@ export function NavigationBar({
         <SheetContent>
           <SheetHeader>
             <SheetClose asChild>
+              <Link to="/bookmarks">Bookmarks</Link>
+            </SheetClose>
+            
+            {/*
+            <SheetClose asChild>
               <Link to="/blog">Blog</Link>
             </SheetClose>
+            */}
             <SheetClose asChild>
               <Link to="/contact">Contact</Link>
             </SheetClose>
+            {/*
             <SheetClose asChild>
               <Link to="/payments/checkout">Payments</Link>
             </SheetClose>
+            */}
           </SheetHeader>
           {loading ? (
             <div className="flex items-center">
