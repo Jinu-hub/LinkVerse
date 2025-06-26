@@ -1,35 +1,39 @@
 import type { Bookmark, Category, UI_View } from '../types/bookmark.types'
 
 export const mockCategories: Category[] = [
-  { id: '0', parent_id: '0', name: '🗂️ 전체보기' },
+  { id: '0', parent_id: '0', name: '🗂️ 전체보기', level: 0, is_root: true },
   {
     id: '1',
     parent_id: '0',
     name: '💻 개발',
+    is_root: true,
+    level: 0,
     children: [
       {
         id: '2',
         parent_id: '1',
         name: 'React',
+        level: 1,
         children: [
-          { id: '9', parent_id: '2', name: 'supabase' },
-          { id: '10', parent_id: '2', name: 'TailwindCSS' },
+          { id: '9', parent_id: '2', name: 'supabase', level: 2 },
+          { id: '10', parent_id: '2', name: 'TailwindCSS', level: 2 },
         ],
       },
-      { id: '3', parent_id: '1', name: 'CSS' },
-      { id: '4', parent_id: '1', name: '인프라' },
+      { id: '3', parent_id: '1', name: 'CSS', level: 1 },
+      { id: '4', parent_id: '1', name: '인프라', level: 1 },
     ],
   },
   {
     id: '5',
     parent_id: '0',
     name: '📚 공부',
+    level: 0,
     children: [
-      { id: '6', parent_id: '5', name: 'Makerclub' },
-      { id: '7', parent_id: '5', name: 'Wemake' },
+      { id: '6', parent_id: '5', name: 'Makerclub', level: 1 },
+      { id: '7', parent_id: '5', name: 'Wemake', level: 1 },
     ],
   },
-  { id: '8', parent_id: '0', name: '🚀 생산성' },
+  { id: '8', parent_id: '0', name: '🚀 생산성', level: 0 },
 ]
 
 export const mockTabs: UI_View[] = [

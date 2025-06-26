@@ -14,6 +14,8 @@ export interface Category {
   id: string;
   parent_id: string;
   name: string;
+  level: number;
+  is_root?: boolean;
   children?: Category[];
 }
 

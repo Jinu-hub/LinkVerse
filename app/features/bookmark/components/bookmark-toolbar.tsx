@@ -1,9 +1,14 @@
 import { Input } from "~/core/components/ui/input";
+import { FiMenu } from 'react-icons/fi'
 import { Select, SelectContent, SelectItem
     , SelectTrigger, SelectValue } from "~/core/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "~/core/components/ui/tabs";
 import { FiInbox } from "react-icons/fi";
-import type { UI_View } from "../types/bookmark.types";
+import type { Category, UI_View } from "../types/bookmark.types";
+import { Sheet, SheetContent, SheetTrigger } from "~/core/components/ui/sheet";
+import { CategoryTree } from "./category-tree";
+import { Button } from "~/core/components/ui/button";
+import { useState } from "react";
 
 type Props = {
   tabs: UI_View[];
@@ -13,6 +18,9 @@ type Props = {
   onSearchChange: (value: string) => void;
   rowsPerPage: number | 'all';
   onRowsPerPageChange: (value: string) => void;
+  categories: Category[];
+  selectedId: string;
+  onSelect: (id: string) => void;
 };
 
 export function BookmarkToolbar({
@@ -23,9 +31,42 @@ export function BookmarkToolbar({
   onSearchChange,
   rowsPerPage,
   onRowsPerPageChange,
+  categories,
+  selectedId,
+  onSelect,
 }: Props) {
+
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
+
+  const handleSelect = (id: string) => {
+    onSelect(id)
+    setIsSheetOpen(false) // 모바일에서 카테고리 선택 시 시트 닫기
+  }
+
   return (
     <div className="space-y-4">
+
+      {/* 🔹 모바일용 사이드바 트리거 */}
+      <div className="lg:hidden">
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline">
+              <FiMenu className="mr-2 h-4 w-4" />
+              카테고리
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-[300px] p-4 sm:w-[350px]">
+            <h2 className="mb-4 mt-6 text-lg font-semibold">카테고리</h2>
+            <CategoryTree
+              categories={categories}
+              selectedId={selectedId}
+              onSelect={handleSelect}
+              isMobile={true}
+            />
+          </SheetContent>
+        </Sheet>
+      </div>
+
       <div>
         <Tabs value={selectedTabId} className="w-full">
           <TabsList>

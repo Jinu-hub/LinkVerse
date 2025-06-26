@@ -216,6 +216,9 @@ export default function Bookmarks() {
           onSearchChange={handleSearch}
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleRowsPerPageChange}
+          categories={mockCategories}
+          selectedId={selectedCategoryId}
+          onSelect={handleCategoryChange}
         />
 
         <BookmarkTable
@@ -233,23 +236,6 @@ export default function Bookmarks() {
           endEntry={endEntry}
           onPageChange={handlePageChange}
         />
-
-        {/* 상세 다이얼로그 */}
-        {selectedBookmark && (
-          <BookmarkDetailDialog
-            open={isDetailDialogOpen}
-            onOpenChange={(open) => {
-              if (!open) {
-                dispatch({ type: 'CLOSE_DETAIL' });
-              }
-            }}
-            bookmark={selectedBookmark}
-            onSave={updated => {
-              // 저장 로직 (원하면 구현)
-              dispatch({ type: 'CLOSE_DETAIL' });
-            }}
-          />
-        )}
       </main>
     </div>
   );
