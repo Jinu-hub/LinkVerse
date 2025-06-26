@@ -1,5 +1,5 @@
 import React from 'react'
-import type { BookmarksAction, BookmarksState } from '../types/bookmark.types'
+import type { BookmarksAction, BookmarksState, Category } from '../types/bookmark.types'
 import { ALL_CATEGORY_ID } from './constants'
 
 export function bookmarksReducer(
@@ -99,4 +99,25 @@ export function highlightText(text: string, keyword: string) {
       <span key={i}>{part}</span>
     ),
   )
+}
+
+export function findCategoryPath(categoryId: string, categories: Category[]): { id: string; name: string }[] {
+  let path: { id: string; name: string }[] = [];
+  function traverse(id: string, cats: Category[]): boolean {
+    for (const cat of cats) {
+      if (cat.id === id) {
+        if (cat.parent_id && cat.parent_id !== "0") {
+          traverse(cat.parent_id, categories);
+        }
+        path.push({ id: cat.id, name: cat.name });
+        return true;
+      }
+      if (cat.children && cat.children.length > 0) {
+        if (traverse(id, cat.children)) return true;
+      }
+    }
+    return false;
+  }
+  traverse(categoryId, categories);
+  return path;
 } 

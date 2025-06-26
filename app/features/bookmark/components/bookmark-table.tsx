@@ -5,6 +5,7 @@ import { FiExternalLink, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import type { Bookmark } from "../types/bookmark.types";
 import BookmarkDetailDialog from "./bookmark-detail-dialog";
 import { useState } from "react";
+import { mockCategories } from "../lib/mock-data";
 
 type Props = {
   pagedBookmarks: Bookmark[];
@@ -125,6 +126,7 @@ export function BookmarkTable({
             // 저장 로직 (원하면 구현)
             setDialogOpen(false);
           }}
+          categories={mockCategories.filter(cat => cat.id !== '0')}
         />
       )}
     </>
