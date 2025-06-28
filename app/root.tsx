@@ -17,7 +17,7 @@ import type { Route } from "./+types/root";
 import * as Sentry from "@sentry/react-router";
 import NProgress from "nprogress";
 import nProgressStyles from "nprogress/nprogress.css?url";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Links,
@@ -46,6 +46,8 @@ import i18next from "./core/lib/i18next.server";
 import { themeSessionResolver } from "./core/lib/theme-session.server";
 import { cn } from "./core/lib/utils";
 import NotFound from "./core/screens/404";
+import makeServerClient from "./core/lib/supa-client.server";
+import { Await } from "react-router";
 
 export const links: Route.LinksFunction = () => [
   { rel: "icon", href: "/favicon.ico" },
@@ -98,9 +100,13 @@ export async function loader({ request }: Route.LoaderArgs) {
     i18next.getLocale(request),
   ]);
 
+  const [client] = makeServerClient(request);
+  const userPromise = client.auth.getUser();
+
   return {
     theme: getTheme(),
     locale,
+    userPromise,
   };
 }
 
@@ -225,9 +231,9 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
  * 2. Handling Supabase authentication redirects
  * 3. Providing global UI context (Sheet and Dialog components)
  */
-export default function App() {
+export default function App({loaderData}: Route.ComponentProps) {
+  const {userPromise} = loaderData;
   const navigation = useNavigation();
-
   // Initialize NProgress with spinner for better UX during navigation
   useEffect(() => {
     NProgress.configure({ showSpinner: true });
@@ -263,11 +269,27 @@ export default function App() {
   }, [searchParams]);
 
   return (
-    <Sheet>
-      <Dialog>
-        <Outlet />
-      </Dialog>
-    </Sheet>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Sheet>
+        <Dialog>
+          <Await resolve={userPromise}>
+            {({ data: { user } }) => {
+              return (
+                <Outlet
+                  context={{
+                    isLoggedIn: user !== null,
+                    username: user?.user_metadata?.username,
+                    email: user?.email,
+                    avatar: user?.user_metadata?.avatar_url,
+                    name: user?.user_metadata?.name,
+                  }}
+                />
+              );
+            }}
+          </Await>
+        </Dialog>
+      </Sheet>
+    </Suspense>
   );
 }
 

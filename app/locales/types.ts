@@ -6,6 +6,8 @@ export type Translation = {
   navigation: {
     en: string;
     kr: string;
-    es: string;
+    //es: string;
   };
 };
+
+export type DisplayType = "default" | "bookmarks" | "tags" | "memos";
