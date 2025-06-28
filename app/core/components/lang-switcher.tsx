@@ -72,18 +72,20 @@ export default function LangSwitcher() {
             ? "🇬🇧" // UK flag for English
             : i18n.language === "ko"
               ? "🇰🇷" // South Korea flag for Korean
-              : i18n.language === "es"
-                ? "🇪🇸" // Spain flag for Spanish
-                : null}
+              //: i18n.language === "es"
+              //  ? "🇪🇸" // Spain flag for Spanish
+              : null}
         </Button>
       </DropdownMenuTrigger>
       
       {/* Dropdown menu with language options */}
       <DropdownMenuContent align="end">
         {/* Spanish language option */}
+        {/*
         <DropdownMenuItem onClick={() => handleLocaleChange("es")}>
-          🇪🇸 {t("navigation.es")} {/* Translated name of Spanish */}
+          🇪🇸 {t("navigation.es")} 
         </DropdownMenuItem>
+        */}
         
         {/* Korean language option */}
         <DropdownMenuItem onClick={() => handleLocaleChange("ko")}>

@@ -16,7 +16,7 @@
  * - Authenticated state with user profile information
  * - Unauthenticated state with sign in/sign up buttons
  */
-import { CogIcon, HomeIcon, LogOutIcon, MenuIcon } from "lucide-react";
+import { HomeIcon, LogOutIcon, MenuIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 
@@ -36,10 +36,10 @@ import { Separator } from "./ui/separator";
 import {
   SheetClose,
   SheetContent,
-  SheetFooter,
-  SheetHeader,
   SheetTrigger,
 } from "./ui/sheet";
+import { NavigationDesktop } from "./navigation-desktop";
+import { NavigationMobile } from "./navigation-mobile";
 
 /**
  * UserMenu Component
@@ -59,7 +59,7 @@ import {
  * @param avatarUrl - URL to the user's avatar image (optional)
  * @returns A dropdown menu component with user information and actions
  */
-function UserMenu({
+export function UserMenu({
   name,
   email,
   avatarUrl,
@@ -126,7 +126,7 @@ function UserMenu({
  * 
  * @returns Fragment containing sign in and sign up buttons
  */
-function AuthButtons() {
+export function AuthButtons() {
   return (
     <>
       {/* Sign in button (less prominent) */}
@@ -163,10 +163,11 @@ function AuthButtons() {
  * 
  * @returns Fragment containing settings dropdown, theme switcher, and language switcher
  */
-function Actions() {
+export function Actions() {
   return (
     <>
       {/* Settings/debug dropdown menu */}
+      {/*
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="cursor-pointer">
           <Button variant="ghost" size="icon">
@@ -174,7 +175,6 @@ function Actions() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          {/* Sentry monitoring link */}
           <DropdownMenuItem asChild>
             <SheetClose asChild>
               <Link to="/debug/sentry" viewTransition>
@@ -182,7 +182,7 @@ function Actions() {
               </Link>
             </SheetClose>
           </DropdownMenuItem>
-          {/* Google Analytics link */}
+
           <DropdownMenuItem asChild>
             <SheetClose asChild>
               <Link to="/debug/analytics" viewTransition>
@@ -192,6 +192,7 @@ function Actions() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      */}
       
       {/* Theme switcher component (light/dark mode) */}
       <ThemeSwitcher />
@@ -251,131 +252,14 @@ export function NavigationBar({
         </Link>
         
         {/* Desktop navigation menu (hidden on mobile) */}
-        <div className="hidden h-full items-center gap-5 md:flex">
-          {/* Main navigation links */}
-          <Link
-            to="/bookmarks"
-            viewTransition
-            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-          >
-            Bookmarks
-          </Link>
-          <Link
-            to="/tags"
-            viewTransition
-            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-          >
-            Tags
-          </Link>
-          <Link
-            to="/memos"
-            viewTransition
-            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-          >
-            Memos
-          </Link>
-          {/*
-          <Link
-            to="/blog"
-            viewTransition
-            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-          >
-            Blog
-          </Link>
-          */}
-          <Link
-            to="/contact"
-            viewTransition
-            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-          >
-            Contact
-          </Link>
-          {/*
-          <Link
-            to="/payments/checkout"
-            viewTransition
-            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-          >
-            Payments
-          </Link>
-
-          <Separator orientation="vertical" />
-          
-          {/* Settings, theme switcher, and language switcher */}
-          <Actions />
-          
-          <Separator orientation="vertical" />
-          
-          {/* Conditional rendering based on authentication state */}
-          {loading ? (
-            // Loading state with skeleton placeholder
-            <div className="flex items-center">
-              <div className="bg-muted-foreground/20 size-8 animate-pulse rounded-lg" />
-            </div>
-          ) : (
-            <>
-              {name ? (
-                // Authenticated state with user menu
-                <UserMenu name={name} email={email} avatarUrl={avatarUrl} />
-              ) : (
-                // Unauthenticated state with auth buttons
-                <AuthButtons />
-              )}
-            </>
-          )}
-        </div>
+        <NavigationDesktop loading={loading} name={name} email={email} avatarUrl={avatarUrl} />
         
         {/* Mobile menu trigger (hidden on desktop) */}
         <SheetTrigger className="size-6 md:hidden">
           <MenuIcon />
         </SheetTrigger>
         <SheetContent>
-          <SheetHeader>
-            <SheetClose asChild>
-              <Link to="/bookmarks">Bookmarks</Link>
-            </SheetClose>
-            
-            {/*
-            <SheetClose asChild>
-              <Link to="/blog">Blog</Link>
-            </SheetClose>
-            */}
-            <SheetClose asChild>
-              <Link to="/contact">Contact</Link>
-            </SheetClose>
-            {/*
-            <SheetClose asChild>
-              <Link to="/payments/checkout">Payments</Link>
-            </SheetClose>
-            */}
-          </SheetHeader>
-          {loading ? (
-            <div className="flex items-center">
-              <div className="bg-muted-foreground h-4 w-24 animate-pulse rounded-full" />
-            </div>
-          ) : (
-            <SheetFooter>
-              {name ? (
-                <div className="grid grid-cols-3">
-                  <div className="col-span-2 flex w-full justify-between">
-                    <Actions />
-                  </div>
-                  <div className="flex justify-end">
-                    <UserMenu name={name} email={email} avatarUrl={avatarUrl} />
-                  </div>
-                </div>
-              ) : (
-                <div className="flex flex-col gap-5">
-                  <div className="flex justify-between">
-                    <Actions />
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <AuthButtons />
-                  </div>
-                </div>
-              )}
-            </SheetFooter>
-          )}
+          <NavigationMobile loading={loading} name={name} email={email} avatarUrl={avatarUrl} />
         </SheetContent>
       </div>
     </nav>

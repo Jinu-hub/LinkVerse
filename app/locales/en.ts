@@ -8,7 +8,7 @@ const en: Translation = {
   navigation: {
     en: "English",
     kr: "Korean",
-    es: "Spanish",
+    //es: "Spanish",
   },
 };
 
