@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { mockTags, mockTagContents, mockContentTypes } from "../../bookmark/lib/mock-data";
 import TagContentCard from "../components/tag-content-card";
+import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
 
 const SORT_OPTIONS = [
   { value: "createdAt", label: "생성일" },
@@ -35,42 +36,33 @@ export default function TagContentsScreen() {
   const [selectedType, setSelectedType] = useState<number | null>(null);
 
   const filtered = useMemo(() =>
-    (mockTagContents as TagContent[]).filter(content =>
+    filterArray((mockTagContents as TagContent[]), content =>
       content.tagId === tagId &&
       (selectedType === null || content.contentTypeId === selectedType) &&
       (
         content.title.toLowerCase().includes(search.toLowerCase()) ||
-        (content.memo && content.memo.toLowerCase().includes(search.toLowerCase()))
+        (typeof content.memo === 'string' && content.memo.toLowerCase().includes(search.toLowerCase()))
       )
     ), [tagId, search, selectedType]
   );
 
   const sorted = useMemo(() => {
-    const sortedArr = [...filtered].sort((a, b) => {
-      if (sortKey === "createdAt") {
-        return sortOrder === 'asc'
-          ? a.createdAt.localeCompare(b.createdAt)
-          : b.createdAt.localeCompare(a.createdAt);
-      } else if (sortKey === "title") {
-        return sortOrder === 'asc'
-          ? a.title.localeCompare(b.title)
-          : b.title.localeCompare(a.title);
-      } else if (sortKey === "type") {
-        return sortOrder === 'asc'
-          ? a.contentTypeId - b.contentTypeId
-          : b.contentTypeId - a.contentTypeId;
-      }
-      return 0;
-    });
-    return sortedArr;
+    if (sortKey === "createdAt") {
+      return sortArray(filtered, "createdAt", sortOrder);
+    } else if (sortKey === "title") {
+      return sortArray(filtered, "title", sortOrder);
+    } else if (sortKey === "type") {
+      return sortArray(filtered, "contentTypeId", sortOrder);
+    }
+    return filtered;
   }, [filtered, sortKey, sortOrder]);
 
   const totalRows = sorted.length;
   const totalPages = Math.ceil(totalRows / pageSize);
-  const startEntry = (page - 1) * pageSize + 1;
-  const endEntry = Math.min(page * pageSize, totalRows);
-  const pagedContents = sorted.slice(startEntry - 1, endEntry);
-
+  const pagedContents = useMemo(() =>
+    paginateArray(sorted, page, pageSize),
+    [sorted, page, pageSize]
+  );
 
   if (!tag) return <div className="p-8 text-center text-lg">존재하지 않는 태그입니다.</div>;
 

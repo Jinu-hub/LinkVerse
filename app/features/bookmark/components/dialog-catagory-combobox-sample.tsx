@@ -26,7 +26,7 @@ import {
 import { ChevronsUpDown, Check } from "lucide-react";
 import { cn } from "~/core/lib/utils";
 import type { Category } from '../types/bookmark.types';
-import { findCategoryPath } from "../lib/utils";
+import { findCategoryPath } from "../lib/bmUtils";
 import React from "react";
 
 type Props = {
