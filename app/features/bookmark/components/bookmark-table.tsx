@@ -5,7 +5,7 @@ import { FiExternalLink, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import type { Bookmark } from "../types/bookmark.types";
 import BookmarkDetailDialog from "./bookmark-detail-dialog";
 import { useState } from "react";
-import { mockCategories } from "../lib/mock-data";
+import { mockCategories } from "~/features/mock-data";
 
 type Props = {
   pagedBookmarks: Bookmark[];

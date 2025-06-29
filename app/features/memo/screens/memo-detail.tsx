@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router";
-import { mockMemoContents, mockContentTypes } from "../../bookmark/lib/mock-data";
+import { mockMemoContents, mockContentTypes } from "~/features/mock-data";
 import type { ContentType } from "../../tag/components/tag-content-card";
 import { MemoEditor } from "../components/memo-editor";
 

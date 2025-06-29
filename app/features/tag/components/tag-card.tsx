@@ -1,29 +1,8 @@
 // app/features/tag/components/TagCard.tsx
 import { Card, CardContent } from "~/core/components/ui/card"
 import { Button } from "~/core/components/ui/button"
-import { Badge } from "~/core/components/ui/badge"
 import { useNavigate } from "react-router";
 import { Popover, PopoverContent, PopoverTrigger } from "~/core/components/ui/popover";
-
-// 랜덤 색상 팔레트 (태그별로 색상 다양화)
-const TAG_COLORS = [
-  "from-pink-400 to-pink-600",
-  "from-blue-400 to-blue-600",
-  "from-green-400 to-green-600",
-  "from-yellow-400 to-yellow-600",
-  "from-purple-400 to-purple-600",
-  "from-indigo-400 to-indigo-600",
-  "from-emerald-400 to-emerald-600",
-  "from-orange-400 to-orange-600",
-  "from-cyan-400 to-cyan-600",
-  "from-fuchsia-400 to-fuchsia-600",
-];
-
-function getTagColor(id: number) {
-  // id를 기반으로 색상 고정
-  const idx = id % TAG_COLORS.length;
-  return TAG_COLORS[idx];
-}
 
 type TagCardProps = {
   id: number
@@ -38,7 +17,6 @@ type TagCardProps = {
 
 export function TagCard({ id, name, usageCount, createdAt, goToDetail = true, onClick, onEdit, onDelete }: TagCardProps) {
   const navigate = useNavigate();
-  const color = getTagColor(id);
   const handleCardClick = () => {
     if (onClick) {
       onClick();

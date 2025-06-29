@@ -5,7 +5,7 @@ import type { Memo, SortKey } from "../types/memo.types";
 import { highlightText } from "~/core/lib/common";
 import { useNavigate } from "react-router";
 
-const typeIconMap: Record<ContentType, string> = {
+const contentIconMap: Record<ContentType, string> = {
   bookmark: "🔖",
   book: "📘",
   movie: "🎬",
@@ -86,7 +86,7 @@ const MemoTable: React.FC<MemoTableProps> = ({
           <TableBody>
             {pagedMemos.map((memo) => {
               const type = getType(memo.contentTypeId);
-              const icon = typeIconMap[type];
+              const icon = contentIconMap[type];
               const colorClass = typeColorMap[type];
               return (
                 <TableRow

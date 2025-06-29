@@ -1,6 +1,6 @@
 import { Link } from "react-router"
 import { format } from "date-fns"
-import { mockContentTypes } from "../../bookmark/lib/mock-data"
+import { mockContentTypes } from "~/features/mock-data"
 
 export type ContentType = (typeof mockContentTypes)[number]["code"];
 
