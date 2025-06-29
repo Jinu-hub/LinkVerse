@@ -333,4 +333,253 @@ export const mockBookmarks: Bookmark[] = [
     tags: ['wemake', 'nomadcoders'],
     click_count: 30,
   },
-] 
+]
+
+export const mockTags: { id: number; name: string; usage_count: number; createdAt: string }[] = [
+  { id: 1, name: 'React', usage_count: 12, createdAt: '2024-05-01T10:00:00Z' },
+  { id: 2, name: 'TypeScript', usage_count: 10, createdAt: '2024-05-02T11:00:00Z' },
+  { id: 3, name: 'JavaScript', usage_count: 15, createdAt: '2024-05-03T12:00:00Z' },
+  { id: 4, name: 'CSS', usage_count: 8, createdAt: '2024-05-04T13:00:00Z' },
+  { id: 5, name: 'HTML', usage_count: 7, createdAt: '2024-05-05T14:00:00Z' },
+  { id: 6, name: 'Node.js', usage_count: 9, createdAt: '2024-05-06T15:00:00Z' },
+  { id: 7, name: 'Express', usage_count: 5, createdAt: '2024-05-07T16:00:00Z' },
+  { id: 8, name: 'Next.js', usage_count: 6, createdAt: '2024-05-08T17:00:00Z' },
+  { id: 9, name: 'Vercel', usage_count: 4, createdAt: '2024-05-09T18:00:00Z' },
+  { id: 10, name: 'Supabase', usage_count: 3, createdAt: '2024-05-10T19:00:00Z' },
+  { id: 11, name: 'TailwindCSS', usage_count: 11, createdAt: '2024-05-11T10:00:00Z' },
+  { id: 12, name: 'Redux', usage_count: 7, createdAt: '2024-05-12T11:00:00Z' },
+  { id: 13, name: 'Zustand', usage_count: 2, createdAt: '2024-05-13T12:00:00Z' },
+  { id: 14, name: 'Prisma', usage_count: 4, createdAt: '2024-05-14T13:00:00Z' },
+  { id: 15, name: 'MongoDB', usage_count: 5, createdAt: '2024-05-15T14:00:00Z' },
+  { id: 16, name: 'PostgreSQL', usage_count: 6, createdAt: '2024-05-16T15:00:00Z' },
+  { id: 17, name: 'Firebase', usage_count: 8, createdAt: '2024-05-17T16:00:00Z' },
+  { id: 18, name: 'Jest', usage_count: 3, createdAt: '2024-05-18T17:00:00Z' },
+  { id: 19, name: 'Testing', usage_count: 2, createdAt: '2024-05-19T18:00:00Z' },
+  { id: 20, name: 'API', usage_count: 9, createdAt: '2024-05-20T19:00:00Z' },
+  { id: 21, name: 'OpenAI', usage_count: 4, createdAt: '2024-05-21T10:00:00Z' },
+  { id: 22, name: 'AI', usage_count: 17, createdAt: '2024-05-22T11:00:00Z' },
+  { id: 23, name: 'Design', usage_count: 6, createdAt: '2024-05-23T12:00:00Z' },
+  { id: 24, name: 'UI', usage_count: 5, createdAt: '2024-05-24T13:00:00Z' },
+  { id: 25, name: 'UX', usage_count: 4, createdAt: '2024-05-25T14:00:00Z' },
+  { id: 26, name: 'Productivity', usage_count: 3, createdAt: '2024-05-26T15:00:00Z' },
+  { id: 27, name: 'Blog', usage_count: 16, createdAt: '2024-05-27T16:00:00Z' },
+  { id: 28, name: 'Community', usage_count: 6, createdAt: '2024-05-28T17:00:00Z' },
+  { id: 29, name: 'Learning', usage_count: 10, createdAt: '2024-05-29T18:00:00Z' },
+  { id: 30, name: 'Docs', usage_count: 12, createdAt: '2024-05-30T19:00:00Z' },
+];
+
+// 콘텐츠 타입 정의
+export const mockContentTypes: { id: number; code: string }[] = [
+  { id: 0, code: "all" },
+  { id: 1, code: "bookmark" },
+  { id: 2, code: "book" },
+  { id: 3, code: "movie" },
+  { id: 4, code: "travel" },
+]; 
+
+export const mockTagContents: {
+  tagId: number;
+  contentTypeId: number;
+  title: string;
+  description?: string;
+  url?: string;
+  createdAt: string;
+  extra?: Record<string, string>;
+}[] = [
+  // id=22 (AI)
+  {
+    tagId: 22, contentTypeId: 1, title: 'AI 논문 리뷰', description: '최신 AI 논문 리뷰 블로그', url: 'https://arxiv.org', createdAt: '2024-05-05T14:00:00Z'
+  },
+  {
+    tagId: 22, contentTypeId: 1, title: 'AI 커뮤니티', description: 'AI 개발자 커뮤니티', url: 'https://aihub.or.kr', createdAt: '2024-05-06T15:00:00Z'
+  },  
+  {
+    tagId: 22, contentTypeId: 1, title: 'AI Podcast', description: 'AI 전문가 팟캐스트', url: 'https://lexfridman.com/podcast', createdAt: '2024-05-08T17:00:00Z'
+  },
+  {
+    tagId: 22, contentTypeId: 1, title: 'AI 트렌드', description: 'AI 트렌드 분석', url: 'https://aitrends.com', createdAt: '2024-05-09T18:00:00Z'
+  },
+  {
+    tagId: 22, contentTypeId: 1, title: 'AI 스타트업', description: 'AI 스타트업 정보', url: 'https://crunchbase.com', createdAt: '2024-05-10T19:00:00Z'
+  },
+  // id=22 (AI) - book, movie, travel 샘플 추가
+  {
+    tagId: 22, contentTypeId: 2, title: 'AI 시대의 책', description: 'AI와 미래 사회를 다룬 도서', url: 'https://book.example.com/ai', createdAt: '2024-05-21T10:00:00Z',
+    extra: { author: '홍길동', publisher: 'AI Books' }
+  },
+  {
+    tagId: 22, contentTypeId: 3, title: 'AI 영화', description: '인공지능을 주제로 한 영화', url: 'https://movie.example.com/ai', createdAt: '2024-05-22T11:00:00Z',
+    extra: { director: '스필버그', year: '2023' }
+  },
+  {
+    tagId: 22, contentTypeId: 4, title: 'AI 컨퍼런스 여행', description: 'AI 컨퍼런스 참가 여행기', url: 'https://travel.example.com/ai', createdAt: '2024-05-23T12:00:00Z',
+    extra: { location: '샌프란시스코', date: '2024-04-10' }
+  },
+  // id=27 (Blog)
+  {
+    tagId: 27, contentTypeId: 1, title: 'freeCodeCamp Blog', description: '프로그래밍 학습 블로그', url: 'https://www.freecodecamp.org/news/', createdAt: '2024-05-11T10:00:00Z'
+  },
+  {
+    tagId: 27, contentTypeId: 1, title: 'Velog', description: '개발자 기술 블로그', url: 'https://velog.io', createdAt: '2024-05-12T11:00:00Z'
+  },
+  {
+    tagId: 27, contentTypeId: 1, title: 'Tistory', description: '다양한 주제의 블로그', url: 'https://tistory.com', createdAt: '2024-05-13T12:00:00Z'
+  },
+  {
+    tagId: 27, contentTypeId: 1, title: 'Medium', description: '글로벌 IT 블로그', url: 'https://medium.com', createdAt: '2024-05-14T13:00:00Z'
+  },
+  {
+    tagId: 27, contentTypeId: 1, title: 'Brunch', description: '브런치 작가 블로그', url: 'https://brunch.co.kr', createdAt: '2024-05-15T14:00:00Z'
+  },
+  // id=27 (Blog) - book, movie, travel 샘플 추가
+  {
+    tagId: 27, contentTypeId: 2, title: '블로그 작가의 책', description: '블로그 작가가 쓴 책', url: 'https://book.example.com/blog', createdAt: '2024-05-24T13:00:00Z',
+    extra: { author: '김블로거', publisher: 'BlogBooks' }
+  },
+  {
+    tagId: 27, contentTypeId: 3, title: '블로그 영화', description: '블로그를 소재로 한 영화', url: 'https://movie.example.com/blog', createdAt: '2024-05-25T14:00:00Z',
+    extra: { director: '박감독', year: '2022' }
+  },
+  {
+    tagId: 27, contentTypeId: 4, title: '블로그 여행', description: '블로그 여행 후기', url: 'https://travel.example.com/blog', createdAt: '2024-05-26T15:00:00Z',
+    extra: { location: '제주도', date: '2024-03-15' }
+  },
+];
+
+// memoId, contentTypeId, title, content, updatedAt
+export const mockMemoContents: {
+  memoId: number;
+  contentTypeId: number;
+  targetId: number;
+  title: string;
+  content: string;
+  updatedAt: string;
+  createdAt: string;
+}[] = [
+  {
+    memoId: 1,
+    contentTypeId: 1,
+    targetId: 1,
+    title: 'AI 논문 요약',
+    content: '최신 AI 논문의 핵심 내용을 요약했습니다.\n주요 알고리즘과 결과를 정리.',
+    updatedAt: '2024-06-01T10:00:00Z',
+    createdAt: '2024-06-01T10:00:00Z',
+  },
+  {
+    memoId: 2,
+    contentTypeId: 1,
+    targetId: 2,
+    title: 'AI 커뮤니티 동향',
+    content: '최근 AI 커뮤니티에서 논의된 주요 이슈와 트렌드 정리.',
+    updatedAt: '2024-06-02T11:00:00Z',
+    createdAt: '2024-06-02T11:00:00Z',
+  },
+  {
+    memoId: 3,
+    contentTypeId: 1,
+    targetId: 3,
+    title: 'AI Podcast 메모',
+    content: 'AI 전문가 인터뷰에서 인상 깊었던 부분을 기록.\n실제 사례 중심.',
+    updatedAt: '2024-06-03T12:00:00Z',
+    createdAt: '2024-06-03T12:00:00Z',
+  },
+  {
+    memoId: 4,
+    contentTypeId: 1,
+    targetId: 4,
+    title: 'AI 트렌드 분석',
+    content: '2024년 AI 트렌드와 시장 전망에 대한 개인 의견 정리.',
+    updatedAt: '2024-06-04T13:00:00Z',
+    createdAt: '2024-06-04T13:00:00Z',
+  },
+  {
+    memoId: 5,
+    contentTypeId: 1,
+    targetId: 5,
+    title: 'AI 스타트업 정보',
+    content: '주목할 만한 AI 스타트업 리스트와 특징 정리.',
+    updatedAt: '2024-06-05T14:00:00Z',
+    createdAt: '2024-06-05T14:00:00Z',
+  },
+  {
+    memoId: 6,
+    contentTypeId: 2,
+    targetId: 1,
+    title: 'AI 시대의 책 메모',
+    content: '책에서 인상 깊었던 구절과 저자의 주요 메시지 정리.',
+    updatedAt: '2024-06-06T15:00:00Z',
+    createdAt: '2024-06-06T15:00:00Z',
+  },
+  {
+    memoId: 7,
+    contentTypeId: 3,
+    targetId: 1,
+    title: 'AI 영화 감상',
+    content: '영화에서 다룬 AI의 윤리적 문제와 미래상에 대한 생각.',
+    updatedAt: '2024-06-07T16:00:00Z',
+    createdAt: '2024-06-07T16:00:00Z',
+  },
+  {
+    memoId: 8,
+    contentTypeId: 4,
+    targetId: 1,
+    title: 'AI 컨퍼런스 여행기',
+    content: '샌프란시스코에서 열린 AI 컨퍼런스 참가 후기\n현장 분위기와 주요 세션 요약.',
+    updatedAt: '2024-06-08T17:00:00Z',
+    createdAt: '2024-06-08T17:00:00Z',
+  },
+  {
+    memoId: 9,
+    contentTypeId: 1,
+    targetId: 6,
+    title: '블로그 운영 팁',
+    content: '블로그 트래픽을 높이기 위한 실전 팁과 경험 공유.',
+    updatedAt: '2024-06-09T18:00:00Z',
+    createdAt: '2024-06-09T18:00:00Z',
+  },
+  {
+    memoId: 10,
+    contentTypeId: 1,
+    targetId: 7,
+    title: 'Velog 사용법',
+    content: 'Velog에서 글을 효과적으로 작성하는 방법 정리.',
+    updatedAt: '2024-06-10T19:00:00Z',
+    createdAt: '2024-06-10T19:00:00Z',
+  },
+  {
+    memoId: 11,
+    contentTypeId: 1,
+    targetId: 8,
+    title: 'Medium 활용 노트',
+    content: 'Medium에서 인기 있는 글의 공통점과 작성 전략.',
+    updatedAt: '2024-06-11T10:00:00Z',
+    createdAt: '2024-06-11T10:00:00Z',
+  },
+  {
+    memoId: 12,
+    contentTypeId: 2,
+    targetId: 2,
+    title: '블로그 작가의 책 메모',
+    content: '블로그 작가가 전하는 글쓰기 노하우와 동기부여.',
+    updatedAt: '2024-06-12T11:00:00Z',
+    createdAt: '2024-06-12T11:00:00Z',
+  },
+  {
+    memoId: 13,
+    contentTypeId: 3,
+    targetId: 2,
+    title: '블로그 영화 감상',
+    content: '영화 속 블로그의 역할과 현실과의 차이점 분석.',
+    updatedAt: '2024-06-13T12:00:00Z',
+    createdAt: '2024-06-13T12:00:00Z',
+  },
+  {
+    memoId: 14,
+    contentTypeId: 4,
+    targetId: 2,
+    title: '블로그 여행 후기',
+    content: '제주도 블로그 여행에서 느낀 점과 추천 코스 정리.\n사진도 첨부 예정.',
+    updatedAt: '2024-06-14T13:00:00Z',
+    createdAt: '2024-06-14T13:00:00Z',
+  },
+];
