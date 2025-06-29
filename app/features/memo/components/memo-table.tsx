@@ -2,7 +2,7 @@ import React from "react";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "../../../core/components/ui/table";
 import type { ContentType } from "../../tag/components/tag-content-card";
 import type { Memo, SortKey } from "../types/memo.types";
-import { highlightText } from "../../bookmark/lib/utils";
+import { highlightText } from "~/core/lib/common";
 import { useNavigate } from "react-router";
 
 const typeIconMap: Record<ContentType, string> = {

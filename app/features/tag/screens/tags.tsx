@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { mockTags } from "../../bookmark/lib/mock-data";
 import { TagCard } from "../components/tag-card";
-import { highlightText } from "../../bookmark/lib/utils";
+import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
 
 // Tag 타입 정의 추가
 type Tag = { id: number; name: string; usage_count: number; createdAt: string };
@@ -22,35 +22,31 @@ export default function TagsScreen() {
   const pageSize = 12;
 
   const filtered = useMemo(() =>
-    mockTags.filter(tag =>
+    filterArray(mockTags, tag =>
       tag.name.toLowerCase().includes(search.toLowerCase()) ||
       String(tag.id).includes(search)
     ), [search]
   );
 
   const sorted = useMemo(() => {
-    const sortedArr = [...filtered].sort((a, b) => {
-      if (sortKey === "usage_count") {
-        return sortOrder === 'asc' ? a.usage_count - b.usage_count : b.usage_count - a.usage_count;
-      } else if (sortKey === "name") {
-        return sortOrder === 'asc'
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name);
-      } else if (sortKey === "created_at") {
-        return sortOrder === 'asc'
-          ? a.createdAt.localeCompare(b.createdAt)
-          : b.createdAt.localeCompare(a.createdAt);
-      }
-      return 0;
-    });
-    return sortedArr;
+    if (sortKey === "usage_count") {
+      return sortArray(filtered, "usage_count", sortOrder);
+    } else if (sortKey === "name") {
+      return sortArray(filtered, "name", sortOrder);
+    } else if (sortKey === "created_at") {
+      return sortArray(filtered, "createdAt", sortOrder);
+    }
+    return filtered;
   }, [filtered, sortKey, sortOrder]);
 
   const totalRows = sorted.length;
   const totalPages = Math.ceil(totalRows / pageSize);
   const startEntry = (page - 1) * pageSize + 1;
   const endEntry = Math.min(page * pageSize, totalRows);
-  const pagedTags = sorted.slice(startEntry - 1, endEntry);
+  const pagedTags = useMemo(() =>
+    paginateArray(sorted, page, pageSize),
+    [sorted, page, pageSize]
+  );
 
   return (
     <div>

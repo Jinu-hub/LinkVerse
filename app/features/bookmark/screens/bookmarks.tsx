@@ -28,7 +28,6 @@ import type {
 } from "../types/bookmark.types";
 
 import { useMemo, useReducer, useCallback } from "react";
-import BookmarkDetailDialog from "../components/bookmark-detail-dialog";
 import { BookmarkToolbar } from "../components/bookmark-toolbar";
 import { BookmarkTable } from "../components/bookmark-table";
 import { mockBookmarks, mockCategories, mockTabs } from '../lib/mock-data';
@@ -38,7 +37,8 @@ import {
   DEFAULT_ROWS_PER_PAGE,
   DEFAULT_SORT_KEY,
 } from '../lib/constants'
-import { bookmarksReducer, highlightText } from '../lib/utils'
+import { bookmarksReducer } from '../lib/bmUtils'
+import { highlightText } from "~/core/lib/common";
 import { useFilteredBookmarks } from '../hooks/use-filtered-bookmarks'
 import { CategorySidebar } from '../components/category-sidebar'
 
@@ -93,8 +93,6 @@ export default function Bookmarks() {
     sortOrderMap,
     pageMap,
     rowsPerPageMap,
-    selectedBookmark,
-    isDetailDialogOpen,
   } = state;
 
   const rowsPerPage = rowsPerPageMap[selectedTabId] ?? DEFAULT_ROWS_PER_PAGE;

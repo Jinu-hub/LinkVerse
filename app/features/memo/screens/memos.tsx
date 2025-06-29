@@ -4,6 +4,7 @@ import type { ContentType } from "../../tag/components/tag-content-card";
 import MemoToolbar from "../components/memo-toolbar";
 import MemoTable from "../components/memo-table";
 import type { SortKey } from "../types/memo.types";
+import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
 
 const getType = (contentTypeId: number): ContentType => {
   return (mockContentTypes.find(t => t.id === contentTypeId)?.code || 'bookmark') as ContentType;
@@ -20,7 +21,7 @@ const MemosScreen = () => {
 
   // 필터/검색
   const filtered = useMemo(() =>
-    mockMemoContents.filter(memo =>
+    filterArray(mockMemoContents, memo =>
       (selectedType === null || memo.contentTypeId === selectedType) &&
       (memo.title.toLowerCase().includes(search.toLowerCase()) ||
         memo.content.toLowerCase().includes(search.toLowerCase()))
@@ -29,23 +30,17 @@ const MemosScreen = () => {
 
   // 정렬
   const sorted = useMemo(() => {
-    const arr = [...filtered];
-    arr.sort((a, b) => {
-      if (sortKey === "createdAt" || sortKey === "updatedAt") {
-        return sortOrder === 'asc'
+    if (sortKey === "contentTypeId") {
+      return sortArray(filtered, sortKey, sortOrder);
+    } else if (sortKey === "createdAt" || sortKey === "updatedAt") {
+      return sortArray(filtered, sortKey, sortOrder, (a, b) =>
+        sortOrder === 'asc'
           ? a[sortKey].localeCompare(b[sortKey])
-          : b[sortKey].localeCompare(a[sortKey]);
-      } else if (sortKey === "contentTypeId") {
-        return sortOrder === 'asc'
-          ? a.contentTypeId - b.contentTypeId
-          : b.contentTypeId - a.contentTypeId;
-      } else {
-        return sortOrder === 'asc'
-          ? a[sortKey].localeCompare(b[sortKey])
-          : b[sortKey].localeCompare(a[sortKey]);
-      }
-    });
-    return arr;
+          : b[sortKey].localeCompare(a[sortKey])
+      );
+    } else {
+      return sortArray(filtered, sortKey, sortOrder);
+    }
   }, [filtered, sortKey, sortOrder]);
 
   // 페이지네이션
@@ -55,8 +50,7 @@ const MemosScreen = () => {
   const startEntry = totalRows === 0 ? 0 : ((currentPage - 1) * (rowsPerPage === 'all' ? totalRows : Number(rowsPerPage))) + 1;
   const endEntry = rowsPerPage === 'all' ? totalRows : Math.min(currentPage * Number(rowsPerPage), totalRows);
   const pagedMemos = useMemo(() => {
-    if (rowsPerPage === 'all') return sorted;
-    return sorted.slice((currentPage - 1) * Number(rowsPerPage), currentPage * Number(rowsPerPage));
+    return paginateArray(sorted, currentPage, rowsPerPage);
   }, [sorted, currentPage, rowsPerPage]);
 
   // 핸들러
