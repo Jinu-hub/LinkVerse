@@ -17,6 +17,18 @@ import type { Route } from "./+types/home";
 import { useTranslation } from "react-i18next";
 
 import i18next from "~/core/lib/i18next.server";
+import HeroSection from "~/features/landing/components/hero";
+import FeatureHighlights from "~/features/landing/components/featureHighlights";
+import FinalCTASection from "~/features/landing/components/finalCTASection";
+import WhoItsForSection from "~/features/landing/components/whoItsForSection";
+import HowItWorksSection from "~/features/landing/components/howItWorksSection";
+import makeServerClient from "~/core/lib/supa-client.server";
+import { Await } from "react-router";
+import { Suspense } from "react";
+import { NavigationBar } from "~/core/components/navigation-bar";
+import { Meteors } from "components/magicui/meteors";
+import { useTheme } from "remix-themes";
+import { Particles } from "components/magicui/particles";
 
 /**
  * Meta function for setting page metadata
@@ -56,11 +68,14 @@ export const meta: Route.MetaFunction = ({ data }) => {
 export async function loader({ request }: Route.LoaderArgs) {
   // Get a translation function for the user's locale from the request
   const t = await i18next.getFixedT(request);
+  const [client] = makeServerClient(request);
+  const userPromise = client.auth.getUser();
   
   // Return translated strings for use in both the component and meta function
   return {
     title: t("home.title"),
     subtitle: t("home.subtitle"),
+    userPromise,
   };
 }
 
@@ -83,17 +98,70 @@ export async function loader({ request }: Route.LoaderArgs) {
  * 
  * @returns JSX element representing the home page
  */
-export default function Home() {
+export default function Home({loaderData}: Route.ComponentProps) {
+  const {userPromise} = loaderData;
   // Get the translation function for the current locale
   const { t } = useTranslation();
+  const [theme] = useTheme();
   
+  function GuestLanding() {
+    return (
+      <>
+      <div className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-center">
+        {theme === "dark" && (
+          <Meteors 
+            className="fixed inset-0 pointer-events-none z-0"
+            number={30} 
+            startTop="-5%" 
+          />
+        )}
+        {theme === "light" && (
+          <Particles
+            className="fixed inset-0 pointer-events-none z-0"
+            quantity={120}
+            staticity={50}
+            ease={50}
+            size={0.5}
+            color={"#000000"}
+          />
+        )}
+        <div className="relative z-10 flex flex-col items-center justify-center gap-2.5 w-full">
+          <h1 className="text-4xl font-extrabold tracking-tight lg:text-6xl">
+            {t("home.title")}
+          </h1>
+          <h2 className="text-2xl">{t("home.subtitle")}</h2>
+          <HeroSection />
+          <FeatureHighlights />
+          <br />
+          <WhoItsForSection />
+          <br />
+          <HowItWorksSection />
+          <br />
+          <FinalCTASection />
+        </div>
+      </div>
+      </>
+    );
+  }
+  function UserLanding({ name }: { name: string }) {
+    return <h1 className="text-4xl text-center font-extrabold tracking-tight lg:text-6xl">Hello {name}</h1>;
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center gap-2.5">
-      <h1 className="text-4xl font-extrabold tracking-tight lg:text-6xl">
-        {t("home.title")}
-      </h1>
-      <h2 className="text-2xl">{t("home.subtitle")}</h2>
-    </div>
-    
+    <Suspense fallback={<NavigationBar loading={true} />}>
+      <Await resolve={userPromise}>
+        {({data: {user}}) =>
+          user === null ? (
+            <>
+              <GuestLanding />
+            </>
+          ) : (
+            <>
+              <UserLanding name={user.user_metadata.name || ""} />
+            </>
+          )
+        }
+      </Await>
+    </Suspense>
   );
 }
