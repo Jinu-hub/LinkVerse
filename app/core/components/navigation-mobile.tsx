@@ -1,4 +1,4 @@
-import type { DisplayType } from "~/locales/types";
+import type { DisplayType } from "~/core/lib/types";
 import { Actions, UserMenu, AuthButtons } from "./navigation-bar";
 import { SheetHeader, SheetFooter, SheetClose } from "./ui/sheet";
 import { Link } from "react-router";

@@ -1,5 +1,3 @@
-export type DisplayType = "default" | "bookmarks" | "tags" | "memos";
-
 export type Translation = {
   home: {
     title: string;
