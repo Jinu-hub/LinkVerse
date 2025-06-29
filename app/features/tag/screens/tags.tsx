@@ -1,18 +1,20 @@
 import React, { useMemo, useState } from "react";
-import { mockTags } from "../../bookmark/lib/mock-data";
+import { mockTags } from "~/features/mock-data";
 import { TagCard } from "../components/tag-card";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
+import type { SortKey, Tag } from "../types/tag.types";
+import { SORT_OPTIONS } from "../lib/constants";
 
-// Tag 타입 정의 추가
-type Tag = { id: number; name: string; usage_count: number; createdAt: string };
-
-const SORT_OPTIONS = [
-  { value: "usage_count", label: "사용 횟수" },
-  { value: "name", label: "이름" },
-  { value: "created_at", label: "생성일" },
-] as const;
-
-type SortKey = typeof SORT_OPTIONS[number]["value"];
+function getSortedTags(tags: Tag[], sortKey: SortKey, sortOrder: 'asc' | 'desc') {
+  if (sortKey === "usage_count") {
+    return sortArray(tags, "usage_count", sortOrder);
+  } else if (sortKey === "name") {
+    return sortArray(tags, "name", sortOrder);
+  } else if (sortKey === "created_at") {
+    return sortArray(tags, "createdAt", sortOrder);
+  }
+  return tags;
+}
 
 export default function TagsScreen() {
   const [sortKey, setSortKey] = useState<SortKey>("usage_count");
@@ -21,6 +23,7 @@ export default function TagsScreen() {
   const [search, setSearch] = useState("");
   const pageSize = 12;
 
+  // 필터
   const filtered = useMemo(() =>
     filterArray(mockTags, tag =>
       tag.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -28,21 +31,14 @@ export default function TagsScreen() {
     ), [search]
   );
 
+  // 정렬
   const sorted = useMemo(() => {
-    if (sortKey === "usage_count") {
-      return sortArray(filtered, "usage_count", sortOrder);
-    } else if (sortKey === "name") {
-      return sortArray(filtered, "name", sortOrder);
-    } else if (sortKey === "created_at") {
-      return sortArray(filtered, "createdAt", sortOrder);
-    }
-    return filtered;
+    return getSortedTags(filtered, sortKey, sortOrder);
   }, [filtered, sortKey, sortOrder]);
 
+  // 페이지네이션
   const totalRows = sorted.length;
   const totalPages = Math.ceil(totalRows / pageSize);
-  const startEntry = (page - 1) * pageSize + 1;
-  const endEntry = Math.min(page * pageSize, totalRows);
   const pagedTags = useMemo(() =>
     paginateArray(sorted, page, pageSize),
     [sorted, page, pageSize]

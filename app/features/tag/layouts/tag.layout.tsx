@@ -1,6 +1,6 @@
 import { ChevronsRightIcon, MenuIcon } from "lucide-react";
 import { Link, Outlet, useOutletContext, useParams } from "react-router";
-import { mockTags } from "../../bookmark/lib/mock-data";
+import { mockTags } from "~/features/mock-data";
 import { NavigationDesktop } from "~/core/components/navigation-desktop";
 import { SheetTrigger } from "~/core/components/ui/sheet";
 import { SheetContent } from "~/core/components/ui/sheet";

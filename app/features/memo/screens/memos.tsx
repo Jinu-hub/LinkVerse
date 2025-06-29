@@ -1,14 +1,36 @@
 import React, { useMemo, useState } from "react";
-import { mockMemoContents, mockContentTypes } from "../../bookmark/lib/mock-data";
+import { mockMemoContents, mockContentTypes } from "~/features/mock-data";
 import type { ContentType } from "../../tag/components/tag-content-card";
 import MemoToolbar from "../components/memo-toolbar";
 import MemoTable from "../components/memo-table";
-import type { SortKey } from "../types/memo.types";
+import type { Memo, SortKey } from "../types/memo.types";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
 
 const getType = (contentTypeId: number): ContentType => {
   return (mockContentTypes.find(t => t.id === contentTypeId)?.code || 'bookmark') as ContentType;
 };
+
+function getFilteredMemos(memos: Memo[], selectedType: number | null, search: string) {
+  return filterArray(memos, memo =>
+    (selectedType === null || memo.contentTypeId === selectedType) &&
+    (memo.title.toLowerCase().includes(search.toLowerCase()) ||
+      memo.content.toLowerCase().includes(search.toLowerCase()))
+  );
+}
+
+function getSortedMemos(filtered: Memo[], sortKey: SortKey, sortOrder: 'asc' | 'desc') {
+  if (sortKey === "contentTypeId") {
+    return sortArray(filtered, sortKey, sortOrder);
+  } else if (sortKey === "createdAt" || sortKey === "updatedAt") {
+    return sortArray(filtered, sortKey, sortOrder, (a, b) =>
+      sortOrder === 'asc'
+        ? a[sortKey].localeCompare(b[sortKey])
+        : b[sortKey].localeCompare(a[sortKey])
+    );
+  } else {
+    return sortArray(filtered, sortKey, sortOrder);
+  }
+}
 
 const MemosScreen = () => {
   // 상태
@@ -21,26 +43,13 @@ const MemosScreen = () => {
 
   // 필터/검색
   const filtered = useMemo(() =>
-    filterArray(mockMemoContents, memo =>
-      (selectedType === null || memo.contentTypeId === selectedType) &&
-      (memo.title.toLowerCase().includes(search.toLowerCase()) ||
-        memo.content.toLowerCase().includes(search.toLowerCase()))
-    ), [search, selectedType]
+    getFilteredMemos(mockMemoContents, selectedType, search)
+  , [search, selectedType]
   );
 
   // 정렬
   const sorted = useMemo(() => {
-    if (sortKey === "contentTypeId") {
-      return sortArray(filtered, sortKey, sortOrder);
-    } else if (sortKey === "createdAt" || sortKey === "updatedAt") {
-      return sortArray(filtered, sortKey, sortOrder, (a, b) =>
-        sortOrder === 'asc'
-          ? a[sortKey].localeCompare(b[sortKey])
-          : b[sortKey].localeCompare(a[sortKey])
-      );
-    } else {
-      return sortArray(filtered, sortKey, sortOrder);
-    }
+    return getSortedMemos(filtered, sortKey, sortOrder);
   }, [filtered, sortKey, sortOrder]);
 
   // 페이지네이션
@@ -63,6 +72,11 @@ const MemosScreen = () => {
     }
   };
 
+  const handleTypeSelect = (typeId: number) => {
+    setSelectedType(typeId === 0 ? null : typeId);
+    setPage(1);
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">메모 리스트</h1>
@@ -80,10 +94,7 @@ const MemosScreen = () => {
               hover:text-primary
               font-semibold
             `}
-            onClick={() => {
-              setSelectedType(type.id === 0 ? null : type.id);
-              setPage(1);
-            }}
+            onClick={() => handleTypeSelect(type.id)}
           >
             {type.code}
           </button>

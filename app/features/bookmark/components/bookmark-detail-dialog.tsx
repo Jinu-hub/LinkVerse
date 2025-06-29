@@ -87,20 +87,6 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
       const path = findCategoryPath(id, categories);
       return path.length > 0 ? path.map((p) => p.name).join(" > ") : "카테고리 선택";
     }
-
-    const flatCategories = (cats: Category[]): { id: string; name: string, depth: number }[] => {
-      const result: { id: string; name: string, depth: number }[] = [];
-      const traverse = (items: Category[], depth: number) => {
-        for(const item of items) {
-          result.push({ id: item.id, name: item.name, depth });
-          if (item.children) {
-            traverse(item.children, depth + 1);
-          }
-        }
-      };
-      traverse(cats, 0);
-      return result;
-    }
     
     // 카테고리 트리에서 parentPath에 해당하는 하위 카테고리 배열 반환
     function findChildrenByPath(categories: Category[], path: string[]): Category[] {

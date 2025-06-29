@@ -1,62 +1,55 @@
 import React, { useMemo, useState } from "react";
 import { useParams } from "react-router";
-import { mockTags, mockTagContents, mockContentTypes } from "../../bookmark/lib/mock-data";
+import { mockTags, mockTagContents, mockContentTypes } from "~/features/mock-data";
 import TagContentCard from "../components/tag-content-card";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
+import type { SortKeyContents, TagContent } from "../types/tag.types";
+import { SORT_OPTIONS_CONTENTS } from "../lib/constants";
 
-const SORT_OPTIONS = [
-  { value: "createdAt", label: "생성일" },
-  { value: "title", label: "콘텐츠명" },
-  { value: "type", label: "콘텐츠 종류" },
-] as const;
+function getFilteredContents(contents: TagContent[], tagId: number, selectedType: number | null, search: string) {
+  return filterArray(contents, content =>
+    content.tagId === tagId &&
+    (selectedType === null || content.contentTypeId === selectedType) &&
+    (content.title.toLowerCase().includes(search.toLowerCase()) ||
+      (typeof content.memo === 'string' && content.memo.toLowerCase().includes(search.toLowerCase())))
+  );
+}
 
-type SortKey = typeof SORT_OPTIONS[number]["value"];
-
-interface TagContent {
-  contentId: string;
-  tagId: number;
-  contentTypeId: number;
-  title: string;
-  description?: string;
-  url?: string;
-  createdAt: string;
-  extra?: Record<string, string>;
-  memo?: string;
+function getSortedContents(contents: TagContent[], sortKey: SortKeyContents, sortOrder: 'asc' | 'desc') {
+  if (sortKey === "createdAt") {
+    return sortArray(contents, "createdAt", sortOrder);
+  } else if (sortKey === "title") {
+    return sortArray(contents, "title", sortOrder);
+  } else if (sortKey === "type") {
+    return sortArray(contents, "contentTypeId", sortOrder);
+  }
+  return contents;
 }
 
 export default function TagContentsScreen() {
   const { id } = useParams<{ id: string }>();
   const tagId = Number(id);
   const tag = mockTags.find(t => t.id === tagId);
-  const [sortKey, setSortKey] = useState<SortKey>("createdAt");
+  const [sortKey, setSortKey] = useState<SortKeyContents>("createdAt");
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const pageSize = 8;
   const [selectedType, setSelectedType] = useState<number | null>(null);
 
+  // 필터
   const filtered = useMemo(() =>
-    filterArray((mockTagContents as TagContent[]), content =>
-      content.tagId === tagId &&
-      (selectedType === null || content.contentTypeId === selectedType) &&
-      (
-        content.title.toLowerCase().includes(search.toLowerCase()) ||
-        (typeof content.memo === 'string' && content.memo.toLowerCase().includes(search.toLowerCase()))
-      )
-    ), [tagId, search, selectedType]
+    getFilteredContents(mockTagContents as TagContent[], tagId, selectedType, search)
+  , [tagId, search, selectedType]
   );
 
-  const sorted = useMemo(() => {
-    if (sortKey === "createdAt") {
-      return sortArray(filtered, "createdAt", sortOrder);
-    } else if (sortKey === "title") {
-      return sortArray(filtered, "title", sortOrder);
-    } else if (sortKey === "type") {
-      return sortArray(filtered, "contentTypeId", sortOrder);
-    }
-    return filtered;
-  }, [filtered, sortKey, sortOrder]);
+  // 정렬
+  const sorted = useMemo(() =>
+    getSortedContents(filtered, sortKey, sortOrder)
+  , [filtered, sortKey, sortOrder]
+  );
 
+  // 페이지네이션
   const totalRows = sorted.length;
   const totalPages = Math.ceil(totalRows / pageSize);
   const pagedContents = useMemo(() =>
@@ -91,12 +84,12 @@ export default function TagContentsScreen() {
             className="border rounded px-2 py-1 text-sm"
             value={sortKey}
             onChange={e => {
-              setSortKey(e.target.value as SortKey);
+              setSortKey(e.target.value as SortKeyContents);
               setSortOrder('desc');
               setPage(1);
             }}
           >
-            {SORT_OPTIONS.map(opt => (
+            {SORT_OPTIONS_CONTENTS.map(opt => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>
             ))}
           </select>

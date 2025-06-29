@@ -30,7 +30,7 @@ import type {
 import { useMemo, useReducer, useCallback } from "react";
 import { BookmarkToolbar } from "../components/bookmark-toolbar";
 import { BookmarkTable } from "../components/bookmark-table";
-import { mockBookmarks, mockCategories, mockTabs } from '../lib/mock-data';
+import { mockBookmarks, mockCategories, mockTabs } from '~/features/mock-data';
 import {
   ALL_CATEGORY_ID,
   ALL_TAB_ID,
