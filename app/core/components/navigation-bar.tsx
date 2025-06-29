@@ -18,7 +18,7 @@
  */
 import { HomeIcon, LogOutIcon, MenuIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import LangSwitcher from "./lang-switcher";
 import ThemeSwitcher from "./theme-switcher";
@@ -127,25 +127,33 @@ export function UserMenu({
  * @returns Fragment containing sign in and sign up buttons
  */
 export function AuthButtons() {
+  const location = useLocation();
+  const isJoinPage = location.pathname === "/join";
+  const isLoginPage = location.pathname === "/login";
+
   return (
     <>
       {/* Sign in button (less prominent) */}
-      <Button variant="ghost" asChild>
-        <SheetClose asChild>
-          <Link to="/login" viewTransition>
-            Sign in
-          </Link>
-        </SheetClose>
-      </Button>
+      {!isLoginPage && (
+        <Button variant="outline" asChild>
+          <SheetClose asChild>
+            <Link to="/login" viewTransition>
+              Sign in
+            </Link>
+          </SheetClose>
+        </Button>
+      )}
       
       {/* Sign up button (more prominent) */}
-      <Button variant="default" asChild>
-        <SheetClose asChild>
-          <Link to="/join" viewTransition>
-            Sign up
-          </Link>
-        </SheetClose>
-      </Button>
+      {!isJoinPage && (
+        <Button variant="default" asChild>
+          <SheetClose asChild>
+            <Link to="/join" viewTransition>
+              Sign up
+            </Link>
+          </SheetClose>
+        </Button>
+      )}
     </>
   );
 }

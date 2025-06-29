@@ -44,6 +44,13 @@ export function NavigationDesktop({ loading, displayType = "default", name, emai
           Memos
         </Link>
       )}
+      <Link
+        to="/contact"
+        viewTransition
+        className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+      >
+        Contact
+      </Link>
       {/*
       <Link
         to="/blog"
@@ -53,13 +60,6 @@ export function NavigationDesktop({ loading, displayType = "default", name, emai
         Blog
       </Link>
       */}
-      <Link
-        to="/contact"
-        viewTransition
-        className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-      >
-        Contact
-      </Link>
       {/*
       <Link
         to="/payments/checkout"
@@ -72,29 +72,24 @@ export function NavigationDesktop({ loading, displayType = "default", name, emai
       <Separator orientation="vertical" />
       {/* Settings, theme switcher, and language switcher */}
       <Actions />
-
-
-
-        <Separator orientation="vertical" />
-        {/* Conditional rendering based on authentication state */}
-        {loading ? (
-          // Loading state with skeleton placeholder
-          <div className="flex items-center">
-            <div className="bg-muted-foreground/20 size-8 animate-pulse rounded-lg" />
-          </div>
-        ) : (
-          <>
-            {name ? (
-              // Authenticated state with user menu
-              <UserMenu name={name} email={email} avatarUrl={avatarUrl} />
-            ) : (
-              // Unauthenticated state with auth buttons
-              <AuthButtons />
-            )}
-          </>
-        )}
-
-    
+      <Separator orientation="vertical" />
+      {/* Conditional rendering based on authentication state */}
+      {loading ? (
+        // Loading state with skeleton placeholder
+        <div className="flex items-center">
+          <div className="bg-muted-foreground/20 size-8 animate-pulse rounded-lg" />
+        </div>
+      ) : (
+        <>
+          {name ? (
+            // Authenticated state with user menu
+            <UserMenu name={name} email={email} avatarUrl={avatarUrl} />
+          ) : (
+            // Unauthenticated state with auth buttons
+            <AuthButtons />
+          )}
+        </>
+      )}
     </div>
   );
 } 
