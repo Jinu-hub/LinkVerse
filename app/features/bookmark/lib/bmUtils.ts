@@ -103,3 +103,42 @@ export function findCategoryPath(categoryId: string, categories: Category[]): { 
   traverse(categoryId, categories);
   return path;
 } 
+
+// 카테고리 트리에서 parentPath에 해당하는 하위 카테고리 배열 반환
+export function findChildrenByPath(categories: Category[], path: string[]): Category[] {
+  let current = categories;
+  for (const name of path) {
+    const found = current.find(cat => cat.name === name);
+    if (!found || !found.children) return [];
+    current = found.children;
+  }
+  return current;
+}
+
+export function getParentPathAndCurrentText(categoryInput: string, categoryPath: string[]) {
+  if (categoryInput.trim().endsWith('>')) {
+    return { parentPath: categoryPath, currentText: '' };
+  } else {
+    return {
+      parentPath: categoryPath.slice(0, -1),
+      currentText: categoryPath[categoryPath.length - 1] || '',
+    };
+  }
+}
+
+export function filterCategoryCandidates(children: Category[], currentText: string) {
+  if (currentText === '') return children;
+  return children.filter(
+    cat => cat.name.toLowerCase().startsWith(currentText.toLowerCase()) && cat.name !== currentText
+  );
+}
+
+export function pathExists(categories: Category[], path: string[]): boolean {
+  let current = categories;
+  for (const name of path) {
+    const found = current.find(cat => cat.name === name);
+    if (!found) return false;
+    current = found.children || [];
+  }
+  return true;
+}

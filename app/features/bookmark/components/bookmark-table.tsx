@@ -7,7 +7,7 @@ import BookmarkDetailDialog from "./bookmark-detail-dialog";
 import { useState } from "react";
 import { mockCategories } from "~/features/mock-data";
 
-type Props = {
+interface BookmarkTableProps {
   pagedBookmarks: Bookmark[];
   sortKey: keyof Bookmark;
   sortOrder: 'asc' | 'desc';
@@ -38,7 +38,7 @@ export function BookmarkTable({
   startEntry,
   endEntry,
   onPageChange,
-}: Props) {
+}: BookmarkTableProps) {
   const [selectedBookmark, setSelectedBookmark] = useState<(Bookmark & { memo: string }) | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 

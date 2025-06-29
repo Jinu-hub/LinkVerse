@@ -1,5 +1,5 @@
 import { Button } from "~/core/components/ui/button";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Badge } from "~/core/components/ui/badge";
 import {
   Dialog,
@@ -14,6 +14,9 @@ import { cn } from "~/core/lib/utils";
 import type { Category } from '../types/bookmark.types';
 import { findCategoryPath } from "../lib/bmUtils";
 import React from "react";
+import { useClickOutside } from '../hooks/useClickOutside';
+import { findChildrenByPath } from '../lib/bmUtils';
+import { useCategoryAutocomplete } from '../hooks/useCategoryAutocomplete';
 
 type Props = {
     open: boolean;
@@ -34,19 +37,23 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
     const [title, setTitle] = useState(bookmark.title);
     const [url, setUrl] = useState(bookmark.url);
     const [tags, setTags] = useState<string[]>(bookmark.tags);
-    //const [memo, setMemo] = useState(bookmark.memo);
     const [newTag, setNewTag] = useState("");
-    //console.log(categories);
     const [categoryId, setCategoryId] = useState(bookmark.categoryId || "");
-    const [popoverOpen, setPopoverOpen] = useState(false);
     const dialogContentRef = useRef<HTMLDivElement>(null);
-    //const commandInputRef = useRef<HTMLInputElement>(null);
-    const [categoryInput, setCategoryInput] = useState("");
-    const [categoryPath, setCategoryPath] = useState<string[]>([]);
-    const [highlightedIdx, setHighlightedIdx] = useState(-1);
-    const inputRef = useRef<HTMLInputElement>(null);
-    const [showSuggestions, setShowSuggestions] = useState(false);
+    const {
+      categoryInput, setCategoryInput,
+      categoryPath, setCategoryPath,
+      showSuggestions, setShowSuggestions,
+      highlightedIdx, setHighlightedIdx,
+      categoryCandidates,
+      canAddNewCategory,
+      handleCategoryKeyDown,
+      inputRef,
+      parentPath,
+      currentText,
+    } = useCategoryAutocomplete({ categories, findChildrenByPath });
 
+    // 북마크 정보 업데이트
     useEffect(() => {
         setTitle(bookmark.title);
         setUrl(bookmark.url);
@@ -58,6 +65,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
         setShowSuggestions(false);
     }, [bookmark]);
 
+    // 카테고리 경로 자동완성 추천 리스트 계산
     useEffect(() => {
         const parts = categoryInput
           .split('>')
@@ -67,6 +75,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
         setShowSuggestions(true);
     }, [categoryInput]);
 
+    // 태그 추가
     const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter" && newTag.trim()) {
           setTags([...tags, newTag.trim()]);
@@ -74,98 +83,25 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
         }
       };
     
+    // 태그 삭제
     const handleRemoveTag = (tag: string) => {
     setTags(tags.filter(t => t !== tag));
     };
 
+    // 북마크 저장
     const handleSave = () => {
       onSave({ ...bookmark, title, url, tags, categoryId });
     };
 
+    // 카테고리 경로 이름 반환
     const getCategoryPathName = (id: string) => {
       if (!id) return "카테고리 선택";
       const path = findCategoryPath(id, categories);
       return path.length > 0 ? path.map((p) => p.name).join(" > ") : "카테고리 선택";
     }
-    
-    // 카테고리 트리에서 parentPath에 해당하는 하위 카테고리 배열 반환
-    function findChildrenByPath(categories: Category[], path: string[]): Category[] {
-      let current = categories;
-      for (const name of path) {
-        const found = current.find(cat => cat.name === name);
-        if (!found || !found.children) return [];
-        current = found.children;
-      }
-      return current;
-    }
 
-    // 개선된 자동완성 후보 계산
-    let parentPath: string[];
-    let currentText: string;
-    if (categoryInput.trim().endsWith('>')) {
-      parentPath = categoryPath;
-      currentText = "";
-    } else {
-      parentPath = categoryPath.slice(0, -1);
-      currentText = categoryPath[categoryPath.length - 1] || "";
-    }
-    const children = findChildrenByPath(categories, parentPath);
-    let candidates: Category[] = [];
-    if (currentText === "") {
-      candidates = children;
-    } else {
-      candidates = children.filter(
-        cat => cat.name.toLowerCase().startsWith(currentText.toLowerCase()) && cat.name !== currentText
-      );
-    }
-
-    // 입력값 전체가 기존 카테고리 경로와 일치하는지 검사
-    function pathExists(categories: Category[], path: string[]): boolean {
-      let current = categories;
-      for (const name of path) {
-        const found = current.find(cat => cat.name === name);
-        if (!found) return false;
-        current = found.children || [];
-      }
-      return true;
-    }
-
-    const isFullPathExists = pathExists(categories, categoryPath);
-    const exists = candidates.some(cat => cat.name === currentText);
-    const canAddNew = currentText && !exists && !isFullPathExists;
-
-    // 외부 클릭 시 추천 박스 닫힘
-    useEffect(() => {
-      if (!showSuggestions) return;
-      const handleClick = (e: MouseEvent) => {
-        if (!inputRef.current) return;
-        if (!inputRef.current.contains(e.target as Node)) {
-          setShowSuggestions(false);
-        }
-      };
-      document.addEventListener('mousedown', handleClick);
-      return () => document.removeEventListener('mousedown', handleClick);
-    }, [showSuggestions]);
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (!showSuggestions || !candidates.length) return;
-      if (e.key === "ArrowDown") {
-        setHighlightedIdx(idx => (idx + 1) % candidates.length);
-        e.preventDefault();
-      } else if (e.key === "ArrowUp") {
-        setHighlightedIdx(idx => (idx - 1 + candidates.length) % candidates.length);
-        e.preventDefault();
-      } else if (e.key === "Enter" && highlightedIdx >= 0) {
-        const cat = candidates[highlightedIdx];
-        const newPath = [...parentPath, cat.name];
-        setCategoryInput(newPath.join(' > ') + ' > ');
-        setHighlightedIdx(-1);
-        setShowSuggestions(false);
-        e.preventDefault();
-      } else if (e.key === "Escape") {
-        setShowSuggestions(false);
-      }
-    };
+    // 외부 클릭 시 추천 박스 닫힘 (커스텀 훅 사용)
+    useClickOutside(inputRef, () => setShowSuggestions(false), showSuggestions);
 
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -197,7 +133,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
   
             <div className="relative">
               <div className="mb-1 text-sm text-muted-foreground">카테고리</div>
-              {canAddNew && (
+              {canAddNewCategory && (
                 <div className="mt-2 text-sm text-blue-600 dark:text-blue-400">
                   입력하신 경로는 새 카테고리로 추가됩니다.
                 </div>
@@ -211,15 +147,15 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
                   setShowSuggestions(true);
                 }}
                 onFocus={() => setShowSuggestions(true)}
-                onKeyDown={handleKeyDown}
+                onKeyDown={handleCategoryKeyDown}
                 placeholder="카테고리 입력 (예: 개발 > React > supabase)"
                 autoComplete="off"
               />
               {/* 자동완성 추천 리스트 */}
               {showSuggestions && (
                 <div className="border rounded bg-white dark:bg-zinc-900 shadow absolute z-50 mt-1 w-full max-h-40 overflow-auto select-none">
-                  {candidates.length > 0 ? (
-                    candidates.map((cat, idx) => (
+                  {categoryCandidates.length > 0 ? (
+                    categoryCandidates.map((cat, idx) => (
                       <div
                         key={cat.id}
                         className={cn(
