@@ -3,7 +3,7 @@ import { Actions } from "./navigation-bar";
 import { UserMenu } from "./navigation-bar";
 import { AuthButtons } from "./navigation-bar";
 import { Separator } from "./ui/separator";
-import type { DisplayType } from "~/locales/types";
+import type { DisplayType } from "~/core/lib/types";
 
 interface NavigationDesktopProps {
   loading: boolean;

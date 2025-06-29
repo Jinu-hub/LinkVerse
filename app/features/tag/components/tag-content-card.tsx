@@ -1,39 +1,13 @@
 import { Link } from "react-router"
 import { format } from "date-fns"
-import { mockContentTypes } from "~/features/mock-data"
-
-export type ContentType = (typeof mockContentTypes)[number]["code"];
-
-export interface ContentItem {
-  tagId: number
-  title: string
-  memo?: string
-  createdAt: string
-  clickCount?: number
-  url?: string
-  extra?: Record<string, string>
-}
+import type { ContentType } from "~/core/lib/types";
+import { contentIconMap, typeColorMap } from "~/core/lib/types";
+import type { ContentItem } from "../types/tag.types";
 
 interface ContentCardProps {
   type: ContentType
   content: ContentItem
 }
-
-// 콘텐츠 타입별 아이콘
-const typeIconMap: Record<ContentType, string> = {
-  bookmark: "🔖",
-  book: "📘",
-  movie: "🎬",
-  travel: "✈️",
-}
-
-// 콘텐츠 타입별 색상
-const typeColorMap: Record<ContentType, string> = {
-  bookmark: "text-blue-700 bg-blue-100/80 dark:text-blue-200 dark:bg-blue-900/60 ring-1 ring-blue-300 dark:ring-blue-800 shadow-sm",
-  book: "text-green-700 bg-green-100/80 dark:text-green-200 dark:bg-green-900/60 ring-1 ring-green-300 dark:ring-green-800 shadow-sm",
-  movie: "text-red-700 bg-red-100/80 dark:text-red-200 dark:bg-red-900/60 ring-1 ring-red-300 dark:ring-red-800 shadow-sm",
-  travel: "text-yellow-800 bg-yellow-100/80 dark:text-yellow-200 dark:bg-yellow-900/60 ring-1 ring-yellow-300 dark:ring-yellow-800 shadow-sm",
-};
 
 // extra 필드 매핑 함수
 function renderExtraFields(type: ContentType, extra?: Record<string, string>) {
@@ -76,7 +50,7 @@ export default function ContentCard({ type, content }: ContentCardProps) {
     }>
       <div className="flex justify-between items-center mb-1">
         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${typeColorMap[type]}`}>
-          {typeIconMap[type]} {type.toUpperCase()}
+          {contentIconMap[type]} {type.toUpperCase()}
         </span>
         <span className="text-sm text-muted-foreground">{format(new Date(content.createdAt), "yyyy.MM.dd")}</span>
       </div>

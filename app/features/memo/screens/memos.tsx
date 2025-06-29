@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { mockMemoContents, mockContentTypes } from "~/features/mock-data";
-import type { ContentType } from "../../tag/components/tag-content-card";
+import type { ContentType } from "~/core/lib/types";
 import MemoToolbar from "../components/memo-toolbar";
 import MemoTable from "../components/memo-table";
 import type { Memo, SortKey } from "../types/memo.types";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
+import { highlightText } from "~/core/lib/common";
 
 const getType = (contentTypeId: number): ContentType => {
   return (mockContentTypes.find(t => t.id === contentTypeId)?.code || 'bookmark') as ContentType;
@@ -122,6 +123,7 @@ const MemosScreen = () => {
         endEntry={endEntry}
         onPageChange={setPage}
         search={search}
+        highlightText={highlightText}
       />
     </div>
   );

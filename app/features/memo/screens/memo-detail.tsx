@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router";
 import { mockMemoContents, mockContentTypes } from "~/features/mock-data";
-import type { ContentType } from "../../tag/components/tag-content-card";
+import type { ContentType } from "~/core/lib/types";
 import { MemoEditor } from "../components/memo-editor";
 
 const getType = (contentTypeId: number): ContentType => {

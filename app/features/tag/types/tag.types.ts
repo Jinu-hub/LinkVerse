@@ -18,3 +18,14 @@ export interface TagContent {
     extra?: Record<string, string>;
     memo?: string;
   }
+
+  export interface ContentItem {
+    tagId: number
+    title: string
+    memo?: string
+    createdAt: string
+    clickCount?: number
+    url?: string
+    extra?: Record<string, string>
+  }
+  
