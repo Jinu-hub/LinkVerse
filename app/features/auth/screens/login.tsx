@@ -12,6 +12,7 @@ import { AlertCircle, Loader2Icon } from "lucide-react";
 import { useRef } from "react";
 import { Form, Link, data, redirect, useFetcher } from "react-router";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 
 import FormButton from "~/core/components/form-button";
 import {
@@ -33,6 +34,9 @@ import makeServerClient from "~/core/lib/supa-client.server";
 
 import FormErrors from "../../../core/components/form-error";
 import { SignInButtons } from "../components/auth-login-buttons";
+import { useTheme } from "remix-themes";
+import { Meteors } from "components/magicui/meteors";
+import { Particles } from "components/magicui/particles";
 
 /**
  * Meta function for the login page
@@ -123,6 +127,8 @@ export async function action({ request }: Route.ActionArgs) {
  * @param actionData - Data returned from the form action, including any errors
  */
 export default function Login({ actionData }: Route.ComponentProps) {
+  const { t } = useTranslation();
+  const [theme] = useTheme();
   // Reference to the form element for accessing form data
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -149,117 +155,138 @@ export default function Login({ actionData }: Route.ComponentProps) {
     });
   };
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="flex flex-col items-center">
-          <CardTitle className="text-2xl font-semibold">
-            Sign into your account
-          </CardTitle>
-          <CardDescription className="text-base">
-            Please enter your details
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4">
-          <Form
-            className="flex w-full flex-col gap-5"
-            method="post"
-            ref={formRef}
-          >
-            <div className="flex flex-col items-start space-y-2">
-              <Label
-                htmlFor="email"
-                className="flex flex-col items-start gap-1"
-              >
-                Email
-              </Label>
-              <Input
-                id="email"
-                name="email"
-                required
-                type="email"
-                placeholder="i.e nico@supaplate.com"
-              />
-              {actionData &&
-              "fieldErrors" in actionData &&
-              actionData.fieldErrors.email ? (
-                <FormErrors errors={actionData.fieldErrors.email} />
-              ) : null}
-            </div>
-            <div className="flex flex-col items-start space-y-2">
-              <div className="flex w-full items-center justify-between">
+    <div className="min-h-screen flex flex-col items-center justify-start pt-16 bg-white dark:bg-zinc-950">
+      {theme === "dark" && (
+        <Meteors 
+          className="fixed inset-0 pointer-events-none z-0"
+          number={30} 
+          startTop="-5%" 
+        />
+      )}
+      {theme === "light" && (
+        <Particles
+          className="fixed inset-0 pointer-events-none z-0"
+          quantity={120}
+          staticity={50}
+          ease={50}
+          size={0.5}
+          color={"#000000"}
+        />
+      )}
+      <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-5xl px-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="flex flex-col items-center">
+            <CardTitle className="text-2xl font-semibold">
+              {t("login.title")}
+            </CardTitle>
+            <CardDescription className="text-base">
+              {t("login.description")}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <Form
+              className="flex w-full flex-col gap-5"
+              method="post"
+              ref={formRef}
+            >
+              <div className="flex flex-col items-start space-y-2">
                 <Label
-                  htmlFor="password"
+                  htmlFor="email"
                   className="flex flex-col items-start gap-1"
                 >
-                  Password
+                  {t("login.email")}
                 </Label>
-                <Link
-                  to="/auth/forgot-password/reset"
-                  className="text-muted-foreground text-underline hover:text-foreground self-end text-sm underline transition-colors"
-                  tabIndex={-1}
-                  viewTransition
-                >
-                  Forgot your password?
-                </Link>
+                <Input
+                  id="email"
+                  name="email"
+                  required
+                  type="email"
+                  placeholder={t("login.emailPlaceholder")}
+                />
+                {actionData &&
+                "fieldErrors" in actionData &&
+                actionData.fieldErrors.email ? (
+                  <FormErrors errors={actionData.fieldErrors.email} />
+                ) : null}
               </div>
-              <Input
-                id="password"
-                name="password"
-                required
-                type="password"
-                placeholder="Enter your password"
-              />
+              <div className="flex flex-col items-start space-y-2">
+                <div className="flex w-full items-center justify-between">
+                  <Label
+                    htmlFor="password"
+                    className="flex flex-col items-start gap-1"
+                  >
+                    {t("login.password")}
+                  </Label>
+                  <Link
+                    to="/auth/forgot-password/reset"
+                    className="text-muted-foreground text-underline hover:text-foreground self-end text-sm underline transition-colors"
+                    tabIndex={-1}
+                    viewTransition
+                  >
+                    {t("login.forgotPassword")}
+                  </Link>
+                </div>
+                <Input
+                  id="password"
+                  name="password"
+                  required
+                  type="password"
+                  placeholder={t("login.passwordPlaceholder")}
+                />
 
-              {actionData &&
-              "fieldErrors" in actionData &&
-              actionData.fieldErrors.password ? (
-                <FormErrors errors={actionData.fieldErrors.password} />
+                {actionData &&
+                "fieldErrors" in actionData &&
+                actionData.fieldErrors.password ? (
+                  <FormErrors errors={actionData.fieldErrors.password} />
+                ) : null}
+              </div>
+              <FormButton label={t("login.loginButton")}
+                className="w-full" />
+              {actionData && "error" in actionData ? (
+                actionData.error === "Email not confirmed" ? (
+                  <Alert variant="destructive" className="bg-destructive/10">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>{t("login.emailNotConfirmedTitle")}</AlertTitle>
+                    <AlertDescription className="flex flex-col items-start gap-2">
+                      {t("login.emailNotConfirmedDesc")}
+                      <Button
+                        variant="outline"
+                        className="text-foreground flex items-center justify-between gap-2"
+                        onClick={onResendClick}
+                      >
+                        {t("login.resendConfirmation")}
+                        {fetcher.state === "submitting" ? (
+                          <Loader2Icon
+                            data-testid="resend-confirmation-email-spinner"
+                            className="size-4 animate-spin"
+                          />
+                        ) : null}
+                      </Button>
+                    </AlertDescription>
+                  </Alert>
+                ) : (
+                  <FormErrors errors={[actionData.error]} />
+                )
               ) : null}
-            </div>
-            <FormButton label="Log in" className="w-full" />
-            {actionData && "error" in actionData ? (
-              actionData.error === "Email not confirmed" ? (
-                <Alert variant="destructive" className="bg-destructive/10">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>Email not confirmed</AlertTitle>
-                  <AlertDescription className="flex flex-col items-start gap-2">
-                    Before signing in, please verify your email.
-                    <Button
-                      variant="outline"
-                      className="text-foreground flex items-center justify-between gap-2"
-                      onClick={onResendClick}
-                    >
-                      Resend confirmation email
-                      {fetcher.state === "submitting" ? (
-                        <Loader2Icon
-                          data-testid="resend-confirmation-email-spinner"
-                          className="size-4 animate-spin"
-                        />
-                      ) : null}
-                    </Button>
-                  </AlertDescription>
-                </Alert>
-              ) : (
-                <FormErrors errors={[actionData.error]} />
-              )
-            ) : null}
-          </Form>
-          <SignInButtons />
-        </CardContent>
-      </Card>
-      <div className="flex flex-col items-center justify-center text-sm">
-        <p className="text-muted-foreground">
-          Don't have an account?{" "}
-          <Link
-            to="/join"
-            viewTransition
-            data-testid="form-signup-link"
-            className="text-muted-foreground hover:text-foreground text-underline underline transition-colors"
-          >
-            Sign up
-          </Link>
-        </p>
+            </Form>
+            <SignInButtons />
+          </CardContent>
+        </Card>
+        <div className="flex flex-col items-center justify-center text-sm">
+          <p className="text-muted-foreground">
+            {t("login.noAccount")} {" "}
+            <Link
+              to="/join"
+              viewTransition
+              data-testid="form-signup-link"
+              className="text-muted-foreground hover:text-foreground text-underline underline transition-colors"
+            >
+              {t("login.signUp")}
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
+
   );
 }

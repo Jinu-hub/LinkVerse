@@ -96,11 +96,13 @@ function _SignInButtons() {
         label="OTP"
         href="/auth/otp/start"
       />
+      {/*
       <AuthLoginButton
         logo={<MailIcon className="size-4 scale-110 dark:text-white" />}
         label="Magic Link"
         href="/auth/magic-link"
       />
+      */}
     </>
   );
 }
@@ -131,16 +133,20 @@ function SocialLoginButtons() {
         label="Github"
         href="/auth/social/start/github"
       />
+      {/*
       <AuthLoginButton
         logo={<AppleLogo className="size-4 scale-150 dark:text-white" />}
         label="Apple"
         href="/auth/social/start/apple"
       />
+      */}
+      {/*
       <AuthLoginButton
         logo={<KakaoLogo className="size-4 scale-125 dark:text-yellow-300" />}
         label="Kakao"
         href="/auth/social/start/kakao"
       />
+      */}
     </>
   );
 }
