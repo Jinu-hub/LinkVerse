@@ -1,11 +1,17 @@
 import { Button } from "~/core/components/ui/button";
 import { Badge } from "~/core/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/core/components/ui/table";
-import { FiExternalLink, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiExternalLink, FiChevronLeft, FiChevronRight, FiMoreHorizontal } from "react-icons/fi";
 import type { Bookmark } from "../types/bookmark.types";
 import BookmarkDetailDialog from "./bookmark-detail-dialog";
 import { useState } from "react";
 import { mockCategories } from "~/features/mock-data";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "~/core/components/ui/dropdown-menu";
 
 interface BookmarkTableProps {
   pagedBookmarks: Bookmark[];
@@ -73,6 +79,7 @@ export function BookmarkTable({
                   {col.label} {sortKey === col.key && (sortOrder === 'asc' ? '▲' : '▼')}
                 </TableHead>
               ))}
+              <TableHead className="text-base font-bold w-[40px] text-center"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -81,21 +88,15 @@ export function BookmarkTable({
                 key={bookmark.id}
                 className="hover:bg-accent/40 transition-colors cursor-pointer"
                 onClick={() => {
-                  setSelectedBookmark({ ...bookmark, memo: "" });
-                  setDialogOpen(true);
+                  if (bookmark.url) {
+                    window.open(bookmark.url, '_blank', 'noopener,noreferrer');
+                  }
                 }}
               >
                 <TableCell className="flex items-center gap-2">
-                  <a
-                    href={bookmark.url}
-                    className="text-blue-500 underline flex items-center gap-1"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                  <span className="flex items-center gap-1">
                     {highlightText(bookmark.title, search)}
-                    <FiExternalLink className="inline-block text-blue-400" />
-                  </a>
+                  </span>
                 </TableCell>
                 <TableCell className="text-xs text-gray-500 dark:text-gray-400 max-w-[180px] truncate">
                   {highlightText(bookmark.url, search)}
@@ -110,6 +111,33 @@ export function BookmarkTable({
                 <TableCell className="font-mono text-base">
                   {bookmark.click_count > 7 ? <span className="text-red-500">🔥</span> : <span className="text-gray-400">📈</span>}
                   <span className="ml-1">{bookmark.click_count}</span>
+                </TableCell>
+                <TableCell className="w-[40px] text-center">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        className="p-1 rounded-full hover:bg-accent focus:outline-none focus:ring-2 focus:ring-accent"
+                        onClick={e => e.stopPropagation()}
+                        aria-label="더보기"
+                      >
+                        <FiMoreHorizontal size={18} />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" sideOffset={4} className="w-24 p-1">
+                      <DropdownMenuItem onClick={e => {
+                        e.stopPropagation();
+                        setTimeout(() => {
+                          setSelectedBookmark({ ...bookmark, memo: "" });
+                          setDialogOpen(true);
+                        }, 10);
+                      }}>
+                        편집
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={e => { e.stopPropagation(); /* 삭제 처리 */ }} variant="destructive">
+                        삭제
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </TableCell>
               </TableRow>
             ))}

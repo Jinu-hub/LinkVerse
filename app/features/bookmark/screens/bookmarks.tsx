@@ -27,7 +27,7 @@ import type {
   BookmarksState,
 } from "../types/bookmark.types";
 
-import { useMemo, useReducer, useCallback } from "react";
+import { useMemo, useReducer, useCallback, useState } from "react";
 import { BookmarkToolbar } from "../components/bookmark-toolbar";
 import { BookmarkTable } from "../components/bookmark-table";
 import { mockBookmarks, mockCategories, mockTabs } from '~/features/mock-data';
@@ -41,6 +41,9 @@ import { bookmarksReducer } from '../lib/bmUtils'
 import { highlightText } from "~/core/lib/common";
 import { useFilteredBookmarks } from '../hooks/use-filtered-bookmarks'
 import { CategorySidebar } from '../components/category-sidebar'
+import { Button } from "~/core/components/ui/button";
+import { FiPlus } from "react-icons/fi";
+import BookmarkDetailDialog from "../components/bookmark-detail-dialog";
 
 /**
  * Meta function for the blog posts page
@@ -197,6 +200,17 @@ export default function Bookmarks() {
     [dispatch],
   );
 
+  // 추가 다이얼로그 상태
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const emptyBookmark = {
+    id: '',
+    title: '',
+    url: '',
+    tags: [],
+    memo: '',
+    categoryId: undefined,
+  };
+
   return (
     <div className="flex gap-10">
       <CategorySidebar
@@ -206,6 +220,16 @@ export default function Bookmarks() {
       />
       {/* 🔹 2. 메인 콘텐츠 영역 */}
       <main className="flex-1 space-y-4">
+        {/* PC: 오른쪽 상단 버튼 */}
+        <div className="hidden md:flex justify-end">
+          <Button
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow w-12 h-12 flex items-center justify-center text-2xl cursor-pointer"
+            onClick={() => setAddDialogOpen(true)}
+            aria-label="북마크 추가"
+          >
+            <FiPlus />
+          </Button>
+        </div>
         <BookmarkToolbar
           tabs={mockTabs}
           selectedTabId={selectedTabId}
@@ -233,6 +257,28 @@ export default function Bookmarks() {
           startEntry={startEntry}
           endEntry={endEntry}
           onPageChange={handlePageChange}
+        />
+
+        {/* 모바일: 오른쪽 하단 플로팅 버튼 */}
+        <button
+          type="button"
+          className="fixed bottom-8 right-8 z-50 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg w-16 h-16 flex items-center justify-center text-3xl transition-colors md:hidden cursor-pointer"
+          onClick={() => setAddDialogOpen(true)}
+          aria-label="북마크 추가"
+        >
+          <FiPlus />
+        </button>
+
+        {/* 북마크 추가 다이얼로그 */}
+        <BookmarkDetailDialog
+          open={addDialogOpen}
+          onOpenChange={(open) => setAddDialogOpen(open)}
+          bookmark={emptyBookmark}
+          onSave={(updated) => {
+            // 저장 로직 (원하면 구현)
+            setAddDialogOpen(false);
+          }}
+          categories={mockCategories.filter(cat => cat.id !== '0')}
         />
       </main>
     </div>
