@@ -95,9 +95,9 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
 
     // 카테고리 경로 이름 반환
     const getCategoryPathName = (id: string) => {
-      if (!id) return "카테고리 선택";
+      //if (!id) return "카테고리 선택";
       const path = findCategoryPath(id, categories);
-      return path.length > 0 ? path.map((p) => p.name).join(" > ") : "카테고리 선택";
+      return path.length > 0 ? path.map((p) => p.name).join(" > ") : "";
     }
 
     // 외부 클릭 시 추천 박스 닫힘 (커스텀 훅 사용)
@@ -111,8 +111,8 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
           </DialogHeader>
   
           <div className="space-y-4">
-            <Input value={title} onChange={e => setTitle(e.target.value)} placeholder="제목" />
             <Input value={url} onChange={e => setUrl(e.target.value)} placeholder="URL" />
+            <Input value={title} onChange={e => setTitle(e.target.value)} placeholder="제목" />
   
             <div>
               <div className="mb-1 text-sm text-muted-foreground">태그</div>
