@@ -3,11 +3,11 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from ".
 import type { ContentType } from "~/core/lib/types";
 import type { Memo, SortKey } from "../types/memo.types";
 import { useNavigate } from "react-router";
-import { contentIconMap, typeColorMap } from "~/core/lib/types";
+import { contentIconMap, typeColorMap } from "~/core/lib/constants";
 
 interface MemoTableProps {
   pagedMemos: Memo[];
-  getType: (contentTypeId: number) => ContentType;
+  getType: (contentTypeId: number) => ContentType["code"];
   sortKey: SortKey;
   sortOrder: 'asc' | 'desc';
   onSort: (key: SortKey) => void;

@@ -1,14 +1,15 @@
 import React, { useMemo, useState } from "react";
-import { mockMemoContents, mockContentTypes } from "~/features/mock-data";
+import { mockMemoContents } from "~/features/mock-data";
 import type { ContentType } from "~/core/lib/types";
+import { CONTENT_TYPES } from "~/core/lib/constants";
 import MemoToolbar from "../components/memo-toolbar";
 import MemoTable from "../components/memo-table";
 import type { Memo, SortKey } from "../types/memo.types";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
 import { highlightText } from "~/core/lib/common";
 
-const getType = (contentTypeId: number): ContentType => {
-  return (mockContentTypes.find(t => t.id === contentTypeId)?.code || 'bookmark') as ContentType;
+const getType = (contentTypeId: number): ContentType["code"] => {
+  return (CONTENT_TYPES.find(t => t.id === contentTypeId)?.code || 'bookmark') as ContentType["code"];
 };
 
 function getFilteredMemos(memos: Memo[], selectedType: number | null, search: string) {
@@ -83,7 +84,7 @@ const MemosScreen = () => {
       <h1 className="text-2xl font-bold mb-4">메모 리스트</h1>
       {/* 콘텐츠 타입 필터 버튼 */}
       <div className="flex gap-2 mb-4 flex-wrap">
-        {mockContentTypes.map(type => (
+        {CONTENT_TYPES.map(type => (
           <button
             key={type.id}
             className={`
