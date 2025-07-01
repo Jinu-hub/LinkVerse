@@ -132,8 +132,8 @@ export default function TagContentsScreen() {
               key={content.title + content.createdAt}
               type={
                 (
-                  CONTENT_TYPES.find(t => t.id === content.contentTypeId)?.code || 'bookmark'
-                ) as unknown as ContentType
+                  CONTENT_TYPES.find(t => t.id === content.contentTypeId)?.code || 'other'
+                ) as string
               }
               content={contentWithMemo}
             />
