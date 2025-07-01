@@ -23,3 +23,19 @@ const TAG_COLORS = [
     { value: "title", label: "콘텐츠명" },
     { value: "type", label: "콘텐츠 종류" },
   ] as const;
+
+export const CONTENT_TYPE_FIELD_MAP: Record<string, { label: string; key: string }[]> = {
+  bookmark: [{ label: "도메인", key: "domain" }],
+  book: [
+    { label: "저자", key: "author" },
+    { label: "출판사", key: "publisher" },
+  ],
+  movie: [
+    { label: "감독", key: "director" },
+    { label: "연도", key: "year" },
+  ],
+  travel: [
+    { label: "위치", key: "location" },
+    { label: "날짜", key: "date" },
+  ],
+};

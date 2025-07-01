@@ -1,37 +1,20 @@
 import { Link } from "react-router"
 import { format } from "date-fns"
-import type { ContentType } from "~/core/lib/types";
 import { contentIconMap, typeColorMap } from "~/core/lib/constants";
 import type { ContentItem } from "../types/tag.types";
+import { CONTENT_TYPE_FIELD_MAP } from "../lib/constants";
 
 interface ContentCardProps {
-  type: ContentType
+  type: string
   content: ContentItem
 }
 
 // extra 필드 매핑 함수
-function renderExtraFields(type: ContentType, extra?: Record<string, string>) {
+function renderExtraFields(type: string, extra?: Record<string, string>) {
   if (!extra) return null
-
-  const fieldMap: Record<ContentType, { label: string; key: string }[]> = {
-    bookmark: [{ label: "도메인", key: "domain" }],
-    book: [
-      { label: "저자", key: "author" },
-      { label: "출판사", key: "publisher" },
-    ],
-    movie: [
-      { label: "감독", key: "director" },
-      { label: "연도", key: "year" },
-    ],
-    travel: [
-      { label: "위치", key: "location" },
-      { label: "날짜", key: "date" },
-    ],
-  }
-
   return (
     <ul className="text-sm text-muted-foreground space-y-1 mt-2">
-      {fieldMap[type].map(({ label, key }) =>
+      {CONTENT_TYPE_FIELD_MAP[type].map(({ label, key }) =>
         extra[key] ? (
           <li key={key}>
             <strong>{label}:</strong> {extra[key]}
