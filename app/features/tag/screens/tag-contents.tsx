@@ -1,10 +1,13 @@
 import React, { useMemo, useState } from "react";
 import { useParams } from "react-router";
-import { mockTags, mockTagContents, mockContentTypes } from "~/features/mock-data";
+import { mockTags, mockTagContents } from "~/features/mock-data";
+
 import TagContentCard from "../components/tag-content-card";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
 import type { SortKeyContents, TagContent } from "../types/tag.types";
 import { SORT_OPTIONS_CONTENTS } from "../lib/constants";
+import type { ContentType } from "~/core/lib/types";
+import { CONTENT_TYPES } from "~/core/lib/constants";
 
 function getFilteredContents(contents: TagContent[], tagId: number, selectedType: number | null, search: string) {
   return filterArray(contents, content =>
@@ -103,7 +106,7 @@ export default function TagContentsScreen() {
         </div>
       </div>
       <div className="flex gap-2 mb-4 flex-wrap">
-        {mockContentTypes.map(type => (
+        {CONTENT_TYPES.map(type => (
           <button
             key={type.id}
             className={`
@@ -127,7 +130,11 @@ export default function TagContentsScreen() {
           return (
             <TagContentCard
               key={content.title + content.createdAt}
-              type={mockContentTypes.find(t => t.id === content.contentTypeId)?.code || 'bookmark'}
+              type={
+                (
+                  CONTENT_TYPES.find(t => t.id === content.contentTypeId)?.code || 'bookmark'
+                ) as unknown as ContentType
+              }
               content={contentWithMemo}
             />
           );

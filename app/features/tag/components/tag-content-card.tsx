@@ -1,7 +1,7 @@
 import { Link } from "react-router"
 import { format } from "date-fns"
 import type { ContentType } from "~/core/lib/types";
-import { contentIconMap, typeColorMap } from "~/core/lib/types";
+import { contentIconMap, typeColorMap } from "~/core/lib/constants";
 import type { ContentItem } from "../types/tag.types";
 
 interface ContentCardProps {
