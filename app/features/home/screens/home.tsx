@@ -129,7 +129,9 @@ export default function Home({loaderData}: Route.ComponentProps) {
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-6xl">
             {t("home.title")}
           </h1>
-          <h2 className="text-2xl">{t("home.subtitle")}</h2>
+          <h2 className="text-3xl font-semibold tracking-wide text-neutral-600 dark:text-neutral-300 mt-2">
+            {t("home.subtitle")}
+          </h2>
           <HeroSection />
           <FeatureHighlights />
           <br />

@@ -8,8 +8,8 @@ export default function HeroSection() {
     <section className="bg-gradient-to-b from-[#f0f9ff] to-white dark:from-zinc-900 dark:to-zinc-950 py-20 px-6 text-center">
       <div className="max-w-3xl mx-auto space-y-6">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight">
-          북마크를 더 <span className="text-blue-600 dark:text-blue-400">스마트하게</span>,<br />
-          더 <span className="text-emerald-500 dark:text-emerald-400">간편하게</span> 관리하세요.
+          북마크를 더 <span className="text-blue-600 dark:text-blue-400">간편하게</span><br />
+          링크를 더 <span className="text-emerald-500 dark:text-emerald-400">스마트하게</span>
         </h1>
 
         <p className="text-lg sm:text-xl text-muted-foreground dark:text-zinc-300">

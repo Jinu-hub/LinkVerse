@@ -3,7 +3,7 @@ import type { Translation } from "./types";
 const ko: Translation = {
   home: {
     title: "LinkVerse",
-    subtitle: "북마크의 새로운 시작",
+    subtitle: "링크가 지식이 되는 공간",
   },
   navigation: {
     kr: "한국어",
