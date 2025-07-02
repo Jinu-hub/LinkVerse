@@ -52,7 +52,7 @@ export function sortArray<T>(arr: T[], key: keyof T, order: 'asc' | 'desc' = 'as
   const sorted = [...arr];
   if (customSortFn) {
     sorted.sort(customSortFn);
-    return order === 'asc' ? sorted : sorted.reverse();
+    return sorted;
   }
   sorted.sort((a, b) => {
     if (typeof a[key] === 'number' && typeof b[key] === 'number') {

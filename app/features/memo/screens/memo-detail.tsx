@@ -1,11 +1,12 @@
 import React from "react";
 import { useParams } from "react-router";
-import { mockMemoContents, mockContentTypes } from "~/features/mock-data";
+import { mockMemoContents } from "~/features/mock-data";
 import type { ContentType } from "~/core/lib/types";
 import { MemoEditor } from "../components/memo-editor";
+import { CONTENT_TYPES } from "~/core/lib/constants";
 
-const getType = (contentTypeId: number): ContentType => {
-  return (mockContentTypes.find(t => t.id === contentTypeId)?.code || 'bookmark') as ContentType;
+const getType = (contentTypeId: number): string => {
+  return (CONTENT_TYPES.find(t => t.id === contentTypeId)?.code || 'bookmark') as string;
 };
 
 const MemoDetailScreen = () => {
