@@ -7,6 +7,8 @@ import { CONTENT_TYPE_FIELD_MAP } from "../lib/constants";
 interface ContentCardProps {
   type: string
   content: ContentItem
+  selected?: boolean
+  onClick?: () => void
 }
 
 // extra 필드 매핑 함수
@@ -25,12 +27,17 @@ function renderExtraFields(type: string, extra?: Record<string, string>) {
   )
 }
 
-export default function ContentCard({ type, content }: ContentCardProps) {
+export default function ContentCard({ type, content, selected = false, onClick }: ContentCardProps) {
   return (
-    <div className={
-      `border rounded-xl p-4 bg-zinc-100 dark:bg-zinc-900 shadow-sm transition
-      hover:shadow-2xl hover:ring-2 hover:ring-primary/40 hover:scale-[1.025] cursor-pointer`
-    }>
+    <div
+      className={
+        `border rounded-xl p-4 bg-zinc-100 dark:bg-zinc-900 shadow-sm transition
+        hover:shadow-2xl hover:ring-2 hover:ring-primary/40 hover:scale-[1.025] cursor-pointer ` +
+        (selected ? 'ring-2 ring-primary border-primary bg-primary/10 dark:bg-primary/20' : '')
+      }
+      onClick={onClick}
+      style={{ userSelect: 'none' }}
+    >
       <div className="flex justify-between items-center mb-1">
         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${typeColorMap[type]}`}>
           {contentIconMap[type]} {type.toUpperCase()}

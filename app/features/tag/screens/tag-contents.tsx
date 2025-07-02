@@ -1,13 +1,13 @@
-import React, { useMemo, useState } from "react";
-import { useParams } from "react-router";
+import React, { useMemo, useState, useEffect } from "react";
+import { useParams, Link } from "react-router";
 import { mockTags, mockTagContents } from "~/features/mock-data";
 
 import TagContentCard from "../components/tag-content-card";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
 import type { SortKeyContents, TagContent } from "../types/tag.types";
 import { SORT_OPTIONS_CONTENTS } from "../lib/constants";
-import type { ContentType } from "~/core/lib/types";
-import { CONTENT_TYPES } from "~/core/lib/constants";
+import { CONTENT_TYPES, typeColorMap } from "~/core/lib/constants";
+import { TagEditDialog } from "../components/tag-edit-dialog";
 
 function getFilteredContents(contents: TagContent[], tagId: number, selectedType: number | null, search: string) {
   return filterArray(contents, content =>
@@ -39,6 +39,22 @@ export default function TagContentsScreen() {
   const [search, setSearch] = useState("");
   const pageSize = 8;
   const [selectedType, setSelectedType] = useState<number | null>(null);
+  const [selectedContentIds, setSelectedContentIds] = useState<string[]>([]);
+  const [editButtonTop, setEditButtonTop] = useState(170);
+  const [editTagName, setEditTagName] = useState(tag?.name || "");
+
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 640) {
+        setEditButtonTop(80);
+      } else {
+        setEditButtonTop(170);
+      }
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // 필터
   const filtered = useMemo(() =>
@@ -124,18 +140,37 @@ export default function TagContentsScreen() {
           </button>
         ))}
       </div>
+      <TagEditDialog
+        editButtonTop={editButtonTop}
+        editTagName={editTagName}
+        setEditTagName={setEditTagName}
+        selectedContentIds={selectedContentIds}
+        sorted={sorted}
+        typeColorMap={typeColorMap}
+      />
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {pagedContents.map(content => {
+          const contentId = content.contentTypeId + '_' + content.contentId;
           const contentWithMemo = { ...content, memo: content.description };
+          const isSelected = selectedContentIds.includes(contentId);
           return (
             <TagContentCard
-              key={content.title + content.createdAt}
+              key={contentId}
               type={
                 (
                   CONTENT_TYPES.find(t => t.id === content.contentTypeId)?.code || 'other'
                 ) as string
               }
               content={contentWithMemo}
+              selected={isSelected}
+              onClick={() => {
+                setSelectedContentIds(prev =>
+                  prev.includes(contentId)
+                    ? prev.filter(id => id !== contentId)
+                    : [...prev, contentId]
+                );
+              }}
             />
           );
         })}
