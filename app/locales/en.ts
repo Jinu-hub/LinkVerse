@@ -3,7 +3,7 @@ import type { Translation } from "./types";
 const en: Translation = {
   home: {
     title: "LinkVerse",
-    subtitle: "Build your knowledge base",
+    subtitle: "Link becomes knowledge",
   },
   navigation: {
     en: "English",
