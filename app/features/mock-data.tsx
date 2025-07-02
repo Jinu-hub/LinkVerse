@@ -1,6 +1,7 @@
 import type { Category } from "./bookmark/types/bookmark.types";
 import type { UI_View } from "./bookmark/types/bookmark.types";
 import type { Bookmark } from "./bookmark/types/bookmark.types";
+import type { TagContent } from "./tag/types/tag.types";
 
 export const mockCategories: Category[] = [
     { id: '0', parent_id: '0', name: '🗂️ 전체보기', level: 0, is_root: true },
@@ -370,80 +371,155 @@ export const mockCategories: Category[] = [
     { id: 30, name: 'Docs', usage_count: 12, createdAt: '2024-05-30T19:00:00Z' },
   ];
   
-  // 콘텐츠 타입 정의
-  export const mockContentTypes: { id: number; code: string }[] = [
-    { id: 0, code: "all" },
-    { id: 1, code: "bookmark" },
-    { id: 2, code: "book" },
-    { id: 3, code: "movie" },
-    { id: 4, code: "travel" },
-  ]; 
-  
-  export const mockTagContents: {
-    tagId: number;
-    contentTypeId: number;
-    title: string;
-    description?: string;
-    url?: string;
-    createdAt: string;
-    extra?: Record<string, string>;
-  }[] = [
-    // id=22 (AI)
+  export const mockTagContents: TagContent[] = [
     {
-      tagId: 22, contentTypeId: 1, title: 'AI 논문 리뷰', description: '최신 AI 논문 리뷰 블로그', url: 'https://arxiv.org', createdAt: '2024-05-05T14:00:00Z'
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000001',
+      tagId: 22,
+      contentTypeId: 1,
+      title: 'AI 논문 리뷰',
+      description: '최신 AI 논문 리뷰 블로그',
+      url: 'https://arxiv.org',
+      createdAt: '2024-05-05T14:00:00Z'
     },
     {
-      tagId: 22, contentTypeId: 1, title: 'AI 커뮤니티', description: 'AI 개발자 커뮤니티', url: 'https://aihub.or.kr', createdAt: '2024-05-06T15:00:00Z'
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000002',
+      tagId: 22,
+      contentTypeId: 1,
+      title: 'AI 커뮤니티',
+      description: 'AI 개발자 커뮤니티',
+      url: 'https://aihub.or.kr',
+      createdAt: '2024-05-06T15:00:00Z'
     },  
     {
-      tagId: 22, contentTypeId: 1, title: 'AI Podcast', description: 'AI 전문가 팟캐스트', url: 'https://lexfridman.com/podcast', createdAt: '2024-05-08T17:00:00Z'
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000003',
+      tagId: 22,
+      contentTypeId: 1,
+      title: 'AI Podcast',
+      description: 'AI 전문가 팟캐스트',
+      url: 'https://lexfridman.com/podcast',
+      createdAt: '2024-05-08T17:00:00Z'
     },
     {
-      tagId: 22, contentTypeId: 1, title: 'AI 트렌드', description: 'AI 트렌드 분석', url: 'https://aitrends.com', createdAt: '2024-05-09T18:00:00Z'
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000004',
+      tagId: 22,
+      contentTypeId: 1,
+      title: 'AI 트렌드',
+      description: 'AI 트렌드 분석',
+      url: 'https://aitrends.com',
+      createdAt: '2024-05-09T18:00:00Z'
     },
     {
-      tagId: 22, contentTypeId: 1, title: 'AI 스타트업', description: 'AI 스타트업 정보', url: 'https://crunchbase.com', createdAt: '2024-05-10T19:00:00Z'
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000005',
+      tagId: 22,
+      contentTypeId: 1,
+      title: 'AI 스타트업',
+      description: 'AI 스타트업 정보',
+      url: 'https://crunchbase.com',
+      createdAt: '2024-05-10T19:00:00Z'
     },
-    // id=22 (AI) - book, movie, travel 샘플 추가
     {
-      tagId: 22, contentTypeId: 2, title: 'AI 시대의 책', description: 'AI와 미래 사회를 다룬 도서', url: 'https://book.example.com/ai', createdAt: '2024-05-21T10:00:00Z',
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000006',
+      tagId: 22,
+      contentTypeId: 2,
+      title: 'AI 시대의 책',
+      description: 'AI와 미래 사회를 다룬 도서',
+      url: 'https://book.example.com/ai',
+      createdAt: '2024-05-21T10:00:00Z',
       extra: { author: '홍길동', publisher: 'AI Books' }
     },
     {
-      tagId: 22, contentTypeId: 3, title: 'AI 영화', description: '인공지능을 주제로 한 영화', url: 'https://movie.example.com/ai', createdAt: '2024-05-22T11:00:00Z',
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000007',
+      tagId: 22,
+      contentTypeId: 3,
+      title: 'AI 영화',
+      description: '인공지능을 주제로 한 영화',
+      url: 'https://movie.example.com/ai',
+      createdAt: '2024-05-22T11:00:00Z',
       extra: { director: '스필버그', year: '2023' }
     },
     {
-      tagId: 22, contentTypeId: 4, title: 'AI 컨퍼런스 여행', description: 'AI 컨퍼런스 참가 여행기', url: 'https://travel.example.com/ai', createdAt: '2024-05-23T12:00:00Z',
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000008',
+      tagId: 22,
+      contentTypeId: 4,
+      title: 'AI 컨퍼런스 여행',
+      description: 'AI 컨퍼런스 참가 여행기',
+      url: 'https://travel.example.com/ai',
+      createdAt: '2024-05-23T12:00:00Z',
       extra: { location: '샌프란시스코', date: '2024-04-10' }
     },
-    // id=27 (Blog)
     {
-      tagId: 27, contentTypeId: 1, title: 'freeCodeCamp Blog', description: '프로그래밍 학습 블로그', url: 'https://www.freecodecamp.org/news/', createdAt: '2024-05-11T10:00:00Z'
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000009',
+      tagId: 27,
+      contentTypeId: 1,
+      title: 'freeCodeCamp Blog',
+      description: '프로그래밍 학습 블로그',
+      url: 'https://www.freecodecamp.org/news/',
+      createdAt: '2024-05-11T10:00:00Z'
     },
     {
-      tagId: 27, contentTypeId: 1, title: 'Velog', description: '개발자 기술 블로그', url: 'https://velog.io', createdAt: '2024-05-12T11:00:00Z'
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000010',
+      tagId: 27,
+      contentTypeId: 1,
+      title: 'Velog',
+      description: '개발자 기술 블로그',
+      url: 'https://velog.io',
+      createdAt: '2024-05-12T11:00:00Z'
     },
     {
-      tagId: 27, contentTypeId: 1, title: 'Tistory', description: '다양한 주제의 블로그', url: 'https://tistory.com', createdAt: '2024-05-13T12:00:00Z'
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000011',
+      tagId: 27,
+      contentTypeId: 1,
+      title: 'Tistory',
+      description: '다양한 주제의 블로그',
+      url: 'https://tistory.com',
+      createdAt: '2024-05-13T12:00:00Z'
     },
     {
-      tagId: 27, contentTypeId: 1, title: 'Medium', description: '글로벌 IT 블로그', url: 'https://medium.com', createdAt: '2024-05-14T13:00:00Z'
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000012',
+      tagId: 27,
+      contentTypeId: 1,
+      title: 'Medium',
+      description: '글로벌 IT 블로그',
+      url: 'https://medium.com',
+      createdAt: '2024-05-14T13:00:00Z'
     },
     {
-      tagId: 27, contentTypeId: 1, title: 'Brunch', description: '브런치 작가 블로그', url: 'https://brunch.co.kr', createdAt: '2024-05-15T14:00:00Z'
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000013',
+      tagId: 27,
+      contentTypeId: 1,
+      title: 'Brunch',
+      description: '브런치 작가 블로그',
+      url: 'https://brunch.co.kr',
+      createdAt: '2024-05-15T14:00:00Z'
     },
-    // id=27 (Blog) - book, movie, travel 샘플 추가
     {
-      tagId: 27, contentTypeId: 2, title: '블로그 작가의 책', description: '블로그 작가가 쓴 책', url: 'https://book.example.com/blog', createdAt: '2024-05-24T13:00:00Z',
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000014',
+      tagId: 27,
+      contentTypeId: 2,
+      title: '블로그 작가의 책',
+      description: '블로그 작가가 쓴 책',
+      url: 'https://book.example.com/blog',
+      createdAt: '2024-05-24T13:00:00Z',
       extra: { author: '김블로거', publisher: 'BlogBooks' }
     },
     {
-      tagId: 27, contentTypeId: 3, title: '블로그 영화', description: '블로그를 소재로 한 영화', url: 'https://movie.example.com/blog', createdAt: '2024-05-25T14:00:00Z',
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000015',
+      tagId: 27,
+      contentTypeId: 3,
+      title: '블로그 영화',
+      description: '블로그를 소재로 한 영화',
+      url: 'https://movie.example.com/blog',
+      createdAt: '2024-05-25T14:00:00Z',
       extra: { director: '박감독', year: '2022' }
     },
     {
-      tagId: 27, contentTypeId: 4, title: '블로그 여행', description: '블로그 여행 후기', url: 'https://travel.example.com/blog', createdAt: '2024-05-26T15:00:00Z',
+      contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000016',
+      tagId: 27,
+      contentTypeId: 4,
+      title: '블로그 여행',
+      description: '블로그 여행 후기',
+      url: 'https://travel.example.com/blog',
+      createdAt: '2024-05-26T15:00:00Z',
       extra: { location: '제주도', date: '2024-03-15' }
     },
   ];
