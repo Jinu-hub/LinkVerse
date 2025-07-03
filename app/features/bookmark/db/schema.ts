@@ -9,7 +9,7 @@ import {
   boolean,
 } from "drizzle-orm/pg-core";
 import { authUid, authUsers, authenticatedRole } from "drizzle-orm/supabase";
-import { category } from "~/core/db/schema";
+import { category } from "~/features/schema";
 
 export const bookmark = pgTable(
     "bookmark",

@@ -15,6 +15,20 @@
       "when": 1744715791562,
       "tag": "0001_great_junta",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1751468699172,
+      "tag": "0002_rare_mole_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1751468937846,
+      "tag": "0003_mixed_the_spike",
+      "breakpoints": true
     }
   ]
 }

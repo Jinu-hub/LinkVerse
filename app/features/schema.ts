@@ -13,7 +13,7 @@ import {
   integer,
 } from "drizzle-orm/pg-core";
 import { authUid, authUsers, authenticatedRole, serviceRole } from "drizzle-orm/supabase";
-import { CONTENT_TYPES, UI_TYPES, ACTIVITY_TYPES } from "../lib/constants";
+import { CONTENT_TYPES, UI_TYPES, ACTIVITY_TYPES } from "../core/lib/constants";
 
 export const contentTypeCodes = pgEnum(
     "content_type_codes",

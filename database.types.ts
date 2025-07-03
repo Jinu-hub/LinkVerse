@@ -9,6 +9,165 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      bookmark: {
+        Row: {
+          bookmark_id: string
+          category_id: string | null
+          created_at: string
+          is_favorite: boolean
+          thumbnail_url: string | null
+          title: string | null
+          updated_at: string
+          url: string | null
+          user_id: string | null
+        }
+        Insert: {
+          bookmark_id?: string
+          category_id?: string | null
+          created_at?: string
+          is_favorite?: boolean
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string
+          url?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          bookmark_id?: string
+          category_id?: string | null
+          created_at?: string
+          is_favorite?: boolean
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string
+          url?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmark_category_id_category_category_id_fk"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["category_id"]
+          },
+        ]
+      }
+      category: {
+        Row: {
+          category_id: string
+          category_name: string
+          content_type_id: number | null
+          created_at: string
+          level: number | null
+          parent_category_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          category_id?: string
+          category_name: string
+          content_type_id?: number | null
+          created_at?: string
+          level?: number | null
+          parent_category_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          category_id?: string
+          category_name?: string
+          content_type_id?: number | null
+          created_at?: string
+          level?: number | null
+          parent_category_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "category_content_type_id_content_type_content_type_id_fk"
+            columns: ["content_type_id"]
+            isOneToOne: false
+            referencedRelation: "content_type"
+            referencedColumns: ["content_type_id"]
+          },
+        ]
+      }
+      content_type: {
+        Row: {
+          content_type_code: Database["public"]["Enums"]["content_type_codes"]
+          content_type_id: number
+          content_type_name: string
+          createdAt: string
+          description: string | null
+          updatedAt: string
+        }
+        Insert: {
+          content_type_code: Database["public"]["Enums"]["content_type_codes"]
+          content_type_id?: never
+          content_type_name: string
+          createdAt?: string
+          description?: string | null
+          updatedAt?: string
+        }
+        Update: {
+          content_type_code?: Database["public"]["Enums"]["content_type_codes"]
+          content_type_id?: never
+          content_type_name?: string
+          createdAt?: string
+          description?: string | null
+          updatedAt?: string
+        }
+        Relationships: []
+      }
+      memo: {
+        Row: {
+          content: string | null
+          content_type_id: number | null
+          created_at: string
+          is_pinned: boolean
+          memo_id: string
+          position: number | null
+          summary: string | null
+          target_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          content?: string | null
+          content_type_id?: number | null
+          created_at?: string
+          is_pinned?: boolean
+          memo_id?: string
+          position?: number | null
+          summary?: string | null
+          target_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          content_type_id?: number | null
+          created_at?: string
+          is_pinned?: boolean
+          memo_id?: string
+          position?: number | null
+          summary?: string | null
+          target_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memo_content_type_id_content_type_content_type_id_fk"
+            columns: ["content_type_id"]
+            isOneToOne: false
+            referencedRelation: "content_type"
+            referencedColumns: ["content_type_id"]
+          },
+        ]
+      }
       payments: {
         Row: {
           approved_at: string
@@ -87,6 +246,188 @@ export type Database = {
         }
         Relationships: []
       }
+      tag: {
+        Row: {
+          created_at: string
+          tag_id: number
+          tag_name: string
+          updated_at: string
+          usage_count: number
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          tag_id?: never
+          tag_name: string
+          updated_at?: string
+          usage_count?: number
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          tag_id?: never
+          tag_name?: string
+          updated_at?: string
+          usage_count?: number
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      taggable: {
+        Row: {
+          content_type_id: number
+          tag_id: number
+          target_id: string
+        }
+        Insert: {
+          content_type_id: number
+          tag_id: number
+          target_id: string
+        }
+        Update: {
+          content_type_id?: number
+          tag_id?: number
+          target_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "taggable_content_type_id_content_type_content_type_id_fk"
+            columns: ["content_type_id"]
+            isOneToOne: false
+            referencedRelation: "content_type"
+            referencedColumns: ["content_type_id"]
+          },
+          {
+            foreignKeyName: "taggable_tag_id_tag_tag_id_fk"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tag"
+            referencedColumns: ["tag_id"]
+          },
+        ]
+      }
+      ui_type: {
+        Row: {
+          createdAt: string
+          description: string | null
+          ui_type_code: Database["public"]["Enums"]["ui_type_codes"]
+          ui_type_id: number
+          ui_type_name: string
+          updatedAt: string
+        }
+        Insert: {
+          createdAt?: string
+          description?: string | null
+          ui_type_code: Database["public"]["Enums"]["ui_type_codes"]
+          ui_type_id?: never
+          ui_type_name: string
+          updatedAt?: string
+        }
+        Update: {
+          createdAt?: string
+          description?: string | null
+          ui_type_code?: Database["public"]["Enums"]["ui_type_codes"]
+          ui_type_id?: never
+          ui_type_name?: string
+          updatedAt?: string
+        }
+        Relationships: []
+      }
+      ui_view: {
+        Row: {
+          content_type_id: number | null
+          created_at: string
+          is_active: boolean
+          name: string
+          sort_order: number | null
+          ui_type_id: number | null
+          ui_view_id: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          content_type_id?: number | null
+          created_at?: string
+          is_active?: boolean
+          name: string
+          sort_order?: number | null
+          ui_type_id?: number | null
+          ui_view_id?: never
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          content_type_id?: number | null
+          created_at?: string
+          is_active?: boolean
+          name?: string
+          sort_order?: number | null
+          ui_type_id?: number | null
+          ui_view_id?: never
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ui_view_content_type_id_content_type_content_type_id_fk"
+            columns: ["content_type_id"]
+            isOneToOne: false
+            referencedRelation: "content_type"
+            referencedColumns: ["content_type_id"]
+          },
+          {
+            foreignKeyName: "ui_view_ui_type_id_ui_type_ui_type_id_fk"
+            columns: ["ui_type_id"]
+            isOneToOne: false
+            referencedRelation: "ui_type"
+            referencedColumns: ["ui_type_id"]
+          },
+        ]
+      }
+      user_activity: {
+        Row: {
+          activity_type: Database["public"]["Enums"]["activity_type_codes"]
+          content_type_id: number | null
+          created_at: string
+          last_at: string | null
+          metadata: Json | null
+          target_id: string | null
+          user_activity_id: number
+          user_id: string | null
+          value: number | null
+        }
+        Insert: {
+          activity_type: Database["public"]["Enums"]["activity_type_codes"]
+          content_type_id?: number | null
+          created_at?: string
+          last_at?: string | null
+          metadata?: Json | null
+          target_id?: string | null
+          user_activity_id?: never
+          user_id?: string | null
+          value?: number | null
+        }
+        Update: {
+          activity_type?: Database["public"]["Enums"]["activity_type_codes"]
+          content_type_id?: number | null
+          created_at?: string
+          last_at?: string | null
+          metadata?: Json | null
+          target_id?: string | null
+          user_activity_id?: never
+          user_id?: string | null
+          value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_activity_content_type_id_content_type_content_type_id_fk"
+            columns: ["content_type_id"]
+            isOneToOne: false
+            referencedRelation: "content_type"
+            referencedColumns: ["content_type_id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -95,7 +436,27 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      activity_type_codes:
+        | "click"
+        | "view"
+        | "edit"
+        | "delete"
+        | "create"
+        | "share"
+        | "export"
+        | "import"
+      content_type_codes: "all" | "bookmark" | "book" | "movie" | "travel"
+      ui_type_codes:
+        | "default"
+        | "list"
+        | "card"
+        | "grid"
+        | "timeline"
+        | "table"
+        | "calendar"
+        | "map"
+        | "chart"
+        | "gallery"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -210,6 +571,30 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      activity_type_codes: [
+        "click",
+        "view",
+        "edit",
+        "delete",
+        "create",
+        "share",
+        "export",
+        "import",
+      ],
+      content_type_codes: ["all", "bookmark", "book", "movie", "travel"],
+      ui_type_codes: [
+        "default",
+        "list",
+        "card",
+        "grid",
+        "timeline",
+        "table",
+        "calendar",
+        "map",
+        "chart",
+        "gallery",
+      ],
+    },
   },
 } as const
