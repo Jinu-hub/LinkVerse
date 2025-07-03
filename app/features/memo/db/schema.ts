@@ -9,7 +9,7 @@ import {
   integer,
 } from "drizzle-orm/pg-core";
 import { authUid, authUsers, authenticatedRole } from "drizzle-orm/supabase";
-import { contentType } from "~/core/db/schema";
+import { contentType } from "~/features/schema";
 
 export const memo = pgTable(
     "memo",
