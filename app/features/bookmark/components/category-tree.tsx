@@ -3,7 +3,7 @@ import { Button } from "~/core/components/ui/button";
 import { FiChevronRight, FiMoreHorizontal } from "react-icons/fi";
 import { TbGripVertical } from "react-icons/tb";
 import { cn } from "~/core/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -140,6 +140,13 @@ function CategoryNode({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const hasChildren = category.children && category.children.length > 0;
+
+  // 하위 카테고리 추가 시 자동으로 펼쳐지도록 처리
+  useEffect(() => {
+    if (addingToId === category.id) {
+      setIsOpen(true);
+    }
+  }, [addingToId, category.id]);
 
   // 이름 변경 중일 때
   if (renamingId === category.id) {
