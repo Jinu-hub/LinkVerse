@@ -59,8 +59,10 @@ export type Database = {
           category_name: string
           content_type_id: number | null
           created_at: string
+          is_default: boolean
           level: number | null
           parent_category_id: string | null
+          sort_order: number | null
           updated_at: string
           user_id: string | null
         }
@@ -69,8 +71,10 @@ export type Database = {
           category_name: string
           content_type_id?: number | null
           created_at?: string
+          is_default?: boolean
           level?: number | null
           parent_category_id?: string | null
+          sort_order?: number | null
           updated_at?: string
           user_id?: string | null
         }
@@ -79,8 +83,10 @@ export type Database = {
           category_name?: string
           content_type_id?: number | null
           created_at?: string
+          is_default?: boolean
           level?: number | null
           parent_category_id?: string | null
+          sort_order?: number | null
           updated_at?: string
           user_id?: string | null
         }
@@ -304,6 +310,13 @@ export type Database = {
             referencedRelation: "tag"
             referencedColumns: ["tag_id"]
           },
+          {
+            foreignKeyName: "taggable_tag_id_tag_tag_id_fk"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tag_content_view"
+            referencedColumns: ["tag_id"]
+          },
         ]
       }
       ui_type: {
@@ -384,6 +397,29 @@ export type Database = {
           },
         ]
       }
+      ui_view_content: {
+        Row: {
+          target_id: string
+          ui_view_id: number
+        }
+        Insert: {
+          target_id: string
+          ui_view_id: number
+        }
+        Update: {
+          target_id?: string
+          ui_view_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ui_view_content_ui_view_id_ui_view_ui_view_id_fk"
+            columns: ["ui_view_id"]
+            isOneToOne: false
+            referencedRelation: "ui_view"
+            referencedColumns: ["ui_view_id"]
+          },
+        ]
+      }
       user_activity: {
         Row: {
           activity_type: Database["public"]["Enums"]["activity_type_codes"]
@@ -430,7 +466,149 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      bookmark_view: {
+        Row: {
+          bookmark_id: string | null
+          category_id: string | null
+          click_count: number | null
+          created_at: string | null
+          thumbnail_url: string | null
+          title: string | null
+          updated_at: string | null
+          url: string | null
+          user_id: string | null
+        }
+        Insert: {
+          bookmark_id?: string | null
+          category_id?: string | null
+          click_count?: never
+          created_at?: string | null
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string | null
+          url?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          bookmark_id?: string | null
+          category_id?: string | null
+          click_count?: never
+          created_at?: string | null
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string | null
+          url?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmark_category_id_category_category_id_fk"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["category_id"]
+          },
+        ]
+      }
+      content_view: {
+        Row: {
+          category_id: string | null
+          content_type_id: number | null
+          created_at: string | null
+          target_id: string | null
+          thumbnail_url: string | null
+          title: string | null
+          updated_at: string | null
+          url: string | null
+          use_count: number | null
+          user_id: string | null
+        }
+        Insert: {
+          category_id?: string | null
+          content_type_id?: never
+          created_at?: string | null
+          target_id?: string | null
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string | null
+          url?: string | null
+          use_count?: never
+          user_id?: string | null
+        }
+        Update: {
+          category_id?: string | null
+          content_type_id?: never
+          created_at?: string | null
+          target_id?: string | null
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string | null
+          url?: string | null
+          use_count?: never
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmark_category_id_category_category_id_fk"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["category_id"]
+          },
+        ]
+      }
+      memo_content_view: {
+        Row: {
+          category_id: string | null
+          content_type_id: number | null
+          created_at: string | null
+          is_pinned: boolean | null
+          memo: string | null
+          memo_id: string | null
+          position: number | null
+          summary: string | null
+          target_id: string | null
+          thumbnail_url: string | null
+          title: string | null
+          updated_at: string | null
+          url: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmark_category_id_category_category_id_fk"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["category_id"]
+          },
+        ]
+      }
+      tag_content_view: {
+        Row: {
+          category_id: string | null
+          content_type_id: number | null
+          created_at: string | null
+          tag_id: number | null
+          tag_name: string | null
+          target_id: string | null
+          thumbnail_url: string | null
+          title: string | null
+          updated_at: string | null
+          url: string | null
+          use_count: number | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmark_category_id_category_category_id_fk"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["category_id"]
+          },
+        ]
+      }
     }
     Functions: {
       [_ in never]: never
@@ -457,6 +635,7 @@ export type Database = {
         | "map"
         | "chart"
         | "gallery"
+        | "tab"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -594,6 +773,7 @@ export const Constants = {
         "map",
         "chart",
         "gallery",
+        "tab",
       ],
     },
   },

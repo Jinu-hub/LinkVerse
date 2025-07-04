@@ -11,6 +11,8 @@ import {
   varchar,
   boolean,
   integer,
+  uniqueIndex,
+  primaryKey,
 } from "drizzle-orm/pg-core";
 import { authUid, authUsers, authenticatedRole, serviceRole } from "drizzle-orm/supabase";
 import { CONTENT_TYPES, UI_TYPES, ACTIVITY_TYPES } from "../core/lib/constants";
@@ -115,6 +117,8 @@ export const category = pgTable(
     category_name: varchar({ length: 100 }).notNull(),
     level: integer(),
     parent_category_id: uuid(),
+    sort_order: integer(),
+    is_default: boolean().notNull().default(false),
     created_at: timestamp({ withTimezone: true }).defaultNow().notNull(),
     updated_at: timestamp({ withTimezone: true }).defaultNow().notNull(),
 },
@@ -206,35 +210,26 @@ export const uiView = pgTable(
   ]
 );
 
-/* 
 export const uiViewContent = pgTable(
   "ui_view_content",
   {
-    ui_view_id: uuid()
+    ui_view_id: bigint({ mode: "number" })
         .references(() => uiView.ui_view_id, { onDelete: "cascade" }),
     target_id: uuid(),
   },
   (table) => [
-    table.primaryKey(["ui_view_id", "target_id"]),
-    pgPolicy("create-ui-view-content-policy", {
-      for: "insert",
-      to: authenticatedRole,
-      as: "permissive",
-
-    }),
-    pgPolicy("delete-ui-view-content-policy", {
-      for: "delete",
-      to: authenticatedRole,
-      as: "permissive",
-    }),
-    pgPolicy("read-ui-view-content-policy", {
-      for: "select",
-      to: authenticatedRole,
-      as: "permissive",
-    }),
+    primaryKey({ columns: [table.ui_view_id, table.target_id] }),
+      // RLS정책은 Supabase 관리자 화면에서 직접 SQL로 작성
+      /*
+      EXISTS (
+          SELECT 1
+          FROM ui_view
+          WHERE ui_view.ui_view_id = ui_view_content.ui_view_id
+          AND ui_view.user_id = auth.uid()
+        )
+      */
   ]
 );
-*/
 
 export const userActivity = pgTable(
   "user_activity",
@@ -252,6 +247,7 @@ export const userActivity = pgTable(
     last_at: timestamp({ withTimezone: true }),
   },
   (table) => [
+    uniqueIndex("user_activity_unique_index").on(table.user_id, table.content_type_id, table.target_id, table.activity_type),
     // CREATE: 본인만 가능
     pgPolicy("create-user-activity-policy", {
       for: "insert",

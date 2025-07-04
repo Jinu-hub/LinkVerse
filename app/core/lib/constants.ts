@@ -19,6 +19,7 @@ export const UI_TYPES: UiType[] = [
     { id: 7, code: "map" },
     { id: 8, code: "chart" },
     { id: 9, code: "gallery" },
+    { id: 10, code: "tab" },
 ] as const;
 
 export const ACTIVITY_TYPES = [
