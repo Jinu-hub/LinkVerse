@@ -65,7 +65,7 @@ export const tag = pgTable(
           .references(() => tag.tag_id, { onDelete: "cascade" }),
       content_type_id: integer()
           .references(() => contentType.content_type_id, { onDelete: "cascade" }),
-      target_id: uuid(), // 콘텐츠 ID (폴리모픽)
+      target_id: bigint({ mode: "number" }), // 콘텐츠 ID (폴리모픽)
     },
     (table) => [
       primaryKey({ columns: [table.tag_id, table.content_type_id, table.target_id]

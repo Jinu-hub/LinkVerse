@@ -7,6 +7,7 @@ import {
   uuid,
   boolean,
   integer,
+  bigint,
 } from "drizzle-orm/pg-core";
 import { authUid, authUsers, authenticatedRole } from "drizzle-orm/supabase";
 import { contentType } from "~/features/schema";
@@ -14,10 +15,10 @@ import { contentType } from "~/features/schema";
 export const memo = pgTable(
     "memo",
     {
-      memo_id: uuid().primaryKey().defaultRandom(),
+      memo_id: bigint({ mode: "number" }).primaryKey().generatedAlwaysAsIdentity(),
       user_id: uuid().references(() => authUsers.id, { onDelete: "cascade" }),
       content_type_id: integer().references(() => contentType.content_type_id, { onDelete: "cascade" }),
-      target_id: uuid(),
+      target_id: bigint({ mode: "number" }),
       summary: text(),
       content: text(),
       created_at: timestamp({ withTimezone: true }).defaultNow().notNull(),

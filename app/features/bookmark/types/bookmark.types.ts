@@ -30,7 +30,7 @@ export interface UI_View {
 
 export interface UI_View_Content {
   ui_view_id: string;
-  target_id: string;
+  target_id: number;
 }
 
 export type BookmarksState = {
