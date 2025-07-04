@@ -348,6 +348,7 @@ export type Database = {
       }
       ui_view: {
         Row: {
+          category_id: string | null
           content_type_id: number | null
           created_at: string
           is_active: boolean
@@ -359,6 +360,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          category_id?: string | null
           content_type_id?: number | null
           created_at?: string
           is_active?: boolean
@@ -370,6 +372,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          category_id?: string | null
           content_type_id?: number | null
           created_at?: string
           is_active?: boolean
@@ -381,6 +384,13 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "ui_view_category_id_category_category_id_fk"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["category_id"]
+          },
           {
             foreignKeyName: "ui_view_content_type_id_content_type_content_type_id_fk"
             columns: ["content_type_id"]
@@ -428,6 +438,7 @@ export type Database = {
           last_at: string | null
           metadata: Json | null
           target_id: string | null
+          updated_at: string
           user_activity_id: number
           user_id: string | null
           value: number | null
@@ -439,6 +450,7 @@ export type Database = {
           last_at?: string | null
           metadata?: Json | null
           target_id?: string | null
+          updated_at?: string
           user_activity_id?: never
           user_id?: string | null
           value?: number | null
@@ -450,6 +462,7 @@ export type Database = {
           last_at?: string | null
           metadata?: Json | null
           target_id?: string | null
+          updated_at?: string
           user_activity_id?: never
           user_id?: string | null
           value?: number | null
