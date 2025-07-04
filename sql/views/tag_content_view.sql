@@ -18,3 +18,4 @@ JOIN taggable
 JOIN content_view cv 
   ON taggable.content_type_id = cv.content_type_id 
   AND taggable.target_id = cv.target_id
+  AND tag.user_id = cv.user_id

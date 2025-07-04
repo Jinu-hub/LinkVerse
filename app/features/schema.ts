@@ -79,6 +79,7 @@ export const uiType = pgTable("ui_type",
       updatedAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [
+    uniqueIndex("ui_type_unique_index").on(table.ui_type_code),
     // CREATE: 관리자만 가능
     pgPolicy("create-content-type-policy", {
         for: "insert",
@@ -172,6 +173,8 @@ export const uiView = pgTable(
         .references(() => uiType.ui_type_id, { onDelete: "cascade" }),
     content_type_id: integer()
         .references(() => contentType.content_type_id, { onDelete: "cascade" }),
+    category_id: uuid()
+        .references(() => category.category_id, { onDelete: "cascade" }),
     sort_order: integer(),
     name: varchar({ length: 100 }).notNull(),
     is_active: boolean().notNull().default(true),
@@ -244,6 +247,7 @@ export const userActivity = pgTable(
     value: integer(),
     metadata: jsonb(),
     created_at: timestamp({ withTimezone: true }).defaultNow().notNull(),
+    updated_at: timestamp({ withTimezone: true }).defaultNow().notNull(),
     last_at: timestamp({ withTimezone: true }),
   },
   (table) => [
