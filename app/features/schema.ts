@@ -110,14 +110,14 @@ export const uiType = pgTable("ui_type",
 export const category = pgTable(
 "category",
 {
-    category_id: uuid().primaryKey().defaultRandom(),
+    category_id: bigint({ mode: "number" }).primaryKey().generatedAlwaysAsIdentity(),
     user_id: uuid()
       .references(() => authUsers.id, { onDelete: "cascade" }),
     content_type_id: integer()
       .references(() => contentType.content_type_id, { onDelete: "cascade" }),
     category_name: varchar({ length: 100 }).notNull(),
     level: integer(),
-    parent_category_id: uuid(),
+    parent_category_id: bigint({ mode: "number" }),
     sort_order: integer(),
     is_default: boolean().notNull().default(false),
     created_at: timestamp({ withTimezone: true }).defaultNow().notNull(),
@@ -173,7 +173,7 @@ export const uiView = pgTable(
         .references(() => uiType.ui_type_id, { onDelete: "cascade" }),
     content_type_id: integer()
         .references(() => contentType.content_type_id, { onDelete: "cascade" }),
-    category_id: uuid()
+    category_id: bigint({ mode: "number" })
         .references(() => category.category_id, { onDelete: "cascade" }),
     sort_order: integer(),
     name: varchar({ length: 100 }).notNull(),
@@ -218,7 +218,7 @@ export const uiViewContent = pgTable(
   {
     ui_view_id: bigint({ mode: "number" })
         .references(() => uiView.ui_view_id, { onDelete: "cascade" }),
-    target_id: uuid(),
+    target_id: bigint({ mode: "number" }),
   },
   (table) => [
     primaryKey({ columns: [table.ui_view_id, table.target_id] }),
@@ -242,7 +242,7 @@ export const userActivity = pgTable(
         .references(() => authUsers.id, { onDelete: "cascade" }),
     content_type_id: integer()
         .references(() => contentType.content_type_id, { onDelete: "cascade" }),
-    target_id: uuid(),
+    target_id: bigint({ mode: "number" }),
     activity_type: activityTypeCodes().notNull(),
     value: integer(),
     metadata: jsonb(),

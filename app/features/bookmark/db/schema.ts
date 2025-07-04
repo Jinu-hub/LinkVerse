@@ -7,6 +7,7 @@ import {
   uuid,
   varchar,
   boolean,
+  bigint,
 } from "drizzle-orm/pg-core";
 import { authUid, authUsers, authenticatedRole } from "drizzle-orm/supabase";
 import { category } from "~/features/schema";
@@ -14,10 +15,10 @@ import { category } from "~/features/schema";
 export const bookmark = pgTable(
     "bookmark",
     {
-      bookmark_id: uuid().primaryKey().defaultRandom(),
+      bookmark_id: bigint({ mode: "number" }).primaryKey().generatedAlwaysAsIdentity(),
       user_id: uuid()
           .references(() => authUsers.id, { onDelete: "cascade" }),
-      category_id: uuid()
+      category_id: bigint({ mode: "number" })
           .references(() => category.category_id, { onDelete: "cascade" }),
       title: varchar({ length: 255 }),
       url: text(),

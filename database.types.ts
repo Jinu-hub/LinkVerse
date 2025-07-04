@@ -11,8 +11,8 @@ export type Database = {
     Tables: {
       bookmark: {
         Row: {
-          bookmark_id: string
-          category_id: string | null
+          bookmark_id: number
+          category_id: number | null
           created_at: string
           is_favorite: boolean
           thumbnail_url: string | null
@@ -22,8 +22,8 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          bookmark_id?: string
-          category_id?: string | null
+          bookmark_id?: never
+          category_id?: number | null
           created_at?: string
           is_favorite?: boolean
           thumbnail_url?: string | null
@@ -33,8 +33,8 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
-          bookmark_id?: string
-          category_id?: string | null
+          bookmark_id?: never
+          category_id?: number | null
           created_at?: string
           is_favorite?: boolean
           thumbnail_url?: string | null
@@ -55,37 +55,37 @@ export type Database = {
       }
       category: {
         Row: {
-          category_id: string
+          category_id: number
           category_name: string
           content_type_id: number | null
           created_at: string
           is_default: boolean
           level: number | null
-          parent_category_id: string | null
+          parent_category_id: number | null
           sort_order: number | null
           updated_at: string
           user_id: string | null
         }
         Insert: {
-          category_id?: string
+          category_id?: never
           category_name: string
           content_type_id?: number | null
           created_at?: string
           is_default?: boolean
           level?: number | null
-          parent_category_id?: string | null
+          parent_category_id?: number | null
           sort_order?: number | null
           updated_at?: string
           user_id?: string | null
         }
         Update: {
-          category_id?: string
+          category_id?: never
           category_name?: string
           content_type_id?: number | null
           created_at?: string
           is_default?: boolean
           level?: number | null
-          parent_category_id?: string | null
+          parent_category_id?: number | null
           sort_order?: number | null
           updated_at?: string
           user_id?: string | null
@@ -133,10 +133,10 @@ export type Database = {
           content_type_id: number | null
           created_at: string
           is_pinned: boolean
-          memo_id: string
+          memo_id: number
           position: number | null
           summary: string | null
-          target_id: string | null
+          target_id: number | null
           updated_at: string
           user_id: string | null
         }
@@ -145,10 +145,10 @@ export type Database = {
           content_type_id?: number | null
           created_at?: string
           is_pinned?: boolean
-          memo_id?: string
+          memo_id?: never
           position?: number | null
           summary?: string | null
-          target_id?: string | null
+          target_id?: number | null
           updated_at?: string
           user_id?: string | null
         }
@@ -157,10 +157,10 @@ export type Database = {
           content_type_id?: number | null
           created_at?: string
           is_pinned?: boolean
-          memo_id?: string
+          memo_id?: never
           position?: number | null
           summary?: string | null
-          target_id?: string | null
+          target_id?: number | null
           updated_at?: string
           user_id?: string | null
         }
@@ -283,17 +283,17 @@ export type Database = {
         Row: {
           content_type_id: number
           tag_id: number
-          target_id: string
+          target_id: number
         }
         Insert: {
           content_type_id: number
           tag_id: number
-          target_id: string
+          target_id: number
         }
         Update: {
           content_type_id?: number
           tag_id?: number
-          target_id?: string
+          target_id?: number
         }
         Relationships: [
           {
@@ -348,7 +348,7 @@ export type Database = {
       }
       ui_view: {
         Row: {
-          category_id: string | null
+          category_id: number | null
           content_type_id: number | null
           created_at: string
           is_active: boolean
@@ -360,7 +360,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          category_id?: string | null
+          category_id?: number | null
           content_type_id?: number | null
           created_at?: string
           is_active?: boolean
@@ -372,7 +372,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
-          category_id?: string | null
+          category_id?: number | null
           content_type_id?: number | null
           created_at?: string
           is_active?: boolean
@@ -409,15 +409,15 @@ export type Database = {
       }
       ui_view_content: {
         Row: {
-          target_id: string
+          target_id: number
           ui_view_id: number
         }
         Insert: {
-          target_id: string
+          target_id: number
           ui_view_id: number
         }
         Update: {
-          target_id?: string
+          target_id?: number
           ui_view_id?: number
         }
         Relationships: [
@@ -437,7 +437,7 @@ export type Database = {
           created_at: string
           last_at: string | null
           metadata: Json | null
-          target_id: string | null
+          target_id: number | null
           updated_at: string
           user_activity_id: number
           user_id: string | null
@@ -449,7 +449,7 @@ export type Database = {
           created_at?: string
           last_at?: string | null
           metadata?: Json | null
-          target_id?: string | null
+          target_id?: number | null
           updated_at?: string
           user_activity_id?: never
           user_id?: string | null
@@ -461,7 +461,7 @@ export type Database = {
           created_at?: string
           last_at?: string | null
           metadata?: Json | null
-          target_id?: string | null
+          target_id?: number | null
           updated_at?: string
           user_activity_id?: never
           user_id?: string | null
@@ -481,8 +481,8 @@ export type Database = {
     Views: {
       bookmark_view: {
         Row: {
-          bookmark_id: string | null
-          category_id: string | null
+          bookmark_id: number | null
+          category_id: number | null
           click_count: number | null
           created_at: string | null
           thumbnail_url: string | null
@@ -492,8 +492,8 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          bookmark_id?: string | null
-          category_id?: string | null
+          bookmark_id?: number | null
+          category_id?: number | null
           click_count?: never
           created_at?: string | null
           thumbnail_url?: string | null
@@ -503,8 +503,8 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
-          bookmark_id?: string | null
-          category_id?: string | null
+          bookmark_id?: number | null
+          category_id?: number | null
           click_count?: never
           created_at?: string | null
           thumbnail_url?: string | null
@@ -525,10 +525,10 @@ export type Database = {
       }
       content_view: {
         Row: {
-          category_id: string | null
+          category_id: number | null
           content_type_id: number | null
           created_at: string | null
-          target_id: string | null
+          target_id: number | null
           thumbnail_url: string | null
           title: string | null
           updated_at: string | null
@@ -537,10 +537,10 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          category_id?: string | null
+          category_id?: number | null
           content_type_id?: never
           created_at?: string | null
-          target_id?: string | null
+          target_id?: number | null
           thumbnail_url?: string | null
           title?: string | null
           updated_at?: string | null
@@ -549,10 +549,10 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
-          category_id?: string | null
+          category_id?: number | null
           content_type_id?: never
           created_at?: string | null
-          target_id?: string | null
+          target_id?: number | null
           thumbnail_url?: string | null
           title?: string | null
           updated_at?: string | null
@@ -572,15 +572,15 @@ export type Database = {
       }
       memo_content_view: {
         Row: {
-          category_id: string | null
+          category_id: number | null
           content_type_id: number | null
           created_at: string | null
           is_pinned: boolean | null
           memo: string | null
-          memo_id: string | null
+          memo_id: number | null
           position: number | null
           summary: string | null
-          target_id: string | null
+          target_id: number | null
           thumbnail_url: string | null
           title: string | null
           updated_at: string | null
@@ -599,12 +599,12 @@ export type Database = {
       }
       tag_content_view: {
         Row: {
-          category_id: string | null
+          category_id: number | null
           content_type_id: number | null
           created_at: string | null
           tag_id: number | null
           tag_name: string | null
-          target_id: string | null
+          target_id: number | null
           thumbnail_url: string | null
           title: string | null
           updated_at: string | null
