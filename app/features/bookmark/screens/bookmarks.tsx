@@ -30,14 +30,14 @@ import type {
 import { useMemo, useReducer, useCallback, useState } from "react";
 import { BookmarkToolbar } from "../components/bookmark-toolbar";
 import { BookmarkTable } from "../components/bookmark-table";
-import { mockBookmarks, mockTabs } from '~/features/mock-data';
+import { mockBookmarks } from '~/features/mock-data';
 import {
   ALL_CATEGORY_ID,
   ALL_TAB_ID,
   DEFAULT_ROWS_PER_PAGE,
   DEFAULT_SORT_KEY,
 } from '../lib/constants'
-import { bookmarksReducer, buildCategoryTree } from '../lib/bmUtils'
+import { bookmarksReducer, buildCategoryTree, toUIViewTabs } from '../lib/bmUtils'
 import { highlightText } from "~/core/lib/common";
 import { useFilteredBookmarks } from '../hooks/use-filtered-bookmarks'
 import { CategorySidebar } from '../components/category-sidebar'
@@ -106,6 +106,17 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
     return buildCategoryTree(categories);
   }, [categories]);
 
+  const uiViewTabs = useMemo(() => {
+    // 항상 추가할 탭 2개
+    const defaultTabs = [
+      { id: 9999, name: '전체', content_type_id: 1, ui_view_type_id: 1, category_id: 0 },
+      { id: -1, name: '미분류', content_type_id: 1, ui_view_type_id: 1, category_id: -1 },
+    ];
+    // DB에서 온 탭 데이터 변환
+    const dbTabs = tabs.map(toUIViewTabs);
+    return [...defaultTabs, ...dbTabs];
+  }, [tabs]);
+
   const [state, dispatch] = useReducer(bookmarksReducer, initialState);
   const {
     selectedTabId,
@@ -155,7 +166,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
   // 탭 변경 핸들러
   const handleTabChange = useCallback(
     (newTabId: number) => {
-      const categoryId = mockTabs.find(t => t.id === newTabId)?.category_id;
+      const categoryId = uiViewTabs.find(t => t.id === newTabId)?.category_id;
       dispatch({ type: 'CHANGE_TAB', payload: { tabId: newTabId, categoryId } });
     },
     [dispatch],
@@ -165,7 +176,9 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
   const handleCategoryChange = useCallback(
     (newCategoryId: number) => {
       const rootId = categoryToRootMap.get(newCategoryId);
-      const tabId = mockTabs.find(t => t.category_id === rootId)?.id;
+      console.log('rootId', rootId);
+      const tabId = uiViewTabs.find(t => t.category_id === rootId)?.id;
+      console.log('tabId', rootId);
       dispatch({
         type: 'CHANGE_CATEGORY',
         payload: {
@@ -239,7 +252,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
       />
       {/* 🔹 2. 메인 콘텐츠 영역 */}
       <main className="flex-1 space-y-4">
-        {/* PC: 오른쪽 상단 버튼 */}
+        {/* 오른쪽 상단 북마크 추가 버튼 */}
         <div className="hidden md:flex justify-end">
           <Button
             className="bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow w-12 h-12 flex items-center justify-center text-2xl cursor-pointer"
@@ -250,7 +263,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
           </Button>
         </div>
         <BookmarkToolbar
-          tabs={mockTabs}
+          tabs={uiViewTabs}
           selectedTabId={selectedTabId}
           onTabChange={handleTabChange}
           searchValue={search}

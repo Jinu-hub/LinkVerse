@@ -1,18 +1,10 @@
 import React from 'react'
-import type { BookmarksAction, BookmarksState, Category } from '../types/bookmark.types'
+import type { 
+  BookmarksAction, 
+  BookmarksState, 
+  Category, 
+  UI_View } from '../types/bookmark.types'
 import { ALL_CATEGORY_ID } from './constants'
-
-
-export function toCategory(category: any): Category {
-  return {
-    id: category.category_id,
-    parent_id: category.parent_category_id,
-    name: category.name,
-    level: category.level,
-    is_root: category.is_root ?? false,
-    children: category.children ? category.children.map(toCategory) : [],
-  };
-}
 
 export function bookmarksReducer(
   state: BookmarksState,
@@ -189,3 +181,14 @@ export function buildCategoryTree(flatCategories: any[]): Category[] {
   // 4. 항상 rootCategories를 제일 앞에 추가
   return [...rootCategories, ...tree];
 }
+
+export function toUIViewTabs(tabs: any): UI_View {
+  return {
+    id: tabs.ui_view_id,
+    name: tabs.name,
+    category_id: tabs.category_id,
+    content_type_id: tabs.content_type_id,
+    ui_view_type_id: tabs.ui_type_id,
+  };
+}
+
