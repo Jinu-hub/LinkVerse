@@ -30,20 +30,23 @@ import type {
 import { useMemo, useReducer, useCallback, useState } from "react";
 import { BookmarkToolbar } from "../components/bookmark-toolbar";
 import { BookmarkTable } from "../components/bookmark-table";
-import { mockBookmarks, mockCategories, mockTabs } from '~/features/mock-data';
+import { mockBookmarks, mockTabs } from '~/features/mock-data';
 import {
   ALL_CATEGORY_ID,
   ALL_TAB_ID,
   DEFAULT_ROWS_PER_PAGE,
   DEFAULT_SORT_KEY,
 } from '../lib/constants'
-import { bookmarksReducer } from '../lib/bmUtils'
+import { bookmarksReducer, buildCategoryTree } from '../lib/bmUtils'
 import { highlightText } from "~/core/lib/common";
 import { useFilteredBookmarks } from '../hooks/use-filtered-bookmarks'
 import { CategorySidebar } from '../components/category-sidebar'
 import { Button } from "~/core/components/ui/button";
 import { FiPlus } from "react-icons/fi";
 import BookmarkDetailDialog from "../components/bookmark-detail-dialog";
+import makeServerClient from "~/core/lib/supa-client.server";
+import { requireAuthentication } from "~/core/lib/guards.server";
+import { getBookmarkCategories, getBookmarkContents, getUIViewTabs } from "../db/queries";
 
 /**
  * Meta function for the blog posts page
@@ -74,6 +77,16 @@ const initialState: BookmarksState = {
   isDetailDialogOpen: false,
 };
 
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const [client] = makeServerClient(request);
+  await requireAuthentication(client);
+  const { data: { user } } = await client.auth.getUser();
+  const categories = await getBookmarkCategories(client, { userId: user!.id });
+  const tabs = await getUIViewTabs(client, { userId: user!.id });
+  const bookmarks = await getBookmarkContents(client, { userId: user!.id });
+  return { categories, tabs, bookmarks };
+}
+
 /**
  * Bookmarks 컨테이너 컴포넌트
  *
@@ -86,7 +99,13 @@ const initialState: BookmarksState = {
  * - `useFilteredBookmarks` 커스텀 훅을 사용한 데이터 처리
  * - `CategorySidebar`, `BookmarkToolbar`, `BookmarkTable` 등 하위 컴포넌트의 조합 및 데이터 전달
  */
-export default function Bookmarks() {
+export default function Bookmarks({ loaderData }: Route.ComponentProps) {
+  const { categories, tabs, bookmarks } = loaderData;
+
+  const categoryTree = useMemo(() => {
+    return buildCategoryTree(categories);
+  }, [categories]);
+
   const [state, dispatch] = useReducer(bookmarksReducer, initialState);
   const {
     selectedTabId,
@@ -108,7 +127,7 @@ export default function Bookmarks() {
   const { pagedBookmarks, totalPages, totalRows, startEntry, endEntry } =
     useFilteredBookmarks({
       bookmarks: mockBookmarks,
-      categories: mockCategories,
+      categories: categoryTree,
       selectedCategoryId,
       search,
       sortKey,
@@ -129,7 +148,7 @@ export default function Bookmarks() {
         }
       }
     };
-    buildMap(mockCategories);
+    buildMap(categoryTree);
     return map;
   }, []);
 
@@ -214,7 +233,7 @@ export default function Bookmarks() {
   return (
     <div className="flex gap-10">
       <CategorySidebar
-        categories={mockCategories}
+        categories={categoryTree}
         selectedId={selectedCategoryId}
         onSelect={handleCategoryChange}
       />
@@ -238,7 +257,7 @@ export default function Bookmarks() {
           onSearchChange={handleSearch}
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleRowsPerPageChange}
-          categories={mockCategories}
+          categories={categoryTree}
           selectedId={selectedCategoryId}
           onSelect={handleCategoryChange}
         />
@@ -257,6 +276,7 @@ export default function Bookmarks() {
           startEntry={startEntry}
           endEntry={endEntry}
           onPageChange={handlePageChange}
+          categoryTree={categoryTree}
         />
 
         {/* 모바일: 오른쪽 하단 플로팅 버튼 */}
@@ -278,7 +298,7 @@ export default function Bookmarks() {
             // 저장 로직 (원하면 구현)
             setAddDialogOpen(false);
           }}
-          categories={mockCategories.filter(cat => cat.id !== ALL_CATEGORY_ID)}
+          categories={categoryTree.filter(cat => cat.id > ALL_CATEGORY_ID)}
         />
       </main>
     </div>

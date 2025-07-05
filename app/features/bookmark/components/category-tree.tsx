@@ -22,6 +22,7 @@ import {
   AlertDialogTitle,
 } from "~/core/components/ui/alert-dialog";
 import { Input } from "~/core/components/ui/input";
+import { ALL_CATEGORY_ID } from "../lib/constants";
 
 type Category = {
   id: number;
@@ -167,7 +168,7 @@ function CategoryNode({
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <div className="flex items-center group rounded-md hover:bg-accent">
         {/* 드래그 핸들 (전체보기 제외) */}
-        {category.id !== 0 ? (
+        {category.id > ALL_CATEGORY_ID ? (
           <TbGripVertical className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 cursor-grab" />
         ) : (
           <div className="w-5" /> // 정렬을 위한 스페이서
@@ -211,7 +212,7 @@ function CategoryNode({
         )}
         
         {/* 점 세개(케밥) 메뉴 (전체보기 제외) */}
-        {category.id !== 0 && (
+        {category.id > ALL_CATEGORY_ID && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100">

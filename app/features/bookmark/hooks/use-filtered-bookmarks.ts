@@ -31,7 +31,7 @@ export function useFilteredBookmarks({
     let bookmarks = initialBookmarks
 
     // 1. 카테고리 필터링 (탭 선택과 연동됨)
-    if (selectedCategoryId && selectedCategoryId !== ALL_CATEGORY_ID) {
+    if (selectedCategoryId && selectedCategoryId > ALL_CATEGORY_ID) {
       const allChildIds = new Set<number>()
       const findCategory = (
         id: number,
