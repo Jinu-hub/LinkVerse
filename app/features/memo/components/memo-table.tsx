@@ -4,6 +4,7 @@ import type { ContentType } from "~/core/lib/types";
 import type { Memo, SortKey } from "../types/memo.types";
 import { useNavigate } from "react-router";
 import { contentIconMap, typeColorMap } from "~/core/lib/constants";
+import type { title } from "process";
 
 interface MemoTableProps {
   pagedMemos: Memo[];
@@ -81,7 +82,7 @@ const MemoTable: React.FC<MemoTableProps> = ({
                 <TableRow
                   key={memo.memoId}
                   className="hover:bg-accent/40 transition-colors cursor-pointer"
-                  onClick={() => navigate(`/memos/${memo.memoId}`)}
+                  onClick={() => navigate(`/memos/${memo.memoId}`, { state: { title: memo.title } })}
                 >
                   <TableCell>
                     <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${colorClass}`}>
@@ -90,7 +91,13 @@ const MemoTable: React.FC<MemoTableProps> = ({
                   </TableCell>
                   <TableCell className="font-semibold">{highlightText(memo.title, search)}</TableCell>
                   <TableCell className="whitespace-pre-line max-w-[400px] truncate">
-                    <span className="sm:inline hidden">{highlightText(memo.content, search)}</span>
+                    <span className="sm:inline hidden">
+                      {(() => {
+                        const text = typeof memo.content === 'string' ? memo.content : '';
+                        const short = text.length > 80 ? text.slice(0, 80) + '...' : text;
+                        return highlightText(short, search);
+                      })()}
+                    </span>
                     <span className="inline sm:hidden">
                       {(() => {
                         const text = typeof memo.content === 'string' ? memo.content : '';

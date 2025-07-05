@@ -1,12 +1,15 @@
 import { ChevronsRightIcon } from "lucide-react";
-import { Link, Outlet, useOutletContext, useParams } from "react-router";
-import { mockMemoContents } from "~/features/mock-data";
+import { Link, Outlet, useLocation, useOutletContext } from "react-router";
 import { NavigationDesktop } from "~/core/components/navigation-desktop";
 import { NavigationMobile } from "~/core/components/navigation-mobile";
 import { SheetContent, SheetTrigger } from "~/core/components/ui/sheet";
 import { MenuIcon } from "lucide-react";
 
-function MemoNav() {
+type MemoNavProps = {
+  title?: string;
+};
+
+const MemoNav = ({ title }: MemoNavProps) => {
   const { isLoggedIn, username, email, avatar, name } = useOutletContext<{
     isLoggedIn: boolean;
     username: string;
@@ -14,8 +17,6 @@ function MemoNav() {
     avatar: string;
     name: string;
   }>();
-  const { id } = useParams<{ id?: string }>();
-  const memo = id ? mockMemoContents.find(m => String(m.memoId) === id) : null;
 
   return (
     <nav className="mx-auto flex h-16 items-center justify-between border-b px-5 shadow-xs backdrop-blur-lg transition-opacity md:px-10">
@@ -32,10 +33,10 @@ function MemoNav() {
           <Link to="/memos" className="font-semibold" viewTransition>
             Memos
           </Link>
-          {memo && (
+          {title && (
             <>
               <ChevronsRightIcon className="text-muted-foreground size-4" />
-              <span className="font-semibold text-primary">{memo.title}</span>
+              <span className="font-semibold text-primary">{title}</span>
             </>
           )}
         </h1>
@@ -66,9 +67,11 @@ function MemoNav() {
 }
 
 export default function MemoLayout() {
+  const location = useLocation();
+  const title = location.state?.title;
   return (
     <>
-      <MemoNav />
+      <MemoNav title={title} />
       <div className="mx-auto w-full max-w-screen-2xl px-5 py-16 md:px-10">
         <Outlet />
       </div>
