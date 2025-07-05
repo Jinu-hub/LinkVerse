@@ -1,9 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { mockTags } from "~/features/mock-data";
 import { TagCard } from "../components/tag-card";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
-import type { SortKey, Tag } from "../types/tag.types";
 import { SORT_OPTIONS } from "../lib/constants";
+import type { SortKey, Tag } from "../types/tag.types";
+import type { Route } from "./+types/tags";
+import { getTags } from "../db/queries";
+import makeServerClient from "~/core/lib/supa-client.server";
+import { requireAuthentication } from "~/core/lib/guards.server";
+import { toTag } from "../lib/taUtils";
 
 function getSortedTags(tags: Tag[], sortKey: SortKey, sortOrder: 'asc' | 'desc') {
   if (sortKey === "usage_count") {
@@ -16,16 +20,31 @@ function getSortedTags(tags: Tag[], sortKey: SortKey, sortOrder: 'asc' | 'desc')
   return tags;
 }
 
-export default function TagsScreen() {
+export const meta: Route.MetaFunction = () => {
+  return [{ title: `Tags | ${import.meta.env.VITE_APP_NAME}` }];
+};
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const [client] = makeServerClient(request);
+  await requireAuthentication(client);
+  const { data: { user } } = await client.auth.getUser();
+  const tags = await getTags(client, { userId: user!.id });
+  return { tags };
+};
+
+export default function TagsScreen({ loaderData }: Route.ComponentProps) {
   const [sortKey, setSortKey] = useState<SortKey>("usage_count");
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const pageSize = 12;
 
+  const tags: Tag[] = useMemo(() => loaderData.tags.map((item: any) => 
+    toTag(item)), [loaderData.tags]);
+
   // 필터
   const filtered = useMemo(() =>
-    filterArray(mockTags, tag =>
+    filterArray(tags, tag =>
       tag.name.toLowerCase().includes(search.toLowerCase()) ||
       String(tag.id).includes(search)
     ), [search]

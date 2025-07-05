@@ -28,7 +28,7 @@ export function TagCard({ id, name, usageCount, createdAt, goToDetail = true, on
       onClick();
     }
     if (goToDetail) {
-      navigate(`/tags/${id}`);
+      navigate(`/tags/${id}`, { state: { tagName: name } });
     }
   };
 

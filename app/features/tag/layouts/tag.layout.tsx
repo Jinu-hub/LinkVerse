@@ -1,12 +1,15 @@
 import { ChevronsRightIcon, MenuIcon } from "lucide-react";
-import { Link, Outlet, useOutletContext, useParams } from "react-router";
-import { mockTags } from "~/features/mock-data";
+import { Link, Outlet, useLocation, useOutletContext } from "react-router";
 import { NavigationDesktop } from "~/core/components/navigation-desktop";
 import { SheetTrigger } from "~/core/components/ui/sheet";
 import { SheetContent } from "~/core/components/ui/sheet";
 import { NavigationMobile } from "~/core/components/navigation-mobile";
 
-function TagNav() {
+type TagNavProps = {
+  tagName?: string;
+};
+
+const TagNav = ({ tagName }: TagNavProps) => {
   const { isLoggedIn, username, email, avatar, name } = useOutletContext<{
     isLoggedIn: boolean;
     username: string;
@@ -14,8 +17,6 @@ function TagNav() {
     avatar: string;
     name: string;
   }>();
-  const { id } = useParams<{ id?: string }>();
-  const tag = id ? mockTags.find(t => String(t.id) === id) : null;
 
   return (
     <nav className="mx-auto flex h-16 items-center justify-between border-b px-5 shadow-xs backdrop-blur-lg transition-opacity md:px-10">
@@ -32,10 +33,10 @@ function TagNav() {
           <Link to="/tags" className="font-semibold" viewTransition>
             Tags
           </Link>
-          {tag && (
+          {tagName && (
             <>
               <ChevronsRightIcon className="text-muted-foreground size-4" />
-              <span className="font-semibold text-primary">#{tag.name}</span>
+              <span className="font-semibold text-primary">#{tagName}</span>
             </>
           )}
         </h1>
@@ -66,9 +67,11 @@ function TagNav() {
 }
 
 export default function TagLayout() {
+  const location = useLocation();
+  const tagName = location.state?.tagName;
   return (
     <>
-      <TagNav />
+      <TagNav tagName={tagName} />
       <div className="mx-auto w-full max-w-screen-2xl px-5 py-16 md:px-10">
         <Outlet />
       </div>

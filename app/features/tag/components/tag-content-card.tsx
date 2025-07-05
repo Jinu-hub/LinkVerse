@@ -1,12 +1,12 @@
 import { Link } from "react-router"
 import { format } from "date-fns"
 import { contentIconMap, typeColorMap } from "~/core/lib/constants";
-import type { ContentItem } from "../types/tag.types";
+import type { TagContent } from "../types/tag.types";
 import { CONTENT_TYPE_FIELD_MAP } from "../lib/constants";
 
 interface ContentCardProps {
   type: string
-  content: ContentItem
+  content: TagContent
   selected?: boolean
   onClick?: () => void
 }
@@ -47,10 +47,6 @@ export default function ContentCard({ type, content, selected = false, onClick }
 
       <h3 className="text-base font-semibold text-gray-900 dark:text-zinc-100">{content.title}</h3>
 
-      {content.memo && (
-        <p className="text-sm text-gray-700 dark:text-zinc-300 mt-1 line-clamp-2">{content.memo}</p>
-      )}
-
       {type === "bookmark" && content.url && (
         <a
           href={content.url}
@@ -65,12 +61,17 @@ export default function ContentCard({ type, content, selected = false, onClick }
       {renderExtraFields(type, content.extra)}
 
       <div className="mt-3 flex gap-4 text-xs text-muted-foreground">
-        {content.clickCount && <span>🔁 {content.clickCount}회 열람</span>}
-
+        {content.useCount && <span>🔁 {content.useCount}회 열람</span>}
+        {/*
         <Link to={`/memos/${content.tagId}`} className="underline">
           메모 보기
         </Link>
-        
+        */}
+        {content.memo && (
+          <div className="text-sm text-gray-700 dark:text-zinc-300 mt-1 line-clamp-2">
+            <strong>메모 : </strong> {content.memo.length > 50 ? content.memo.slice(0, 50) + '...' : content.memo}
+          </div>
+        )}
       </div>
     </div>
   )

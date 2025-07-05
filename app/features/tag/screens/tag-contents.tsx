@@ -1,6 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
-import { useParams, Link } from "react-router";
-import { mockTags, mockTagContents } from "~/features/mock-data";
+import { useParams, useLocation } from "react-router";
 
 import TagContentCard from "../components/tag-content-card";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
@@ -8,6 +7,11 @@ import type { SortKeyContents, TagContent } from "../types/tag.types";
 import { SORT_OPTIONS_CONTENTS } from "../lib/constants";
 import { CONTENT_TYPES, typeColorMap } from "~/core/lib/constants";
 import { TagEditDialog } from "../components/tag-edit-dialog";
+import { getTagContents } from "../db/queries";
+import { requireAuthentication } from "~/core/lib/guards.server";
+import makeServerClient from "~/core/lib/supa-client.server";
+import type { Route } from "./+types/tag-contents";
+import { toTagContent } from "../lib/taUtils";
 
 function getFilteredContents(contents: TagContent[], tagId: number, selectedType: number | null, search: string) {
   return filterArray(contents, content =>
@@ -29,10 +33,19 @@ function getSortedContents(contents: TagContent[], sortKey: SortKeyContents, sor
   return contents;
 }
 
-export default function TagContentsScreen() {
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
+  const [client] = makeServerClient(request);
+  await requireAuthentication(client);
+  const { data: { user } } = await client.auth.getUser();
+  const tagContents = await getTagContents(client, { userId: user!.id, tagId: Number(params.id) });
+  return { tagContents };
+}
+
+export default function TagContentsScreen({ loaderData }: Route.ComponentProps) {
   const { id } = useParams<{ id: string }>();
   const tagId = Number(id);
-  const tag = mockTags.find(t => t.id === tagId);
+  const tagName = useLocation().state?.tagName;
+
   const [sortKey, setSortKey] = useState<SortKeyContents>("createdAt");
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [page, setPage] = useState(1);
@@ -41,7 +54,13 @@ export default function TagContentsScreen() {
   const [selectedType, setSelectedType] = useState<number | null>(null);
   const [selectedContentIds, setSelectedContentIds] = useState<string[]>([]);
   const [editButtonTop, setEditButtonTop] = useState(170);
-  const [editTagName, setEditTagName] = useState(tag?.name || "");
+  const [editTagName, setEditTagName] = useState(tagName || "");
+
+  const tagContents = useMemo(() => {
+    const t = loaderData.tagContents;
+    if (!t) return [];
+    return t.map(toTagContent);
+  }, [loaderData.tagContents]);
 
   useEffect(() => {
     function handleResize() {
@@ -58,7 +77,7 @@ export default function TagContentsScreen() {
 
   // 필터
   const filtered = useMemo(() =>
-    getFilteredContents(mockTagContents as TagContent[], tagId, selectedType, search)
+    getFilteredContents(tagContents, tagId, selectedType, search)
   , [tagId, search, selectedType]
   );
 
@@ -76,13 +95,13 @@ export default function TagContentsScreen() {
     [sorted, page, pageSize]
   );
 
-  if (!tag) return <div className="p-8 text-center text-lg">존재하지 않는 태그입니다.</div>;
+  if (!tagName) return <div className="p-8 text-center text-lg">존재하지 않는 태그입니다.</div>;
 
   return (
     <div>
       <div className="flex flex-wrap items-center mb-4 gap-2">
         <h2 className="text-xl font-bold flex items-center gap-2">
-          <span className="text-primary">#{tag.name}</span>
+          <span className="text-primary">#{tagName}</span>
           <span className="px-3 py-0.5 rounded-full bg-primary/10 text-primary text-sm font-semibold">
             {pagedContents.length} items
           </span>
@@ -152,7 +171,7 @@ export default function TagContentsScreen() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {pagedContents.map(content => {
           const contentId = content.contentTypeId + '_' + content.contentId;
-          const contentWithMemo = { ...content, memo: content.description };
+          console.log(contentId);
           const isSelected = selectedContentIds.includes(contentId);
           return (
             <TagContentCard
@@ -162,7 +181,7 @@ export default function TagContentsScreen() {
                   CONTENT_TYPES.find(t => t.id === content.contentTypeId)?.code || 'other'
                 ) as string
               }
-              content={contentWithMemo}
+              content={content}
               selected={isSelected}
               onClick={() => {
                 setSelectedContentIds(prev =>
