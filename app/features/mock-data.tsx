@@ -41,7 +41,8 @@ export const mockCategories: Category[] = [
   ]
   
   export const mockTabs: UI_View[] = [
-    { id: 1, name: '전체', content_type_id: 1, ui_view_type_id: 1, category_id: 0 },
+    { id: 0, name: '🗂️ 전체', content_type_id: 1, ui_view_type_id: 1, category_id: 0 },
+    { id: -1, name: '❓ 미분류', content_type_id: 1, ui_view_type_id: 1, category_id: -1 },
     { id: 2, name: '💻 개발', content_type_id: 1, ui_view_type_id: 1, category_id: 1 },
     { id: 3, name: '📚 공부', content_type_id: 1, ui_view_type_id: 1, category_id: 5 },
     { id: 4, name: '🎵 음악', content_type_id: 1, ui_view_type_id: 1, category_id: 6 },
