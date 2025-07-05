@@ -24,30 +24,30 @@ import {
 import { Input } from "~/core/components/ui/input";
 
 type Category = {
-  id: string;
+  id: number;
   name: string;
   children?: Category[];
 };
 
 type Props = {
   categories: Category[];
-  selectedId: string;
-  onSelect: (id: string) => void;
+  selectedId: number;
+  onSelect: (id: number) => void;
   isMobile?: boolean;
 };
 
 export function CategoryTree({ categories, selectedId, onSelect, isMobile }: Props) {
-  const [renamingId, setRenamingId] = useState<string | null>(null);
-  const [addingToId, setAddingToId] = useState<string | null>(null); // 'parent' or 'root'
+  const [renamingId, setRenamingId] = useState<number | null>(null);
+  const [addingToId, setAddingToId] = useState<number | null>(null); // 'parent' or 'root'
   const [deleteCandidate, setDeleteCandidate] = useState<Category | null>(null);
 
-  const handleRename = (id: string) => {
+  const handleRename = (id: number) => {
     setRenamingId(id);
     setAddingToId(null);
   };
 
-  const handleAdd = (parentId: string | null) => {
-    setAddingToId(parentId ?? 'root');
+  const handleAdd = (parentId: number | null) => {
+    setAddingToId(parentId ?? 0);
     setRenamingId(null);
   };
   
@@ -81,7 +81,7 @@ export function CategoryTree({ categories, selectedId, onSelect, isMobile }: Pro
       </Button>
       
       {/* 하위 카테고리 추가 입력창 */}
-      {addingToId === 'root' && (
+      {addingToId === 0 && (
         <div className="pl-4">
           <Input 
             autoFocus
@@ -128,13 +128,13 @@ function CategoryNode({
   onCancel,
 }: {
   category: Category;
-  selectedId: string;
-  onSelect: (id: string) => void;
+  selectedId: number;
+  onSelect: (id: number) => void;
   isMobile?: boolean;
-  renamingId: string | null;
-  addingToId: string | null;
-  onRename: (id: string) => void;
-  onAdd: (parentId: string | null) => void;
+  renamingId: number | null;
+  addingToId: number | null;
+  onRename: (id: number) => void;
+  onAdd: (parentId: number | null) => void;
   onDelete: (category: Category) => void;
   onCancel: () => void;
 }) {
@@ -167,7 +167,7 @@ function CategoryNode({
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <div className="flex items-center group rounded-md hover:bg-accent">
         {/* 드래그 핸들 (전체보기 제외) */}
-        {category.id !== '0' ? (
+        {category.id !== 0 ? (
           <TbGripVertical className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 cursor-grab" />
         ) : (
           <div className="w-5" /> // 정렬을 위한 스페이서
@@ -211,7 +211,7 @@ function CategoryNode({
         )}
         
         {/* 점 세개(케밥) 메뉴 (전체보기 제외) */}
-        {category.id !== '0' && (
+        {category.id !== 0 && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100">

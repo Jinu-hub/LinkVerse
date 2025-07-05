@@ -5,13 +5,14 @@ import { FiExternalLink, FiChevronLeft, FiChevronRight, FiMoreHorizontal } from 
 import type { Bookmark } from "../types/bookmark.types";
 import BookmarkDetailDialog from "./bookmark-detail-dialog";
 import { useState } from "react";
-import { mockCategories } from "~/features/mock-data";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
 } from "~/core/components/ui/dropdown-menu";
+import { mockCategories } from "~/features/mock-data";
+import { ALL_CATEGORY_ID } from "../lib/constants";
 
 interface BookmarkTableProps {
   pagedBookmarks: Bookmark[];
@@ -45,7 +46,7 @@ export function BookmarkTable({
   endEntry,
   onPageChange,
 }: BookmarkTableProps) {
-  const [selectedBookmark, setSelectedBookmark] = useState<(Bookmark & { memo: string }) | null>(null);
+  const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const sortableColumns: { key: keyof Bookmark; label: string }[] = [
@@ -154,7 +155,7 @@ export function BookmarkTable({
             // 저장 로직 (원하면 구현)
             setDialogOpen(false);
           }}
-          categories={mockCategories.filter(cat => cat.id !== '0')}
+          categories={mockCategories.filter(cat => cat.id !== ALL_CATEGORY_ID)}
         />
       )}
     </>
