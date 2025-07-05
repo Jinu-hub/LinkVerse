@@ -4,8 +4,8 @@ import { CategoryTree } from './category-tree'
 
 interface CategorySidebarProps {
   categories: Category[]
-  selectedId: string
-  onSelect: (id: string) => void
+  selectedId: number
+  onSelect: (id: number) => void
 }
 
 export function CategorySidebar({

@@ -12,15 +12,15 @@ import { useState } from "react";
 
 type Props = {
   tabs: UI_View[];
-  selectedTabId: string;
-  onTabChange: (tabId: string) => void;
+  selectedTabId: number;
+  onTabChange: (tabId: number) => void;
   searchValue: string;
   onSearchChange: (value: string) => void;
   rowsPerPage: number | 'all';
   onRowsPerPageChange: (value: string) => void;
   categories: Category[];
-  selectedId: string;
-  onSelect: (id: string) => void;
+  selectedId: number;
+  onSelect: (id: number) => void;
 };
 
 export function BookmarkToolbar({
@@ -38,7 +38,7 @@ export function BookmarkToolbar({
 
   const [isSheetOpen, setIsSheetOpen] = useState(false)
 
-  const handleSelect = (id: string) => {
+  const handleSelect = (id: number) => {
     onSelect(id)
     setIsSheetOpen(false) // 모바일에서 카테고리 선택 시 시트 닫기
   }
@@ -68,15 +68,38 @@ export function BookmarkToolbar({
       </div>
 
       <div>
-        <Tabs value={selectedTabId} className="w-full">
-          <TabsList>
+        <Tabs value={selectedTabId.toString()} className="w-full">
+          <TabsList
+            className="
+              grid gap-2
+              grid-cols-4 sm:grid-cols-6 md:grid-cols-8
+              min-h-[40px] h-auto
+              mb-8 sm:mb-8 md:mb-4
+              rounded-xl w-full p-2
+              border shadow-sm
+              border-zinc-200
+              dark:border-zinc-700
+              bg-zinc-50
+              dark:bg-zinc-900
+            "
+          >
             {tabs.map(tab => (
               <TabsTrigger
                 key={tab.id}
-                value={tab.id}
+                value={tab.id.toString()}
                 onClick={() => onTabChange(tab.id)}
+                className="
+                  rounded-lg
+                  border
+                  border-transparent
+                  hover:border-primary
+                  hover:bg-primary/10
+                  transition
+                  font-semibold
+                  px-3 py-2
+                "
               >
-                {tab.id === 'tab-all' && <FiInbox className="mr-2 h-4 w-4" />}
+                {tab.id === 0 && <FiInbox className="mr-2 h-4 w-4" />}
                 {tab.name}
               </TabsTrigger>
             ))}

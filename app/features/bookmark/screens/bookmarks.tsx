@@ -119,8 +119,8 @@ export default function Bookmarks() {
 
   // 카테고리 ID를 루트 카테고리 ID로 매핑하는 맵 생성
   const categoryToRootMap = useMemo(() => {
-    const map = new Map<string, string>();
-    const buildMap = (categories: Category[], rootId: string | null = null) => {
+    const map = new Map<number, number>();
+    const buildMap = (categories: Category[], rootId: number | null = null) => {
       for (const category of categories) {
         const currentRootId = rootId === null ? category.id : rootId;
         map.set(category.id, currentRootId);
@@ -135,7 +135,7 @@ export default function Bookmarks() {
 
   // 탭 변경 핸들러
   const handleTabChange = useCallback(
-    (newTabId: string) => {
+    (newTabId: number) => {
       const categoryId = mockTabs.find(t => t.id === newTabId)?.category_id;
       dispatch({ type: 'CHANGE_TAB', payload: { tabId: newTabId, categoryId } });
     },
@@ -144,7 +144,7 @@ export default function Bookmarks() {
 
   // 카테고리 변경 핸들러
   const handleCategoryChange = useCallback(
-    (newCategoryId: string) => {
+    (newCategoryId: number) => {
       const rootId = categoryToRootMap.get(newCategoryId);
       const tabId = mockTabs.find(t => t.category_id === rootId)?.id;
       dispatch({
@@ -203,7 +203,7 @@ export default function Bookmarks() {
   // 추가 다이얼로그 상태
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const emptyBookmark = {
-    id: '',
+    id: 0,
     title: '',
     url: '',
     tags: [],
@@ -278,7 +278,7 @@ export default function Bookmarks() {
             // 저장 로직 (원하면 구현)
             setAddDialogOpen(false);
           }}
-          categories={mockCategories.filter(cat => cat.id !== '0')}
+          categories={mockCategories.filter(cat => cat.id !== ALL_CATEGORY_ID)}
         />
       </main>
     </div>

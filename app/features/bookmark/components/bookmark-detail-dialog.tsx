@@ -22,12 +22,12 @@ type Props = {
     open: boolean;
     onOpenChange: (open: boolean) => void; 
     bookmark: {
-      id: string;
+      id: number;
       title: string;
       url: string;
       tags: string[];
       //memo: string;
-      categoryId?: string;
+      categoryId?: number;
     };
     onSave: (updated: Props["bookmark"]) => void;
     categories: Category[];
@@ -60,8 +60,8 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
         setTags(bookmark.tags);
         //setMemo(bookmark.memo);
         setNewTag("");
-        setCategoryId(bookmark.categoryId || "");
-        setCategoryInput(getCategoryPathName(bookmark.categoryId || ""));
+        setCategoryId(bookmark.categoryId || 0);
+        setCategoryInput(getCategoryPathName(bookmark.categoryId || 0));
         setShowSuggestions(false);
     }, [bookmark]);
 
@@ -90,11 +90,17 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
 
     // 북마크 저장
     const handleSave = () => {
-      onSave({ ...bookmark, title, url, tags, categoryId });
+      onSave({
+        ...bookmark,
+        title,
+        url,
+        tags,
+        categoryId: categoryId ? Number(categoryId) : undefined,
+      });
     };
 
     // 카테고리 경로 이름 반환
-    const getCategoryPathName = (id: string) => {
+    const getCategoryPathName = (id: number) => {
       //if (!id) return "카테고리 선택";
       const path = findCategoryPath(id, categories);
       return path.length > 0 ? path.map((p) => p.name).join(" > ") : "";
