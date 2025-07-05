@@ -1,12 +1,17 @@
 import React, { useMemo, useState } from "react";
-import { mockMemoContents } from "~/features/mock-data";
 import type { ContentType } from "~/core/lib/types";
+import type { Memo, SortKey } from "../types/memo.types";
+import type { Route } from "./+types/memos";
 import { CONTENT_TYPES } from "~/core/lib/constants";
 import MemoToolbar from "../components/memo-toolbar";
 import MemoTable from "../components/memo-table";
-import type { Memo, SortKey } from "../types/memo.types";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
 import { highlightText } from "~/core/lib/common";
+import { getMemoContents } from "../db/queries";
+
+import makeServerClient from "~/core/lib/supa-client.server";
+import { requireAuthentication } from "~/core/lib/guards.server";
+import { toMemo } from "../lib/mmUtils";
 
 const getType = (contentTypeId: number): ContentType["code"] => {
   return (CONTENT_TYPES.find(t => t.id === contentTypeId)?.code || 'bookmark') as ContentType["code"];
@@ -34,7 +39,19 @@ function getSortedMemos(filtered: Memo[], sortKey: SortKey, sortOrder: 'asc' | '
   }
 }
 
-const MemosScreen = () => {
+export const meta: Route.MetaFunction = () => {
+  return [{ title: `Memos | ${import.meta.env.VITE_APP_NAME}` }];
+};
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
+   const [client] = makeServerClient(request);
+   await requireAuthentication(client);
+   const { data: { user } } = await client.auth.getUser();
+   const memos = await getMemoContents(client, { userId: user!.id });
+  return { memos };
+};
+
+export default function MemosScreen({ loaderData }: Route.ComponentProps) {
   // 상태
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("createdAt");
@@ -43,10 +60,14 @@ const MemosScreen = () => {
   const [page, setPage] = useState(1);
   const [selectedType, setSelectedType] = useState<number | null>(null);
 
+  // DB에서 받아온 데이터를 Memo 타입으로 변환
+  const memos: Memo[] = useMemo(() => loaderData.memos.map((item: any) => 
+    toMemo(item)), [loaderData.memos]);
+
   // 필터/검색
   const filtered = useMemo(() =>
-    getFilteredMemos(mockMemoContents, selectedType, search)
-  , [search, selectedType]
+    getFilteredMemos(memos, selectedType, search)
+  , [memos, search, selectedType]
   );
 
   // 정렬
@@ -126,8 +147,9 @@ const MemosScreen = () => {
         search={search}
         highlightText={highlightText}
       />
+      {pagedMemos.length === 0 && (
+        <div className="text-center text-gray-500 py-8">메모가 없습니다.</div>
+      )}
     </div>
   );
 };
-
-export default MemosScreen; 
