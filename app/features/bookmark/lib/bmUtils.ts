@@ -2,6 +2,18 @@ import React from 'react'
 import type { BookmarksAction, BookmarksState, Category } from '../types/bookmark.types'
 import { ALL_CATEGORY_ID } from './constants'
 
+
+export function toCategory(category: any): Category {
+  return {
+    id: category.category_id,
+    parent_id: category.parent_category_id,
+    name: category.name,
+    level: category.level,
+    is_root: category.is_root ?? false,
+    children: category.children ? category.children.map(toCategory) : [],
+  };
+}
+
 export function bookmarksReducer(
   state: BookmarksState,
   action: BookmarksAction,
@@ -83,12 +95,12 @@ export function bookmarksReducer(
   }
 }
 
-export function findCategoryPath(categoryId: string, categories: Category[]): { id: string; name: string }[] {
-  let path: { id: string; name: string }[] = [];
-  function traverse(id: string, cats: Category[]): boolean {
+export function findCategoryPath(categoryId: number, categories: Category[]): { id: number; name: string }[] {
+  let path: { id: number; name: string }[] = [];
+  function traverse(id: number, cats: Category[]): boolean {
     for (const cat of cats) {
       if (cat.id === id) {
-        if (cat.parent_id && cat.parent_id !== "0") {
+        if (cat.parent_id && cat.parent_id > ALL_CATEGORY_ID) {
           traverse(cat.parent_id, categories);
         }
         path.push({ id: cat.id, name: cat.name });
@@ -141,4 +153,39 @@ export function pathExists(categories: Category[], path: string[]): boolean {
     current = found.children || [];
   }
   return true;
+}
+
+// flat 배열을 트리로 변환
+export function buildCategoryTree(flatCategories: any[]): Category[] {
+  // 1. 항상 추가할 루트 카테고리 2개
+  const rootCategories: Category[] = [
+    { id: 0, parent_id: 0, name: '🗂️ 전체보기', level: 0, is_root: true, children: [] },
+    { id: -1, parent_id: 0, name: '❓ 미분류', level: 0, is_root: true, children: [] },
+  ];
+
+  // 2. flatCategories에서 트리 생성
+  const idMap: { [key: string]: Category } = {};
+  flatCategories.forEach(cat => {
+    idMap[String(cat.category_id)] = {
+      id: cat.category_id,
+      parent_id: cat.parent_category_id,
+      name: cat.category_name,
+      level: cat.level,
+      is_root: cat.is_root ?? false,
+      children: [],
+    };
+  });
+
+  // 3. 트리 구조 생성
+  const tree: Category[] = [];
+  Object.values(idMap).forEach(cat => {
+    if (cat.parent_id && idMap[cat.parent_id] && cat.parent_id !== cat.id) {
+      idMap[cat.parent_id].children!.push(cat);
+    } else {
+      tree.push(cat);
+    }
+  });
+
+  // 4. 항상 rootCategories를 제일 앞에 추가
+  return [...rootCategories, ...tree];
 }

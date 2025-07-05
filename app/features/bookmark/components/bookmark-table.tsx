@@ -2,7 +2,7 @@ import { Button } from "~/core/components/ui/button";
 import { Badge } from "~/core/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/core/components/ui/table";
 import { FiExternalLink, FiChevronLeft, FiChevronRight, FiMoreHorizontal } from "react-icons/fi";
-import type { Bookmark } from "../types/bookmark.types";
+import type { Bookmark, Category } from "../types/bookmark.types";
 import BookmarkDetailDialog from "./bookmark-detail-dialog";
 import { useState } from "react";
 import {
@@ -11,7 +11,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "~/core/components/ui/dropdown-menu";
-import { mockCategories } from "~/features/mock-data";
 import { ALL_CATEGORY_ID } from "../lib/constants";
 
 interface BookmarkTableProps {
@@ -29,6 +28,7 @@ interface BookmarkTableProps {
   startEntry: number;
   endEntry: number;
   onPageChange: (newPage: number) => void;
+  categoryTree: Category[];
 };
 
 export function BookmarkTable({
@@ -45,6 +45,7 @@ export function BookmarkTable({
   startEntry,
   endEntry,
   onPageChange,
+  categoryTree,
 }: BookmarkTableProps) {
   const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -155,7 +156,7 @@ export function BookmarkTable({
             // 저장 로직 (원하면 구현)
             setDialogOpen(false);
           }}
-          categories={mockCategories.filter(cat => cat.id !== ALL_CATEGORY_ID)}
+          categories={categoryTree.filter(cat => cat.id > ALL_CATEGORY_ID)}
         />
       )}
     </>

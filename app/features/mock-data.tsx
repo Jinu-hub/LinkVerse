@@ -5,7 +5,7 @@ import type { TagContent } from "./tag/types/tag.types";
 
 export const mockCategories: Category[] = [
     { id: 0, parent_id: 0, name: '🗂️ 전체보기', level: 0, is_root: true },
-    { id: 0, parent_id: 0, name: '🗂️ 미분류', level: 0, is_root: true },
+    { id: -1, parent_id: 0, name: '❓ 미분류', level: 0, is_root: true },
     {
       id: 1,
       parent_id: 0,
