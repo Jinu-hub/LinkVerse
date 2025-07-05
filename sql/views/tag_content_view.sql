@@ -11,7 +11,8 @@ SELECT
     cv.updated_at,
     cv.use_count,
     cv.url,
-    cv.thumbnail_url
+    cv.thumbnail_url,
+    cv.memo
 FROM tag
 JOIN taggable 
   ON tag.tag_id = taggable.tag_id

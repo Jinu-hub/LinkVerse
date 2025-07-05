@@ -9,8 +9,11 @@ SELECT
     content.updated_at            AS updated_at,
     content.click_count           AS use_count,
     content.url                   AS url,
-    content.thumbnail_url         AS thumbnail_url
+    content.thumbnail_url         AS thumbnail_url,
+    memo.memo_id                  AS memo_id,
+    memo.content                  AS memo
 FROM bookmark_view content
+LEFT OUTER JOIN memo ON memo.content_type_id = 1 AND content.bookmark_id = memo.target_id
 /*
 UNION ALL
 SELECT

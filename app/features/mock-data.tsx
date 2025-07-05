@@ -379,7 +379,8 @@ export const mockCategories: Category[] = [
       title: 'AI 논문 리뷰',
       description: '최신 AI 논문 리뷰 블로그',
       url: 'https://arxiv.org',
-      createdAt: '2024-05-05T14:00:00Z'
+      createdAt: '2024-05-05T14:00:00Z',
+      tagName: 'AI'
     },
     {
       contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000002',
@@ -388,7 +389,8 @@ export const mockCategories: Category[] = [
       title: 'AI 커뮤니티',
       description: 'AI 개발자 커뮤니티',
       url: 'https://aihub.or.kr',
-      createdAt: '2024-05-06T15:00:00Z'
+      createdAt: '2024-05-06T15:00:00Z',
+      tagName: 'AI'
     },  
     {
       contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000003',
@@ -397,7 +399,8 @@ export const mockCategories: Category[] = [
       title: 'AI Podcast',
       description: 'AI 전문가 팟캐스트',
       url: 'https://lexfridman.com/podcast',
-      createdAt: '2024-05-08T17:00:00Z'
+      createdAt: '2024-05-08T17:00:00Z',
+      tagName: 'AI'
     },
     {
       contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000004',
@@ -406,7 +409,8 @@ export const mockCategories: Category[] = [
       title: 'AI 트렌드',
       description: 'AI 트렌드 분석',
       url: 'https://aitrends.com',
-      createdAt: '2024-05-09T18:00:00Z'
+      createdAt: '2024-05-09T18:00:00Z',
+      tagName: 'AI'
     },
     {
       contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000005',
@@ -415,7 +419,8 @@ export const mockCategories: Category[] = [
       title: 'AI 스타트업',
       description: 'AI 스타트업 정보',
       url: 'https://crunchbase.com',
-      createdAt: '2024-05-10T19:00:00Z'
+      createdAt: '2024-05-10T19:00:00Z',
+      tagName: 'AI'
     },
     {
       contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000006',
@@ -425,6 +430,7 @@ export const mockCategories: Category[] = [
       description: 'AI와 미래 사회를 다룬 도서',
       url: 'https://book.example.com/ai',
       createdAt: '2024-05-21T10:00:00Z',
+      tagName: 'AI',
       extra: { author: '홍길동', publisher: 'AI Books' }
     },
     {
@@ -435,6 +441,7 @@ export const mockCategories: Category[] = [
       description: '인공지능을 주제로 한 영화',
       url: 'https://movie.example.com/ai',
       createdAt: '2024-05-22T11:00:00Z',
+      tagName: 'AI',
       extra: { director: '스필버그', year: '2023' }
     },
     {
@@ -445,6 +452,7 @@ export const mockCategories: Category[] = [
       description: 'AI 컨퍼런스 참가 여행기',
       url: 'https://travel.example.com/ai',
       createdAt: '2024-05-23T12:00:00Z',
+      tagName: 'AI',
       extra: { location: '샌프란시스코', date: '2024-04-10' }
     },
     {
@@ -454,7 +462,8 @@ export const mockCategories: Category[] = [
       title: 'freeCodeCamp Blog',
       description: '프로그래밍 학습 블로그',
       url: 'https://www.freecodecamp.org/news/',
-      createdAt: '2024-05-11T10:00:00Z'
+      createdAt: '2024-05-11T10:00:00Z',
+      tagName: 'AI',
     },
     {
       contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000010',
@@ -463,7 +472,8 @@ export const mockCategories: Category[] = [
       title: 'Velog',
       description: '개발자 기술 블로그',
       url: 'https://velog.io',
-      createdAt: '2024-05-12T11:00:00Z'
+      createdAt: '2024-05-12T11:00:00Z',
+      tagName: 'AI',
     },
     {
       contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000011',
@@ -472,7 +482,8 @@ export const mockCategories: Category[] = [
       title: 'Tistory',
       description: '다양한 주제의 블로그',
       url: 'https://tistory.com',
-      createdAt: '2024-05-13T12:00:00Z'
+      createdAt: '2024-05-13T12:00:00Z',
+      tagName: 'AI',
     },
     {
       contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000012',
@@ -481,7 +492,8 @@ export const mockCategories: Category[] = [
       title: 'Medium',
       description: '글로벌 IT 블로그',
       url: 'https://medium.com',
-      createdAt: '2024-05-14T13:00:00Z'
+      createdAt: '2024-05-14T13:00:00Z',
+      tagName: 'AI',
     },
     {
       contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000013',
@@ -490,7 +502,8 @@ export const mockCategories: Category[] = [
       title: 'Brunch',
       description: '브런치 작가 블로그',
       url: 'https://brunch.co.kr',
-      createdAt: '2024-05-15T14:00:00Z'
+      createdAt: '2024-05-15T14:00:00Z',
+      tagName: 'AI',
     },
     {
       contentId: 'b1a1e1c0-1a2b-4c3d-8e9f-000000000014',
@@ -500,6 +513,7 @@ export const mockCategories: Category[] = [
       description: '블로그 작가가 쓴 책',
       url: 'https://book.example.com/blog',
       createdAt: '2024-05-24T13:00:00Z',
+      tagName: 'AI',
       extra: { author: '김블로거', publisher: 'BlogBooks' }
     },
     {
@@ -510,6 +524,7 @@ export const mockCategories: Category[] = [
       description: '블로그를 소재로 한 영화',
       url: 'https://movie.example.com/blog',
       createdAt: '2024-05-25T14:00:00Z',
+      tagName: 'AI',
       extra: { director: '박감독', year: '2022' }
     },
     {
@@ -520,6 +535,7 @@ export const mockCategories: Category[] = [
       description: '블로그 여행 후기',
       url: 'https://travel.example.com/blog',
       createdAt: '2024-05-26T15:00:00Z',
+      tagName: 'AI',
       extra: { location: '제주도', date: '2024-03-15' }
     },
   ];
