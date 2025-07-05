@@ -528,6 +528,8 @@ export type Database = {
           category_id: number | null
           content_type_id: number | null
           created_at: string | null
+          memo: string | null
+          memo_id: number | null
           target_id: number | null
           thumbnail_url: string | null
           title: string | null
@@ -535,30 +537,6 @@ export type Database = {
           url: string | null
           use_count: number | null
           user_id: string | null
-        }
-        Insert: {
-          category_id?: number | null
-          content_type_id?: never
-          created_at?: string | null
-          target_id?: number | null
-          thumbnail_url?: string | null
-          title?: string | null
-          updated_at?: string | null
-          url?: string | null
-          use_count?: never
-          user_id?: string | null
-        }
-        Update: {
-          category_id?: number | null
-          content_type_id?: never
-          created_at?: string | null
-          target_id?: number | null
-          thumbnail_url?: string | null
-          title?: string | null
-          updated_at?: string | null
-          url?: string | null
-          use_count?: never
-          user_id?: string | null
         }
         Relationships: [
           {
@@ -602,6 +580,7 @@ export type Database = {
           category_id: number | null
           content_type_id: number | null
           created_at: string | null
+          memo: string | null
           tag_id: number | null
           tag_name: string | null
           target_id: number | null
