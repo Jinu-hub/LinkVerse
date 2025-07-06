@@ -1,6 +1,8 @@
+import type { UniqueIdentifier } from "@dnd-kit/core";
+
 export interface Category {
   id: number;
-  parent_id: number;
+  parent_id: number | null;
   name: string;
   level: number;
   is_root?: boolean;
@@ -54,3 +56,8 @@ export type BookmarksAction =
   | { type: 'CHANGE_PAGE'; payload: number }
   | { type: 'OPEN_DETAIL'; payload: Bookmark }
   | { type: 'CLOSE_DETAIL' };
+
+  export type FlattenedItem = Category & {
+    parentId: UniqueIdentifier | null;
+    depth: number;
+  };

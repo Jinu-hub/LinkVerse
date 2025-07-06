@@ -1,0 +1,245 @@
+import { Collapsible, CollapsibleContent } from "~/core/components/ui/collapsible";
+import { Button } from "~/core/components/ui/button";
+import { TbGripVertical } from "react-icons/tb";
+import { useState, useEffect } from "react";
+import { ALL_CATEGORY_ID } from "../lib/constants";
+import { useIsMobile } from "~/core/hooks/use-mobile";
+import { CategoryInput } from "./category-input";
+import { CategoryDeleteDialog } from "./category-delete-dialog";
+import { CategoryButton } from "./category-button";
+import { CategoryTreeProvider, useCategoryTreeContext } from "./category-tree-context";
+import { CategoryActionsMenu } from "./category-actions-menu";
+import type { Category } from "../types/bookmark.types";
+import { 
+  DndContext, closestCenter, 
+  MeasuringStrategy, useSensor, useSensors, PointerSensor,
+} from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { useSortableTree } from "../hooks/useSortableTree";
+import { getAllCategoryIds } from "../lib/caUtils";
+
+
+export function CategoryTree({ categories, selectedId, onSelect, isMobile: isMobileProp }: {
+  categories: Category[];
+  selectedId: number;
+  onSelect: (id: number) => void;
+  isMobile?: boolean;
+}) {
+  const isMobile = isMobileProp ?? useIsMobile();
+  return (
+    <CategoryTreeProvider>
+      <CategoryTreeInner
+        categories={categories}
+        selectedId={selectedId}
+        onSelect={onSelect}
+        isMobile={isMobile}
+      />
+    </CategoryTreeProvider>
+  );
+}
+
+function CategoryTreeInner({ categories, selectedId, onSelect, isMobile }: {
+  categories: Category[];
+  selectedId: number;
+  onSelect: (id: number) => void;
+  isMobile: boolean;
+}) {
+  const {
+    items,
+    flattenedItems,
+    sortedIds,
+    activeId,
+    activeItem,
+    expandedIds,
+    projected,
+    handleToggleExpand,
+    handleDragStart,
+    handleDragMove,
+    handleDragOver,
+    handleDragEnd,
+    handleDragCancel,
+  } = useSortableTree(categories, 20)
+
+  const { state, dispatch } = useCategoryTreeContext();
+  const sensors = useSensors(useSensor(PointerSensor));
+  const measuring = {
+    droppable: {
+      strategy: MeasuringStrategy.Always,
+    },
+  };
+  
+  const allIds = getAllCategoryIds(categories);
+  console.log(allIds);
+
+  return (
+    <div className="space-y-1">
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      measuring={measuring}
+    >
+      <SortableContext items={allIds} strategy={verticalListSortingStrategy}>
+        {categories.map((category) => (
+          <CategoryNode
+            key={category.id}
+            category={category}
+            selectedId={selectedId}
+            onSelect={onSelect}
+            isMobile={isMobile}
+          />
+        ))}
+      </SortableContext>
+    </DndContext>
+
+    {/* "새 카테고리" 버튼 */}
+    <Button variant="ghost"
+      className="w-full justify-start text-sm mt-4" 
+      onClick={() => dispatch({ type: "ADD", parentId: null })}
+    >
+      + 새 카테고리
+    </Button>
+    {/* 루트 카테고리 추가 입력창 */}
+    {state.addingToId === 0 && (
+      <div className="pl-4">
+        <CategoryInput
+          autoFocus
+          onSubmit={() => dispatch({ type: "CANCEL" })}
+          onCancel={() => dispatch({ type: "CANCEL" })}
+        />
+      </div>
+    )}
+    {/* 삭제 확인 다이얼로그 */}
+    <CategoryDeleteDialog
+      open={!!state.deleteCandidate}
+      category={state.deleteCandidate}
+      onConfirm={() => dispatch({ type: "DELETE_CANDIDATE_CLEAR" })}
+      onCancel={() => dispatch({ type: "DELETE_CANDIDATE_CLEAR" })}
+    />
+
+    </div>
+  );
+
+}
+
+
+
+function CategoryNode({
+  category,
+  selectedId,
+  onSelect,
+  isMobile: isMobileProp,
+}: {
+  category: Category;
+  selectedId: number;
+  onSelect: (id: number) => void;
+  isMobile?: boolean;
+}) {
+  const isMobile = isMobileProp ?? useIsMobile();
+  const { state, dispatch } = useCategoryTreeContext();
+  const [isOpen, setIsOpen] = useState(false);
+  const hasChildren = category.children && category.children.length > 0;
+
+  // useSortable 훅 사용
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: category.id });
+
+  // 드래그 시 스타일 적용
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+
+  useEffect(() => {
+    if (state.addingToId === category.id) {
+      setIsOpen(true);
+    }
+  }, [state.addingToId, category.id]);
+
+  // 이름 변경 중일 때
+  if (state.renamingId === category.id) {
+    return (
+      <div className="pl-4">
+        <CategoryInput
+          defaultValue={category.name}
+          autoFocus
+          onSubmit={() => dispatch({ type: "CANCEL" })}
+          onCancel={() => dispatch({ type: "CANCEL" })}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <div
+        ref={setNodeRef}
+        style={style}
+        className="flex items-center group rounded-md hover:bg-accent"
+      >
+        {/* 드래그 핸들에만 listeners, attributes 적용 */}
+        {category.id > ALL_CATEGORY_ID ? (
+          <span {...attributes} {...listeners}>
+            <TbGripVertical className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 cursor-grab" />
+          </span>
+        ) : (
+          <div className="w-5" />
+        )}
+        <CategoryButton
+          selected={selectedId === category.id}
+          onClick={() => onSelect(category.id)}
+          isMobile={!!isMobile}
+          hasChildren={!!hasChildren}
+          isOpen={!!isOpen}
+        >
+          {category.name}
+        </CategoryButton>
+        {/* 점 세개(케밥) 메뉴 (전체보기 제외) */}
+        {category.id > ALL_CATEGORY_ID && (
+          <CategoryActionsMenu category={category} />
+        )}
+      </div>
+      <CollapsibleContent className="pl-6 border-l-2 border-dashed border-gray-200 dark:border-zinc-700 ml-5">
+        <div className="space-y-1 mt-1">
+          {/* 하위 카테고리도 SortableContext로 감싸기 
+          {hasChildren && (
+            <SortableContext items={category.children!.map(child => child.id)} 
+            strategy={verticalListSortingStrategy}>
+          */}
+              {category.children!.map((child) => (
+                <CategoryNode
+                  key={child.id}
+                  category={child}
+                  selectedId={selectedId}
+                  onSelect={onSelect}
+                  isMobile={isMobile}
+                />
+              ))}
+          {/*
+            </SortableContext>
+          )}
+          */}
+          {/* 하위 카테고리 추가 입력창 */}
+          { state.addingToId !== ALL_CATEGORY_ID && state.addingToId === category.id && (
+            <div className="pl-4">
+              <CategoryInput
+                autoFocus
+                onSubmit={() => dispatch({ type: "CANCEL" })}
+                onCancel={() => dispatch({ type: "CANCEL" })}
+              />
+            </div>
+          )}
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}

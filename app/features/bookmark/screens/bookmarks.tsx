@@ -49,7 +49,13 @@ import { FiPlus } from "react-icons/fi";
 import BookmarkDetailDialog from "../components/bookmark-detail-dialog";
 import makeServerClient from "~/core/lib/supa-client.server";
 import { requireAuthentication } from "~/core/lib/guards.server";
-import { getBookmarkCategories, getBookmarkContents, getBookmarkMemo, getBookmarkTags, getUIViewTabs } from "../db/queries";
+import { 
+  getBookmarkCategories, 
+  getBookmarkContents, 
+  getBookmarkMemo, 
+  getBookmarkTags, 
+  getUIViewTabs 
+} from "../db/queries";
 
 /**
  * Meta function for the blog posts page
@@ -59,7 +65,7 @@ import { getBookmarkCategories, getBookmarkContents, getBookmarkMemo, getBookmar
  */
 export const meta: Route.MetaFunction = () => {
   return [
-    { title: `SupaBookmark | ${import.meta.env.VITE_APP_NAME}` },
+    { title: `Bookmark | ${import.meta.env.VITE_APP_NAME}` },
     {
       name: 'description',
       content:
