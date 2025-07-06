@@ -23,6 +23,7 @@ import {
 } from "~/core/components/ui/alert-dialog";
 import { Input } from "~/core/components/ui/input";
 import { ALL_CATEGORY_ID } from "../lib/constants";
+import { useIsMobile } from "~/core/hooks/use-mobile";
 
 type Category = {
   id: number;
@@ -37,7 +38,8 @@ type Props = {
   isMobile?: boolean;
 };
 
-export function CategoryTree({ categories, selectedId, onSelect, isMobile }: Props) {
+export function CategoryTree({ categories, selectedId, onSelect, isMobile: isMobileProp }: Props) {
+  const isMobile = isMobileProp ?? useIsMobile();
   const [renamingId, setRenamingId] = useState<number | null>(null);
   const [addingToId, setAddingToId] = useState<number | null>(null); // 'parent' or 'root'
   const [deleteCandidate, setDeleteCandidate] = useState<Category | null>(null);
@@ -77,7 +79,10 @@ export function CategoryTree({ categories, selectedId, onSelect, isMobile }: Pro
         />
       ))}
       {/* "새 카테고리" 버튼 */}
-      <Button variant="ghost" className="w-full justify-start text-sm mt-4" onClick={() => handleAdd(null)}>
+      <Button variant="ghost"
+        className="w-full justify-start text-sm mt-4" 
+        onClick={() => handleAdd(null)}
+      >
         + 새 카테고리
       </Button>
       
@@ -86,9 +91,9 @@ export function CategoryTree({ categories, selectedId, onSelect, isMobile }: Pro
         <div className="pl-4">
           <Input 
             autoFocus
-            placeholder="새 카테고리 이름" 
+            placeholder="입력 후 엔터" 
             onKeyDown={(e) => e.key === 'Enter' && handleCancel()}
-            onBlur={handleCancel}
+            {...(!isMobile && { onBlur: handleCancel })}
           />
         </div>
       )}
@@ -120,7 +125,7 @@ function CategoryNode({
   category,
   selectedId,
   onSelect,
-  isMobile,
+  isMobile: isMobileProp,
   renamingId,
   addingToId,
   onRename,
@@ -139,6 +144,7 @@ function CategoryNode({
   onDelete: (category: Category) => void;
   onCancel: () => void;
 }) {
+  const isMobile = isMobileProp ?? useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
   const hasChildren = category.children && category.children.length > 0;
 
@@ -157,7 +163,7 @@ function CategoryNode({
           defaultValue={category.name}
           autoFocus
           onKeyDown={(e) => e.key === 'Enter' && onCancel()}
-          onBlur={onCancel}
+          {...(!isMobile && { onBlur: onCancel })}
         />
       </div>
     );
@@ -256,13 +262,13 @@ function CategoryNode({
             />
           ))}
           {/* 하위 카테고리 추가 입력창 */}
-          {addingToId === category.id && (
+          { addingToId !== ALL_CATEGORY_ID && addingToId === category.id && (
             <div className="pl-4">
               <Input 
                 autoFocus
-                placeholder="새 하위 카테고리" 
+                placeholder="입력 후 엔터" 
                 onKeyDown={(e) => e.key === 'Enter' && onCancel()}
-                onBlur={onCancel}
+                {...(!isMobile && { onBlur: onCancel })}
               />
             </div>
           )}
