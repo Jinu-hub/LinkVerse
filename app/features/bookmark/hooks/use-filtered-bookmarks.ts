@@ -4,6 +4,7 @@ import {
   DEFAULT_ROWS_PER_PAGE,
   DEFAULT_SORT_KEY,
   ALL_CATEGORY_ID,
+  UNCATEGORIZED_CATEGORY_ID,
 } from '../lib/constants'
 
 interface UseFilteredBookmarksProps {
@@ -29,6 +30,13 @@ export function useFilteredBookmarks({
 }: UseFilteredBookmarksProps) {
   const filteredBookmarks = useMemo(() => {
     let bookmarks = initialBookmarks
+
+    // 0. 미분류(UNCATEGORIZED_CATEGORY_ID) 필터링
+    if (selectedCategoryId === UNCATEGORIZED_CATEGORY_ID) {
+      bookmarks = bookmarks.filter(
+        b => !b.categoryId || b.categoryId === UNCATEGORIZED_CATEGORY_ID
+      )
+    }
 
     // 1. 카테고리 필터링 (탭 선택과 연동됨)
     if (selectedCategoryId && selectedCategoryId > ALL_CATEGORY_ID) {

@@ -79,7 +79,7 @@ export function BookmarkToolbar({
             className={`
               px-2 py-2 rounded-full border transition flex items-center justify-center gap-1
               ${tab.id === ALL_TAB_ID ? 'w-24' : ''}
-              ${tab.id === -1 ? 'w-20' : ''}
+              ${tab.id === -1 ? 'w-24' : ''}
               ${selectedTabId == tab.id
                 ? 'bg-primary text-white border-primary-600 shadow dark:bg-gray-900 dark:text-white dark:border-2 dark:border-white'
                 : 'bg-gray-100 text-gray-800 border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700'}
