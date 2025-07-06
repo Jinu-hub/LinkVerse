@@ -3,8 +3,9 @@ import type {
   BookmarksAction, 
   BookmarksState, 
   Category, 
+  Bookmark,
   UI_View } from '../types/bookmark.types'
-import { ALL_CATEGORY_ID } from './constants'
+import { ALL_CATEGORY_ID, UNCATEGORIZED_CATEGORY_ID } from './constants'
 
 export function bookmarksReducer(
   state: BookmarksState,
@@ -151,8 +152,8 @@ export function pathExists(categories: Category[], path: string[]): boolean {
 export function buildCategoryTree(flatCategories: any[]): Category[] {
   // 1. 항상 추가할 루트 카테고리 2개
   const rootCategories: Category[] = [
-    { id: 0, parent_id: 0, name: '🗂️ 전체보기', level: 0, is_root: true, children: [] },
-    { id: -1, parent_id: 0, name: '❓ 미분류', level: 0, is_root: true, children: [] },
+    { id: ALL_CATEGORY_ID, parent_id: 0, name: '🗂️ 전체보기', level: 0, is_root: true, children: [] },
+    { id: UNCATEGORIZED_CATEGORY_ID, parent_id: 0, name: '❓ 미분류', level: 0, is_root: true, children: [] },
   ];
 
   // 2. flatCategories에서 트리 생성
@@ -192,3 +193,16 @@ export function toUIViewTabs(tabs: any): UI_View {
   };
 }
 
+export function toBookmarks(bookmarks: any): Bookmark {
+  return {
+    id: bookmarks.bookmark_id,
+    title: bookmarks.title,
+    url: bookmarks.url,
+    tags: bookmarks.tags,
+    categoryId: bookmarks.category_id,
+    click_count: bookmarks.click_count,
+    created_at: bookmarks.created_at,
+    updated_at: bookmarks.updated_at,
+    memo: bookmarks.memo,
+  };
+}

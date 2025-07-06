@@ -1,7 +1,7 @@
 import { Button } from "~/core/components/ui/button";
 import { Badge } from "~/core/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/core/components/ui/table";
-import { FiExternalLink, FiChevronLeft, FiChevronRight, FiMoreHorizontal } from "react-icons/fi";
+import { FiMoreHorizontal } from "react-icons/fi";
 import type { Bookmark, Category } from "../types/bookmark.types";
 import BookmarkDetailDialog from "./bookmark-detail-dialog";
 import { useState } from "react";
@@ -104,11 +104,23 @@ export function BookmarkTable({
                   {highlightText(bookmark.url, search)}
                 </TableCell>
                 <TableCell>
-                  {bookmark.tags.map((tag, idx) => (
-                    <Badge key={tag} variant={idx % 2 === 0 ? "secondary" : undefined} className={idx % 2 === 1 ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 mr-1" : "mr-1"}>
-                      {highlightText(tag, search)}
-                    </Badge>
-                  ))}
+                  {bookmark.tags &&
+                    Array.from({ length: Math.ceil(bookmark.tags.length / 3) }).map((_, rowIdx) => (
+                      <div key={rowIdx} className="flex flex-wrap mb-1">
+                        {bookmark.tags.slice(rowIdx * 3, rowIdx * 3 + 3).map((tag, idx) => (
+                          <Badge
+                            key={tag}
+                            variant={(rowIdx * 3 + idx) % 2 === 0 ? "secondary" : undefined}
+                            className={(rowIdx * 3 + idx) % 2 === 1
+                              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 mr-1"
+                              : "mr-1"}
+                          >
+                            {highlightText(tag, search)}
+                          </Badge>
+                        ))}
+                      </div>
+                    ))
+                  }
                 </TableCell>
                 <TableCell className="font-mono text-base">
                   {bookmark.click_count > 7 ? <span className="text-red-500">🔥</span> : <span className="text-gray-400">📈</span>}
@@ -129,7 +141,7 @@ export function BookmarkTable({
                       <DropdownMenuItem onClick={e => {
                         e.stopPropagation();
                         setTimeout(() => {
-                          setSelectedBookmark({ ...bookmark, memo: "" });
+                          setSelectedBookmark(bookmark);
                           setDialogOpen(true);
                         }, 10);
                       }}>
@@ -151,9 +163,8 @@ export function BookmarkTable({
         <BookmarkDetailDialog
           open={dialogOpen}
           onOpenChange={setDialogOpen}
-          bookmark={selectedBookmark}
+          bookmark={{ ...selectedBookmark, memo: selectedBookmark?.memo ?? "" }}
           onSave={(updated) => {
-            // 저장 로직 (원하면 구현)
             setDialogOpen(false);
           }}
           categories={categoryTree.filter(cat => cat.id > ALL_CATEGORY_ID)}

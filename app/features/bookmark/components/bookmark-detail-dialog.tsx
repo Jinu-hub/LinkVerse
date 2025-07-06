@@ -26,7 +26,7 @@ type Props = {
       title: string;
       url: string;
       tags: string[];
-      //memo: string;
+      memo: string;
       categoryId?: number;
     };
     onSave: (updated: Props["bookmark"]) => void;
@@ -39,6 +39,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
     const [tags, setTags] = useState<string[]>(bookmark.tags);
     const [newTag, setNewTag] = useState("");
     const [categoryId, setCategoryId] = useState(bookmark.categoryId || "");
+    const [memo, setMemo] = useState(bookmark.memo);
     const dialogContentRef = useRef<HTMLDivElement>(null);
     const {
       categoryInput, setCategoryInput,
@@ -58,7 +59,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
         setTitle(bookmark.title);
         setUrl(bookmark.url);
         setTags(bookmark.tags);
-        //setMemo(bookmark.memo);
+        setMemo(bookmark.memo);
         setNewTag("");
         setCategoryId(bookmark.categoryId || 0);
         setCategoryInput(getCategoryPathName(bookmark.categoryId || 0));
@@ -123,7 +124,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
             <div>
               <div className="mb-1 text-sm text-muted-foreground">태그</div>
               <div className="flex flex-wrap gap-2 mb-2">
-                {tags.map(tag => (
+                {tags?.map(tag => (
                   <Badge key={tag} variant="secondary" className="cursor-pointer" onClick={() => handleRemoveTag(tag)}>
                     {tag} ✕
                   </Badge>
@@ -199,8 +200,8 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
             </div>
   
             <Textarea
-              //value={memo}
-              //onChange={e => setMemo(e.target.value)}
+              value={memo}
+              onChange={e => setMemo(e.target.value)}
               placeholder="메모 입력"
               rows={4}
             />

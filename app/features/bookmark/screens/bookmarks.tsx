@@ -30,14 +30,17 @@ import type {
 import { useMemo, useReducer, useCallback, useState } from "react";
 import { BookmarkToolbar } from "../components/bookmark-toolbar";
 import { BookmarkTable } from "../components/bookmark-table";
-import { mockBookmarks } from '~/features/mock-data';
 import {
   ALL_CATEGORY_ID,
   ALL_TAB_ID,
   DEFAULT_ROWS_PER_PAGE,
   DEFAULT_SORT_KEY,
+  UNCATEGORIZED_CATEGORY_ID,
+  UNCATEGORIZED_TAB_ID,
 } from '../lib/constants'
-import { bookmarksReducer, buildCategoryTree, toUIViewTabs } from '../lib/bmUtils'
+import { bookmarksReducer, 
+  buildCategoryTree, 
+  toUIViewTabs, toBookmarks } from '../lib/bmUtils'
 import { highlightText } from "~/core/lib/common";
 import { useFilteredBookmarks } from '../hooks/use-filtered-bookmarks'
 import { CategorySidebar } from '../components/category-sidebar'
@@ -46,7 +49,7 @@ import { FiPlus } from "react-icons/fi";
 import BookmarkDetailDialog from "../components/bookmark-detail-dialog";
 import makeServerClient from "~/core/lib/supa-client.server";
 import { requireAuthentication } from "~/core/lib/guards.server";
-import { getBookmarkCategories, getBookmarkContents, getUIViewTabs } from "../db/queries";
+import { getBookmarkCategories, getBookmarkContents, getBookmarkMemo, getBookmarkTags, getUIViewTabs } from "../db/queries";
 
 /**
  * Meta function for the blog posts page
@@ -84,7 +87,27 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const categories = await getBookmarkCategories(client, { userId: user!.id });
   const tabs = await getUIViewTabs(client, { userId: user!.id });
   const bookmarks = await getBookmarkContents(client, { userId: user!.id });
-  return { categories, tabs, bookmarks };
+  const bookmarksWithTagsMemo = await Promise.all(
+    bookmarks.map(async (bookmark) => {
+      const bookmarkId = bookmark.bookmark_id;
+      let tags: string[] = [];
+      let memo: string = '';
+      try {
+        tags = bookmarkId != null
+          ? await getBookmarkTags(client, { userId: user!.id, bookmarkId })
+          : [];
+        memo = bookmarkId != null
+          ? (await getBookmarkMemo(client, { userId: user!.id, bookmarkId }) ?? '')
+          : '';
+      } catch (e) {
+        console.error('getBookmarkTags or getBookmarkMemo error', e);
+        tags = [];
+        memo = '';
+      }
+      return { ...bookmark, tags, memo };
+    })
+  );
+  return { categories, tabs, bookmarks: bookmarksWithTagsMemo };
 }
 
 /**
@@ -109,13 +132,17 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
   const uiViewTabs = useMemo(() => {
     // 항상 추가할 탭 2개
     const defaultTabs = [
-      { id: 9999, name: '전체', content_type_id: 1, ui_view_type_id: 1, category_id: 0 },
-      { id: -1, name: '미분류', content_type_id: 1, ui_view_type_id: 1, category_id: -1 },
+      { id: ALL_TAB_ID, name: '전체', content_type_id: 1, ui_view_type_id: 1, category_id: ALL_CATEGORY_ID },
+      { id: UNCATEGORIZED_TAB_ID, name: '미분류', content_type_id: 1, ui_view_type_id: 1, category_id: UNCATEGORIZED_CATEGORY_ID },
     ];
     // DB에서 온 탭 데이터 변환
     const dbTabs = tabs.map(toUIViewTabs);
     return [...defaultTabs, ...dbTabs];
   }, [tabs]);
+
+  const bmList = useMemo(() => {
+    return bookmarks.map(toBookmarks);
+  }, [bookmarks]);
 
   const [state, dispatch] = useReducer(bookmarksReducer, initialState);
   const {
@@ -137,7 +164,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
 
   const { pagedBookmarks, totalPages, totalRows, startEntry, endEntry } =
     useFilteredBookmarks({
-      bookmarks: mockBookmarks,
+      bookmarks: bmList,
       categories: categoryTree,
       selectedCategoryId,
       search,
@@ -176,9 +203,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
   const handleCategoryChange = useCallback(
     (newCategoryId: number) => {
       const rootId = categoryToRootMap.get(newCategoryId);
-      console.log('rootId', rootId);
       const tabId = uiViewTabs.find(t => t.category_id === rootId)?.id;
-      console.log('tabId', rootId);
       dispatch({
         type: 'CHANGE_CATEGORY',
         payload: {
