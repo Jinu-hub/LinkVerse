@@ -1,8 +1,7 @@
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "~/core/components/ui/collapsible";
+import { Collapsible, CollapsibleContent } from "~/core/components/ui/collapsible";
 import { Button } from "~/core/components/ui/button";
-import { FiChevronRight, FiMoreHorizontal } from "react-icons/fi";
+import { FiMoreHorizontal } from "react-icons/fi";
 import { TbGripVertical } from "react-icons/tb";
-import { cn } from "~/core/lib/utils";
 import { useState, useEffect } from "react";
 import {
   DropdownMenu,
@@ -11,21 +10,13 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "~/core/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "~/core/components/ui/alert-dialog";
-import { Input } from "~/core/components/ui/input";
 import { ALL_CATEGORY_ID } from "../lib/constants";
 import { useIsMobile } from "~/core/hooks/use-mobile";
+import { CategoryInput } from "./category-input";
+import { CategoryDeleteDialog } from "./category-delete-dialog";
+import { CategoryButton } from "./category-button";
 
-type Category = {
+export type Category = {
   id: number;
   name: string;
   children?: Category[];
@@ -89,34 +80,21 @@ export function CategoryTree({ categories, selectedId, onSelect, isMobile: isMob
       {/* 하위 카테고리 추가 입력창 */}
       {addingToId === 0 && (
         <div className="pl-4">
-          <Input 
+          <CategoryInput
             autoFocus
-            placeholder="입력 후 엔터" 
-            onKeyDown={(e) => e.key === 'Enter' && handleCancel()}
-            {...(!isMobile && { onBlur: handleCancel })}
+            onSubmit={handleCancel}
+            onCancel={handleCancel}
           />
         </div>
       )}
 
       {/* 삭제 확인 다이얼로그 */}
-      <AlertDialog open={!!deleteCandidate} onOpenChange={(open) => {
-        if (!open) {
-          setDeleteCandidate(null);
-        }
-      }}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>정말 삭제하시겠습니까?</AlertDialogTitle>
-            <AlertDialogDescription>
-              "{deleteCandidate?.name}" 카테고리를 삭제합니다. 이 작업은 되돌릴 수 없습니다.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setDeleteCandidate(null)}>취소</AlertDialogCancel>
-            <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={() => setDeleteCandidate(null)}>삭제</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <CategoryDeleteDialog
+        open={!!deleteCandidate}
+        category={deleteCandidate}
+        onConfirm={() => setDeleteCandidate(null)}
+        onCancel={() => setDeleteCandidate(null)}
+      />
     </div>
   );
 }
@@ -159,11 +137,11 @@ function CategoryNode({
   if (renamingId === category.id) {
     return (
       <div className="pl-4">
-        <Input 
+        <CategoryInput
           defaultValue={category.name}
           autoFocus
-          onKeyDown={(e) => e.key === 'Enter' && onCancel()}
-          {...(!isMobile && { onBlur: onCancel })}
+          onSubmit={onCancel}
+          onCancel={onCancel}
         />
       </div>
     );
@@ -180,42 +158,17 @@ function CategoryNode({
           <div className="w-5" /> // 정렬을 위한 스페이서
         )}
         
-        {isMobile ? (
-          <>
-            {/* Mobile: Separated buttons */}
-            <Button
-              variant="ghost"
-              className={cn("flex-1 justify-start h-8 truncate", selectedId === category.id && "bg-accent text-accent-foreground")}
-              onClick={() => onSelect(category.id)}
-            >
-              {category.name}
-            </Button>
-            {hasChildren && (
-              <CollapsibleTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <FiChevronRight className={cn("transition-transform", isOpen && "rotate-90")} />
-                </Button>
-              </CollapsibleTrigger>
-            )}
-          </>
-        ) : (
-          // Desktop: Combined button
-          <CollapsibleTrigger asChild className="flex-1">
-            <Button
-              variant="ghost"
-              className={cn("w-full justify-start h-8", selectedId === category.id && "bg-accent text-accent-foreground")}
-              onClick={() => onSelect(category.id)}
-            >
-              {hasChildren && <FiChevronRight className={cn("transition-transform mr-2", isOpen && "rotate-90")} />}
-              <span className="truncate flex-1 text-left">{category.name}</span>
-            </Button>
-          </CollapsibleTrigger>
-        )}
+        {isMobile || true ? (
+          <CategoryButton
+            selected={selectedId === category.id}
+            onClick={() => onSelect(category.id)}
+            isMobile={!!isMobile}
+            hasChildren={!!hasChildren}
+            isOpen={!!isOpen}
+          >
+            {category.name}
+          </CategoryButton>
+        ) : null}
         
         {/* 점 세개(케밥) 메뉴 (전체보기 제외) */}
         {category.id > ALL_CATEGORY_ID && (
@@ -264,11 +217,10 @@ function CategoryNode({
           {/* 하위 카테고리 추가 입력창 */}
           { addingToId !== ALL_CATEGORY_ID && addingToId === category.id && (
             <div className="pl-4">
-              <Input 
+              <CategoryInput
                 autoFocus
-                placeholder="입력 후 엔터" 
-                onKeyDown={(e) => e.key === 'Enter' && onCancel()}
-                {...(!isMobile && { onBlur: onCancel })}
+                onSubmit={onCancel}
+                onCancel={onCancel}
               />
             </div>
           )}
