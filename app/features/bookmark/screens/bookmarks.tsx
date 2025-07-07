@@ -25,6 +25,7 @@ import type {
   Bookmark,
   Category,
   BookmarksState,
+  UI_View,
 } from "../types/bookmark.types";
 
 import { useMemo, useReducer, useCallback, useState } from "react";
@@ -40,7 +41,7 @@ import {
 } from '../lib/constants'
 import { bookmarksReducer, 
   buildCategoryTree, 
-  toUIViewTabs, toBookmarks } from '../lib/bmUtils'
+  toUIViewTabs, toBookmarks, toCategory } from '../lib/bmUtils'
 import { highlightText } from "~/core/lib/common";
 import { useFilteredBookmarks } from '../hooks/use-filtered-bookmarks'
 import { CategorySidebar } from '../components/category-sidebar'
@@ -129,8 +130,12 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
  * - `CategorySidebar`, `BookmarkToolbar`, `BookmarkTable` 등 하위 컴포넌트의 조합 및 데이터 전달
  */
 export default function Bookmarks({ loaderData }: Route.ComponentProps) {
-  const { categories, tabs, bookmarks } = loaderData;
+  const { categories: initialCategories, tabs: initialTabs, bookmarks } = loaderData;
 
+  const [categories, setCategories] = useState<Category[]>(initialCategories.map(toCategory));
+  const [tabs, setTabs] = useState<UI_View[]>(initialTabs.map(toUIViewTabs));
+
+  //console.log(categories);
   const categoryTree = useMemo(() => {
     return buildCategoryTree(categories);
   }, [categories]);
@@ -142,8 +147,8 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
       { id: UNCATEGORIZED_TAB_ID, name: '미분류', content_type_id: 1, ui_view_type_id: 1, category_id: UNCATEGORIZED_CATEGORY_ID },
     ];
     // DB에서 온 탭 데이터 변환
-    const dbTabs = tabs.map(toUIViewTabs);
-    return [...defaultTabs, ...dbTabs];
+    //const dbTabs = tabs.map(toUIViewTabs);
+    return [...defaultTabs, ...tabs];
   }, [tabs]);
 
   const bmList = useMemo(() => {
@@ -194,7 +199,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
     };
     buildMap(categoryTree);
     return map;
-  }, []);
+  }, [categoryTree]);
 
   // 탭 변경 핸들러
   const handleTabChange = useCallback(
@@ -202,7 +207,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
       const categoryId = uiViewTabs.find(t => t.id === newTabId)?.category_id;
       dispatch({ type: 'CHANGE_TAB', payload: { tabId: newTabId, categoryId } });
     },
-    [dispatch],
+    [uiViewTabs]
   );
 
   // 카테고리 변경 핸들러
@@ -278,8 +283,10 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
     <div className="flex gap-10">
       <CategorySidebar
         categories={categoryTree}
+        setCategories={setCategories}
         selectedId={selectedCategoryId}
         onSelect={handleCategoryChange}
+        setTabs={setTabs}
       />
       {/* 🔹 2. 메인 콘텐츠 영역 */}
       <main className="flex-1 space-y-4">

@@ -9,18 +9,23 @@ import { CategoryDeleteDialog } from "./category-delete-dialog";
 import { CategoryButton } from "./category-button";
 import { CategoryTreeProvider, useCategoryTreeContext } from "./category-tree-context";
 import { CategoryActionsMenu } from "./category-actions-menu";
+import type { Category, UI_View } from "../types/bookmark.types";
+import { toCategory, toUIViewTabs } from "../lib/bmUtils";
 
-export type Category = {
-  id: number;
-  name: string;
-  children?: Category[];
-};
-
-export function CategoryTree({ categories, selectedId, onSelect, isMobile: isMobileProp }: {
+export function CategoryTree({
+  categories,
+  selectedId,
+  onSelect,
+  isMobile: isMobileProp,
+  setCategories,
+  setTabs,
+}: {
   categories: Category[];
   selectedId: number;
   onSelect: (id: number) => void;
   isMobile?: boolean;
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
+  setTabs: React.Dispatch<React.SetStateAction<UI_View[]>>;
 }) {
   const isMobile = isMobileProp ?? useIsMobile();
   return (
@@ -30,18 +35,31 @@ export function CategoryTree({ categories, selectedId, onSelect, isMobile: isMob
         selectedId={selectedId}
         onSelect={onSelect}
         isMobile={isMobile}
+        setCategories={setCategories}
+        setTabs={setTabs}
       />
     </CategoryTreeProvider>
   );
 }
 
-function CategoryTreeInner({ categories, selectedId, onSelect, isMobile }: {
+function CategoryTreeInner({
+  categories,
+  selectedId,
+  onSelect,
+  isMobile,
+  setCategories,
+  setTabs,
+}: {
   categories: Category[];
   selectedId: number;
   onSelect: (id: number) => void;
   isMobile: boolean;
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
+  setTabs: React.Dispatch<React.SetStateAction<UI_View[]>>;
 }) {
   const { state, dispatch } = useCategoryTreeContext();
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   return (
     <div className="space-y-1">
       {categories.map((category) => (
@@ -65,8 +83,51 @@ function CategoryTreeInner({ categories, selectedId, onSelect, isMobile }: {
         <div className="pl-4">
           <CategoryInput
             autoFocus
-            onSubmit={() => dispatch({ type: "CANCEL" })}
-            onCancel={() => dispatch({ type: "CANCEL" })}
+            onSubmit={async (name) => {
+              if (submitting) return;
+              setSubmitting(true);
+              setError("");
+
+              try {
+                // 1. 새 카테고리 추가 요청
+                const res_add = await fetch("/bookmarks/api/category", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ name }),
+                });
+
+                if (!res_add.ok) {
+                  const { error } = await res_add.json();
+                  setError(error || "카테고리 추가에 실패했습니다.");
+                  return;
+                }
+
+                // 2. 전체 카테고리/탭 목록 재요청
+                const res_get = await fetch("/bookmarks/api/category");
+                if (!res_get.ok) {
+                  setError("카테고리 목록을 불러오지 못했습니다.");
+                  return;
+                }
+                const { categories: newCategories, tabs: newTabs } = await res_get.json();
+                setCategories(newCategories.map(toCategory));
+                setTabs(newTabs.map(toUIViewTabs));
+
+                // 3. 상태 갱신 및 입력창 닫기
+                dispatch({ type: "SET_CATEGORIES", categories: newCategories });
+                dispatch({ type: "CANCEL" });
+              } catch (e) {
+                setError("알 수 없는 에러가 발생했습니다.");
+              } finally {
+                setSubmitting(false);
+              }
+            }}
+            onCancel={() => {
+              setError("");
+              setSubmitting(false);
+              dispatch({ type: "CANCEL" });
+            }}
+            error={error}
+            disabled={submitting}
           />
         </div>
       )}

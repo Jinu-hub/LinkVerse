@@ -1,17 +1,21 @@
 import { useState } from 'react'
-import type { Category } from '../types/bookmark.types'
+import type { Category, UI_View } from '../types/bookmark.types'
 import { CategoryTree } from './category-tree'
 
 interface CategorySidebarProps {
   categories: Category[]
   selectedId: number
   onSelect: (id: number) => void
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
+  setTabs: React.Dispatch<React.SetStateAction<UI_View[]>>;
 }
 
 export function CategorySidebar({
   categories,
   selectedId,
   onSelect,
+  setCategories,
+  setTabs,
 }: CategorySidebarProps) {
 
   return (
@@ -23,6 +27,8 @@ export function CategorySidebar({
           categories={categories}
           selectedId={selectedId}
           onSelect={onSelect}
+          setCategories={setCategories}
+          setTabs={setTabs}
         />
       </aside>
 
