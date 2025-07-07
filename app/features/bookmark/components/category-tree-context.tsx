@@ -7,6 +7,7 @@ interface CategoryTreeState {
   renamingId: number | null;
   addingToId: number | null;
   deleteCandidate: Category | null;
+  categories: Category[];
 }
 
 // 액션 타입
@@ -15,12 +16,14 @@ export type CategoryTreeAction =
   | { type: "ADD"; parentId: number | null }
   | { type: "CANCEL" }
   | { type: "DELETE_CANDIDATE_SET"; category: Category }
-  | { type: "DELETE_CANDIDATE_CLEAR" };
+  | { type: "DELETE_CANDIDATE_CLEAR" }
+  | { type: "SET_CATEGORIES"; categories: Category[] };
 
 const initialState: CategoryTreeState = {
   renamingId: null,
   addingToId: null,
   deleteCandidate: null,
+  categories: [],
 };
 
 function reducer(state: CategoryTreeState, action: CategoryTreeAction): CategoryTreeState {
@@ -35,6 +38,8 @@ function reducer(state: CategoryTreeState, action: CategoryTreeAction): Category
       return { ...state, deleteCandidate: action.category };
     case "DELETE_CANDIDATE_CLEAR":
       return { ...state, deleteCandidate: null };
+    case "SET_CATEGORIES":
+      return { ...state, categories: action.categories };
     default:
       return state;
   }

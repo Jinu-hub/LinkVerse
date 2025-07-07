@@ -148,8 +148,19 @@ export function pathExists(categories: Category[], path: string[]): boolean {
   return true;
 }
 
+// Category 타입으로 변환
+export function toCategory(cat: any): Category {
+  return {
+    id: cat.category_id,
+    parent_id: cat.parent_category_id,
+    name: cat.category_name,
+    level: cat.level,
+    children: [], // buildCategoryTree에서 children 채움
+  };
+}
+
 // flat 배열을 트리로 변환
-export function buildCategoryTree(flatCategories: any[]): Category[] {
+export function buildCategoryTree(flatCategories: Category[]): Category[] {
   // 1. 항상 추가할 루트 카테고리 2개
   const rootCategories: Category[] = [
     { id: ALL_CATEGORY_ID, parent_id: 0, name: '🗂️ 전체보기', level: 0, is_root: true, children: [] },
@@ -159,10 +170,10 @@ export function buildCategoryTree(flatCategories: any[]): Category[] {
   // 2. flatCategories에서 트리 생성
   const idMap: { [key: string]: Category } = {};
   flatCategories.forEach(cat => {
-    idMap[String(cat.category_id)] = {
-      id: cat.category_id,
-      parent_id: cat.parent_category_id,
-      name: cat.category_name,
+    idMap[String(cat.id)] = {
+      id: cat.id,
+      parent_id: cat.parent_id,
+      name: cat.name,
       level: cat.level,
       is_root: cat.is_root ?? false,
       children: [],
