@@ -70,6 +70,12 @@ function CategoryTreeInner({
           selectedId={selectedId}
           onSelect={onSelect}
           isMobile={isMobile}
+          setCategories={setCategories}
+          setTabs={setTabs}
+          setError={setError}
+          setSubmitting={setSubmitting}
+          error={error}
+          submitting={submitting}
         />
       ))}
       {/* "새 카테고리" 버튼 */}
@@ -123,11 +129,23 @@ function CategoryNode({
   selectedId,
   onSelect,
   isMobile: isMobileProp,
+  setCategories,
+  setTabs,
+  setError,
+  setSubmitting,
+  error,
+  submitting,
 }: {
   category: Category;
   selectedId: number;
   onSelect: (id: number) => void;
   isMobile?: boolean;
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
+  setTabs: React.Dispatch<React.SetStateAction<UI_View[]>>;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+  setSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
+  error: string;
+  submitting: boolean;
 }) {
   const isMobile = isMobileProp ?? useIsMobile();
   const { state, dispatch } = useCategoryTreeContext();
@@ -186,6 +204,12 @@ function CategoryNode({
               selectedId={selectedId}
               onSelect={onSelect}
               isMobile={isMobile}
+              setCategories={setCategories}
+              setTabs={setTabs}
+              setError={setError}
+              setSubmitting={setSubmitting}
+              error={error}
+              submitting={submitting}
             />
           ))}
           {/* 하위 카테고리 추가 입력창 */}
@@ -193,8 +217,28 @@ function CategoryNode({
             <div className="pl-4">
               <CategoryInput
                 autoFocus
-                onSubmit={() => dispatch({ type: "CANCEL" })}
-                onCancel={() => dispatch({ type: "CANCEL" })}
+                onSubmit={async (name) => {
+                  await addCategory({
+                    name,
+                    setCategories,
+                    setTabs,
+                    setError,
+                    dispatch,
+                    toCategory,
+                    toUIViewTabs,
+                    setSubmitting,
+                    parent_id: category.id,
+                    level: category.level + 1,
+                  });
+                }}
+                onCancel={() => {
+                  setError("");
+                  setSubmitting(false);
+                  dispatch({ type: "CANCEL" });
+                }}
+                error={error}
+                setError={setError}
+                disabled={submitting}
               />
             </div>
           )}
