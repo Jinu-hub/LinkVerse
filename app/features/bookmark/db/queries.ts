@@ -31,7 +31,8 @@ export const getBookmarkCategories = async (
     .from('category')
     .select('*')
     .eq('user_id', userId)
-    .eq('content_type_id', contentTypeId);
+    .eq('content_type_id', contentTypeId)
+    .order('sort_order', { ascending: true });
   if (error) {
     throw error;
   }
@@ -105,7 +106,8 @@ export const getUIViewTabs = async (
     )
     .eq('user_id', userId)
     .eq('ui_type_id', uiTypeId)
-    .eq('content_type_id', 1);
+    .eq('content_type_id', 1)
+    .order('sort_order', { ascending: true });
   if (error) {
     throw error;
   }

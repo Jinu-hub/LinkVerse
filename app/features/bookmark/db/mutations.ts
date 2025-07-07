@@ -25,21 +25,21 @@ export const createBookmarkCategory = async (
     }
 }
 
-export const updateBookmarkCategory = async (
+export const updateBookmarkCategoryName = async (
     client: SupabaseClient<Database>,
-    { userId, name, parentId, categoryId }:
-    { userId: string, name: string, parentId: number | null, categoryId: number },
+    { userId, name, categoryId }:
+    { userId: string, name: string, categoryId: number },
 ) => {
-    const { data, error } = await client
+    const { error } = await client
         .from('category')
-        .update({ category_name: name, parent_category_id: parentId })
+        .update({ category_name: name })
         .eq('user_id', userId)
         .eq('category_id', categoryId)  
+        .eq('content_type_id', 1)
         .select()
     if (error) {
         throw error
     }
-    return data
 }
 
 export const deleteBookmarkCategory = async (
