@@ -4,7 +4,10 @@ import { data } from "react-router";
 import { z } from "zod";
 
 import makeServerClient from "~/core/lib/supa-client.server";
-import { getBookmarkCategories, getUIViewTabs } from "../db/queries";
+import { getBookmarkCategories, 
+    getMaxCategorySortOrder, 
+    getUIViewTabs, 
+    isExistsCategoryName } from "../db/queries";
 import { createBookmarkCategory } from "../db/mutations";
 
 const categorySchema = z.object({
@@ -47,7 +50,11 @@ export const loader = async ({ params, request }: { params: { id: number }, requ
   });
 };
 
-// POST: 새 카테고리 추가
+/**
+ * Add Category API
+ * @param request 
+ * @returns 
+ */
 export async function action({ request }: Route.ActionArgs) {
   if (request.method !== "POST") {
     return new Response("Method Not Allowed", { status: 405 });
@@ -61,20 +68,32 @@ export async function action({ request }: Route.ActionArgs) {
     return new Response("Invalid data", { status: 400 });
   }
   const { name, parent_id, level, sort_order } = parsed.data;
-  if ('test' === name) {
-    return new Response(JSON.stringify({ error: "같은 이름의 카테고리가 있습니다." }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" }
-    });
-  }
+
   try {
-    
+    // 같은 이름의 카테고리가 있는지 확인
+    const isExists = await isExistsCategoryName(client, {
+      userId: user.id,
+      name,
+      parent_id: parent_id ?? null,
+    });
+    if (isExists) {
+      return new Response(JSON.stringify({ error: "같은 이름의 카테고리가 있습니다." }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    // 최대 정렬 순서 조회
+    const maxSortOrder = await getMaxCategorySortOrder(client, {
+         userId: user.id, parent_id: parent_id ?? null });
+
+    // 카테고리 생성
     await createBookmarkCategory(client, {
       userId: user.id,
       name,
-      parentId: parent_id ?? null,
+      parent_id: parent_id ?? null,
       level: level ?? 1,
-      sortOrder: sort_order ?? 0,
+      sort_order: sort_order ?? Number(maxSortOrder) + 1,
     });
     
     return data({ success: true }, { status: 200 });

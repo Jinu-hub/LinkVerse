@@ -163,3 +163,35 @@ export const getBookmarkMemo = async (
   if (error) throw error;
   return data?.[0]?.content || '';
 }
+
+export const isExistsCategoryName = async (
+  client: SupabaseClient<Database>,
+  { userId, name, parent_id }: 
+  { userId: string, name: string, parent_id: number | null },
+) => {
+  let query = client
+  .from('category')
+  .select('*', { count: 'exact', head: true })
+  .eq('user_id', userId)
+  .eq('category_name', name);
+
+  query = parent_id === null
+    ? query.is('parent_category_id', null)
+    : query.eq('parent_category_id', parent_id);
+
+  const { count, error } = await query;
+  if (error) throw error;
+  return count ?? 0 > 0 ? true : false;
+};
+
+export const getMaxCategorySortOrder = async (
+  client: SupabaseClient<Database>,
+  { userId, parent_id }: { userId: string; parent_id: number | null },
+): Promise<number> => {
+  const { data, error } = await client.rpc('get_max_category_sort_order', {
+    user_id: userId,
+    parent_id: parent_id as any,
+  });
+  if (error) throw error;
+  return data ?? 0;
+};

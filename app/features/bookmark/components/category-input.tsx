@@ -9,6 +9,7 @@ interface CategoryInputProps {
   onSubmit: (value: string) => void;
   onCancel: () => void;
   error?: string;
+  setError?: (msg: string) => void;
   disabled?: boolean;
 }
 
@@ -19,6 +20,7 @@ export function CategoryInput({
   onSubmit,
   onCancel,
   error,
+  setError,
   disabled = false,
 }: CategoryInputProps) {
   const [value, setValue] = useState(defaultValue);
@@ -54,7 +56,10 @@ export function CategoryInput({
         value={value}
         placeholder={placeholder}
         autoFocus={autoFocus}
-        onChange={e => setValue(e.target.value)}
+        onChange={e => {
+          setValue(e.target.value);
+          if (setError) setError("");
+        }}
         onKeyDown={handleKeyDown}
         onBlur={handleBlur}
         disabled={disabled}
