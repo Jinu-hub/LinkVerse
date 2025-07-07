@@ -119,6 +119,11 @@ function CategoryTreeInner({
         category={state.deleteCandidate}
         onConfirm={() => dispatch({ type: "DELETE_CANDIDATE_CLEAR" })}
         onCancel={() => dispatch({ type: "DELETE_CANDIDATE_CLEAR" })}
+        setCategories={setCategories}
+        setTabs={setTabs}
+        dispatch={dispatch}
+        toCategory={toCategory}
+        toUIViewTabs={toUIViewTabs}
       />
     </div>
   );

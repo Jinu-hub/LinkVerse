@@ -36,6 +36,13 @@
       "when": 1751632942875,
       "tag": "0004_fat_black_widow",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1751893587287,
+      "tag": "0005_stiff_stranger",
+      "breakpoints": true
     }
   ]
 }

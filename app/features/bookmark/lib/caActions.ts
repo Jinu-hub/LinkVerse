@@ -112,7 +112,6 @@ export async function addCategory({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             name,
-            category_id,
             parent_id: parent_id ?? null,
         }),
       });
@@ -143,3 +142,56 @@ export async function addCategory({
       setSubmitting(false);
     }
   }
+
+  export async function deleteCategory({
+    category_id,
+    setCategories,
+    setTabs,
+    dispatch,
+    toCategory,
+    toUIViewTabs,
+  }: {
+    category_id: number;
+    setCategories: (cats: any[]) => void;
+    setTabs: (tabs: any[]) => void;
+    dispatch: any;
+    toCategory: (cat: any) => any;
+    toUIViewTabs: (tab: any) => any;
+  }) {
+    if (!category_id) return;
+    //setSubmitting(true);
+    //setError("");
+    try {
+      // 1. 카테고리 삭제 요청
+      const res_delete = await fetch(`/bookmarks/api/category/${category_id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!res_delete.ok) {
+        const { error } = await res_delete.json();
+        //setError(error || "카테고리 삭제에 실패했습니다.");
+        return;
+      }
+
+      // 2. 전체 카테고리/탭 목록 재요청
+      const res_get = await fetch("/bookmarks/api/category");
+      if (!res_get.ok) {
+        //setError("카테고리 목록을 불러오지 못했습니다.");
+        return;
+      }
+      const { categories: newCategories, tabs: newTabs } = await res_get.json();
+      setCategories(newCategories.map(toCategory));
+      setTabs(newTabs.map(toUIViewTabs));
+
+      // 3. 상태 갱신 및 입력창 닫기
+      dispatch({ type: "SET_CATEGORIES", categories: newCategories });
+      dispatch({ type: "CANCEL" });
+    } catch (e) {
+      console.log(e);
+      //setError("알 수 없는 에러가 발생했습니다.");
+    } finally {
+      //setSubmitting(false);
+    }
+  }
+  

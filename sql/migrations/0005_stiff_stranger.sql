@@ -1,0 +1,1 @@
+ALTER TABLE "category" ADD CONSTRAINT "category_parent_category_id_category_category_id_fk" FOREIGN KEY ("parent_category_id") REFERENCES "public"."category"("category_id") ON DELETE cascade ON UPDATE no action;

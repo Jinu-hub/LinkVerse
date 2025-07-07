@@ -9,16 +9,32 @@ import {
   AlertDialogTitle,
 } from "~/core/components/ui/alert-dialog";
 
-import type { Category } from "./category-tree";
+import type { Category } from "../types/bookmark.types";
+import { deleteCategory } from "../lib/caActions";
 
 interface CategoryDeleteDialogProps {
   open: boolean;
   category: Category | null;
   onConfirm: () => void;
   onCancel: () => void;
+  setCategories: (cats: any[]) => void;
+  setTabs: (tabs: any[]) => void;
+  dispatch: any;
+  toCategory: (cat: any) => any;
+  toUIViewTabs: (tab: any) => any;
 }
 
-export function CategoryDeleteDialog({ open, category, onConfirm, onCancel }: CategoryDeleteDialogProps) {
+export function CategoryDeleteDialog({ 
+  open, 
+  category, 
+  onConfirm, 
+  onCancel,
+  setCategories,
+  setTabs,
+  dispatch,
+  toCategory,
+  toUIViewTabs,
+}: CategoryDeleteDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={(open) => {
       if (!open) onCancel();
@@ -32,7 +48,20 @@ export function CategoryDeleteDialog({ open, category, onConfirm, onCancel }: Ca
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onCancel}>취소</AlertDialogCancel>
-          <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={onConfirm}>삭제</AlertDialogAction>
+          <AlertDialogAction className="bg-red-600 hover:bg-red-700" 
+          onClick=
+          {async () => {
+            await deleteCategory({
+              category_id: category!.id,
+              setCategories,
+              setTabs,
+              dispatch,
+              toCategory,
+              toUIViewTabs,
+            });
+            onConfirm();
+          }}>삭제
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
