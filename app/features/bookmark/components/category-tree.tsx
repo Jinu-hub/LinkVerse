@@ -11,7 +11,7 @@ import { CategoryTreeProvider, useCategoryTreeContext } from "./category-tree-co
 import { CategoryActionsMenu } from "./category-actions-menu";
 import type { Category, UI_View } from "../types/bookmark.types";
 import { toCategory, toUIViewTabs } from "../lib/bmUtils";
-import { addCategory } from "../lib/caActions";
+import { addCategory, updateCategoryName } from "../lib/caActions";
 
 export function CategoryTree({
   categories,
@@ -165,8 +165,28 @@ function CategoryNode({
         <CategoryInput
           defaultValue={category.name}
           autoFocus
-          onSubmit={() => dispatch({ type: "CANCEL" })}
-          onCancel={() => dispatch({ type: "CANCEL" })}
+          onSubmit={async (name) => {
+            await updateCategoryName({
+              name,
+              setCategories,
+              setTabs,
+              setError,
+              dispatch,
+              toCategory,
+              toUIViewTabs,
+              setSubmitting,
+              category_id: category.id,
+              parent_id: category.parent_id ?? undefined,
+            });
+          }}
+          onCancel={() => {
+            setError("");
+            setSubmitting(false);
+            dispatch({ type: "CANCEL" });
+          }}
+          error={error}
+          setError={setError}
+          disabled={submitting}
         />
       </div>
     );
