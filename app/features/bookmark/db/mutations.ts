@@ -3,8 +3,8 @@ import type { Database } from "database.types";
 
 export const createBookmarkCategory = async (
     client: SupabaseClient<Database>,
-    { userId, name, parentId, level, sortOrder }:
-    { userId: string, name: string, parentId: number | null, level: number, sortOrder: number },
+    { userId, name, parent_id, level, sort_order }:
+    { userId: string, name: string, parent_id: number | null, level: number, sort_order: number },
 ) => {
     const { error } = await client
         .from('category')
@@ -12,10 +12,10 @@ export const createBookmarkCategory = async (
             user_id: userId, 
             content_type_id: 1,
             category_name: name, 
-            parent_category_id: parentId,
+            parent_category_id: parent_id,
             is_default: false,
             level: level ? level : 1,
-            sort_order: sortOrder ? sortOrder : 0,
+            sort_order: sort_order ? sort_order : 0,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
         })

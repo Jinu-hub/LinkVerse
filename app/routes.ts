@@ -115,6 +115,7 @@ export default [
   layout("features/bookmark/layouts/bookmark.layout.tsx", [
     ...prefix("/bookmarks", [
       index("features/bookmark/screens/bookmarks.tsx"),
+      route("/api/category", "features/bookmark/api/category.tsx"),
     ]),
   ]),
 

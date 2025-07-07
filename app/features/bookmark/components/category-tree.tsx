@@ -11,6 +11,7 @@ import { CategoryTreeProvider, useCategoryTreeContext } from "./category-tree-co
 import { CategoryActionsMenu } from "./category-actions-menu";
 import type { Category, UI_View } from "../types/bookmark.types";
 import { toCategory, toUIViewTabs } from "../lib/bmUtils";
+import { addCategory } from "../lib/caActions";
 
 export function CategoryTree({
   categories,
@@ -84,42 +85,16 @@ function CategoryTreeInner({
           <CategoryInput
             autoFocus
             onSubmit={async (name) => {
-              if (submitting) return;
-              setSubmitting(true);
-              setError("");
-
-              try {
-                // 1. 새 카테고리 추가 요청
-                const res_add = await fetch("/bookmarks/api/category", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ name }),
-                });
-
-                if (!res_add.ok) {
-                  const { error } = await res_add.json();
-                  setError(error || "카테고리 추가에 실패했습니다.");
-                  return;
-                }
-
-                // 2. 전체 카테고리/탭 목록 재요청
-                const res_get = await fetch("/bookmarks/api/category");
-                if (!res_get.ok) {
-                  setError("카테고리 목록을 불러오지 못했습니다.");
-                  return;
-                }
-                const { categories: newCategories, tabs: newTabs } = await res_get.json();
-                setCategories(newCategories.map(toCategory));
-                setTabs(newTabs.map(toUIViewTabs));
-
-                // 3. 상태 갱신 및 입력창 닫기
-                dispatch({ type: "SET_CATEGORIES", categories: newCategories });
-                dispatch({ type: "CANCEL" });
-              } catch (e) {
-                setError("알 수 없는 에러가 발생했습니다.");
-              } finally {
-                setSubmitting(false);
-              }
+              await addCategory({
+                name,
+                setCategories,
+                setTabs,
+                setError,
+                dispatch,
+                toCategory,
+                toUIViewTabs,
+                setSubmitting,
+              });
             }}
             onCancel={() => {
               setError("");
@@ -127,6 +102,7 @@ function CategoryTreeInner({
               dispatch({ type: "CANCEL" });
             }}
             error={error}
+            setError={setError}
             disabled={submitting}
           />
         </div>
