@@ -36,7 +36,6 @@ export const updateBookmarkCategoryName = async (
         .eq('user_id', userId)
         .eq('category_id', categoryId)  
         .eq('content_type_id', 1)
-        .select()
     if (error) {
         throw error
     }
@@ -46,12 +45,14 @@ export const deleteBookmarkCategory = async (
     client: SupabaseClient<Database>,
     { userId, categoryId }: { userId: string, categoryId: number },
 ) => {
+    console.log("deleteBookmarkCategory", userId, categoryId);
     const { data, error } = await client
         .from('category')
         .delete()
         .eq('user_id', userId)
         .eq('category_id', categoryId)
-        .select()
+        .eq('content_type_id', 1)
+    console.log("deleteBookmarkCategory", error);
     if (error) {
         throw error
     }

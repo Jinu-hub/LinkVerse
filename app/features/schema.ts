@@ -107,7 +107,9 @@ export const uiType = pgTable("ui_type",
   ]
 );
 
-export const category = pgTable(
+export let category: any;
+
+category = pgTable(
 "category",
 {
     category_id: bigint({ mode: "number" }).primaryKey().generatedAlwaysAsIdentity(),
@@ -117,7 +119,8 @@ export const category = pgTable(
       .references(() => contentType.content_type_id, { onDelete: "cascade" }),
     category_name: varchar({ length: 100 }).notNull(),
     level: integer(),
-    parent_category_id: bigint({ mode: "number" }),
+    parent_category_id: bigint({ mode: "number" })
+      .references(() => category.category_id, { onDelete: "cascade" }),
     sort_order: integer(),
     is_default: boolean().notNull().default(false),
     created_at: timestamp({ withTimezone: true }).defaultNow().notNull(),

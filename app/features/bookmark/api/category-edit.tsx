@@ -5,11 +5,10 @@ import { z } from "zod";
 
 import makeServerClient from "~/core/lib/supa-client.server";
 import { getBookmarkCategories, getUIViewTabs, isExistsCategoryName } from "../db/queries";
-import { updateBookmarkCategoryName } from "../db/mutations";
+import { deleteBookmarkCategory, updateBookmarkCategoryName } from "../db/mutations";
 
 const categorySchema = z.object({
     name: z.string().min(1),
-    category_id: z.number(),
     parent_id: z.number().nullable().optional(),
   });
 
@@ -32,25 +31,30 @@ export const loader = async ({ request }: { request: Request }) => {
  * @param request 
  * @returns 
  */
-export async function action({ request }: Route.ActionArgs) {
-  if (request.method !== "PUT" && request.method !== "PATCH") {
+export async function action({ request, params }: Route.ActionArgs) {
+  if (request.method !== "PUT" && request.method !== "PATCH" && request.method !== "DELETE") {
     return new Response("Method Not Allowed", { status: 405 });
   }
   const [client] = makeServerClient(request);
   const { data: { user } } = await client.auth.getUser();
   if (!user) return new Response("Unauthorized", { status: 401 });
-  const body = await request.json();
-  const parsed = categorySchema.safeParse(body);
-  if (!parsed.success) {
-    return new Response("Invalid data", { status: 400 });
+
+  const category_id = Number(params.id);
+  if (isNaN(category_id)) {
+    return new Response("Invalid category id", { status: 400 });
   }
-  const { name, category_id, parent_id } = parsed.data;
-  console.log(name, category_id, parent_id);
+
   try {
 
     if ( category_id && 
         (request.method === "PUT" || request.method === "PATCH")) {
       // 카테고리 이름 변경
+      const body = await request.json();
+      const parsed = categorySchema.safeParse(body);
+      if (!parsed.success) {
+        return new Response("Invalid data", { status: 400 });
+      }
+      const { name, parent_id } = parsed.data;
 
       // 같은 이름의 카테고리가 있는지 확인
       const isExists = await isExistsCategoryName(client, {
@@ -71,7 +75,14 @@ export async function action({ request }: Route.ActionArgs) {
         categoryId: category_id,
       });
     }
-     
+
+    if (category_id && request.method === "DELETE") {
+      await deleteBookmarkCategory(client, {
+        userId: user.id,
+        categoryId: category_id,
+      });
+    }
+
     return data({ success: true }, { status: 200 });
   } catch (error: any) {
     return data({ error: error.message }, { status: 400 });

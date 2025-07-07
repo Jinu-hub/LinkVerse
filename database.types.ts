@@ -103,6 +103,13 @@ export type Database = {
             referencedRelation: "content_type"
             referencedColumns: ["content_type_id"]
           },
+          {
+            foreignKeyName: "category_parent_category_id_category_category_id_fk"
+            columns: ["parent_category_id"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["category_id"]
+          },
         ]
       }
       content_type: {
