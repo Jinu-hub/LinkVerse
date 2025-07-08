@@ -43,6 +43,13 @@
       "when": 1751893587287,
       "tag": "0005_stiff_stranger",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1751973899505,
+      "tag": "0006_noisy_steel_serpent",
+      "breakpoints": true
     }
   ]
 }

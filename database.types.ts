@@ -19,7 +19,9 @@ export type Database = {
           bookmark_id: number
           category_id: number | null
           created_at: string
+          description: string | null
           is_favorite: boolean
+          meta_data: Json | null
           thumbnail_url: string | null
           title: string | null
           updated_at: string
@@ -30,7 +32,9 @@ export type Database = {
           bookmark_id?: never
           category_id?: number | null
           created_at?: string
+          description?: string | null
           is_favorite?: boolean
+          meta_data?: Json | null
           thumbnail_url?: string | null
           title?: string | null
           updated_at?: string
@@ -41,7 +45,9 @@ export type Database = {
           bookmark_id?: never
           category_id?: number | null
           created_at?: string
+          description?: string | null
           is_favorite?: boolean
+          meta_data?: Json | null
           thumbnail_url?: string | null
           title?: string | null
           updated_at?: string
