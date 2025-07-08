@@ -21,6 +21,8 @@ type Props = {
   categories: Category[];
   selectedId: number;
   onSelect: (id: number) => void;
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
+  setTabs: React.Dispatch<React.SetStateAction<UI_View[]>>;
 };
 
 export function BookmarkToolbar({
@@ -34,6 +36,8 @@ export function BookmarkToolbar({
   categories,
   selectedId,
   onSelect,
+  setCategories,
+  setTabs,
 }: Props) {
 
   const [isSheetOpen, setIsSheetOpen] = useState(false)
@@ -66,6 +70,8 @@ export function BookmarkToolbar({
               selectedId={selectedId}
               onSelect={handleSelect}
               isMobile={true}
+              setCategories={setCategories}
+              setTabs={setTabs}
             />
           </SheetContent>
         </Sheet>

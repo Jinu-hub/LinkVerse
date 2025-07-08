@@ -8,6 +8,7 @@ import {
   varchar,
   boolean,
   bigint,
+  jsonb,
 } from "drizzle-orm/pg-core";
 import { authUid, authUsers, authenticatedRole } from "drizzle-orm/supabase";
 import { category } from "~/features/schema";
@@ -23,6 +24,8 @@ export const bookmark = pgTable(
       title: varchar({ length: 255 }),
       url: text(),
       thumbnail_url: text(),
+      description: text(),
+      meta_data: jsonb(),
       is_favorite: boolean().notNull().default(false),
       created_at: timestamp({ withTimezone: true }).defaultNow().notNull(),
       updated_at: timestamp({ withTimezone: true }).defaultNow().notNull(),

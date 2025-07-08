@@ -1,73 +1,33 @@
 import { Button } from "~/core/components/ui/button";
-import { Badge } from "~/core/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/core/components/ui/table";
-import { FiMoreHorizontal } from "react-icons/fi";
-import type { Bookmark, Category } from "../types/bookmark.types";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "~/core/components/ui/table";
+import type { Bookmark, BookmarkTableProps } from "../types/bookmark.types";
 import BookmarkDetailDialog from "./bookmark-detail-dialog";
 import { useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "~/core/components/ui/dropdown-menu";
-import { ALL_CATEGORY_ID } from "../lib/constants";
-
-interface BookmarkTableProps {
-  pagedBookmarks: Bookmark[];
-  sortKey: keyof Bookmark;
-  sortOrder: 'asc' | 'desc';
-  onSort: (key: keyof Bookmark) => void;
-  onRowClick: (bookmark: Bookmark) => void;
-  highlightText: (text: string, keyword: string) => React.ReactNode;
-  search: string;
-  // Pagination
-  page: number;
-  totalPages: number;
-  totalRows: number;
-  startEntry: number;
-  endEntry: number;
-  onPageChange: (newPage: number) => void;
-  categoryTree: Category[];
-};
+import { ALL_CATEGORY_ID, SORTABLE_COLUMNS } from "../lib/constants";
+import { BookmarkTableRow } from "./bookmark-table-row";
 
 export function BookmarkTable({
   pagedBookmarks,
-  sortKey,
-  sortOrder,
-  onSort,
+  sort,
   onRowClick,
   highlightText,
   search,
-  page,
-  totalPages,
-  totalRows,
-  startEntry,
-  endEntry,
-  onPageChange,
+  pagination,
   categoryTree,
 }: BookmarkTableProps) {
-  const [selectedBookmark, setSelectedBookmark] = useState<Bookmark | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  const sortableColumns: { key: keyof Bookmark; label: string }[] = [
-    { key: 'title', label: '제목' },
-    { key: 'url', label: 'URL' },
-    { key: 'tags', label: '태그' },
-    { key: 'click_count', label: '클릭수' },
-  ];
+  const [editingBookmark, setEditingBookmark] = useState<Bookmark | null>(null);
 
   return (
     <>
       <div className="flex items-center justify-end mb-2">
         <div className="flex items-center gap-4">
         <div className="text-sm text-muted-foreground">
-          총 <strong className="font-bold text-foreground">{totalRows}</strong>개 중 <strong className="font-bold text-foreground">{startEntry}-{endEntry}</strong>개 항목
+          총 <strong className="font-bold text-foreground">{pagination.totalRows}</strong>개 중 <strong className="font-bold text-foreground">{pagination.startEntry}-{pagination.endEntry}</strong>개 항목
         </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => onPageChange(page - 1)} disabled={page <= 1}>&lt;</Button>
-            <span className="text-sm">{page} / {totalPages}</span>
-            <Button variant="outline" size="sm" onClick={() => onPageChange(page + 1)} disabled={page >= totalPages}>&gt;</Button>
+            <Button variant="outline" size="sm" onClick={() => pagination.onPageChange(pagination.page - 1)} disabled={pagination.page <= 1}>&lt;</Button>
+            <span className="text-sm">{pagination.page} / {pagination.totalPages}</span>
+            <Button variant="outline" size="sm" onClick={() => pagination.onPageChange(pagination.page + 1)} disabled={pagination.page >= pagination.totalPages}>&gt;</Button>
           </div>
         </div>
       </div>
@@ -76,9 +36,9 @@ export function BookmarkTable({
         <Table className="table-fixed border-collapse">
           <TableHeader>
             <TableRow className="bg-gray-200 dark:bg-zinc-800">
-              {sortableColumns.map(col => (
-                <TableHead key={col.key} onClick={() => onSort(col.key)} className="cursor-pointer select-none text-base font-bold">
-                  {col.label} {sortKey === col.key && (sortOrder === 'asc' ? '▲' : '▼')}
+              {SORTABLE_COLUMNS.map(col => (
+                <TableHead key={col.key} onClick={() => sort.onSort(col.key)} className="cursor-pointer select-none text-base font-bold">
+                  {col.label} {sort.sortKey === col.key && (sort.sortOrder === 'asc' ? '▲' : '▼')}
                 </TableHead>
               ))}
               <TableHead className="text-base font-bold w-[40px] text-center"></TableHead>
@@ -86,86 +46,28 @@ export function BookmarkTable({
           </TableHeader>
           <TableBody>
             {pagedBookmarks.map((bookmark) => (
-              <TableRow
+              <BookmarkTableRow
                 key={bookmark.id}
-                className="hover:bg-accent/40 transition-colors cursor-pointer"
-                onClick={() => {
-                  if (bookmark.url) {
-                    window.open(bookmark.url, '_blank', 'noopener,noreferrer');
-                  }
-                }}
-              >
-                <TableCell className="flex items-center gap-2">
-                  <span className="flex items-center gap-1">
-                    {highlightText(bookmark.title, search)}
-                  </span>
-                </TableCell>
-                <TableCell className="text-xs text-gray-500 dark:text-gray-400 max-w-[180px] truncate">
-                  {highlightText(bookmark.url, search)}
-                </TableCell>
-                <TableCell>
-                  {bookmark.tags &&
-                    Array.from({ length: Math.ceil(bookmark.tags.length / 3) }).map((_, rowIdx) => (
-                      <div key={rowIdx} className="flex flex-wrap mb-1">
-                        {bookmark.tags.slice(rowIdx * 3, rowIdx * 3 + 3).map((tag, idx) => (
-                          <Badge
-                            key={tag}
-                            variant={(rowIdx * 3 + idx) % 2 === 0 ? "secondary" : undefined}
-                            className={(rowIdx * 3 + idx) % 2 === 1
-                              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 mr-1"
-                              : "mr-1"}
-                          >
-                            {highlightText(tag, search)}
-                          </Badge>
-                        ))}
-                      </div>
-                    ))
-                  }
-                </TableCell>
-                <TableCell className="font-mono text-base">
-                  {bookmark.click_count > 7 ? <span className="text-red-500">🔥</span> : <span className="text-gray-400">📈</span>}
-                  <span className="ml-1">{bookmark.click_count}</span>
-                </TableCell>
-                <TableCell className="w-[40px] text-center">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        className="p-1 rounded-full hover:bg-accent focus:outline-none focus:ring-2 focus:ring-accent"
-                        onClick={e => e.stopPropagation()}
-                        aria-label="더보기"
-                      >
-                        <FiMoreHorizontal size={18} />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" sideOffset={4} className="w-24 p-1">
-                      <DropdownMenuItem onClick={e => {
-                        e.stopPropagation();
-                        setTimeout(() => {
-                          setSelectedBookmark(bookmark);
-                          setDialogOpen(true);
-                        }, 10);
-                      }}>
-                        편집
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={e => { e.stopPropagation(); /* 삭제 처리 */ }} variant="destructive">
-                        삭제
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
+                bookmark={bookmark}
+                search={search}
+                highlightText={highlightText}
+                onEdit={(bm) => setEditingBookmark(bm)}
+                // 필요시 onDelete, onRowClick 등 추가
+              />
             ))}
           </TableBody>
         </Table>
       </div>
 
-      {selectedBookmark && (
+      {editingBookmark && (
         <BookmarkDetailDialog
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          bookmark={{ ...selectedBookmark, memo: selectedBookmark?.memo ?? "" }}
+          open={!!editingBookmark}
+          onOpenChange={(open) => {
+            if (!open) setEditingBookmark(null);
+          }}
+          bookmark={{ ...editingBookmark, memo: editingBookmark?.memo ?? "" }}
           onSave={(updated) => {
-            setDialogOpen(false);
+            setEditingBookmark(null);
           }}
           categories={categoryTree.filter(cat => cat.id > ALL_CATEGORY_ID)}
         />

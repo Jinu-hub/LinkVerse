@@ -57,7 +57,32 @@ export type BookmarksAction =
   | { type: 'OPEN_DETAIL'; payload: Bookmark }
   | { type: 'CLOSE_DETAIL' };
 
-  export type FlattenedItem = Category & {
-    parentId: UniqueIdentifier | null;
-    depth: number;
-  };
+export type FlattenedItem = Category & {
+  parentId: UniqueIdentifier | null;
+  depth: number;
+};
+
+export interface PaginationProps {
+  page: number;
+  totalPages: number;
+  totalRows: number;
+  startEntry: number;
+  endEntry: number;
+  onPageChange: (newPage: number) => void;
+}
+
+export interface SortProps {
+  sortKey: keyof Bookmark;
+  sortOrder: 'asc' | 'desc';
+  onSort: (key: keyof Bookmark) => void;
+}
+
+export interface BookmarkTableProps {
+  pagedBookmarks: Bookmark[];
+  sort: SortProps;
+  onRowClick: (bookmark: Bookmark) => void;
+  highlightText: (text: string, keyword: string) => React.ReactNode;
+  search: string;
+  pagination: PaginationProps;
+  categoryTree: Category[];
+};

@@ -7,7 +7,7 @@ import {
 } from "~/core/components/ui/dropdown-menu";
 import { Button } from "~/core/components/ui/button";
 import { FiMoreHorizontal } from "react-icons/fi";
-import type { Category } from "./category-tree";
+import type { Category } from "../types/bookmark.types";
 import { useCategoryTreeContext } from "./category-tree-context";
 
 export function CategoryActionsMenu({ category }: { category: Category }) {
