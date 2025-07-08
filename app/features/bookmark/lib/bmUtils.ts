@@ -217,3 +217,10 @@ export function toBookmarks(bookmarks: any): Bookmark {
     memo: bookmarks.memo,
   };
 }
+
+// 배열을 지정한 크기만큼 chunk로 나누는 함수
+export function chunkArray<T>(array: T[], size: number): T[][] {
+  return Array.from({ length: Math.ceil(array.length / size) }, (_, i) =>
+    array.slice(i * size, i * size + size)
+  );
+}

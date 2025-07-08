@@ -311,22 +311,28 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
           categories={categoryTree}
           selectedId={selectedCategoryId}
           onSelect={handleCategoryChange}
+          setCategories={setCategories}
+          setTabs={setTabs}
         />
 
         <BookmarkTable
           pagedBookmarks={pagedBookmarks}
-          sortKey={sortKey}
-          sortOrder={sortOrder}
-          onSort={handleSort}
+          sort={{
+            sortKey,
+            sortOrder,
+            onSort: handleSort,
+          }}
           onRowClick={handleRowClick}
           highlightText={highlightText}
           search={search}
-          page={page}
-          totalPages={totalPages}
-          totalRows={totalRows}
-          startEntry={startEntry}
-          endEntry={endEntry}
-          onPageChange={handlePageChange}
+          pagination={{
+            page,
+            totalPages,
+            totalRows,
+            startEntry,
+            endEntry,
+            onPageChange: handlePageChange,
+          }}
           categoryTree={categoryTree}
         />
 
