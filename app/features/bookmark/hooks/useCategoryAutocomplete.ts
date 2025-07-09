@@ -29,6 +29,21 @@ export function useCategoryAutocomplete({ categories, findChildrenByPath }: UseC
   const isFullCategoryPathExists = pathExists(categories, categoryPath);
   const isCurrentTextExists = categoryCandidates.some(cat => cat.name === currentText);
   const canAddNewCategory = currentText && !isCurrentTextExists && !isFullCategoryPathExists;
+  const newCategoryName = canAddNewCategory ? currentText : undefined;
+
+  let parentCategoryId: number | undefined = undefined;
+  let currentCategoryId: number | undefined = undefined;
+  if (canAddNewCategory) {
+    const parentCategoryName = parentPath.length > 0 ? parentPath[parentPath.length - 1] : undefined;
+    if (parentCategoryName) {
+      parentCategoryId = findCategoryIdByName(categories, parentCategoryName);
+    }
+  } else {
+    const currentCategoryName = categoryPath.length > 0 ? categoryPath[categoryPath.length - 1] : undefined;
+    if (currentCategoryName) {
+      currentCategoryId = findCategoryIdByName(categories, currentCategoryName);
+    }
+  }
 
   // 외부 클릭 시 추천 박스 닫힘
   useClickOutside(inputRef, () => setShowSuggestions(false), showSuggestions);
@@ -60,10 +75,23 @@ export function useCategoryAutocomplete({ categories, findChildrenByPath }: UseC
     showSuggestions, setShowSuggestions,
     highlightedIdx, setHighlightedIdx,
     categoryCandidates,
-    canAddNewCategory,
+    newCategoryName,
     handleCategoryKeyDown,
     inputRef,
     parentPath,
     currentText,
+    parentCategoryId,
+    currentCategoryId,
   };
+
+  function findCategoryIdByName(categories: Category[], name: string): number | undefined {
+    for (const cat of categories) {
+      if (cat.name === name) return cat.id;
+      if (cat.children) {
+        const found = findCategoryIdByName(cat.children, name);
+        if (found !== undefined) return found;
+      }
+    }
+    return undefined;
+  }
 } 

@@ -7,6 +7,7 @@ interface TagSuggestionListProps {
   setHighlightedIdx: (idx: number) => void;
   onSelect: (tag: string) => void;
   allTags: string[];
+  setNewTag: (tag: string) => void;
 }
 
 export function TagSuggestionList({
@@ -15,6 +16,7 @@ export function TagSuggestionList({
   setHighlightedIdx,
   onSelect,
   allTags,
+  setNewTag,
 }: TagSuggestionListProps) {
   if (tagSuggestions.length === 0) return null;
 
@@ -48,6 +50,7 @@ export function TagSuggestionList({
             )}
             onMouseDown={() => {
               onSelect(tag);
+              setNewTag(""); // 클릭 시 입력창 비우기
             }}
             onMouseEnter={() => setHighlightedIdx(idx)}
           >
