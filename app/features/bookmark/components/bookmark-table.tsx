@@ -14,6 +14,7 @@ export function BookmarkTable({
   search,
   pagination,
   categoryTree,
+  tags,
 }: BookmarkTableProps) {
   const [editingBookmark, setEditingBookmark] = useState<Bookmark | null>(null);
 
@@ -70,6 +71,7 @@ export function BookmarkTable({
             setEditingBookmark(null);
           }}
           categories={categoryTree.filter(cat => cat.id > ALL_CATEGORY_ID)}
+          allTags={tags}
         />
       )}
     </>
