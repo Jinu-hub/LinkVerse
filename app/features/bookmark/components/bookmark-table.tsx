@@ -16,6 +16,9 @@ export function BookmarkTable({
   pagination,
   categoryTree,
   tags,
+  setCategories,
+  setTabs,
+  setBookmarks,
 }: BookmarkTableProps) {
   const [editingBookmark, setEditingBookmark] = useState<Bookmark | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
@@ -78,6 +81,9 @@ export function BookmarkTable({
               parentCategoryId: edited.parentCategoryId ?? 0,
               newCategoryName: edited.newCategoryName ?? "",
               memo: edited.memo ?? "",
+              setCategories: setCategories,
+              setTabs: setTabs,
+              setBookmarks: setBookmarks,
             });
             if (!result.ok) {
               setFieldErrors(result.fieldErrors ?? {});

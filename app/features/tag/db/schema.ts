@@ -18,7 +18,7 @@ export const tag = pgTable(
     {
       tag_id: bigint({ mode: "number" }).primaryKey().generatedAlwaysAsIdentity(),
       user_id: uuid().references(() => authUsers.id, { onDelete: "cascade" }),
-      tag_name: varchar({ length: 100 }).notNull(),
+      tag_name: varchar({ length: 30 }).notNull(),
       usage_count: integer().notNull().default(0),
       created_at: timestamp({ withTimezone: true }).defaultNow().notNull(),
       updated_at: timestamp({ withTimezone: true }).defaultNow().notNull(),

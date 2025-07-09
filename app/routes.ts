@@ -117,6 +117,8 @@ export default [
       index("features/bookmark/screens/bookmarks.tsx"),
       route("/api/category", "features/bookmark/api/category-add.tsx"),
       route("/api/category/:id", "features/bookmark/api/category-edit.tsx"),
+      route("/api/bookmark/add", "features/bookmark/api/bookmark-add.tsx"),
+      route("/api/bookmark/:id", "features/bookmark/api/bookmark-edit.tsx"),
     ]),
   ]),
 

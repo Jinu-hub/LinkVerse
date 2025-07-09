@@ -51,3 +51,42 @@ export const getTagContents = async (
   }
   return data;
 }
+
+export const getTaggableTags = async (
+  client: SupabaseClient<Database>,
+  { content_type_id, target_id, userId }: 
+  { content_type_id: number, target_id: number, userId: string },
+) => {
+  const { data, error } = await client
+    .from('taggable')
+    .select('tag:tag_id(tag_name)')
+    .eq('content_type_id', content_type_id)
+    .eq('target_id', target_id)
+    .eq('tag.user_id', userId);
+
+  if (error) throw error;
+  if (!Array.isArray(data)) return [];
+
+  return data.map((row) => row.tag.tag_name);  // tag_name만 추출
+};
+
+export const getTaggableTagsIdName = async (
+  client: SupabaseClient<Database>,
+  { content_type_id, target_id, userId }: 
+  { content_type_id: number, target_id: number, userId: string },
+) => {
+  const { data, error } = await client
+    .from('taggable')
+    .select('tag_id, target_id, tag:tag_id(tag_name)')
+    .eq('content_type_id', content_type_id)
+    .eq('target_id', target_id)
+    .eq('tag.user_id', userId);
+
+  if (error) throw error;
+  if (!Array.isArray(data)) return [];
+
+  return data.map(item => ({
+    tag_id: item.tag_id,
+    tag_name: item.tag.tag_name
+  }));
+};
