@@ -1,4 +1,5 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
+import type { Props } from "@dnd-kit/core/dist/components/DragOverlay";
 
 export interface Category {
   id: number;
@@ -85,4 +86,21 @@ export interface BookmarkTableProps {
   search: string;
   pagination: PaginationProps;
   categoryTree: Category[];
+  tags: string[];
+};
+
+export type BookmarkDetailDialogProps = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void; 
+  bookmark: {
+    id: number;
+    title: string;
+    url: string;
+    tags: string[];
+    memo: string;
+    categoryId?: number;
+  };
+  onSave: (updated: BookmarkDetailDialogProps["bookmark"]) => void;
+  categories: Category[];
+  allTags: string[];
 };

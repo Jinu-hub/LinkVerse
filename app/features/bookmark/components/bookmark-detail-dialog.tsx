@@ -10,8 +10,7 @@ import {
 } from "~/core/components/ui/dialog";
 import { Input } from "~/core/components/ui/input";
 import { Textarea } from "~/core/components/ui/textarea";
-import { CategorySuggestionList } from "./category-suggestion-list";
-import type { Category } from '../types/bookmark.types';
+import { CategorySuggestionList } from "./suggestion-list-category";
 import { findCategoryPath } from "../lib/bmUtils";
 import React from "react";
 import { useClickOutside } from '../hooks/useClickOutside';
@@ -20,27 +19,16 @@ import { useCategoryAutocomplete } from '../hooks/useCategoryAutocomplete';
 import { z } from "zod";
 import { Label } from "~/core/components/ui/label";
 import { Switch } from "~/core/components/ui/switch";
+import type { BookmarkDetailDialogProps } from "../types/bookmark.types";
+import { cn } from "~/core/lib/utils";
+import { TagSuggestionList } from "./suggestion-list-tag";
 
-type Props = {
-    open: boolean;
-    onOpenChange: (open: boolean) => void; 
-    bookmark: {
-      id: number;
-      title: string;
-      url: string;
-      tags: string[];
-      memo: string;
-      categoryId?: number;
-    };
-    onSave: (updated: Props["bookmark"]) => void;
-    categories: Category[];
-  };
-
-export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onSave, categories }: Props) {
+export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onSave, categories, allTags }: BookmarkDetailDialogProps) {
     const [title, setTitle] = useState(bookmark.title);
     const [url, setUrl] = useState(bookmark.url);
     const [tags, setTags] = useState<string[]>(bookmark.tags);
     const [newTag, setNewTag] = useState("");
+    const [tagSuggestions, setTagSuggestions] = useState<string[]>([]);
     const [categoryId, setCategoryId] = useState(bookmark.categoryId || "");
     const [memo, setMemo] = useState(bookmark.memo);
     const dialogContentRef = useRef<HTMLDivElement>(null);
@@ -58,7 +46,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
     } = useCategoryAutocomplete({ categories, findChildrenByPath });
 
     const isAddMode = bookmark?.id === 0;
-
+    console.log(allTags);
     // 북마크 정보 업데이트
     useEffect(() => {
         setTitle(bookmark.title);
@@ -96,14 +84,26 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
 
     // 태그 추가
     const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter" && newTag.trim()) {
-        const trimmed = newTag.trim();
-        if (tags.includes(trimmed)) {
-          setNewTag("");
-          return;
+      if ((e.nativeEvent as any).isComposing) return; // IME 조합 중이면 무시
+      if (tagSuggestions.length > 0 && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
+        e.preventDefault();
+        const total = tagSuggestions.length;
+        if (e.key === "ArrowDown") {
+          setHighlightedIdx(prev => (prev + 1) % total);
+        } else if (e.key === "ArrowUp") {
+          setHighlightedIdx(prev => (prev - 1 + total) % total);
         }
-        setTags([...tags, trimmed]);
+        return;
+      }
+
+      if (e.key === "Enter" && tagSuggestions.length > 0 && highlightedIdx >= 0) {
+        const selected = tagSuggestions[highlightedIdx];
+        if (!tags.includes(selected)) {
+          setTags([...tags, selected]);
+        }
         setNewTag("");
+        setTagSuggestions([]);
+        setHighlightedIdx(-1);
       }
     };
     
@@ -143,6 +143,24 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
         }
       }
     }, [open, isAddMode]);
+
+    useEffect(() => {
+      const trimmed = newTag.trim();
+      if (trimmed.length >= 2) {
+        // 중복 제거: 입력값이 allTags에 있으면 추천에서 제외
+        const filtered = allTags
+          .filter(tag => tag.toLowerCase().includes(trimmed.toLowerCase()))
+          .filter(tag => tag !== trimmed && !tags.includes(tag))
+          .slice(0, 10);
+        setTagSuggestions([trimmed, ...filtered]);
+      } else {
+        setTagSuggestions([]);
+      }
+    }, [newTag, allTags, tags]);
+
+    useEffect(() => {
+      setHighlightedIdx(tagSuggestions.length > 0 ? 0 : -1);
+    }, [tagSuggestions]);
 
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -192,7 +210,6 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
                   categoryCandidates={categoryCandidates}
                   highlightedIdx={highlightedIdx}
                   currentText={currentText}
-                  parentPath={parentPath}
                   onSelect={(cat) => {
                     const newPath = [...parentPath, cat.name];
                     setCategoryInput(newPath.join(' > ') + ' > ');
@@ -210,12 +227,22 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
             <div className="relative">
               <div className="mb-1 text-base text-muted-foreground">태그</div>
               <div className="flex flex-wrap gap-2 mb-2">
-                {tags?.map(tag => (
-                  <Badge key={tag} variant="secondary" className="cursor-pointer" 
-                    onClick={() => handleRemoveTag(tag)}>
-                    {tag} ✕
-                  </Badge>
-                ))}
+                {tags?.map(tag => {
+                  const isNew = !allTags.includes(tag);
+                  return (
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className={cn(
+                        "cursor-pointer",
+                        isNew ? "border border-blue-500 text-blue-500" : ""
+                      )}
+                      onClick={() => handleRemoveTag(tag)}
+                    >
+                      {tag} ✕
+                    </Badge>
+                  );
+                })}
               </div>
               <Input
                 placeholder="태그 추가 후 Enter"
@@ -223,6 +250,15 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
                 onChange={e => setNewTag(e.target.value)}
                 onKeyDown={handleAddTag}
               />
+              {tagSuggestions.length > 0 && (
+                <TagSuggestionList
+                  tagSuggestions={tagSuggestions}
+                  highlightedIdx={highlightedIdx}
+                  setHighlightedIdx={setHighlightedIdx}
+                  onSelect={(tag) => setTags([...tags, tag])}
+                  allTags={allTags}
+                />
+              )}
             </div>
   
             <div className="relative">

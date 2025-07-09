@@ -57,6 +57,7 @@ import {
   getBookmarkTags, 
   getUIViewTabs 
 } from "../db/queries";
+import { getTags } from "~/features/tag/db/queries";
 
 /**
  * Meta function for the blog posts page
@@ -114,7 +115,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       return { ...bookmark, tags, memo };
     })
   );
-  return { categories, tabs, bookmarks: bookmarksWithTagsMemo };
+  const tags = await getTags(client, { userId: user!.id });
+  return { categories, tabs, bookmarks: bookmarksWithTagsMemo, tags };
 }
 
 /**
@@ -130,10 +132,12 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
  * - `CategorySidebar`, `BookmarkToolbar`, `BookmarkTable` 등 하위 컴포넌트의 조합 및 데이터 전달
  */
 export default function Bookmarks({ loaderData }: Route.ComponentProps) {
-  const { categories: initialCategories, tabs: initialTabs, bookmarks } = loaderData;
+  const { categories: initialCategories, tabs: initialTabs, bookmarks, tags } = loaderData;
 
   const [categories, setCategories] = useState<Category[]>(initialCategories.map(toCategory));
   const [tabs, setTabs] = useState<UI_View[]>(initialTabs.map(toUIViewTabs));
+
+
 
   //console.log(categories);
   const categoryTree = useMemo(() => {
@@ -146,8 +150,6 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
       { id: ALL_TAB_ID, name: '전체', content_type_id: 1, ui_view_type_id: 1, category_id: ALL_CATEGORY_ID },
       { id: UNCATEGORIZED_TAB_ID, name: '미분류', content_type_id: 1, ui_view_type_id: 1, category_id: UNCATEGORIZED_CATEGORY_ID },
     ];
-    // DB에서 온 탭 데이터 변환
-    //const dbTabs = tabs.map(toUIViewTabs);
     return [...defaultTabs, ...tabs];
   }, [tabs]);
 
@@ -334,6 +336,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
             onPageChange: handlePageChange,
           }}
           categoryTree={categoryTree}
+          tags={tags.map(t => t.tag_name)}
         />
 
         {/* 모바일: 오른쪽 하단 플로팅 버튼 */}
@@ -356,6 +359,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
             setAddDialogOpen(false);
           }}
           categories={categoryTree.filter(cat => cat.id > ALL_CATEGORY_ID)}
+          allTags={tags.map(t => t.tag_name)}
         />
       </main>
     </div>
