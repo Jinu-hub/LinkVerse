@@ -114,58 +114,6 @@ export const getUIViewTabs = async (
   return data;
 }
 
-export const getBookmarkTags = async (
-  client: SupabaseClient<Database>,
-  { userId, bookmarkId }: { userId: string, bookmarkId: number },
-) => {
-  const { data, error } = await client
-    .from('taggable')
-    .select('tag:tag_id(tag_name)')
-    .eq('content_type_id', 1)
-    .eq('target_id', bookmarkId)
-    .eq('tag.user_id', userId);
-
-  if (error) throw error;
-  if (!Array.isArray(data)) return [];
-
-  return data.map((row) => row.tag.tag_name);  // tag_name만 추출
-};
-
-export const getBookmarkTagsIdName = async (
-  client: SupabaseClient<Database>,
-  { userId, bookmarkId }: { userId: string, bookmarkId: number },
-) => {
-  const { data, error } = await client
-    .from('taggable')
-    .select('tag_id, target_id, tag:tag_id(tag_name)')
-    .eq('content_type_id', 1)
-    .eq('target_id', bookmarkId)
-    .eq('tag.user_id', userId);
-
-  if (error) throw error;
-  if (!Array.isArray(data)) return [];
-
-  return data.map(item => ({
-    tag_id: item.tag_id,
-    tag_name: item.tag.tag_name
-  }));
-};
-
-export const getBookmarkMemo = async (
-  client: SupabaseClient<Database>,
-  { userId, bookmarkId }: { userId: string, bookmarkId: number },
-): Promise<string | undefined> => {
-  const { data, error } = await client
-    .from('memo')
-    .select('content')
-    .eq('user_id', userId)
-    .eq('target_id', bookmarkId)
-    .eq('content_type_id', 1);
-
-  if (error) throw error;
-  return data?.[0]?.content || '';
-}
-
 export const isExistsCategoryName = async (
   client: SupabaseClient<Database>,
   { userId, name, parent_id }: 

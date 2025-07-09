@@ -28,6 +28,22 @@ export const getMemoContents = async (
   return data;
 }
 
+export const getTargetMemo = async (
+  client: SupabaseClient<Database>,
+  { content_type_id, target_id, userId }: 
+  { content_type_id: number, target_id: number, userId: string },
+): Promise<string | undefined> => {
+  const { data, error } = await client
+    .from('memo')
+    .select('content')
+    .eq('content_type_id', content_type_id)
+    .eq('target_id', target_id)
+    .eq('user_id', userId);
+
+  if (error) throw error;
+  return data?.[0]?.content || '';
+}
+
 export const getMemoDetail = async (
   client: SupabaseClient<Database>,
   { userId, memoId }: { userId: string, memoId: number },

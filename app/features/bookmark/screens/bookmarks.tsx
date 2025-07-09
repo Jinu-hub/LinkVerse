@@ -53,11 +53,10 @@ import { requireAuthentication } from "~/core/lib/guards.server";
 import { 
   getBookmarkCategories, 
   getBookmarkContents, 
-  getBookmarkMemo, 
-  getBookmarkTags, 
   getUIViewTabs 
 } from "../db/queries";
-import { getTags } from "~/features/tag/db/queries";
+import { getTaggableTags, getTags } from "~/features/tag/db/queries";
+import { getTargetMemo } from "~/features/memo/db/queries";
 import { addBookmark } from "../lib/bmActions";
 
 /**
@@ -103,10 +102,10 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       let memo: string = '';
       try {
         tags = bookmarkId != null
-          ? await getBookmarkTags(client, { userId: user!.id, bookmarkId })
+          ? await getTaggableTags(client, { content_type_id: 1, target_id: bookmarkId, userId: user!.id })
           : [];
         memo = bookmarkId != null
-          ? (await getBookmarkMemo(client, { userId: user!.id, bookmarkId }) ?? '')
+          ? (await getTargetMemo(client, { content_type_id: 1, target_id: bookmarkId, userId: user!.id }) ?? '')
           : '';
       } catch (e) {
         console.error('getBookmarkTags or getBookmarkMemo error', e);
@@ -133,12 +132,11 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
  * - `CategorySidebar`, `BookmarkToolbar`, `BookmarkTable` 등 하위 컴포넌트의 조합 및 데이터 전달
  */
 export default function Bookmarks({ loaderData }: Route.ComponentProps) {
-  const { categories: initialCategories, tabs: initialTabs, bookmarks, tags } = loaderData;
+  const { categories: initialCategories, tabs: initialTabs, bookmarks: initialBookmarks, tags } = loaderData;
 
   const [categories, setCategories] = useState<Category[]>(initialCategories.map(toCategory));
   const [tabs, setTabs] = useState<UI_View[]>(initialTabs.map(toUIViewTabs));
-
-
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>(initialBookmarks.map(toBookmarks));
 
   //console.log(categories);
   const categoryTree = useMemo(() => {
@@ -155,7 +153,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
   }, [tabs]);
 
   const bmList = useMemo(() => {
-    return bookmarks.map(toBookmarks);
+    return bookmarks;
   }, [bookmarks]);
 
   const [state, dispatch] = useReducer(bookmarksReducer, initialState);
@@ -339,6 +337,9 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
           }}
           categoryTree={categoryTree}
           tags={tags.map(t => t.tag_name)}
+          setCategories={setCategories}
+          setTabs={setTabs}
+          setBookmarks={setBookmarks}
         />
 
         {/* 모바일: 오른쪽 하단 플로팅 버튼 */}
@@ -365,6 +366,9 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
               parentCategoryId: added.parentCategoryId ?? 0,
               newCategoryName: added.newCategoryName ?? "",
               memo: added.memo ?? "",
+              setCategories: setCategories,
+              setTabs: setTabs,
+              setBookmarks: setBookmarks,
             });
             if (!result.ok) {
               setFieldErrors(result.fieldErrors ?? {});

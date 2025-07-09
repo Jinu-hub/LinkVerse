@@ -87,6 +87,9 @@ export interface BookmarkTableProps {
   pagination: PaginationProps;
   categoryTree: Category[];
   tags: string[];
+  setCategories: (categories: Category[]) => void;
+  setTabs: (tabs: UI_View[]) => void;
+  setBookmarks: (bookmarks: Bookmark[]) => void;
 };
 
 export type BookmarkDetailDialogProps = {
