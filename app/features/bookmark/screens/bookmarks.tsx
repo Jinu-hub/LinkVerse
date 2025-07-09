@@ -58,6 +58,7 @@ import {
   getUIViewTabs 
 } from "../db/queries";
 import { getTags } from "~/features/tag/db/queries";
+import { addBookmark } from "../lib/bmActions";
 
 /**
  * Meta function for the blog posts page
@@ -174,6 +175,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
   const search = searchMap[selectedTabId] ?? "";
   const sortKey = sortKeyMap[selectedTabId] ?? DEFAULT_SORT_KEY;
   const sortOrder = sortOrderMap[selectedTabId] ?? "asc";
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
   const { pagedBookmarks, totalPages, totalRows, startEntry, endEntry } =
     useFilteredBookmarks({
@@ -354,12 +356,27 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
           open={addDialogOpen}
           onOpenChange={(open) => setAddDialogOpen(open)}
           bookmark={emptyBookmark}
-          onSave={(updated) => {
-            // 저장 로직 (원하면 구현)
+          onSave={async (added) => {
+            const result = await addBookmark({
+              title: added.title,
+              url: added.url,
+              tags: added.tags,
+              categoryId: added.categoryId ?? 0,
+              parentCategoryId: added.parentCategoryId ?? 0,
+              newCategoryName: added.newCategoryName ?? "",
+              memo: added.memo ?? "",
+            });
+            if (!result.ok) {
+              setFieldErrors(result.fieldErrors ?? {});
+              return;
+            } 
+            setFieldErrors({});
             setAddDialogOpen(false);
           }}
           categories={categoryTree.filter(cat => cat.id > ALL_CATEGORY_ID)}
           allTags={tags.map(t => t.tag_name)}
+          fieldErrors={fieldErrors}
+          setFieldErrors={setFieldErrors}
         />
       </main>
     </div>

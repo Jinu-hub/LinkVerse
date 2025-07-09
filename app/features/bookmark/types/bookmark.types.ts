@@ -99,8 +99,12 @@ export type BookmarkDetailDialogProps = {
     tags: string[];
     memo: string;
     categoryId?: number;
+    parentCategoryId?: number;
+    newCategoryName?: string;
   };
   onSave: (updated: BookmarkDetailDialogProps["bookmark"]) => void;
   categories: Category[];
   allTags: string[];
+  fieldErrors: Record<string, string[]>;
+  setFieldErrors: (fieldErrors: Record<string, string[]>) => void;
 };

@@ -22,8 +22,11 @@ import { Switch } from "~/core/components/ui/switch";
 import type { BookmarkDetailDialogProps } from "../types/bookmark.types";
 import { cn } from "~/core/lib/utils";
 import { TagSuggestionList } from "./suggestion-list-tag";
+import FormErrors from "~/core/components/form-error";
 
-export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onSave, categories, allTags }: BookmarkDetailDialogProps) {
+export default function BookmarkDetailDialog({ 
+  open, onOpenChange, bookmark, onSave, categories, allTags, fieldErrors, setFieldErrors }
+  : BookmarkDetailDialogProps) {
     const [title, setTitle] = useState(bookmark.title);
     const [url, setUrl] = useState(bookmark.url);
     const [tags, setTags] = useState<string[]>(bookmark.tags);
@@ -38,17 +41,21 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
       showSuggestions, setShowSuggestions,
       highlightedIdx, setHighlightedIdx,
       categoryCandidates,
-      canAddNewCategory,
+      newCategoryName,
       handleCategoryKeyDown,
       inputRef,
       parentPath,
       currentText,
+      parentCategoryId,
+      currentCategoryId,
     } = useCategoryAutocomplete({ categories, findChildrenByPath });
 
     const isAddMode = bookmark?.id === 0;
-    console.log(allTags);
+    const isError = Object.keys(fieldErrors).length > 0;
+
     // 북마크 정보 업데이트
     useEffect(() => {
+      if (!isError) {
         setTitle(bookmark.title);
         setUrl(bookmark.url);
         setTags(bookmark.tags);
@@ -57,7 +64,19 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
         setCategoryId(bookmark.categoryId || 0);
         setCategoryInput(getCategoryPathName(bookmark.categoryId || 0));
         setShowSuggestions(false);
-    }, [bookmark]);
+      }
+    }, [bookmark, isError]);
+
+    // open이 false일 때만 입력값 리셋
+    useEffect(() => {
+      if (!open) {
+        setTitle("");
+        setUrl("");
+        setTags([]);
+        setMemo("");
+        setFieldErrors({});
+      }
+    }, [open]);
 
     // 카테고리 경로 자동완성 추천 리스트 계산
     useEffect(() => {
@@ -119,7 +138,10 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
         title,
         url,
         tags,
-        categoryId: categoryId ? Number(categoryId) : undefined,
+        categoryId: currentCategoryId ? Number(currentCategoryId) : undefined,
+        parentCategoryId: parentCategoryId ? Number(parentCategoryId) : undefined,
+        newCategoryName,
+        memo,
       });
     };
 
@@ -133,6 +155,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
     // 외부 클릭 시 추천 박스 닫힘 (커스텀 훅 사용)
     useClickOutside(inputRef, () => setShowSuggestions(false), showSuggestions);
 
+    // 자동 타이틀 설정
     const [autoTitle, setAutoTitle] = useState(true);
     useEffect(() => {
       if (open) {
@@ -144,6 +167,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
       }
     }, [open, isAddMode]);
 
+    // 태그 추천 리스트 계산
     useEffect(() => {
       const trimmed = newTag.trim();
       if (trimmed.length >= 2) {
@@ -158,6 +182,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
       }
     }, [newTag, allTags, tags]);
 
+    // 태그 추천 리스트 하이라이트 인덱스 설정
     useEffect(() => {
       setHighlightedIdx(tagSuggestions.length > 0 ? 0 : -1);
     }, [tagSuggestions]);
@@ -170,7 +195,10 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
           </DialogHeader>
   
           <div className="space-y-4">
-            <Input value={url} onChange={e => setUrl(e.target.value)} placeholder="URL" />
+            <div className="relative">
+              <Input value={url} onChange={e => setUrl(e.target.value)} placeholder="URL" />
+              {fieldErrors?.url ? (<FormErrors errors={fieldErrors.url} />) : null}
+            </div>
 
             {isAddMode && (
               <div className="flex items-center gap-2 mb-2">
@@ -180,13 +208,18 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
               </div>
             )}
             {!autoTitle && (
-              <Input value={title} onChange={e => setTitle(e.target.value)} placeholder="Title" />
+              <>
+                <div className="relative">
+                  <Input value={title} onChange={e => setTitle(e.target.value)} placeholder="Title" />
+                  {fieldErrors?.title ? (<FormErrors errors={fieldErrors.title} />) : null}
+                </div>
+              </>
             )}
             <hr className="my-4 border-muted" />
 
             <div className="relative">
               <div className="mb-1 text-base text-muted-foreground">카테고리</div>
-              {canAddNewCategory && (
+              {newCategoryName && (
                 <div className="mt-2 text-sm text-blue-600 dark:text-blue-400">
                   입력하신 경로는 새 카테고리로 추가됩니다.
                 </div>
@@ -204,6 +237,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
                 placeholder="카테고리 입력 (예: 개발 > React > supabase)"
                 autoComplete="off"
               />
+              {fieldErrors?.newCategoryName ? (<FormErrors errors={fieldErrors.newCategoryName} />) : null}
               {/* 자동완성 추천 리스트 */}
               {showSuggestions && (
                 <CategorySuggestionList
@@ -250,13 +284,18 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
                 onChange={e => setNewTag(e.target.value)}
                 onKeyDown={handleAddTag}
               />
+              {fieldErrors?.tags ? (<FormErrors errors={fieldErrors.tags} />) : null}
               {tagSuggestions.length > 0 && (
                 <TagSuggestionList
                   tagSuggestions={tagSuggestions}
                   highlightedIdx={highlightedIdx}
                   setHighlightedIdx={setHighlightedIdx}
-                  onSelect={(tag) => setTags([...tags, tag])}
+                  onSelect={(tag) => {
+                    setTags([...tags, tag]);
+                    setNewTag("");
+                  }}
                   allTags={allTags}
+                  setNewTag={setNewTag}
                 />
               )}
             </div>
@@ -269,13 +308,20 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
                 placeholder="메모 입력"
                 rows={4}
               />
+              {fieldErrors?.memo ? (<FormErrors errors={fieldErrors.memo} />) : null}
             </div>
           </div>
   
           <DialogFooter className="mt-4">
-            <Button className="bg-blue-200 hover:bg-blue-300 text-blue-900" onClick={handleSave}>Add</Button>
-            <Button className="bg-green-200 hover:bg-green-300 text-green-900" onClick={handleSave}>Edit</Button>
-            <Button className="bg-red-200 hover:bg-red-300 text-red-900" onClick={handleSave}>Del</Button>
+            {isAddMode && (
+              <Button className="bg-blue-200 hover:bg-blue-300 text-blue-900" onClick={handleSave}>Add</Button>
+            )}
+            {!isAddMode && (
+              <>
+                <Button className="bg-green-200 hover:bg-green-300 text-green-900" onClick={handleSave}>Edit</Button>
+                <Button className="bg-red-200 hover:bg-red-300 text-red-900" onClick={handleSave}>Del</Button>
+              </>
+            )}
             <Button
               variant="secondary"
               onClick={() => onOpenChange(false)}
