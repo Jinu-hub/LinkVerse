@@ -625,6 +625,10 @@ export type Database = {
         Args: { user_id: string; parent_id: number }
         Returns: number
       }
+      sync_tag_usage_with_content: {
+        Args: { p_tag_id: number }
+        Returns: undefined
+      }
     }
     Enums: {
       activity_type_codes:
