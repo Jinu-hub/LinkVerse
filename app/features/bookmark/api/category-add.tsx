@@ -4,11 +4,8 @@ import { data } from "react-router";
 import { z } from "zod";
 
 import makeServerClient from "~/core/lib/supa-client.server";
-import { getBookmarkCategories, 
-    getMaxCategorySortOrder, 
-    getUIViewTabs, 
-    isExistsCategoryName } from "../db/queries";
-import { createBookmarkCategory } from "../db/mutations";
+import { getBookmarkCategories, getUIViewTabs, isExistsCategoryName } from "../db/queries";
+import { createNewCategory } from "../lib/common";
 
 const categorySchema = z.object({
     name: z.string().min(1),
@@ -48,7 +45,7 @@ export async function action({ request }: Route.ActionArgs) {
   if (!parsed.success) {
     return new Response("Invalid data", { status: 400 });
   }
-  const { name, parent_id, level, sort_order } = parsed.data;
+  const { name, parent_id, level } = parsed.data;
 
   try {
     // 같은 이름의 카테고리가 있는지 확인
@@ -64,17 +61,11 @@ export async function action({ request }: Route.ActionArgs) {
       });
     }
 
-    // 최대 정렬 순서 조회
-    const maxSortOrder = await getMaxCategorySortOrder(client, {
-        userId: user.id, parent_id: parent_id ?? null });
-        
-    // 카테고리 생성
-    await createBookmarkCategory(client, {
+    await createNewCategory(client, {
       userId: user.id,
       name,
       parent_id: parent_id ?? null,
       level: level ?? 1,
-      sort_order: sort_order ?? Number(maxSortOrder) + 1,
     });
      
     return data({ success: true }, { status: 200 });
