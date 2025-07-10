@@ -33,10 +33,13 @@ export function useCategoryAutocomplete({ categories, findChildrenByPath }: UseC
 
   let parentCategoryId: number | undefined = undefined;
   let currentCategoryId: number | undefined = undefined;
+  let newCategoryLevel: number | undefined = undefined;
+  
   if (canAddNewCategory) {
     const parentCategoryName = parentPath.length > 0 ? parentPath[parentPath.length - 1] : undefined;
     if (parentCategoryName) {
       parentCategoryId = findCategoryIdByName(categories, parentCategoryName);
+      newCategoryLevel = parentPath.length + 1;
     }
   } else {
     const currentCategoryName = categoryPath.length > 0 ? categoryPath[categoryPath.length - 1] : undefined;
@@ -82,6 +85,7 @@ export function useCategoryAutocomplete({ categories, findChildrenByPath }: UseC
     currentText,
     parentCategoryId,
     currentCategoryId,
+    newCategoryLevel,
   };
 
   function findCategoryIdByName(categories: Category[], name: string): number | undefined {

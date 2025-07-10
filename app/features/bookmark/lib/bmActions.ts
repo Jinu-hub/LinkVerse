@@ -11,6 +11,7 @@ export async function addBookmark({
     categoryId,
     parentCategoryId,
     newCategoryName,
+    newCategoryLevel,
     memo,
     setCategories,
     setTabs,
@@ -22,6 +23,7 @@ export async function addBookmark({
     categoryId?: number;
     parentCategoryId?: number;
     newCategoryName: string;
+    newCategoryLevel: number;
     memo: string;
     setCategories: (categories: Category[]) => void;
     setTabs: (tabs: any[]) => void;
@@ -34,8 +36,11 @@ export async function addBookmark({
       } = bookmarkSchema.safeParse({
         title,
         url,
-        tags,
+        categoryId,
+        parentCategoryId,
+        newCategoryLevel,
         newCategoryName,
+        tags,
         memo,
     });
     if (!success) {
@@ -66,12 +71,14 @@ export async function addBookmark({
         }
 
         // 3. 추가된 북마크 목록 재요청
+        /*
         const res_get = await fetch("/bookmarks/api/bookmark");
         if (!res_get.ok) {
             return { ok: false, error: "북마크 목록을 불러오지 못했습니다." };
         }
         const { bookmarks: newBookmarks } = await res_get.json();
-        setBookmarks(newBookmarks.map(toBookmarks));
+        */
+        //setBookmarks([newBookmark.map(toBookmarks)]);
   
         return { ok: true, data: newBookmark }; 
     } catch (e) {

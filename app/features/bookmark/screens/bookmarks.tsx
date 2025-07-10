@@ -52,7 +52,7 @@ import makeServerClient from "~/core/lib/supa-client.server";
 import { requireAuthentication } from "~/core/lib/guards.server";
 import { 
   getBookmarkCategories, 
-  getBookmarkContents, 
+  getBookmarks, 
   getUIViewTabs 
 } from "../db/queries";
 import { getTaggableTags, getTags } from "~/features/tag/db/queries";
@@ -94,7 +94,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const { data: { user } } = await client.auth.getUser();
   const categories = await getBookmarkCategories(client, { userId: user!.id });
   const tabs = await getUIViewTabs(client, { userId: user!.id });
-  const bookmarks = await getBookmarkContents(client, { userId: user!.id });
+  const bookmarks = await getBookmarks(client, { userId: user!.id });
   const bookmarksWithTagsMemo = await Promise.all(
     bookmarks.map(async (bookmark) => {
       const bookmarkId = bookmark.bookmark_id;
@@ -365,6 +365,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
               categoryId: added.categoryId ?? 0,
               parentCategoryId: added.parentCategoryId ?? 0,
               newCategoryName: added.newCategoryName ?? "",
+              newCategoryLevel: added.newCategoryLevel ?? 1,
               memo: added.memo ?? "",
               setCategories: setCategories,
               setTabs: setTabs,

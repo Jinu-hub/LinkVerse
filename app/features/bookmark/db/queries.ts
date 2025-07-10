@@ -51,7 +51,7 @@ export const getBookmarkCategories = async (
  * @returns An array of bookmark contents for the specified user
  * @throws Will throw an error if the database query fails
  */
-export const getBookmarkContents = async (
+export const getBookmarks = async (
     client: SupabaseClient<Database>,
     { userId }: 
     { userId: string },
@@ -60,6 +60,21 @@ export const getBookmarkContents = async (
     .from('bookmark_view')
     .select('*')
     .eq('user_id', userId)
+  if (error) {
+    throw error;
+  }
+  return data;
+};
+
+export const getBookmark = async (
+  client: SupabaseClient<Database>,
+  { userId, bookmarkId }: { userId: string, bookmarkId: number },
+) => {
+  const { data, error } = await client
+    .from('bookmark_view')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('bookmark_id', bookmarkId);
   if (error) {
     throw error;
   }
