@@ -104,6 +104,7 @@ export type BookmarkDetailDialogProps = {
     categoryId?: number;
     parentCategoryId?: number;
     newCategoryName?: string;
+    newCategoryLevel?: number;
   };
   onSave: (updated: BookmarkDetailDialogProps["bookmark"]) => void;
   categories: Category[];

@@ -224,3 +224,29 @@ export function chunkArray<T>(array: T[], size: number): T[][] {
     array.slice(i * size, i * size + size)
   );
 }
+
+// 클라이언트 코드에서는 절대 import하지 않음
+export async function fetchTitleFromUrl(url: string): Promise<{ title: string | null, image: string | null, description: string | null }> {
+  // 서버에서만 동작
+  const { JSDOM } = await import('jsdom');
+  try {
+    const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+    const html = await res.text();
+    const dom = new JSDOM(html);
+    const doc = dom.window.document;
+
+    const ogTitle = doc.querySelector('meta[property="og:title"]')?.getAttribute("content");
+    const titleTag = doc.querySelector("title")?.textContent;
+    const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute("content");
+    const ogDescription = doc.querySelector('meta[property="og:description"]')?.getAttribute("content");
+
+    return {
+      title: ogTitle || titleTag || null,
+      image: ogImage || null,
+      description: ogDescription || null,
+    };
+  } catch (error) {
+    console.error("Error fetching title from URL:", error);
+    return { title: null, image: null, description: null };
+  }
+}

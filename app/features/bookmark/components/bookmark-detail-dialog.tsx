@@ -48,6 +48,7 @@ export default function BookmarkDetailDialog({
       currentText,
       parentCategoryId,
       currentCategoryId,
+      newCategoryLevel,
     } = useCategoryAutocomplete({ categories, findChildrenByPath });
 
     const isAddMode = bookmark?.id === 0;
@@ -141,6 +142,7 @@ export default function BookmarkDetailDialog({
         categoryId: currentCategoryId ? Number(currentCategoryId) : undefined,
         parentCategoryId: parentCategoryId ? Number(parentCategoryId) : undefined,
         newCategoryName,
+        newCategoryLevel,
         memo,
       });
     };
