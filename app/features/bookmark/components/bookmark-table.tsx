@@ -2,7 +2,7 @@ import { Button } from "~/core/components/ui/button";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "~/core/components/ui/table";
 import type { Bookmark, BookmarkTableProps } from "../types/bookmark.types";
 import BookmarkDetailDialog from "./bookmark-detail-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ALL_CATEGORY_ID, SORTABLE_COLUMNS } from "../lib/constants";
 import { BookmarkTableRow } from "./bookmark-table-row";
 import { editBookmark } from "../lib/bmActions";
@@ -20,10 +20,18 @@ export function BookmarkTable({
   setTabs,
   setBookmarks,
   dispatch,
+  selectedCategoryId,
 }: BookmarkTableProps) {
   const [editingBookmark, setEditingBookmark] = useState<Bookmark | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (editingBookmark) {
+      setFieldErrors({});
+    }
+  }, [editingBookmark]);
+
   return (
     <>
       <div className="flex items-center justify-end mb-2">
@@ -78,6 +86,7 @@ export function BookmarkTable({
           bookmark={{ ...editingBookmark, memo: editingBookmark?.memo ?? "" }}
           saving={saving}
           onSave={async (edited) => {
+            setSaving(true);
             const result = await editBookmark({
               id: editingBookmark.id,
               title: edited.title,
@@ -86,11 +95,13 @@ export function BookmarkTable({
               categoryId: edited.categoryId ?? 0,
               parentCategoryId: edited.parentCategoryId ?? 0,
               newCategoryName: edited.newCategoryName ?? "",
+              newCategoryLevel: edited.newCategoryLevel ?? 1,
               memo: edited.memo ?? "",
               setCategories: setCategories,
               setTabs: setTabs,
               setBookmarks: setBookmarks,
               dispatch: dispatch,
+              selectedCategoryId: selectedCategoryId,
             });
             setSaving(false);
             if (!result.ok) {

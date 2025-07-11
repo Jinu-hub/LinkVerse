@@ -9,6 +9,9 @@ import {
  } from "~/features/tag/db/mutations";
 import { getMaxCategorySortOrder } from "../db/queries";
 import { createBookmarkCategory } from "../db/mutations";
+import { createMemo, updateMemo } from "~/features/memo/db/mutations";
+import { getTargetMemoId } from "~/features/memo/db/queries";
+import type { Bookmark } from "../types/bookmark.types";
 
 export async function createNewCategory(
     client: SupabaseClient<Database>,
@@ -29,8 +32,7 @@ export async function createNewCategory(
     return newCategory;
 }
 
-
-// 태그 처리 함수 분리
+// 태그 처리 함수
 export async function handleBookmarkTags(
     client: SupabaseClient<Database>,
     { userId, bookmarkId, tags, isUpdate }: 
@@ -75,4 +77,57 @@ export async function handleBookmarkTags(
         });
     }
     return existingTags;
+}
+
+export async function handleBookmarkMemo(
+    client: SupabaseClient<Database>,
+    { userId, target_id, content, isUpdate }: 
+    { userId: string, target_id: number, content: string, isUpdate: boolean }) {
+    if (isUpdate) {
+        const memoId = await getTargetMemoId(client, {
+            content_type_id: 1,
+            target_id,
+            userId,
+        });
+        if (memoId !== null) {
+            const memoData = await updateMemo(client, {
+                user_id: userId,
+                memo_id: memoId,
+                content,
+            });
+            return memoData;
+        } else {
+            const memoData = await createMemo(client, {
+                user_id: userId,
+                content_type_id: 1,
+                target_id,
+                content,
+            });
+            return memoData;
+        }
+    } else {
+        const memoData = await createMemo(client, {
+            user_id: userId,
+            content_type_id: 1,
+            target_id,
+            content,
+        });
+        return memoData;
+    }
+}
+
+export function createBookmarkResult(bookmark: any, resTags: string[], resMemo: string) {
+    //console.log("bookmark", bookmark);
+    const bookmarkResult: Bookmark = {
+        id: bookmark.bookmark_id,
+        url: bookmark.url as string,
+        title: bookmark.title ?? "",
+        categoryId: bookmark.category_id ?? 0,
+        created_at: bookmark.created_at,
+        updated_at: bookmark.updated_at,
+        click_count: 0,
+        tags: resTags,
+        memo: resMemo,
+      };
+    return bookmarkResult;
 }
