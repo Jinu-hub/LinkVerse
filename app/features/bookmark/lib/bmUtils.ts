@@ -240,8 +240,23 @@ export async function fetchTitleFromUrl(url: string): Promise<{ title: string | 
     const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute("content");
     const ogDescription = doc.querySelector('meta[property="og:description"]')?.getAttribute("content");
 
+    let title = ogTitle || titleTag || null;
+    if (title) {
+      title = title.trim();
+    } else {
+      // title이 없을 때 URL에서 도메인 추출
+      try {
+        const urlObj = new URL(url);
+        let host = urlObj.hostname.replace(/^www\./, "");
+        let main = host.split(".")[0];
+        title = main.charAt(0).toUpperCase() + main.slice(1);
+      } catch {
+        title = null;
+      }
+    }
+
     return {
-      title: ogTitle || titleTag || null,
+      title: title,
       image: ogImage || null,
       description: ogDescription || null,
     };
@@ -249,4 +264,18 @@ export async function fetchTitleFromUrl(url: string): Promise<{ title: string | 
     console.error("Error fetching title from URL:", error);
     return { title: null, image: null, description: null };
   }
+}
+
+// 카테고리 트리에서 특정 id의 루트 카테고리 id를 찾는 함수
+export function findRootCategoryId(categories: Category[], targetId: number): number | null {
+  for (const category of categories) {
+    if (category.id === targetId) {
+      if (category.parent_id === 0 || category.parent_id === null) {
+        return category.id;
+      } else {
+        return findRootCategoryId(categories, category.parent_id);
+      }
+    }
+  }
+  return null;
 }

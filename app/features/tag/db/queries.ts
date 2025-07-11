@@ -52,6 +52,21 @@ export const getTagContents = async (
   return data;
 }
 
+export const getTagsByNameList = async (
+  client: SupabaseClient<Database>,
+  { userId, name }: { userId: string, name: string[] },
+) => {
+  const { data, error } = await client
+    .from('tag')
+    .select('tag_id, tag_name')
+    .eq('user_id', userId)
+    .in('tag_name', name);
+  if (error) {
+    throw error;
+  }
+  return data;
+}
+
 export const getTaggableTags = async (
   client: SupabaseClient<Database>,
   { content_type_id, target_id, userId }: 

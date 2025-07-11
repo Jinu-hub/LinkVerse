@@ -38,6 +38,7 @@ import {
   DEFAULT_SORT_KEY,
   UNCATEGORIZED_CATEGORY_ID,
   UNCATEGORIZED_TAB_ID,
+  EMPTY_BOOKMARK,
 } from '../lib/constants'
 import { bookmarksReducer, 
   buildCategoryTree, 
@@ -272,14 +273,8 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
 
   // 추가 다이얼로그 상태
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const emptyBookmark = {
-    id: 0,
-    title: '',
-    url: '',
-    tags: [],
-    memo: '',
-    categoryId: undefined,
-  };
+  const emptyBookmark = { ...EMPTY_BOOKMARK, categoryId: selectedCategoryId };
+  const [saving, setSaving] = useState(false);
 
   return (
     <div className="flex gap-10">
@@ -340,6 +335,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
           setCategories={setCategories}
           setTabs={setTabs}
           setBookmarks={setBookmarks}
+          dispatch={dispatch}
         />
 
         {/* 모바일: 오른쪽 하단 플로팅 버튼 */}
@@ -357,7 +353,9 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
           open={addDialogOpen}
           onOpenChange={(open) => setAddDialogOpen(open)}
           bookmark={emptyBookmark}
+          saving={saving}
           onSave={async (added) => {
+            setSaving(true);
             const result = await addBookmark({
               title: added.title,
               url: added.url,
@@ -370,11 +368,13 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
               setCategories: setCategories,
               setTabs: setTabs,
               setBookmarks: setBookmarks,
+              dispatch: dispatch,
             });
+            setSaving(false);
             if (!result.ok) {
               setFieldErrors(result.fieldErrors ?? {});
               return;
-            } 
+            }
             setFieldErrors({});
             setAddDialogOpen(false);
           }}

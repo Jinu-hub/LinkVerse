@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useContext } from "react";
 import type { Dispatch } from "react";
-import type { Category } from "./category-tree";
+import type { Category } from "../types/bookmark.types";
 
 // 상태 타입
 interface CategoryTreeState {
