@@ -25,7 +25,7 @@ import { TagSuggestionList } from "./suggestion-list-tag";
 import FormErrors from "~/core/components/form-error";
 
 export default function BookmarkDetailDialog({ 
-  open, onOpenChange, bookmark, onSave, categories, allTags, fieldErrors, setFieldErrors }
+  open, onOpenChange, bookmark, onSave, categories, allTags, fieldErrors, setFieldErrors, saving }
   : BookmarkDetailDialogProps) {
     const [title, setTitle] = useState(bookmark.title);
     const [url, setUrl] = useState(bookmark.url);
@@ -56,7 +56,7 @@ export default function BookmarkDetailDialog({
 
     // 북마크 정보 업데이트
     useEffect(() => {
-      if (!isError) {
+      if (!isError && !saving) {
         setTitle(bookmark.title);
         setUrl(bookmark.url);
         setTags(bookmark.tags);
@@ -198,21 +198,21 @@ export default function BookmarkDetailDialog({
   
           <div className="space-y-4">
             <div className="relative">
-              <Input value={url} onChange={e => setUrl(e.target.value)} placeholder="URL" />
+              <Input value={url} onChange={e => setUrl(e.target.value)} placeholder="URL" disabled={saving} />
               {fieldErrors?.url ? (<FormErrors errors={fieldErrors.url} />) : null}
             </div>
 
             {isAddMode && (
               <div className="flex items-center gap-2 mb-2">
                 <Switch id="auto-title" className="mb-0" 
-                  checked={autoTitle} onCheckedChange={setAutoTitle} />
+                  checked={autoTitle} onCheckedChange={setAutoTitle} disabled={saving} />
                 <Label htmlFor="auto-title" className="text-xs text-muted-foreground mb-0">Title 자동생성</Label>
               </div>
             )}
             {!autoTitle && (
               <>
                 <div className="relative">
-                  <Input value={title} onChange={e => setTitle(e.target.value)} placeholder="Title" />
+                  <Input value={title} onChange={e => setTitle(e.target.value)} placeholder="Title" disabled={saving} />
                   {fieldErrors?.title ? (<FormErrors errors={fieldErrors.title} />) : null}
                 </div>
               </>
@@ -238,6 +238,7 @@ export default function BookmarkDetailDialog({
                 onKeyDown={handleCategoryKeyDown}
                 placeholder="카테고리 입력 (예: 개발 > React > supabase)"
                 autoComplete="off"
+                disabled={saving}
               />
               {fieldErrors?.newCategoryName ? (<FormErrors errors={fieldErrors.newCategoryName} />) : null}
               {/* 자동완성 추천 리스트 */}
@@ -307,25 +308,49 @@ export default function BookmarkDetailDialog({
               <Textarea
                 value={memo}
                 onChange={e => setMemo(e.target.value)}
-                placeholder="메모 입력"
-                rows={4}
+                placeholder="메모를 입력하세요"
+                rows={3}
+                disabled={saving}
               />
               {fieldErrors?.memo ? (<FormErrors errors={fieldErrors.memo} />) : null}
             </div>
           </div>
-  
+
           <DialogFooter className="mt-4">
+            <div className="w-full text-left">
+              {fieldErrors?.form ? (<FormErrors errors={fieldErrors.form} />) : null}
+            </div>
             {isAddMode && (
-              <Button className="bg-blue-200 hover:bg-blue-300 text-blue-900" onClick={handleSave}>Add</Button>
+              <Button 
+                className="bg-blue-200 hover:bg-blue-300 text-blue-900 cursor-pointer disabled:cursor-not-allowed" 
+                onClick={handleSave} 
+                disabled={saving}
+              >
+                Add
+              </Button>
             )}
             {!isAddMode && (
               <>
-                <Button className="bg-green-200 hover:bg-green-300 text-green-900" onClick={handleSave}>Edit</Button>
-                <Button className="bg-red-200 hover:bg-red-300 text-red-900" onClick={handleSave}>Del</Button>
+                <Button 
+                  className="bg-green-200 hover:bg-green-300 text-green-900 cursor-pointer disabled:cursor-not-allowed" 
+                  onClick={handleSave} 
+                  disabled={saving}
+                >
+                  Edit
+                </Button>
+                <Button 
+                  className="bg-red-200 hover:bg-red-300 text-red-900 cursor-pointer disabled:cursor-not-allowed" 
+                  onClick={handleSave} 
+                  disabled={saving}
+                >
+                  Del
+                </Button>
               </>
             )}
             <Button
               variant="secondary"
+              disabled={saving}
+              className="cursor-pointer disabled:cursor-not-allowed"
               onClick={() => onOpenChange(false)}
             >
               Close

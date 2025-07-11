@@ -89,7 +89,8 @@ export interface BookmarkTableProps {
   tags: string[];
   setCategories: (categories: Category[]) => void;
   setTabs: (tabs: UI_View[]) => void;
-  setBookmarks: (bookmarks: Bookmark[]) => void;
+  setBookmarks: React.Dispatch<React.SetStateAction<Bookmark[]>>;
+  dispatch: any;
 };
 
 export type BookmarkDetailDialogProps = {
@@ -111,4 +112,5 @@ export type BookmarkDetailDialogProps = {
   allTags: string[];
   fieldErrors: Record<string, string[]>;
   setFieldErrors: (fieldErrors: Record<string, string[]>) => void;
+  saving: boolean;
 };

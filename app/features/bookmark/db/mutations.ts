@@ -6,7 +6,7 @@ export const createBookmarkCategory = async (
     { userId, name, parent_id, level, sort_order }:
     { userId: string, name: string, parent_id: number | null, level: number, sort_order: number },
 ) => {
-    const { error } = await client
+    const { data, error } = await client
         .from('category')
         .insert({
             user_id: userId, 
@@ -18,11 +18,11 @@ export const createBookmarkCategory = async (
             sort_order: sort_order ? sort_order : 0,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
-        })
-        .select()
+        }).select().single();
     if (error) {
         throw error
     }
+    return data;
 }
 
 export const updateBookmarkCategoryName = async (
@@ -45,14 +45,70 @@ export const deleteBookmarkCategory = async (
     client: SupabaseClient<Database>,
     { userId, categoryId }: { userId: string, categoryId: number },
 ) => {
-    console.log("deleteBookmarkCategory", userId, categoryId);
     const { data, error } = await client
         .from('category')
         .delete()
         .eq('user_id', userId)
         .eq('category_id', categoryId)
         .eq('content_type_id', 1)
-    console.log("deleteBookmarkCategory", error);
+    if (error) {
+        throw error
+    }
+    return data
+}
+
+
+export const createBookmark = async (
+    client: SupabaseClient<Database>,
+    { user_id, category_id, title, url, thumbnail_url, description }:
+    { user_id: string, category_id: number, title: string, url: string, thumbnail_url: string, description: string },
+) => {
+    const { data, error } = await client
+        .from('bookmark')
+        .insert({ 
+            user_id, 
+            category_id, 
+            title, 
+            url, 
+            thumbnail_url, 
+            description,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+        })
+        .select().single();
+    if (error) {
+        throw error
+    }
+    return data;
+}
+
+export const updateBookmark = async (
+    client: SupabaseClient<Database>,
+    { user_id, bookmark_id, category_id, title, url }:
+    { user_id: string, bookmark_id: number, category_id: number, title: string, url: string },
+) => {
+    const { data, error } = await client
+        .from('bookmark')
+        .update({ category_id, title, url })
+        .eq('user_id', user_id)
+        .eq('bookmark_id', bookmark_id)
+        .select()
+    if (error) {
+        throw error
+    }
+    return data
+}
+
+export const deleteBookmark = async (
+    client: SupabaseClient<Database>,
+    { user_id, bookmark_id }: { user_id: string, bookmark_id: number },
+) => {
+    const { data, error } = await client
+        .from('bookmark')
+        .delete()
+        .eq('user_id', user_id)
+        .eq('bookmark_id', bookmark_id)
+        .select()
     if (error) {
         throw error
     }

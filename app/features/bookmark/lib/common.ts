@@ -15,15 +15,18 @@ export async function createNewCategory(
     { userId, name, parent_id, level }: 
     { userId: string, name: string, parent_id: number | null, level: number }) {
 
+    const realParentId = parent_id === 0 ? null : parent_id;
     const maxSortOrder = await getMaxCategorySortOrder(client, {
-        userId, parent_id });
-    await createBookmarkCategory(client, {
+        userId, parent_id: realParentId });
+    
+    const newCategory = await createBookmarkCategory(client, {
         userId,
         name,
-        parent_id,
+        parent_id: realParentId,
         level,
         sort_order: maxSortOrder + 1,
         });
+    return newCategory;
 }
 
 
@@ -71,4 +74,5 @@ export async function handleBookmarkTags(
             tag_id: tag.tag_id,
         });
     }
+    return existingTags;
 }

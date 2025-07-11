@@ -12,6 +12,14 @@ export const TAGS_CHUNK_SIZE = 3;
 export const BADGE_ODD_EVEN_MOD = 2;
 export const HOT_CLICK_COUNT_THRESHOLD = 7;
 export const EDIT_DIALOG_TIMEOUT = 100; // ms
+export const EMPTY_BOOKMARK = {
+    id: 0,
+    title: '',
+    url: '',
+    tags: [],
+    memo: '',
+    categoryId: undefined,
+  };
 
 export const SORTABLE_COLUMNS: { key: keyof Bookmark; label: string }[] = [
     { key: 'title', label: '제목' },

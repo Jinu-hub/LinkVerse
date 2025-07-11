@@ -19,9 +19,11 @@ export function BookmarkTable({
   setCategories,
   setTabs,
   setBookmarks,
+  dispatch,
 }: BookmarkTableProps) {
   const [editingBookmark, setEditingBookmark] = useState<Bookmark | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
+  const [saving, setSaving] = useState(false);
   return (
     <>
       <div className="flex items-center justify-end mb-2">
@@ -71,6 +73,7 @@ export function BookmarkTable({
             if (!open) setEditingBookmark(null);
           }}
           bookmark={{ ...editingBookmark, memo: editingBookmark?.memo ?? "" }}
+          saving={saving}
           onSave={async (edited) => {
             const result = await editBookmark({
               id: editingBookmark.id,
@@ -84,7 +87,9 @@ export function BookmarkTable({
               setCategories: setCategories,
               setTabs: setTabs,
               setBookmarks: setBookmarks,
+              dispatch: dispatch,
             });
+            setSaving(false);
             if (!result.ok) {
               setFieldErrors(result.fieldErrors ?? {});
               return;
