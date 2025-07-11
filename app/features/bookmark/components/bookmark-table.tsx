@@ -5,7 +5,7 @@ import BookmarkDetailDialog from "./bookmark-detail-dialog";
 import { useState } from "react";
 import { ALL_CATEGORY_ID, SORTABLE_COLUMNS } from "../lib/constants";
 import { BookmarkTableRow } from "./bookmark-table-row";
-import { addBookmark, editBookmark } from "../lib/bmActions";
+import { editBookmark } from "../lib/bmActions";
 
 export function BookmarkTable({
   pagedBookmarks,
@@ -44,7 +44,10 @@ export function BookmarkTable({
           <TableHeader>
             <TableRow className="bg-gray-200 dark:bg-zinc-800">
               {SORTABLE_COLUMNS.map(col => (
-                <TableHead key={col.key} onClick={() => sort.onSort(col.key)} className="cursor-pointer select-none text-base font-bold">
+                <TableHead key={col.key} onClick={() => sort.onSort(col.key)} 
+                  className="cursor-pointer select-none text-base font-bold"
+                  style={{ width: col.width }}
+                  >
                   {col.label} {sort.sortKey === col.key && (sort.sortOrder === 'asc' ? '▲' : '▼')}
                 </TableHead>
               ))}

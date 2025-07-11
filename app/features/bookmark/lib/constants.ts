@@ -21,11 +21,11 @@ export const EMPTY_BOOKMARK = {
     categoryId: undefined,
   };
 
-export const SORTABLE_COLUMNS: { key: keyof Bookmark; label: string }[] = [
-    { key: 'title', label: '제목' },
-    { key: 'url', label: 'URL' },
-    { key: 'tags', label: '태그' },
-    { key: 'click_count', label: '클릭수' },
+export const SORTABLE_COLUMNS: { key: keyof Bookmark; label: string; width: string }[] = [
+    { key: 'title', label: '제목', width: '30%' },
+    { key: 'url', label: 'URL', width: '35%' },
+    { key: 'tags', label: '태그', width: '35%' },
+    { key: 'click_count', label: '클릭수', width: '10%' },
   ];
 
 export const bookmarkSchema = z.object({
