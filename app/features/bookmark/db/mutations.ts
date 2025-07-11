@@ -63,11 +63,12 @@ export const createBookmark = async (
     { user_id, category_id, title, url, thumbnail_url, description }:
     { user_id: string, category_id: number, title: string, url: string, thumbnail_url: string, description: string },
 ) => {
+    const realCategoryId = category_id === 0 ? null : category_id;
     const { data, error } = await client
         .from('bookmark')
         .insert({ 
             user_id, 
-            category_id, 
+            category_id: realCategoryId, 
             title, 
             url, 
             thumbnail_url, 
