@@ -1,5 +1,5 @@
 import type { Bookmark, Category } from "../types/bookmark.types";
-import { toBookmarks, toCategory, toUIViewTabs, findRootCategoryId } from "./bmUtils";
+import { toCategory, toUIViewTabs, findRootCategoryId } from "./bmUtils";
 import { bookmarkSchema } from "./constants";
 import { data } from "react-router";
 
@@ -16,6 +16,7 @@ export async function addBookmark({
     setTabs,
     setBookmarks,
     dispatch,
+    selectedCategoryId,
 }: {
     title: string;
     url: string;
@@ -29,6 +30,7 @@ export async function addBookmark({
     setTabs: (tabs: any[]) => void;
     setBookmarks: React.Dispatch<React.SetStateAction<Bookmark[]>>;
     dispatch: any;
+    selectedCategoryId: number;
 }) {
     const {
         data: validData,
@@ -60,8 +62,10 @@ export async function addBookmark({
         }
         const { bookmark: newBookmark } = await res.json();
 
-        // 2. 전체 카테고리/탭 목록 재요청 (새로운 카테고리 추가 시)
-        if (newCategoryName) {
+        // 2. 전체 카테고리/탭 목록 재요청 (새로운 카테고리 추가 또는 선택된 카테고리 변경 시)
+        if (newCategoryName || 
+            (selectedCategoryId !== null && selectedCategoryId !== undefined &&
+                selectedCategoryId !== newBookmark.categoryId)) {
             const res_get = await fetch("/bookmarks/api/category");
             if (!res_get.ok) {
                 return { ok: false, error: "카테고리 목록을 불러오지 못했습니다." };
@@ -71,7 +75,8 @@ export async function addBookmark({
             setCategories(mappedCategories);
             setTabs(newTabs.map(toUIViewTabs));
             let targetId = newBookmark.categoryId;
-            if ( parentCategoryId !== 0) {
+            if ( newBookmark.parent_category_id !== null 
+                && newBookmark.parent_category_id !== undefined) {
                 targetId = findRootCategoryId(mappedCategories, targetId);
             }
             const tabId = newTabs.find((t: any) => t.category_id === targetId)?.ui_view_id;
@@ -96,11 +101,13 @@ export async function editBookmark({
     categoryId,
     parentCategoryId,
     newCategoryName,
+    newCategoryLevel,
     memo,
     setCategories,
     setTabs,
     setBookmarks,
     dispatch,
+    selectedCategoryId,
 }: {
     id: number;
     title: string;
@@ -109,11 +116,13 @@ export async function editBookmark({
     categoryId?: number;
     parentCategoryId?: number;
     newCategoryName: string;
+    newCategoryLevel: number;
     memo: string;
     setCategories: (categories: Category[]) => void;
     setTabs: (tabs: any[]) => void;
     setBookmarks: React.Dispatch<React.SetStateAction<Bookmark[]>>;
     dispatch: any;
+    selectedCategoryId: number;
 }) {
     const {
         data: validData,
@@ -122,8 +131,11 @@ export async function editBookmark({
       } = bookmarkSchema.safeParse({
         title,
         url,
-        tags,
+        categoryId,
+        parentCategoryId,
+        newCategoryLevel,
         newCategoryName,
+        tags,
         memo,
     });
     if (!success) {
@@ -131,6 +143,7 @@ export async function editBookmark({
     }
 
     try {
+        
         // 1. 북마크 수정
         const res = await fetch(`/bookmarks/api/bookmark/${id}`, {
             method: "PUT",
@@ -140,26 +153,26 @@ export async function editBookmark({
         if (!res.ok) {
             return { ok: false, error: "북마크 수정에 실패했습니다." };
         }
-        const { data: updatedBookmark } = await res.json();
+        const { bookmark: updatedBookmark } = await res.json();
 
-        // 2. 전체 카테고리/탭 목록 재요청 (새로운 루트 카테고리 추가 시)
-        if (newCategoryName && parentCategoryId === 0) {
+        // 2. 전체 카테고리/탭 목록 재요청 (새로운 카테고리 추가 또는 선택된 카테고리 변경 시)
+        if (newCategoryName || 
+            (selectedCategoryId !== null && selectedCategoryId !== undefined &&
+                selectedCategoryId !== updatedBookmark.categoryId)) {
             const res_get = await fetch("/bookmarks/api/category");
             if (!res_get.ok) {
                 return { ok: false, error: "카테고리 목록을 불러오지 못했습니다." };
             }
             const { categories: newCategories, tabs: newTabs } = await res_get.json();
-            setCategories(newCategories.map(toCategory));
+            const mappedCategories = newCategories.map(toCategory);
+            setCategories(mappedCategories);
             setTabs(newTabs.map(toUIViewTabs));
+            let targetId = findRootCategoryId(mappedCategories, updatedBookmark.categoryId);
+            const tabId = newTabs.find((t: any) => t.category_id === targetId)?.ui_view_id;
+            dispatch({ type: 'CHANGE_CATEGORY', payload: { categoryId: targetId, tabId: tabId } });
         }
 
-        // 3. 수정된 북마크 재요청
-        const res_get = await fetch("/bookmarks/api/bookmark");
-        if (!res_get.ok) {
-            return { ok: false, error: "북마크 목록을 불러오지 못했습니다." };
-        }
-        const { bookmarks: newBookmarks } = await res_get.json();
-        setBookmarks(newBookmarks.map(toBookmarks));
+        setBookmarks(prev => prev.map(b => b.id === id ? updatedBookmark : b));
 
         return { ok: true, data: updatedBookmark }; 
     } catch (e) {

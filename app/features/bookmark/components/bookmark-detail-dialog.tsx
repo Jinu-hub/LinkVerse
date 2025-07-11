@@ -338,6 +338,7 @@ export default function BookmarkDetailDialog({
                 >
                   Edit
                 </Button>
+                {/*
                 <Button 
                   className="bg-red-200 hover:bg-red-300 text-red-900 cursor-pointer disabled:cursor-not-allowed" 
                   onClick={handleSave} 
@@ -345,6 +346,7 @@ export default function BookmarkDetailDialog({
                 >
                   Del
                 </Button>
+                */}
               </>
             )}
             <Button

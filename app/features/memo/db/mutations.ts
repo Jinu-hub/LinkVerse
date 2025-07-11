@@ -20,3 +20,18 @@ export const createMemo = async (client: SupabaseClient<Database>,
     }
     return data;
 }
+
+export const updateMemo = async (client: SupabaseClient<Database>, 
+    { user_id, memo_id, content }: 
+    { user_id: string, memo_id: number, content: string }) => {
+    const { data, error } = await client
+        .from('memo')
+        .update({ content })
+        .eq('user_id', user_id)
+        .eq('memo_id', memo_id)
+        .select().single();
+    if (error) {
+        throw error;
+    }
+    return data;
+}

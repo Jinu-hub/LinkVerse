@@ -91,6 +91,7 @@ export interface BookmarkTableProps {
   setTabs: (tabs: UI_View[]) => void;
   setBookmarks: React.Dispatch<React.SetStateAction<Bookmark[]>>;
   dispatch: any;
+  selectedCategoryId: number;
 };
 
 export type BookmarkDetailDialogProps = {

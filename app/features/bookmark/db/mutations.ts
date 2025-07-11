@@ -88,12 +88,13 @@ export const updateBookmark = async (
     { user_id, bookmark_id, category_id, title, url }:
     { user_id: string, bookmark_id: number, category_id: number, title: string, url: string },
 ) => {
+    const realCategoryId = category_id === 0 ? null : category_id;
     const { data, error } = await client
         .from('bookmark')
-        .update({ category_id, title, url })
+        .update({ category_id: realCategoryId, title, url })
         .eq('user_id', user_id)
         .eq('bookmark_id', bookmark_id)
-        .select()
+        .select().single();
     if (error) {
         throw error
     }

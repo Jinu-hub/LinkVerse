@@ -336,6 +336,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
           setTabs={setTabs}
           setBookmarks={setBookmarks}
           dispatch={dispatch}
+          selectedCategoryId={selectedCategoryId}
         />
 
         {/* 모바일: 오른쪽 하단 플로팅 버튼 */}
@@ -369,6 +370,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
               setTabs: setTabs,
               setBookmarks: setBookmarks,
               dispatch: dispatch,
+              selectedCategoryId: selectedCategoryId,
             });
             setSaving(false);
             if (!result.ok) {

@@ -3,9 +3,7 @@ import { getBookmark } from "../db/queries";
 import { bookmarkSchema } from "../lib/constants";
 import { fetchTitleFromUrl } from "../lib/bmUtils";
 import { createBookmark } from "../db/mutations";
-import { createMemo } from "~/features/memo/db/mutations";
-import { createNewCategory, handleBookmarkTags } from "../lib/common";
-import type { Bookmark } from "../types/bookmark.types";
+import { createBookmarkResult, createNewCategory, handleBookmarkMemo, handleBookmarkTags } from "../lib/common";
 
 export const loader = async ({ request }: { request: Request }) => {
   const [client] = makeServerClient(request);
@@ -78,27 +76,16 @@ export async function action({ request }: { request: Request }) {
     // 메모 생성
     let resMemo: string = "";
     if (memo) {
-      const memoData = await createMemo(client, {
-        user_id: user.id,
-        content_type_id: 1,
+      const memoData = await handleBookmarkMemo(client, {
+        userId: user.id,
         target_id: bookmark.bookmark_id,
         content: memo,
+        isUpdate: false,
       });
       resMemo = memoData?.content ?? "";
     }
 
-    const bookmarkResult: Bookmark = {
-      id: bookmark.bookmark_id,
-      url: bookmark.url as string,
-      title: bookmark.title ?? "",
-      categoryId: bookmark.category_id ?? 0,
-      created_at: bookmark.created_at,
-      updated_at: bookmark.updated_at,
-      click_count: 0,
-      tags: resTags,
-      memo: resMemo,
-    };
-
+    const bookmarkResult = createBookmarkResult(bookmark, resTags, resMemo);
     return new Response(JSON.stringify({ success: true, bookmark: bookmarkResult }), {
         headers: { "Content-Type": "application/json" },
       });
