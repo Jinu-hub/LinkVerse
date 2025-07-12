@@ -96,7 +96,7 @@ export default function TagsScreen({ loaderData }: Route.ComponentProps) {
             key={`${tag.id}-${tag.name}`}
             id={tag.id}
             name={tag.name}
-            usageCount={tag.usage_count}
+            usage_count={tag.usage_count}
             createdAt={tag.createdAt}
             tags={tags}
             setTags={setTags}
