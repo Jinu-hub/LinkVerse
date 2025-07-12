@@ -126,6 +126,7 @@ export default [
     ...prefix("/tags", [
       index("features/tag/screens/tags.tsx"),
       route("/:id", "features/tag/screens/tag-contents.tsx"),
+      route("/api/tag/:id", "features/tag/api/tag-edit.tsx"),
     ]),
   ]),
 

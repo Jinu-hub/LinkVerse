@@ -19,6 +19,20 @@ export const createTags = async (client: SupabaseClient<Database>,
   return data;
 }
 
+export const updateTagName = async (client: SupabaseClient<Database>, 
+    { userId, tagId, name }: { userId: string, tagId: number, name: string }) => {
+  const { data, error } = await client
+    .from('tag')
+    .update({ tag_name: name})
+    .eq('tag_id', tagId)
+    .eq('user_id', userId)
+    .select();
+  if (error) {
+    throw error;
+  }
+  return data?.length > 0 ? data[0] : null;
+}
+
 export const updateTagUsageCount = async (client: SupabaseClient<Database>, 
     { tag_id }: { tag_id: number }) => {
   const { error } = await client
