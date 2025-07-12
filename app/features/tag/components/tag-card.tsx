@@ -4,13 +4,14 @@ import { Button } from "~/core/components/ui/button"
 import { useNavigate } from "react-router";
 import { Popover, PopoverContent, PopoverTrigger } from "~/core/components/ui/popover";
 import React, { useEffect, useState } from "react";
-import { editTagName } from "../lib/taActions";
+import { deleteTag, editTagName } from "../lib/taActions";
 import type { Tag } from "../lib/tag.types";
+import ConfirmDeleteTag from "./confirm-delete-tag";
 
 type TagCardProps = {
   id: number
   name: string
-  usageCount: number
+  usage_count: number
   createdAt: string
   goToDetail?: boolean // 기본 true
   onClick?: () => void // 별도 사용자 정의 동작
@@ -20,22 +21,15 @@ type TagCardProps = {
   setTags?: (tags: Tag[]) => void
 }
 
-export function TagCard({ id, name, usageCount, createdAt, goToDetail = true, onClick, onEdit, onDelete, tags, setTags }: TagCardProps) {
+export function TagCard({ id, name, usage_count, createdAt, goToDetail = true, onClick, onEdit, onDelete, tags, setTags }: TagCardProps) {
   const navigate = useNavigate();
-
-  if (id === 61) {
-    console.log("name", name);
-  }
-
-  useEffect(() => {
-    setEditValue(name);
-  }, [name]);
-
   const [editValue, setEditValue] = useState(name);
   const [editing, setEditing] = useState(false);
   const [isEditAfter, setIsEditAfter] = useState(false);
   const [nameHover, setNameHover] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const handleCardClick = () => {
     if (onClick) {
@@ -57,6 +51,14 @@ export function TagCard({ id, name, usageCount, createdAt, goToDetail = true, on
     const result = await editTagName({ id, name: editValue, tags, setTags: setTags! });
   };
 
+  const handleDelete = async () => {
+    setDeleting(true);
+    await deleteTag({ id, tags, setTags: setTags! });
+    setDeleting(false);
+    setDeleteDialogOpen(false);
+    onDelete?.();
+  };
+
   const handleEditComplete = () => {
     setSaving(false);
     setEditing(false);
@@ -65,14 +67,12 @@ export function TagCard({ id, name, usageCount, createdAt, goToDetail = true, on
     if (editValue !== name && onEdit) onEdit();
   };
 
-
-
   return (
     <Card
       className={`w-full cursor-pointer border-0 bg-zinc-100 dark:bg-zinc-900 transition-all duration-200
         hover:shadow-2xl hover:ring-2 hover:ring-primary/40 hover:scale-[1.025]`}
       onClick={e => {
-        if (!editing && !isEditAfter)handleCardClick();
+        if (!deleteDialogOpen && !editing && !isEditAfter)handleCardClick();
         setIsEditAfter(false);
       }}
     >
@@ -115,13 +115,14 @@ export function TagCard({ id, name, usageCount, createdAt, goToDetail = true, on
         )}
         <div className="flex flex-1 items-center gap-2">
           <div className="flex flex-col flex-1 gap-0.5">
-            <span className="text-xs text-zinc-700 dark:text-zinc-300">{usageCount} items</span>
+            <span className="text-xs text-zinc-700 dark:text-zinc-300">{usage_count} items</span>
             <span className="text-xs text-zinc-500 dark:text-zinc-400">생성일: {createdAt.slice(0, 10)}</span>
           </div>
           {/* PC: hover 시 노출, 테블릿 이하: ... 버튼 → 팝오버 */}
           <div className="hidden md:flex flex-row gap-2 items-center justify-end ml-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200">
             {!editing && (
-              <Button size="sm" variant="destructive" className="backdrop-blur bg-white/60 dark:bg-zinc-800/60 border-white/40 dark:border-zinc-700/40 text-red-700 dark:text-red-300 hover:bg-red-100 hover:border-red-300 dark:hover:bg-zinc-700/80" onClick={e => { e.stopPropagation(); onDelete?.(); }}>
+              <Button size="sm" variant="destructive" className="backdrop-blur bg-white/60 dark:bg-zinc-800/60 border-white/40 dark:border-zinc-700/40 text-red-700 dark:text-red-300 hover:bg-red-100 hover:border-red-300 dark:hover:bg-zinc-700/80" 
+                onClick={e => { e.stopPropagation(); setDeleteDialogOpen(true); setIsEditAfter(true);}}>
                 삭제
               </Button>
             )}
@@ -135,7 +136,8 @@ export function TagCard({ id, name, usageCount, createdAt, goToDetail = true, on
               </PopoverTrigger>
               <PopoverContent align="end" className="p-2 w-32">
                 {!editing && (
-                  <Button size="sm" variant="destructive" className="w-full" onClick={e => { e.stopPropagation(); onDelete?.(); }}>
+                  <Button size="sm" variant="destructive" className="w-full" 
+                    onClick={e => { e.stopPropagation(); setDeleteDialogOpen(true); setIsEditAfter(true); }}>
                     삭제
                   </Button>
                 )}
@@ -143,6 +145,14 @@ export function TagCard({ id, name, usageCount, createdAt, goToDetail = true, on
             </Popover>
           </div>
         </div>
+        {/* 삭제 확인 다이얼로그 */}
+        <ConfirmDeleteTag
+          open={deleteDialogOpen}
+          tag={{ id, name, usage_count, createdAt }}
+          onConfirm={handleDelete}
+          onCancel={() => setDeleteDialogOpen(false)}
+          deleting={deleting}
+        />
       </CardContent>
     </Card>
   )

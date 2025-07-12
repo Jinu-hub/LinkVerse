@@ -33,6 +33,18 @@ export const updateTagName = async (client: SupabaseClient<Database>,
   return data?.length > 0 ? data[0] : null;
 }
 
+export const deleteTag = async (client: SupabaseClient<Database>, 
+    { userId, tagId }: { userId: string, tagId: number }) => {
+  const { error } = await client
+    .from('tag')
+    .delete()
+    .eq('tag_id', tagId)
+    .eq('user_id', userId);
+  if (error) {
+    throw error;
+  }
+}
+
 export const updateTagUsageCount = async (client: SupabaseClient<Database>, 
     { tag_id }: { tag_id: number }) => {
   const { error } = await client

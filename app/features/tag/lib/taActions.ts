@@ -29,3 +29,24 @@ export async function editTagName({
     toast.success("태그 이름이 수정되었습니다");
     return { ok: true, data: updatedTagObj };
 }
+
+
+export async function deleteTag({
+    id,
+    tags,
+    setTags,
+}: {
+    id: number;
+    tags: Tag[];
+    setTags: (tags: Tag[]) => void;
+}) {
+    const res = await fetch(`/tags/api/tag/${id}`, {
+        method: "DELETE",
+    });
+    if (!res.ok) {
+        return { ok: false, error: "태그 삭제에 실패했습니다." };
+    }
+    setTags(tags.filter(tag => tag.id !== id));
+    toast.success("태그가 삭제되었습니다");
+    return { ok: true };
+}
