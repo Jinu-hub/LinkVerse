@@ -181,3 +181,24 @@ export async function editBookmark({
     }
    
 }
+
+export async function deleteBookmark({
+    id,
+    setBookmarks,
+    tags,
+}: {
+    id: number;
+    setBookmarks: React.Dispatch<React.SetStateAction<Bookmark[]>>;
+    tags: string[];
+}) {
+    const res = await fetch(`/bookmarks/api/bookmark/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tags }),
+    });
+    if (!res.ok) {
+        return { ok: false, error: "북마크 삭제에 실패했습니다." };
+    }
+    setBookmarks(prev => prev.filter(b => b.id !== id));
+    return { ok: true };
+}

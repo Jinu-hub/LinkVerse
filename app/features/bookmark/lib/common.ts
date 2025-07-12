@@ -35,8 +35,9 @@ export async function createNewCategory(
 // 태그 처리 함수
 export async function handleBookmarkTags(
     client: SupabaseClient<Database>,
-    { userId, bookmarkId, tags, isUpdate }: 
-    { userId: string, bookmarkId: number, tags: string[], isUpdate: boolean }) {
+    { userId, target_id, tags, mode }: 
+    { userId: string, target_id: number, tags: string[]
+        , mode: "add" | "update" | "delete" }) {
         
     // 입력된 태그 목록 
     const tagList = tags.map(tag => tag.trim());
@@ -45,31 +46,39 @@ export async function handleBookmarkTags(
       userId: userId,
       name: tagList,
     });
-    const existingTagNames = existingTags.map(tag => tag.tag_name);
+
     // 기존 태그 목록에 없는 태그 목록이 있으면 생성
-    const newTagNames = tagList.filter(tag => !existingTagNames.includes(tag));
-    if (newTagNames.length > 0) {
-        const newTags = await createTags(client, {
-            userId: userId,
-            name: newTagNames,
-        });
-        existingTags.push(...newTags);
+    if (mode === "add" || mode === "update") {
+        const existingTagNames = existingTags.map(tag => tag.tag_name);
+        const newTagNames = tagList.filter(tag => !existingTagNames.includes(tag));
+        if (newTagNames.length > 0) {
+            const newTags = await createTags(client, {
+                userId: userId,
+                name: newTagNames,
+            });
+            existingTags.push(...newTags);
+        }
     }
+
     // 콘텐츠와 태그 연결:삭제
-    if (isUpdate) {
+    if (mode === "update" || mode === "delete") {
         await deleteTaggableByTarget(client, {
             content_type_id: 1,
-            target_id: bookmarkId,
+            target_id,
         });
     }
+
     // 콘텐츠와 태그 연결:생성
-    for (const tag of existingTags) {
-        await createTaggable(client, {
-            tag_id: tag.tag_id,
-            content_type_id: 1,
-            target_id: bookmarkId,
-        });
+    if (mode === "add" || mode === "update") {
+        for (const tag of existingTags) {
+            await createTaggable(client, {
+                tag_id: tag.tag_id,
+                content_type_id: 1,
+                target_id,
+            });
+        }
     }
+
     // 태그 사용량 업데이트
     for (const tag of existingTags) {
         await updateTagUsageCount(client, {
