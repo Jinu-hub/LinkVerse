@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { ALL_CATEGORY_ID } from "../lib/constants";
 import { useIsMobile } from "~/core/hooks/use-mobile";
 import { CategoryInput } from "./category-input";
-import { CategoryDeleteDialog } from "./category-delete-dialog";
+import { ConfirmDeleteCategory } from "./confirm-delete-category";
 import { CategoryButton } from "./category-button";
 import { CategoryTreeProvider, useCategoryTreeContext } from "./category-tree-context";
 import { CategoryActionsMenu } from "./category-actions-menu";
@@ -114,7 +114,7 @@ function CategoryTreeInner({
         </div>
       )}
       {/* 삭제 확인 다이얼로그 */}
-      <CategoryDeleteDialog
+      <ConfirmDeleteCategory
         open={!!state.deleteCandidate}
         category={state.deleteCandidate}
         onConfirm={() => dispatch({ type: "DELETE_CANDIDATE_CLEAR" })}

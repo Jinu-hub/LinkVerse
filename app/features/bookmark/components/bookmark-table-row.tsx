@@ -1,7 +1,5 @@
 import { TableRow, TableCell } from "~/core/components/ui/table";
 import { Badge } from "~/core/components/ui/badge";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "~/core/components/ui/dropdown-menu";
-import { FiMoreHorizontal } from "react-icons/fi";
 import { chunkArray } from "../lib/bmUtils";
 import type { Bookmark } from "../types/bookmark.types";
 import { 
@@ -16,6 +14,7 @@ interface BookmarkTableRowProps {
   search: string;
   highlightText: (text: string, keyword: string) => React.ReactNode;
   onEdit: (bookmark: Bookmark) => void;
+  onDelete: (bookmark: Bookmark) => void;
 }
 
 export function BookmarkTableRow({
@@ -23,6 +22,7 @@ export function BookmarkTableRow({
   search,
   highlightText,
   onEdit,
+  onDelete,
 }: BookmarkTableRowProps) {
   return (
     <TableRow
@@ -65,7 +65,7 @@ export function BookmarkTableRow({
         <span className="ml-1">{bookmark.click_count}</span>
       </TableCell>
       <TableCell className="w-[40px] text-center">
-        <BookmarkRowMenu bookmark={bookmark} onEdit={onEdit} />
+        <BookmarkRowMenu bookmark={bookmark} onEdit={onEdit} onDelete={onDelete} />
       </TableCell>
     </TableRow>
   );

@@ -6,10 +6,10 @@ import type { Bookmark } from "../types/bookmark.types";
 interface BookmarkRowMenuProps {
   bookmark: Bookmark;
   onEdit: (bookmark: Bookmark) => void;
-  // onDelete 등 필요시 추가
+  onDelete: (bookmark: Bookmark) => void; 
 }
 
-export function BookmarkRowMenu({ bookmark, onEdit }: BookmarkRowMenuProps) {
+export function BookmarkRowMenu({ bookmark, onEdit, onDelete }: BookmarkRowMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,7 +30,15 @@ export function BookmarkRowMenu({ bookmark, onEdit }: BookmarkRowMenuProps) {
         }}>
           편집
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={e => { e.stopPropagation(); /* 삭제 처리 */ }} variant="destructive">
+        <DropdownMenuItem
+          onClick={e => {
+            e.stopPropagation();
+            setTimeout(() => {
+              onDelete(bookmark); 
+            }, EDIT_DIALOG_TIMEOUT);
+          }}
+          variant="destructive"
+        >
           삭제
         </DropdownMenuItem>
       </DropdownMenuContent>

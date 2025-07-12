@@ -12,7 +12,7 @@ import {
 import type { Category } from "../types/bookmark.types";
 import { deleteCategory } from "../lib/caActions";
 
-interface CategoryDeleteDialogProps {
+interface ConfirmDeleteCategoryProps {
   open: boolean;
   category: Category | null;
   onConfirm: () => void;
@@ -24,7 +24,7 @@ interface CategoryDeleteDialogProps {
   toUIViewTabs: (tab: any) => any;
 }
 
-export function CategoryDeleteDialog({ 
+export function ConfirmDeleteCategory({ 
   open, 
   category, 
   onConfirm, 
@@ -34,7 +34,7 @@ export function CategoryDeleteDialog({
   dispatch,
   toCategory,
   toUIViewTabs,
-}: CategoryDeleteDialogProps) {
+}: ConfirmDeleteCategoryProps) {
   return (
     <AlertDialog open={open} onOpenChange={(open) => {
       if (!open) onCancel();

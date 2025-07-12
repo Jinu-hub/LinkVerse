@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { ALL_CATEGORY_ID, SORTABLE_COLUMNS } from "../lib/constants";
 import { BookmarkTableRow } from "./bookmark-table-row";
 import { editBookmark } from "../lib/bmActions";
+import ConfirmDeleteBookmark from "./confirm-delete-bookmark";
 
 export function BookmarkTable({
   pagedBookmarks,
@@ -23,6 +24,7 @@ export function BookmarkTable({
   selectedCategoryId,
 }: BookmarkTableProps) {
   const [editingBookmark, setEditingBookmark] = useState<Bookmark | null>(null);
+  const [deleteCandidate, setDeleteCandidate] = useState<Bookmark | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [saving, setSaving] = useState(false);
 
@@ -31,6 +33,12 @@ export function BookmarkTable({
       setFieldErrors({});
     }
   }, [editingBookmark]);
+
+  // 실제 삭제 함수 예시
+  async function handleDeleteBookmark(id: number) {
+    await fetch(`/bookmarks/api/bookmark/${id}`, { method: "DELETE" });
+    setBookmarks(prev => prev.filter(b => b.id !== id));
+  }
 
   return (
     <>
@@ -70,7 +78,7 @@ export function BookmarkTable({
                 search={search}
                 highlightText={highlightText}
                 onEdit={(bm) => setEditingBookmark(bm)}
-                // 필요시 onDelete, onRowClick 등 추가
+                onDelete={(bm) => setDeleteCandidate(bm)}
               />
             ))}
           </TableBody>
@@ -117,6 +125,18 @@ export function BookmarkTable({
           setFieldErrors={setFieldErrors}
         />
       )}
+
+      {/* 삭제 확인 다이얼로그 */}
+      <ConfirmDeleteBookmark
+        open={!!deleteCandidate}
+        bookmark={deleteCandidate}
+        onCancel={() => setDeleteCandidate(null)}
+        onConfirm={async () => {
+          if (!deleteCandidate) return;
+          await handleDeleteBookmark(deleteCandidate.id);
+          setDeleteCandidate(null);
+        }}
+      />
     </>
   );
 } 
