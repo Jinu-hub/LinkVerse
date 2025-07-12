@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "../../../core/components/ui/table";
 import type { ContentType } from "~/core/lib/types";
-import type { Memo, SortKey } from "../types/memo.types";
+import type { Memo, SortKey } from "../lib/memo.types";
 import { useNavigate } from "react-router";
 import { contentIconMap, typeColorMap } from "~/core/lib/constants";
 import type { title } from "process";

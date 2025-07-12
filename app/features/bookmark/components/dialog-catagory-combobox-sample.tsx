@@ -25,7 +25,7 @@ import {
 } from "~/core/components/ui/command";
 import { ChevronsUpDown, Check } from "lucide-react";
 import { cn } from "~/core/lib/utils";
-import type { Category } from '../types/bookmark.types';
+import type { Category } from '../lib/bookmark.types';
 import { findCategoryPath } from "../lib/bmUtils";
 import React from "react";
 

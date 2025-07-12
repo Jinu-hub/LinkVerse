@@ -19,7 +19,7 @@ import { useCategoryAutocomplete } from '../hooks/useCategoryAutocomplete';
 import { z } from "zod";
 import { Label } from "~/core/components/ui/label";
 import { Switch } from "~/core/components/ui/switch";
-import type { BookmarkDetailDialogProps } from "../types/bookmark.types";
+import type { BookmarkDetailDialogProps } from "../lib/bookmark.types";
 import { cn } from "~/core/lib/utils";
 import { TagSuggestionList } from "./suggestion-list-tag";
 import FormErrors from "~/core/components/form-error";

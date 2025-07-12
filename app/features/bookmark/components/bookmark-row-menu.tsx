@@ -1,7 +1,7 @@
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "~/core/components/ui/dropdown-menu";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { EDIT_DIALOG_TIMEOUT } from "../lib/constants";
-import type { Bookmark } from "../types/bookmark.types";
+import type { Bookmark } from "../lib/bookmark.types";
 
 interface BookmarkRowMenuProps {
   bookmark: Bookmark;

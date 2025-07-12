@@ -6,7 +6,7 @@ import {
     type UniqueIdentifier,
   } from "@dnd-kit/core"
   import { useCallback, useMemo, useState } from "react"
-  import type { FlattenedItem, Category } from "../types/bookmark.types"
+  import type { FlattenedItem, Category } from "../lib/bookmark.types"
   import { arrayMove } from "@dnd-kit/sortable"
   import { buildTree, flatten, getChildrenIds, getProjection } from "../lib/caUtils"
   

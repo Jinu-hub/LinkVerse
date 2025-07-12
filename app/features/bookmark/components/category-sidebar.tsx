@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Category, UI_View } from '../types/bookmark.types'
+import type { Category, UI_View } from '../lib/bookmark.types'
 import { CategoryTree } from './category-tree'
 
 interface CategorySidebarProps {

@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useClickOutside } from './useClickOutside';
 import { getParentPathAndCurrentText, filterCategoryCandidates, pathExists } from '../lib/bmUtils';
-import type { Category } from '../types/bookmark.types';
+import type { Category } from '../lib/bookmark.types';
 
 interface UseCategoryAutocompleteParams {
   categories: Category[];

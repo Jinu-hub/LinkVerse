@@ -3,7 +3,7 @@ import { useParams, useLocation } from "react-router";
 
 import TagContentCard from "../components/tag-content-card";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
-import type { SortKeyContents, TagContent } from "../types/tag.types";
+import type { SortKeyContents, TagContent } from "../lib/tag.types";
 import { SORT_OPTIONS_CONTENTS } from "../lib/constants";
 import { CONTENT_TYPES, typeColorMap } from "~/core/lib/constants";
 import { TagEditDialog } from "../components/tag-edit-dialog";

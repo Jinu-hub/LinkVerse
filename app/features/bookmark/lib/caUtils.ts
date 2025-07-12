@@ -1,5 +1,5 @@
 import type { UniqueIdentifier } from "@dnd-kit/core"
-import type { FlattenedItem, Category } from "../types/bookmark.types"
+import type { FlattenedItem, Category } from "./bookmark.types"
 import { arrayMove } from "@dnd-kit/sortable"
 
 const getDepth = (

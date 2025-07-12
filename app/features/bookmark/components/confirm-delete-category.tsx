@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
 } from "~/core/components/ui/alert-dialog";
 
-import type { Category } from "../types/bookmark.types";
+import type { Category } from "../lib/bookmark.types";
 import { deleteCategory } from "../lib/caActions";
 
 interface ConfirmDeleteCategoryProps {

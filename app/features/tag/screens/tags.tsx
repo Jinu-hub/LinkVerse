@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { TagCard } from "../components/tag-card";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
 import { SORT_OPTIONS } from "../lib/constants";
-import type { SortKey, Tag } from "../types/tag.types";
+import type { SortKey, Tag } from "../lib/tag.types";
 import type { Route } from "./+types/tags";
 import { getTags } from "../db/queries";
 import makeServerClient from "~/core/lib/supa-client.server";

@@ -3,7 +3,7 @@ import { FiMenu, FiInbox, FiAlertCircle } from 'react-icons/fi'
 import { Select, SelectContent, SelectItem
     , SelectTrigger, SelectValue } from "~/core/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "~/core/components/ui/tabs";
-import type { Category, UI_View } from "../types/bookmark.types";
+import type { Category, UI_View } from "../lib/bookmark.types";
 import { Sheet, SheetContent, SheetTrigger } from "~/core/components/ui/sheet";
 import { CategoryTree } from "./category-tree";
 import { Button } from "~/core/components/ui/button";

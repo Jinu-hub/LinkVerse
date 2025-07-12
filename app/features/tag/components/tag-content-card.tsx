@@ -1,7 +1,7 @@
 import { Link } from "react-router"
 import { format } from "date-fns"
 import { contentIconMap, typeColorMap } from "~/core/lib/constants";
-import type { TagContent } from "../types/tag.types";
+import type { TagContent } from "../lib/tag.types";
 import { CONTENT_TYPE_FIELD_MAP } from "../lib/constants";
 
 interface ContentCardProps {

@@ -1,6 +1,6 @@
 // app/features/bookmark/components/CategorySuggestionList.tsx
 import { cn } from "~/core/lib/utils"; // cn 유틸리티가 있다면 import
-import type { Category } from "../types/bookmark.types";
+import type { Category } from "../lib/bookmark.types";
 import { useRef, useEffect } from "react";
 
 interface CategorySuggestionListProps {

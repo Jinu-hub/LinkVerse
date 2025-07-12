@@ -1,7 +1,7 @@
-import type { Category } from "./bookmark/types/bookmark.types";
-import type { UI_View } from "./bookmark/types/bookmark.types";
-import type { Bookmark } from "./bookmark/types/bookmark.types";
-import type { TagContent } from "./tag/types/tag.types";
+import type { Category } from "./bookmark/lib/bookmark.types";
+import type { UI_View } from "./bookmark/lib/bookmark.types";
+import type { Bookmark } from "./bookmark/lib/bookmark.types";
+import type { TagContent } from "./tag/lib/tag.types";
 
 export const mockCategories: Category[] = [
     { id: 0, parent_id: 0, name: '🗂️ 전체보기', level: 0, is_root: true },

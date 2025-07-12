@@ -1,7 +1,7 @@
 import { TableRow, TableCell } from "~/core/components/ui/table";
 import { Badge } from "~/core/components/ui/badge";
 import { chunkArray } from "../lib/bmUtils";
-import type { Bookmark } from "../types/bookmark.types";
+import type { Bookmark } from "../lib/bookmark.types";
 import { 
   BADGE_ODD_EVEN_MOD,
   HOT_CLICK_COUNT_THRESHOLD,

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { Bookmark } from "../types/bookmark.types";
+import type { Bookmark } from "./bookmark.types";
 
 export const ALL_TAB_ID = 9999;
 export const UNCATEGORIZED_TAB_ID = -1;

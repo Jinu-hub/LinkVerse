@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "~/core/components/ui/dialog";
 import { Button } from "~/core/components/ui/button";
-import type { Bookmark } from "../types/bookmark.types";
+import type { Bookmark } from "../lib/bookmark.types";
 
 interface ConfirmDeleteBookmarkProps {
   open: boolean;

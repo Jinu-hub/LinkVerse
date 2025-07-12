@@ -4,7 +4,7 @@ import type {
   BookmarksState, 
   Category, 
   Bookmark,
-  UI_View } from '../types/bookmark.types'
+  UI_View } from './bookmark.types'
 import { ALL_CATEGORY_ID, UNCATEGORIZED_CATEGORY_ID } from './constants'
 
 export function bookmarksReducer(
