@@ -1,6 +1,6 @@
 import { Button } from "~/core/components/ui/button";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "~/core/components/ui/table";
-import type { Bookmark, BookmarkTableProps } from "../types/bookmark.types";
+import type { Bookmark, BookmarkTableProps } from "../lib/bookmark.types";
 import BookmarkDetailDialog from "./bookmark-detail-dialog";
 import { useEffect, useState } from "react";
 import { ALL_CATEGORY_ID, SORTABLE_COLUMNS } from "../lib/constants";

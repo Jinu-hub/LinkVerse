@@ -11,7 +11,7 @@ import { getMaxCategorySortOrder } from "../db/queries";
 import { createBookmarkCategory } from "../db/mutations";
 import { createMemo, updateMemo } from "~/features/memo/db/mutations";
 import { getTargetMemoId } from "~/features/memo/db/queries";
-import type { Bookmark } from "../types/bookmark.types";
+import type { Bookmark } from "./bookmark.types";
 
 export async function createNewCategory(
     client: SupabaseClient<Database>,

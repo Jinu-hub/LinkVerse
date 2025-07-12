@@ -8,7 +8,7 @@ import { MemoEditor } from "../components/memo-editor";
 import { toMemo } from "../lib/mmUtils";
 import { Button } from "~/core/components/ui/button";
 import { editMemo } from "../lib/mmActions";
-import type { Memo } from "../types/memo.types";
+import type { Memo } from "../lib/memo.types";
 
 const getType = (contentTypeId: number): string => {
   return (CONTENT_TYPES.find(t => t.id === contentTypeId)?.code || 'bookmark') as string;

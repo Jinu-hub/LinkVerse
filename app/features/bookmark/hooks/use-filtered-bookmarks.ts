@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { Bookmark, Category } from '../types/bookmark.types'
+import type { Bookmark, Category } from '../lib/bookmark.types'
 import {
   DEFAULT_ROWS_PER_PAGE,
   DEFAULT_SORT_KEY,

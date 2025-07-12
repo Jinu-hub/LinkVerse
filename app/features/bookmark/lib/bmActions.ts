@@ -1,4 +1,4 @@
-import type { Bookmark, Category } from "../types/bookmark.types";
+import type { Bookmark, Category } from "./bookmark.types";
 import { toCategory, toUIViewTabs, findRootCategoryId } from "./bmUtils";
 import { bookmarkSchema } from "./constants";
 import { data } from "react-router";

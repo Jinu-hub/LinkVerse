@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import type { ContentType } from "~/core/lib/types";
-import type { Memo, SortKey } from "../types/memo.types";
+import type { Memo, SortKey } from "../lib/memo.types";
 import type { Route } from "./+types/memos";
 import { CONTENT_TYPES } from "~/core/lib/constants";
 import MemoToolbar from "../components/memo-toolbar";

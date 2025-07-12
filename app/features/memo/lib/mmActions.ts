@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import type { Memo } from "../types/memo.types";
+import type { Memo } from "./memo.types";
 import { toMemo } from "./mmUtils";
 
 

@@ -26,7 +26,7 @@ import type {
   Category,
   BookmarksState,
   UI_View,
-} from "../types/bookmark.types";
+} from "../lib/bookmark.types";
 
 import { useMemo, useReducer, useCallback, useState } from "react";
 import { BookmarkToolbar } from "../components/bookmark-toolbar";

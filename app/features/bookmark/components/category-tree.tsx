@@ -9,7 +9,7 @@ import { ConfirmDeleteCategory } from "./confirm-delete-category";
 import { CategoryButton } from "./category-button";
 import { CategoryTreeProvider, useCategoryTreeContext } from "./category-tree-context";
 import { CategoryActionsMenu } from "./category-actions-menu";
-import type { Category, UI_View } from "../types/bookmark.types";
+import type { Category, UI_View } from "../lib/bookmark.types";
 import { toCategory, toUIViewTabs } from "../lib/bmUtils";
 import { addCategory, updateCategoryName } from "../lib/caActions";
 

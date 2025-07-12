@@ -1,4 +1,4 @@
-import type { Memo } from "../types/memo.types";
+import type { Memo } from "./memo.types";
 
 export function toMemo(item: any): Memo {
   return {
