@@ -82,7 +82,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
 
     const getCategoryPathName = (id: string) => {
       if (!id) return "카테고리 선택";
-      const path = findCategoryPath(id, categories);
+      const path = findCategoryPath(Number(id), categories);
       return path.length > 0 ? path.map((p) => p.name).join(" > ") : "카테고리 선택";
     }
 
@@ -90,7 +90,7 @@ export default function BookmarkDetailDialog({ open, onOpenChange, bookmark, onS
       const result: { id: string; name: string, depth: number }[] = [];
       const traverse = (items: Category[], depth: number) => {
         for(const item of items) {
-          result.push({ id: item.id, name: item.name, depth });
+          result.push({ id: item.id.toString(), name: item.name, depth });
           if (item.children) {
             traverse(item.children, depth + 1);
           }
