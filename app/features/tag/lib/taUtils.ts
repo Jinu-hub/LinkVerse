@@ -1,4 +1,5 @@
-import type { Tag, TagContent } from "../types/tag.types";
+import { sortArray } from "~/core/lib/utils";
+import type { SortKey, Tag, TagContent } from "./tag.types";
 
 export function toTag(item: any): Tag {
   return {
@@ -23,4 +24,15 @@ export function toTagContent(item: any): TagContent {
     url: item.url ?? '',
     extra: {},
   };
+}
+
+export function getSortedTags(tags: Tag[], sortKey: SortKey, sortOrder: 'asc' | 'desc') {
+  if (sortKey === "usage_count") {
+    return sortArray(tags, "usage_count", sortOrder);
+  } else if (sortKey === "name") {
+    return sortArray(tags, "name", sortOrder);
+  } else if (sortKey === "created_at") {
+    return sortArray(tags, "createdAt", sortOrder);
+  }
+  return tags;
 }

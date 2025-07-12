@@ -3,7 +3,9 @@ import { Card, CardContent } from "~/core/components/ui/card"
 import { Button } from "~/core/components/ui/button"
 import { useNavigate } from "react-router";
 import { Popover, PopoverContent, PopoverTrigger } from "~/core/components/ui/popover";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { editTagName } from "../lib/taActions";
+import type { Tag } from "../lib/tag.types";
 
 type TagCardProps = {
   id: number
@@ -14,14 +16,26 @@ type TagCardProps = {
   onClick?: () => void // 별도 사용자 정의 동작
   onEdit?: () => void
   onDelete?: () => void
+  tags: Tag[]
+  setTags?: (tags: Tag[]) => void
 }
 
-export function TagCard({ id, name, usageCount, createdAt, goToDetail = true, onClick, onEdit, onDelete }: TagCardProps) {
+export function TagCard({ id, name, usageCount, createdAt, goToDetail = true, onClick, onEdit, onDelete, tags, setTags }: TagCardProps) {
   const navigate = useNavigate();
+
+  if (id === 61) {
+    console.log("name", name);
+  }
+
+  useEffect(() => {
+    setEditValue(name);
+  }, [name]);
+
+  const [editValue, setEditValue] = useState(name);
   const [editing, setEditing] = useState(false);
   const [isEditAfter, setIsEditAfter] = useState(false);
-  const [editValue, setEditValue] = useState(name);
   const [nameHover, setNameHover] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const handleCardClick = () => {
     if (onClick) {
@@ -37,12 +51,21 @@ export function TagCard({ id, name, usageCount, createdAt, goToDetail = true, on
     setEditing(true);
   };
 
+  const handleEdit = async () => {
+    setSaving(true);
+    setEditing(true);
+    const result = await editTagName({ id, name: editValue, tags, setTags: setTags! });
+  };
+
   const handleEditComplete = () => {
+    setSaving(false);
     setEditing(false);
     setIsEditAfter(true);
     setNameHover(false);
     if (editValue !== name && onEdit) onEdit();
   };
+
+
 
   return (
     <Card
@@ -61,7 +84,12 @@ export function TagCard({ id, name, usageCount, createdAt, goToDetail = true, on
             autoFocus
             onChange={e => setEditValue(e.target.value)}
             onBlur={handleEditComplete}
-            onKeyDown={e => { if (e.key === "Enter") handleEditComplete(); }}
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                handleEdit();
+                handleEditComplete();
+              }
+            }}
             onClick={e => e.stopPropagation()}
           />
         ) : (

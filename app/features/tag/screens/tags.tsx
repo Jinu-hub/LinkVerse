@@ -8,17 +8,7 @@ import { getTags } from "../db/queries";
 import makeServerClient from "~/core/lib/supa-client.server";
 import { requireAuthentication } from "~/core/lib/guards.server";
 import { toTag } from "../lib/taUtils";
-
-function getSortedTags(tags: Tag[], sortKey: SortKey, sortOrder: 'asc' | 'desc') {
-  if (sortKey === "usage_count") {
-    return sortArray(tags, "usage_count", sortOrder);
-  } else if (sortKey === "name") {
-    return sortArray(tags, "name", sortOrder);
-  } else if (sortKey === "created_at") {
-    return sortArray(tags, "createdAt", sortOrder);
-  }
-  return tags;
-}
+import { getSortedTags } from "../lib/taUtils";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: `Tags | ${import.meta.env.VITE_APP_NAME}` }];
@@ -33,21 +23,20 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 };
 
 export default function TagsScreen({ loaderData }: Route.ComponentProps) {
+  const { tags: initialTags } = loaderData;
   const [sortKey, setSortKey] = useState<SortKey>("usage_count");
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [tags, setTags] = useState<Tag[]>(initialTags.map((item: any) => toTag(item)));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const pageSize = 12;
-
-  const tags: Tag[] = useMemo(() => loaderData.tags.map((item: any) => 
-    toTag(item)), [loaderData.tags]);
 
   // 필터
   const filtered = useMemo(() =>
     filterArray(tags, tag =>
       tag.name.toLowerCase().includes(search.toLowerCase()) ||
       String(tag.id).includes(search)
-    ), [search]
+    ), [tags, search]
   );
 
   // 정렬
@@ -104,12 +93,13 @@ export default function TagsScreen({ loaderData }: Route.ComponentProps) {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {pagedTags.map(tag => (
           <TagCard
-            key={tag.id}
+            key={`${tag.id}-${tag.name}`}
             id={tag.id}
             name={tag.name}
             usageCount={tag.usage_count}
             createdAt={tag.createdAt}
-            // onClick, onEdit, onDelete 등 필요시 추가
+            tags={tags}
+            setTags={setTags}
           />
         ))}
       </div>
