@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 interface MemoEditorProps {
   memoId: number
@@ -6,9 +6,11 @@ interface MemoEditorProps {
   readOnly?: boolean
   onChange?: (value: string) => void
   onSave?: (value: string) => void
+  saving?: boolean
 }
 
-export function MemoEditor({ memoId, content, readOnly = false, onChange, onSave }: MemoEditorProps) {
+export function MemoEditor({ memoId, content, readOnly = false
+  , onChange, onSave, saving = false }: MemoEditorProps) {
   const [value, setValue] = useState(content)
 
   if (readOnly) {
@@ -35,6 +37,7 @@ export function MemoEditor({ memoId, content, readOnly = false, onChange, onSave
       onChange={handleChange}
       onBlur={handleBlur}
       placeholder="메모를 입력하세요..."
+      disabled={saving}
     />
   )
 }

@@ -30,11 +30,11 @@ export const updateMemo = async (client: SupabaseClient<Database>,
         .update({ content })
         .eq('user_id', user_id)
         .eq('memo_id', memo_id)
-        .select().single();
+        .select();
     if (error) {
         throw error;
     }
-    return data;
+    return data?.length > 0 ? data[0] : null;
 }
 
 export const deleteMemo = async (client: SupabaseClient<Database>, 

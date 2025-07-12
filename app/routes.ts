@@ -133,6 +133,7 @@ export default [
     ...prefix("/memos", [
       index("features/memo/screens/memos.tsx"),
       route("/:id", "features/memo/screens/memo-detail.tsx"),
+      route("/api/memo/:id", "features/memo/api/memo-edit.tsx"),
     ]),
   ]),
 ] satisfies RouteConfig;
