@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "database.types";
+import { getTargetMemoId } from "./queries";
 
 
 export const createMemo = async (client: SupabaseClient<Database>, 
@@ -34,4 +35,27 @@ export const updateMemo = async (client: SupabaseClient<Database>,
         throw error;
     }
     return data;
+}
+
+export const deleteMemo = async (client: SupabaseClient<Database>, 
+    { user_id, content_type_id, target_id }: 
+    { user_id: string, content_type_id: number, target_id: number }) => {
+    const memoId = await getTargetMemoId(client, {
+        content_type_id,
+        target_id,
+        userId: user_id,
+    });
+    if (memoId !== null) {
+        const { data, error } = await client
+            .from('memo')
+            .delete()
+            .eq('user_id', user_id)
+            .eq('memo_id', memoId)
+            .select();
+        if (error) {
+            throw error;
+        }
+        return data?.length > 0 ? data[0] : null;
+    }
+    return null;
 }

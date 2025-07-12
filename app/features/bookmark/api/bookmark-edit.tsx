@@ -3,9 +3,14 @@ import type { Route } from "./+types/bookmark-edit";
 import makeServerClient from "~/core/lib/supa-client.server";
 import { getBookmark } from "../db/queries";
 import { bookmarkSchema } from "../lib/constants";
-import { updateBookmark } from "../db/mutations";
-import { createBookmarkResult, createNewCategory, handleBookmarkMemo, handleBookmarkTags } from "../lib/common";
-import type { Bookmark } from "../types/bookmark.types";
+import { deleteBookmark, updateBookmark } from "../db/mutations";
+import { 
+    createBookmarkResult, 
+    createNewCategory, 
+    handleBookmarkMemo, 
+    handleBookmarkTags,
+} from "../lib/common";
+import { deleteMemo } from "~/features/memo/db/mutations";
 
 export const loader = async ({ request, params }: Route.LoaderArgs) => {
     const [client] = makeServerClient(request);
@@ -73,9 +78,9 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
             if (tags) {
                 const tagsData = await handleBookmarkTags(client, {
                     userId: user.id,
-                    bookmarkId: bookmarkId,
+                    target_id: bookmarkId,
                     tags: tags,
-                    isUpdate: true,
+                    mode: "update",
                 });
                 resTags = tagsData.map(tag => tag.tag_name);
             }
@@ -98,8 +103,39 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
             });
         }
 
+        if (bookmarkId && request.method === "DELETE") {
+            // 북마크 삭제
+            await deleteBookmark(client, {
+                user_id: user.id,
+                bookmark_id: bookmarkId,
+            });
+            // 메모 삭제
+            await deleteMemo(client, {
+                user_id: user.id,
+                content_type_id: 1,
+                target_id: bookmarkId,
+            });
+            // 콘텐츠와 태그 연결:삭제
+            const body = await request.json();
+            const { tags } = body;
+            if (tags) {
+                await handleBookmarkTags(client, {
+                    userId: user.id,
+                    target_id: bookmarkId,
+                    tags: tags,
+                    mode: "delete",
+                });
+            }
+            return new Response(JSON.stringify({ success: true }), {
+                headers: { "Content-Type": "application/json" },
+            });
+        }
+
     } catch (error) {
       console.error(error);
-      return new Response("Internal Server Error", { status: 500 });
+      return new Response(
+        JSON.stringify({ error: { message: error instanceof Error ? error.message : String(error) } }),
+        { status: 400 }
+      );
     }
   }

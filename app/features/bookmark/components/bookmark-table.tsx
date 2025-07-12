@@ -5,7 +5,7 @@ import BookmarkDetailDialog from "./bookmark-detail-dialog";
 import { useEffect, useState } from "react";
 import { ALL_CATEGORY_ID, SORTABLE_COLUMNS } from "../lib/constants";
 import { BookmarkTableRow } from "./bookmark-table-row";
-import { editBookmark } from "../lib/bmActions";
+import { deleteBookmark, editBookmark } from "../lib/bmActions";
 import ConfirmDeleteBookmark from "./confirm-delete-bookmark";
 
 export function BookmarkTable({
@@ -27,18 +27,13 @@ export function BookmarkTable({
   const [deleteCandidate, setDeleteCandidate] = useState<Bookmark | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (editingBookmark) {
       setFieldErrors({});
     }
   }, [editingBookmark]);
-
-  // 실제 삭제 함수 예시
-  async function handleDeleteBookmark(id: number) {
-    await fetch(`/bookmarks/api/bookmark/${id}`, { method: "DELETE" });
-    setBookmarks(prev => prev.filter(b => b.id !== id));
-  }
 
   return (
     <>
@@ -131,9 +126,20 @@ export function BookmarkTable({
         open={!!deleteCandidate}
         bookmark={deleteCandidate}
         onCancel={() => setDeleteCandidate(null)}
+        deleting={deleting}
         onConfirm={async () => {
           if (!deleteCandidate) return;
-          await handleDeleteBookmark(deleteCandidate.id);
+          setDeleting(true);
+          const result = await deleteBookmark({
+            id: deleteCandidate.id,
+            setBookmarks: setBookmarks,
+            tags: tags,
+          });
+          setDeleting(false);
+          if (!result.ok) {
+            console.error(result.error);
+            return;
+          }
           setDeleteCandidate(null);
         }}
       />

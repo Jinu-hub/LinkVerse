@@ -114,5 +114,5 @@ export const deleteBookmark = async (
     if (error) {
         throw error
     }
-    return data
+    return data?.length > 0 ? data[0] : null;
 }

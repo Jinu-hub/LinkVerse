@@ -66,9 +66,9 @@ export async function action({ request }: { request: Request }) {
     if (tags) {
       const tagsData = await handleBookmarkTags(client, {
         userId: user.id,
-        bookmarkId: bookmark.bookmark_id,
+        target_id: bookmark.bookmark_id,
         tags: tags,
-        isUpdate: false,
+        mode: "add",
       });
       resTags = tagsData.map(tag => tag.tag_name);
     }
