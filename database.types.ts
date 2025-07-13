@@ -621,6 +621,14 @@ export type Database = {
       }
     }
     Functions: {
+      fetch_user_tags_by_categories: {
+        Args: {
+          p_content_type_id: number
+          p_user_id: string
+          p_category_ids: number[]
+        }
+        Returns: number[]
+      }
       get_all_child_categories: {
         Args: { p_parent_id: number }
         Returns: {
@@ -631,25 +639,23 @@ export type Database = {
         Args: { user_id: string; parent_id: number }
         Returns: number
       }
-      sync_memo_with_category_delete: {
-        Args: {
-          p_category_id: number
-          p_content_type_id: number
-          p_user_id: string
-        }
-        Returns: undefined
+      sync_memo_with_content_delete: {
+        Args: { p_content_type_id: number; p_user_id: string }
+        Returns: number
       }
       sync_tag_usage_with_content: {
         Args: { p_tag_id: number }
         Returns: undefined
       }
-      sync_taggable_with_category_delete: {
-        Args: {
-          p_category_id: number
-          p_content_type_id: number
-          p_user_id: string
-        }
-        Returns: undefined
+      sync_taggable_with_content_delete: {
+        Args:
+          | { p_content_type_id: number; p_user_id: string }
+          | {
+              p_content_type_id: number
+              p_user_id: string
+              p_tag_ids: number[]
+            }
+        Returns: number
       }
     }
     Enums: {
