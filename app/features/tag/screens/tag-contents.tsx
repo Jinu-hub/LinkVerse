@@ -5,8 +5,9 @@ import TagContentCard from "../components/tag-content-card";
 import { sortArray, filterArray, paginateArray } from "~/core/lib/utils";
 import type { SortKeyContents, TagContent } from "../lib/tag.types";
 import { SORT_OPTIONS_CONTENTS } from "../lib/constants";
-import { CONTENT_TYPES, typeColorMap } from "~/core/lib/constants";
-import { TagEditDialog } from "../components/tag-edit-dialog";
+import { CONTENT_TYPES } from "~/core/lib/constants";
+// import { typeColorMap } from "~/core/lib/constants";
+// import { TagEditDialog } from "../components/tag-edit-dialog";
 import { getTagContents } from "../db/queries";
 import { requireAuthentication } from "~/core/lib/guards.server";
 import makeServerClient from "~/core/lib/supa-client.server";
@@ -159,6 +160,7 @@ export default function TagContentsScreen({ loaderData }: Route.ComponentProps) 
           </button>
         ))}
       </div>
+      {/*
       <TagEditDialog
         editButtonTop={editButtonTop}
         editTagName={editTagName}
@@ -167,6 +169,7 @@ export default function TagContentsScreen({ loaderData }: Route.ComponentProps) 
         sorted={sorted}
         typeColorMap={typeColorMap}
       />
+      */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {pagedContents.map(content => {

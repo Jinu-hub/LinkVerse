@@ -37,8 +37,8 @@ export function TagEditDialog({
       {selectedContentIds.length > 0 && (
         <DialogTrigger asChild>
           <Button
-            variant="default"
-            className="fixed right-8 z-50 px-6 py-2 rounded-lg font-bold shadow-md transition bg-primary/90 text-white hover:bg-primary dark:bg-primary/80 dark:text-black dark:hover:bg-primary border-0 focus:outline-none focus:ring-2 focus:ring-primary/40"
+            variant="outline"
+            className="fixed right-8 z-50 px-6 py-3 rounded-lg font-bold shadow-md cursor-pointer hover:bg-gray-200 text-base"
             style={{ top: `${editButtonTop}px` }}
           >
             편집
@@ -73,10 +73,12 @@ export function TagEditDialog({
           </div>
         </div>
         <DialogFooter>  
-          <Button className="bg-green-600 hover:bg-green-300 text-green-900" 
-              onClick={handleEdit}>Edit</Button>
+          <Button 
+            className="bg-green-200 hover:bg-green-300 text-green-900 cursor-pointer disabled:cursor-not-allowed"  
+            onClick={handleEdit}>Edit</Button>
           <Button
             variant="secondary"
+            className="cursor-pointer disabled:cursor-not-allowed"
             onClick={() => setOpen(false)}
             >
             Cancel
