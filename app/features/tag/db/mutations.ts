@@ -81,3 +81,16 @@ export const createTaggable = async (client: SupabaseClient<Database>,
     throw error;
   }
 }
+
+export const deleteContentCategoryTags = async (client: SupabaseClient<Database>, 
+    { userId, categoryId, content_type_id }: { userId: string, categoryId: number, content_type_id: number }) => {
+  const { error } = await client
+    .rpc('sync_taggable_with_category_delete', {
+      p_category_id: categoryId,
+      p_content_type_id: content_type_id,
+      p_user_id: userId,
+    });
+  if (error) {
+    throw error;
+  }
+}
