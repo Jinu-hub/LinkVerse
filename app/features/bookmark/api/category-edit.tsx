@@ -4,8 +4,10 @@ import { data } from "react-router";
 import { z } from "zod";
 
 import makeServerClient from "~/core/lib/supa-client.server";
-import { getBookmarkCategories, getUIViewTabs, isExistsCategoryName } from "../db/queries";
+import { getBookmarkCategories, getChildCategoryIds, getUIViewTabs, isExistsCategoryName } from "../db/queries";
 import { deleteBookmarkCategory, updateBookmarkCategoryName } from "../db/mutations";
+import { deleteContentCategoryTags } from "~/features/tag/db/mutations";
+import { deleteContentCategoryMemos } from "~/features/memo/db/mutations";
 
 const categorySchema = z.object({
     name: z.string().min(1),
@@ -77,6 +79,28 @@ export async function action({ request, params }: Route.ActionArgs) {
     }
 
     if (category_id && request.method === "DELETE") {
+      // 카테고리 하위 카테고리 조회
+      const categoryIds = await getChildCategoryIds(client, {
+        parent_id: category_id,
+      });
+
+      categoryIds.forEach(async (categoryIdObj) => {
+        // 카테고리내 북마크에 대한 태그 삭제
+        await deleteContentCategoryTags(client, {
+          userId: user.id,
+          categoryId: categoryIdObj.category_id,
+          content_type_id: 1,
+        });
+
+        // 카테고리내 북마크에 대한 매모 삭져
+        await deleteContentCategoryMemos(client, {
+          userId: user.id,
+          categoryId: categoryIdObj.category_id,
+          content_type_id: 1,
+        });
+      });
+
+      // 카테고리 삭제
       await deleteBookmarkCategory(client, {
         userId: user.id,
         categoryId: category_id,

@@ -621,12 +621,34 @@ export type Database = {
       }
     }
     Functions: {
+      get_all_child_categories: {
+        Args: { p_parent_id: number }
+        Returns: {
+          category_id: number
+        }[]
+      }
       get_max_category_sort_order: {
         Args: { user_id: string; parent_id: number }
         Returns: number
       }
+      sync_memo_with_category_delete: {
+        Args: {
+          p_category_id: number
+          p_content_type_id: number
+          p_user_id: string
+        }
+        Returns: undefined
+      }
       sync_tag_usage_with_content: {
         Args: { p_tag_id: number }
+        Returns: undefined
+      }
+      sync_taggable_with_category_delete: {
+        Args: {
+          p_category_id: number
+          p_content_type_id: number
+          p_user_id: string
+        }
         Returns: undefined
       }
     }

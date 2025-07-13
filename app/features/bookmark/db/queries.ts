@@ -160,3 +160,16 @@ export const getMaxCategorySortOrder = async (
   if (error) throw error;
   return data ?? 0;
 };
+
+
+export const getChildCategoryIds = async (
+  client: SupabaseClient<Database>,
+  { parent_id }: { parent_id: number | null },
+) => {
+  const { data, error } = await client
+    .rpc('get_all_child_categories', {
+      p_parent_id: parent_id as any,
+    });
+  if (error) throw error;
+  return data;
+}

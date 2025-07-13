@@ -59,3 +59,17 @@ export const deleteMemo = async (client: SupabaseClient<Database>,
     }
     return null;
 }
+
+export const deleteContentCategoryMemos = async (client: SupabaseClient<Database>, 
+    { userId, categoryId, content_type_id }: 
+    { userId: string, categoryId: number, content_type_id: number }) => {
+    const { error } = await client
+        .rpc('sync_memo_with_category_delete', {
+            p_category_id: categoryId,
+            p_content_type_id: content_type_id,
+            p_user_id: userId,
+        });
+    if (error) {
+        throw error;
+    }
+}
