@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "database.types";
+import { registUserActivity } from "~/features/user_activity/db/mutations";
 
 export const createBookmarkCategory = async (
     client: SupabaseClient<Database>,
@@ -115,4 +116,22 @@ export const deleteBookmark = async (
         throw error
     }
     return data?.length > 0 ? data[0] : null;
+}
+
+export const updateBookmarkClickCount = async (
+    client: SupabaseClient<Database>,
+    { user_id, bookmark_id }: { user_id: string, bookmark_id: number },
+) => {
+    try {
+        const data = await registUserActivity(client, {
+            user_id,
+            content_type_id: 1,
+            target_id: bookmark_id,
+            activity_type: 'click',
+        });
+        return data;
+    } catch (error) {
+        console.error("updateBookmarkClickCount error", error);
+        throw error;
+    }
 }
