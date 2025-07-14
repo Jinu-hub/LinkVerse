@@ -6,6 +6,11 @@ import type {
   Bookmark,
   UI_View } from './bookmark.types'
 import { ALL_CATEGORY_ID, UNCATEGORIZED_CATEGORY_ID } from './constants'
+import type { Database } from 'database.types'
+import { getBookmarks } from '../db/queries'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import { getTaggableTags } from '~/features/tag/db/queries'
+import { getTargetMemo } from '~/features/memo/db/queries'
 
 export function bookmarksReducer(
   state: BookmarksState,
@@ -205,6 +210,7 @@ export function toUIViewTabs(tabs: any): UI_View {
 }
 
 export function toBookmarks(bookmarks: any): Bookmark {
+  //console.log('toBookmarks', bookmarks);
   return {
     id: bookmarks.bookmark_id,
     title: bookmarks.title,
@@ -278,4 +284,32 @@ export function findRootCategoryId(categories: Category[], targetId: number): nu
     }
   }
   return null;
+}
+
+// 북마크 태그와 매모 조회
+export async function getBookmarkTagsAndMemo(
+  client: SupabaseClient<Database>, { userId }: { userId: string }) {
+    
+  const bookmarks = await getBookmarks(client, { userId });
+  const bookmarksWithTagsMemo = await Promise.all(
+    bookmarks.map(async (bookmark) => {
+      const bookmarkId = bookmark.bookmark_id;
+      let tags: string[] = [];
+      let memo: string = '';
+      try {
+        tags = bookmarkId != null
+          ? await getTaggableTags(client, { content_type_id: 1, target_id: bookmarkId, userId })
+          : [];
+        memo = bookmarkId != null
+          ? (await getTargetMemo(client, { content_type_id: 1, target_id: bookmarkId, userId }) ?? '')
+          : '';
+      } catch (e) {
+        console.error('getBookmarkTags or getBookmarkMemo error', e);
+        tags = [];
+        memo = '';
+      }
+      return { ...bookmark, tags, memo };
+    })
+  );
+  return bookmarksWithTagsMemo;
 }

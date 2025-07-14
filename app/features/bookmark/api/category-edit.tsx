@@ -4,10 +4,17 @@ import { data } from "react-router";
 import { z } from "zod";
 
 import makeServerClient from "~/core/lib/supa-client.server";
-import { getBookmarkCategories, getChildCategoryIds, getUIViewTabs, isExistsCategoryName } from "../db/queries";
+import { 
+  getBookmarkCategories, 
+  getChildCategoryIds, 
+  getUIViewTabs, 
+  isExistsCategoryName } 
+  from "../db/queries";
 import { deleteBookmarkCategory, updateBookmarkCategoryName } from "../db/mutations";
-import { deleteContentCategoryTags } from "~/features/tag/db/mutations";
-import { deleteContentCategoryMemos } from "~/features/memo/db/mutations";
+import { deleteContentTags } from "~/features/tag/db/mutations";
+import { deleteContentMemos } from "~/features/memo/db/mutations";
+import { getBookmarkTagsAndMemo } from "../lib/bmUtils";
+import { getTagIdsWithCategory } from "~/features/tag/db/queries";
 
 const categorySchema = z.object({
     name: z.string().min(1),
@@ -22,8 +29,8 @@ export const loader = async ({ request }: { request: Request }) => {
 
   const categories = await getBookmarkCategories(client, { userId: user.id });
   const tabs = await getUIViewTabs(client, { userId: user!.id });
-
-  return new Response(JSON.stringify({ categories, tabs }), {
+  const bookmarksWithTagsMemo = await getBookmarkTagsAndMemo(client, { userId: user!.id });
+  return new Response(JSON.stringify({ categories, tabs, bookmarksWithTagsMemo }), {
     headers: { "Content-Type": "application/json" },
   });
 };
@@ -83,27 +90,29 @@ export async function action({ request, params }: Route.ActionArgs) {
       const categoryIds = await getChildCategoryIds(client, {
         parent_id: category_id,
       });
-
-      categoryIds.forEach(async (categoryIdObj) => {
-        // 카테고리내 북마크에 대한 태그 삭제
-        await deleteContentCategoryTags(client, {
-          userId: user.id,
-          categoryId: categoryIdObj.category_id,
-          content_type_id: 1,
-        });
-
-        // 카테고리내 북마크에 대한 매모 삭져
-        await deleteContentCategoryMemos(client, {
-          userId: user.id,
-          categoryId: categoryIdObj.category_id,
-          content_type_id: 1,
-        });
+      const c_ids = categoryIds.map((categoryIdObj) => categoryIdObj.category_id);
+      c_ids.push(category_id);
+      // 카테고리 태그 조회
+      const tag_ids = await getTagIdsWithCategory(client, {
+        content_type_id: 1,
+        category_ids: c_ids,
+        userId: user.id,
       });
-
       // 카테고리 삭제
       await deleteBookmarkCategory(client, {
         userId: user.id,
         categoryId: category_id,
+      });
+      // 콘테츠에 연결된 태그 삭제
+      await deleteContentTags(client, {
+        userId: user.id,
+        content_type_id: 1,
+        tag_ids: tag_ids,
+      });
+      // 콘테츠에 연결된 매모 삭제
+      await deleteContentMemos(client, {  
+        userId: user.id,
+        content_type_id: 1,
       });
     }
 

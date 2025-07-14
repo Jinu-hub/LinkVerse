@@ -9,8 +9,8 @@ import { ConfirmDeleteCategory } from "./confirm-delete-category";
 import { CategoryButton } from "./category-button";
 import { CategoryTreeProvider, useCategoryTreeContext } from "./category-tree-context";
 import { CategoryActionsMenu } from "./category-actions-menu";
-import type { Category, UI_View } from "../lib/bookmark.types";
-import { toCategory, toUIViewTabs } from "../lib/bmUtils";
+import type { Bookmark, Category, UI_View } from "../lib/bookmark.types";
+import { toBookmarks, toCategory, toUIViewTabs } from "../lib/bmUtils";
 import { addCategory, updateCategoryName } from "../lib/caActions";
 
 export function CategoryTree({
@@ -20,6 +20,7 @@ export function CategoryTree({
   isMobile: isMobileProp,
   setCategories,
   setTabs,
+  setBookmarks,
 }: {
   categories: Category[];
   selectedId: number;
@@ -27,6 +28,7 @@ export function CategoryTree({
   isMobile?: boolean;
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
   setTabs: React.Dispatch<React.SetStateAction<UI_View[]>>;
+  setBookmarks: React.Dispatch<React.SetStateAction<Bookmark[]>>;
 }) {
   const isMobile = isMobileProp ?? useIsMobile();
   return (
@@ -38,6 +40,7 @@ export function CategoryTree({
         isMobile={isMobile}
         setCategories={setCategories}
         setTabs={setTabs}
+        setBookmarks={setBookmarks}
       />
     </CategoryTreeProvider>
   );
@@ -50,6 +53,7 @@ function CategoryTreeInner({
   isMobile,
   setCategories,
   setTabs,
+  setBookmarks,
 }: {
   categories: Category[];
   selectedId: number;
@@ -57,6 +61,7 @@ function CategoryTreeInner({
   isMobile: boolean;
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
   setTabs: React.Dispatch<React.SetStateAction<UI_View[]>>;
+  setBookmarks: React.Dispatch<React.SetStateAction<Bookmark[]>>;
 }) {
   const { state, dispatch } = useCategoryTreeContext();
   const [error, setError] = useState("");
@@ -121,6 +126,7 @@ function CategoryTreeInner({
         onCancel={() => dispatch({ type: "DELETE_CANDIDATE_CLEAR" })}
         setCategories={setCategories}
         setTabs={setTabs}
+        setBookmarks={setBookmarks}
         dispatch={dispatch}
         toCategory={toCategory}
         toUIViewTabs={toUIViewTabs}

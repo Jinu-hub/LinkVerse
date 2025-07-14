@@ -3,7 +3,7 @@ import { FiMenu, FiInbox, FiAlertCircle } from 'react-icons/fi'
 import { Select, SelectContent, SelectItem
     , SelectTrigger, SelectValue } from "~/core/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "~/core/components/ui/tabs";
-import type { Category, UI_View } from "../lib/bookmark.types";
+import type { Bookmark, Category, UI_View } from "../lib/bookmark.types";
 import { Sheet, SheetContent, SheetTrigger } from "~/core/components/ui/sheet";
 import { CategoryTree } from "./category-tree";
 import { Button } from "~/core/components/ui/button";
@@ -23,6 +23,7 @@ type Props = {
   onSelect: (id: number) => void;
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
   setTabs: React.Dispatch<React.SetStateAction<UI_View[]>>;
+  setBookmarks: React.Dispatch<React.SetStateAction<Bookmark[]>>;
 };
 
 export function BookmarkToolbar({
@@ -38,6 +39,7 @@ export function BookmarkToolbar({
   onSelect,
   setCategories,
   setTabs,
+  setBookmarks,
 }: Props) {
 
   const [isSheetOpen, setIsSheetOpen] = useState(false)
@@ -72,6 +74,7 @@ export function BookmarkToolbar({
               isMobile={true}
               setCategories={setCategories}
               setTabs={setTabs}
+              setBookmarks={setBookmarks}
             />
           </SheetContent>
         </Sheet>
