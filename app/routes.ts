@@ -119,6 +119,7 @@ export default [
       route("/api/category/:id", "features/bookmark/api/category-edit.tsx"),
       route("/api/bookmark/add", "features/bookmark/api/bookmark-add.tsx"),
       route("/api/bookmark/:id", "features/bookmark/api/bookmark-edit.tsx"),
+      route("/api/bookmark-click/:id", "features/bookmark/api/bookmark-click.tsx"),
     ]),
   ]),
 

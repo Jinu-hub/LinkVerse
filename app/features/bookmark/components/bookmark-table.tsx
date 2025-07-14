@@ -74,6 +74,7 @@ export function BookmarkTable({
                 highlightText={highlightText}
                 onEdit={(bm) => setEditingBookmark(bm)}
                 onDelete={(bm) => setDeleteCandidate(bm)}
+                setBookmarks={setBookmarks}
               />
             ))}
           </TableBody>

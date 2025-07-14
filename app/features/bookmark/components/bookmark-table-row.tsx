@@ -2,6 +2,7 @@ import { TableRow, TableCell } from "~/core/components/ui/table";
 import { Badge } from "~/core/components/ui/badge";
 import { chunkArray } from "../lib/bmUtils";
 import type { Bookmark } from "../lib/bookmark.types";
+import { updateBookmarkClickCount } from "../lib/bmActions";
 import { 
   BADGE_ODD_EVEN_MOD,
   HOT_CLICK_COUNT_THRESHOLD,
@@ -15,6 +16,7 @@ interface BookmarkTableRowProps {
   highlightText: (text: string, keyword: string) => React.ReactNode;
   onEdit: (bookmark: Bookmark) => void;
   onDelete: (bookmark: Bookmark) => void;
+  setBookmarks: React.Dispatch<React.SetStateAction<Bookmark[]>>;
 }
 
 export function BookmarkTableRow({
@@ -23,14 +25,16 @@ export function BookmarkTableRow({
   highlightText,
   onEdit,
   onDelete,
+  setBookmarks,
 }: BookmarkTableRowProps) {
   return (
     <TableRow
       className="hover:bg-accent/40 transition-colors cursor-pointer"
-      onClick={() => {
+      onClick={async () => {
         if (bookmark.url) {
           window.open(bookmark.url, '_blank', 'noopener,noreferrer');
         }
+        await updateBookmarkClickCount(bookmark.id, setBookmarks);
       }}
     >
       <TableCell className="flex items-center gap-2">

@@ -202,3 +202,26 @@ export async function deleteBookmark({
     setBookmarks(prev => prev.filter(b => b.id !== id));
     return { ok: true };
 }
+
+
+export async function updateBookmarkClickCount(
+    id: number, 
+    setBookmarks: React.Dispatch<React.SetStateAction<Bookmark[]>>
+) {
+    const res = await fetch(`/bookmarks/api/bookmark-click/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+    });
+    if (!res.ok) {
+        return { ok: false, error: "북마크 클릭 수 업데이트에 실패했습니다." };
+    }
+    const { updatedActivity } = await res.json();
+    setBookmarks(prev =>
+        prev.map(b =>
+            b.id === updatedActivity.target_id
+            ? { ...b, click_count: updatedActivity.value }
+            : b
+        )
+    );
+    return { ok: true };
+}
