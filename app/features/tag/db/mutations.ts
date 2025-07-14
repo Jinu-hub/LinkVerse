@@ -50,7 +50,7 @@ export const updateTagUsageCount = async (client: SupabaseClient<Database>,
   const { error } = await client
     .rpc('sync_tag_usage_with_content', { p_tag_id: tag_id });
   if (error) {
-    throw error;
+    console.error('updateTagUsageCount error', error);
   }
 }
 
@@ -82,16 +82,17 @@ export const createTaggable = async (client: SupabaseClient<Database>,
   }
 }
 
-export const deleteContentCategoryTags = async (client: SupabaseClient<Database>, 
-    { userId, categoryId, content_type_id }: 
-    { userId: string, categoryId: number, content_type_id: number }) => {
+export const deleteContentTags = async (client: SupabaseClient<Database>, 
+    { userId, content_type_id, tag_ids }: 
+    { userId: string, content_type_id: number, tag_ids: number[] }) => {
   const { error } = await client
-    .rpc('sync_taggable_with_category_delete', {
-      p_category_id: categoryId,
+    .rpc('sync_taggable_with_content_delete', {
       p_content_type_id: content_type_id,
       p_user_id: userId,
+      p_tag_ids: tag_ids,
     });
   if (error) {
+    console.error('deleteContentTags error', error);
     throw error;
   }
 }

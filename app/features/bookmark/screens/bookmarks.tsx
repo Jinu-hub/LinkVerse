@@ -40,9 +40,14 @@ import {
   UNCATEGORIZED_TAB_ID,
   EMPTY_BOOKMARK,
 } from '../lib/constants'
-import { bookmarksReducer, 
+import { 
+  bookmarksReducer, 
   buildCategoryTree, 
-  toUIViewTabs, toBookmarks, toCategory } from '../lib/bmUtils'
+  toUIViewTabs, 
+  toBookmarks, 
+  toCategory, 
+  getBookmarkTagsAndMemo 
+} from '../lib/bmUtils'
 import { highlightText } from "~/core/lib/common";
 import { useFilteredBookmarks } from '../hooks/use-filtered-bookmarks'
 import { CategorySidebar } from '../components/category-sidebar'
@@ -95,27 +100,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const { data: { user } } = await client.auth.getUser();
   const categories = await getBookmarkCategories(client, { userId: user!.id });
   const tabs = await getUIViewTabs(client, { userId: user!.id });
-  const bookmarks = await getBookmarks(client, { userId: user!.id });
-  const bookmarksWithTagsMemo = await Promise.all(
-    bookmarks.map(async (bookmark) => {
-      const bookmarkId = bookmark.bookmark_id;
-      let tags: string[] = [];
-      let memo: string = '';
-      try {
-        tags = bookmarkId != null
-          ? await getTaggableTags(client, { content_type_id: 1, target_id: bookmarkId, userId: user!.id })
-          : [];
-        memo = bookmarkId != null
-          ? (await getTargetMemo(client, { content_type_id: 1, target_id: bookmarkId, userId: user!.id }) ?? '')
-          : '';
-      } catch (e) {
-        console.error('getBookmarkTags or getBookmarkMemo error', e);
-        tags = [];
-        memo = '';
-      }
-      return { ...bookmark, tags, memo };
-    })
-  );
+  const bookmarksWithTagsMemo = await getBookmarkTagsAndMemo(client, { userId: user!.id });
   const tags = await getTags(client, { userId: user!.id });
   return { categories, tabs, bookmarks: bookmarksWithTagsMemo, tags };
 }
@@ -139,7 +124,6 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
   const [tabs, setTabs] = useState<UI_View[]>(initialTabs.map(toUIViewTabs));
   const [bookmarks, setBookmarks] = useState<Bookmark[]>(initialBookmarks.map(toBookmarks));
 
-  //console.log(categories);
   const categoryTree = useMemo(() => {
     return buildCategoryTree(categories);
   }, [categories]);
@@ -284,6 +268,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
         selectedId={selectedCategoryId}
         onSelect={handleCategoryChange}
         setTabs={setTabs}
+        setBookmarks={setBookmarks}
       />
       {/* 🔹 2. 메인 콘텐츠 영역 */}
       <main className="flex-1 space-y-4">
@@ -310,6 +295,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
           onSelect={handleCategoryChange}
           setCategories={setCategories}
           setTabs={setTabs}
+          setBookmarks={setBookmarks}
         />
 
         <BookmarkTable

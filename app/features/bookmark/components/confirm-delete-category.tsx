@@ -19,6 +19,7 @@ interface ConfirmDeleteCategoryProps {
   onCancel: () => void;
   setCategories: (cats: any[]) => void;
   setTabs: (tabs: any[]) => void;
+  setBookmarks: (bookmarks: any[]) => void;
   dispatch: any;
   toCategory: (cat: any) => any;
   toUIViewTabs: (tab: any) => any;
@@ -31,6 +32,7 @@ export function ConfirmDeleteCategory({
   onCancel,
   setCategories,
   setTabs,
+  setBookmarks,
   dispatch,
   toCategory,
   toUIViewTabs,
@@ -55,6 +57,7 @@ export function ConfirmDeleteCategory({
               category_id: category!.id,
               setCategories,
               setTabs,
+              setBookmarks,
               dispatch,
               toCategory,
               toUIViewTabs,

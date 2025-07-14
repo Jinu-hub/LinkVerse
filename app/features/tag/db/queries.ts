@@ -105,3 +105,19 @@ export const getTaggableTagsIdName = async (
     tag_name: item.tag.tag_name
   }));
 };
+
+export const getTagIdsWithCategory = async (
+  client: SupabaseClient<Database>,
+  { content_type_id, category_ids, userId }: 
+  { content_type_id: number, category_ids: number[], userId: string },
+) => {
+  const { data, error } = await client
+    .rpc('fetch_user_tags_by_categories', {
+      p_content_type_id: content_type_id,
+      p_category_ids: category_ids as any,
+      p_user_id: userId,
+    });
+  if (error) throw error;
+  if (!Array.isArray(data)) return [];
+  return data;
+}

@@ -1,3 +1,5 @@
+import { toBookmarks } from "./bmUtils";
+
 /**
  * Add a category
  * @param name Category name
@@ -147,6 +149,7 @@ export async function addCategory({
     category_id,
     setCategories,
     setTabs,
+    setBookmarks,
     dispatch,
     toCategory,
     toUIViewTabs,
@@ -154,6 +157,7 @@ export async function addCategory({
     category_id: number;
     setCategories: (cats: any[]) => void;
     setTabs: (tabs: any[]) => void;
+    setBookmarks: (bookmarks: any[]) => void;
     dispatch: any;
     toCategory: (cat: any) => any;
     toUIViewTabs: (tab: any) => any;
@@ -174,15 +178,17 @@ export async function addCategory({
         return;
       }
 
-      // 2. 전체 카테고리/탭 목록 재요청
-      const res_get = await fetch("/bookmarks/api/category");
+      // 2. 전체 카테고리/탭/북마크 목록 재요청
+      const res_get = await fetch(`/bookmarks/api/category/${category_id}`);
       if (!res_get.ok) {
         //setError("카테고리 목록을 불러오지 못했습니다.");
         return;
       }
-      const { categories: newCategories, tabs: newTabs } = await res_get.json();
+      const { categories: newCategories, tabs: newTabs, bookmarksWithTagsMemo: newBookmarks } = await res_get.json();
       setCategories(newCategories.map(toCategory));
       setTabs(newTabs.map(toUIViewTabs));
+      console.log('newBookmarks', newBookmarks.length);
+      setBookmarks(newBookmarks.map(toBookmarks));
 
       // 3. 상태 갱신 및 입력창 닫기
       dispatch({ type: "SET_CATEGORIES", categories: newCategories });
