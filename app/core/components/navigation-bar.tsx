@@ -16,7 +16,7 @@
  * - Authenticated state with user profile information
  * - Unauthenticated state with sign in/sign up buttons
  */
-import { HomeIcon, LogOutIcon, MenuIcon } from "lucide-react";
+import { HomeIcon, LogOutIcon, MenuIcon, UserIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router";
 
@@ -88,11 +88,23 @@ export function UserMenu({
         <DropdownMenuSeparator />
         
         {/* Dashboard link */}
+        {/*
         <DropdownMenuItem asChild>
           <SheetClose asChild>
             <Link to="/dashboard" viewTransition>
               <HomeIcon className="size-4" />
               Dashboard
+            </Link>
+          </SheetClose>
+        </DropdownMenuItem>
+        */}
+        
+        {/* Account link */}
+        <DropdownMenuItem asChild>
+          <SheetClose asChild>
+            <Link to="/account/edit" viewTransition>
+              <UserIcon className="size-4" />
+              Account
             </Link>
           </SheetClose>
         </DropdownMenuItem>

@@ -95,22 +95,27 @@ export default [
 
   layout("core/layouts/private.layout.tsx", { id: "private-dashboard" }, [
     layout("features/users/layouts/dashboard.layout.tsx", [
+      /*
       ...prefix("/dashboard", [
         index("features/users/screens/dashboard.tsx"),
         route("/payments", "features/payments/screens/payments.tsx"),
       ]),
+      */
       route("/account/edit", "features/users/screens/account.tsx"),
+      route("/settings", "features/users/screens/settings.tsx"),
     ]),
   ]),
 
   ...prefix("/legal", [route("/:slug", "features/legal/screens/policy.tsx")]),
 
+  /*
   layout("features/blog/layouts/blog.layout.tsx", [
     ...prefix("/blog", [
       index("features/blog/screens/posts.tsx"),
       route("/:slug", "features/blog/screens/post.tsx"),
     ]),
   ]),
+  */
 
   layout("features/bookmark/layouts/bookmark.layout.tsx", [
     ...prefix("/bookmarks", [

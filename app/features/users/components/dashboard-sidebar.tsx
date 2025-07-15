@@ -18,6 +18,7 @@ import {
   SquareTerminalIcon,
   Target,
   UsersIcon,
+  UserIcon,
 } from "lucide-react";
 
 import {
@@ -32,6 +33,8 @@ import SidebarMain from "./sidebar-main";
 import SidebarProjects from "./sidebar-projects";
 import TeamSwitcher from "./sidebar-team-switcher";
 import SidebarUser from "./sidebar-user";
+import { Button } from "~/core/components/ui/button";
+import { Link, useLocation } from "react-router";
 
 const data = {
   teams: [
@@ -163,16 +166,58 @@ export default function DashboardSidebar({
     avatarUrl: string;
   };
 }) {
+  const location = useLocation();
+  const isAccount = location.pathname === "/account/edit";
+  const isSettings = location.pathname === "/settings";
+
   return (
     <Sidebar collapsible="icon" variant="inset" {...props}>
       <SidebarHeader>
+        {/*
         <TeamSwitcher teams={data.teams} />
+        */}
+        <Button variant="outline" asChild>
+          <Link to="/" viewTransition>
+            &larr; Go home
+          </Link>
+        </Button>
       </SidebarHeader>
       <SidebarContent>
+        <nav className="flex flex-col gap-2 p-4">
+          <Button
+            variant={isAccount ? "secondary" : "ghost"}
+            asChild
+            className={`justify-start px-2 py-3 text-xl font-semibold
+              ${isAccount ? "bg-primary text-white dark:bg-zinc-800 dark:text-primary" : ""}
+            `}
+          >
+            <Link to="/account/edit" className="flex items-center gap-2">
+              <UserIcon className="w-6 h-6" />
+              <span className="text-base">User Account</span>
+            </Link>
+          </Button>
+          <Button
+            variant={isSettings ? "secondary" : "ghost"}
+            asChild
+            className={`justify-start px-2 py-3 text-xl font-semibold
+              ${isSettings ? "bg-primary text-white dark:bg-zinc-800 dark:text-primary" : ""}
+            `}
+          >
+            <Link to="/settings" className="flex items-center gap-2">
+              <Settings2Icon className="w-6 h-6" />
+              <span className="text-base">Settings</span>
+            </Link>
+          </Button>
+        </nav>
+        {/*
         <SidebarMain items={data.navMain} />
+        */}
+        {/*
         <SidebarProjects projects={data.projects} />
+        */}
       </SidebarContent>
       <SidebarFooter>
+        {/*
         <SidebarUser
           user={{
             name: user.name,
@@ -180,6 +225,7 @@ export default function DashboardSidebar({
             avatarUrl: user.avatarUrl,
           }}
         />
+        */}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

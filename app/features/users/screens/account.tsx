@@ -64,6 +64,7 @@ export default function Account({ loaderData }: Route.ComponentProps) {
       </Suspense>
       <ChangeEmailForm email={user?.email ?? ""} />
       <ChangePasswordForm hasPassword={hasEmailIdentity ?? false} />
+      {/*
       <Suspense
         fallback={
           <div className="bg-card animate-fast-pulse h-60 w-full max-w-screen-md rounded-xl border shadow-sm" />
@@ -95,6 +96,7 @@ export default function Account({ loaderData }: Route.ComponentProps) {
           }}
         </Await>
       </Suspense>
+      */}
       <DeleteAccountForm />
     </div>
   );
