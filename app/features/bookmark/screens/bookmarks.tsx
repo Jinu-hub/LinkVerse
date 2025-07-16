@@ -58,11 +58,9 @@ import makeServerClient from "~/core/lib/supa-client.server";
 import { requireAuthentication } from "~/core/lib/guards.server";
 import { 
   getBookmarkCategories, 
-  getBookmarks, 
   getUIViewTabs 
 } from "../db/queries";
-import { getTaggableTags, getTags } from "~/features/tag/db/queries";
-import { getTargetMemo } from "~/features/memo/db/queries";
+import { getTags } from "~/features/tag/db/queries";
 import { addBookmark } from "../lib/bmActions";
 
 /**
