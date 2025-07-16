@@ -29,6 +29,11 @@ import { NavigationBar } from "~/core/components/navigation-bar";
 import { Meteors } from "components/magicui/meteors";
 import { useTheme } from "remix-themes";
 import { Particles } from "components/magicui/particles";
+import { TopBookmarks } from "../components/TopBookmarks";
+import { RecentBookmarks } from "../components/RecentBookmarks";
+import { topBookmarks } from "~/features/mock-data";
+import { FiPlus } from "react-icons/fi";
+import { Button } from "~/core/components/ui/button";
 
 /**
  * Meta function for setting page metadata
@@ -145,8 +150,37 @@ export default function Home({loaderData}: Route.ComponentProps) {
       </>
     );
   }
+
   function UserLanding({ name }: { name: string }) {
-    return <h1 className="text-4xl text-center font-extrabold tracking-tight lg:text-6xl">Hello {name}</h1>;
+    return (
+      <>
+        <div className="flex flex-col items-start z-50 px-8 pt-0 -mt-5 md:-mt-20 space-y-4">
+          <Particles
+            className="fixed inset-0 pointer-events-none z-0"
+            quantity={120}
+            staticity={50}
+            ease={50}
+            size={0.5}
+            color={theme === "dark" ? "#ffffff" : "#000000"}
+          />
+          <h1 className="text-3xl font-bold text-gray-400" style={{ pointerEvents: "none" }}>
+            Hello {name}
+          </h1>
+          {/* 오른쪽 상단 북마크 추가 버튼 */}
+          <div className="fixed top-25 right-15 z-50">
+            <Button
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow w-12 h-12 flex items-center justify-center text-2xl cursor-pointer"
+              onClick={() => alert("북마크 추가 기능은 준비 중입니다.")}
+              aria-label="퀵 북마크 추가"
+            >
+              <FiPlus />
+            </Button>
+          </div>
+          <TopBookmarks bookmarks={topBookmarks} />
+          <RecentBookmarks bookmarks={topBookmarks} />
+        </div>
+      </>
+    );
   }
 
   return (
