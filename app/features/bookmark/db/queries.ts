@@ -174,7 +174,7 @@ export const getChildCategoryIds = async (
   return data;
 }
 
-
+// 자주 사용하는 북마크
 export const getTopBookmarks = async (
   client: SupabaseClient<Database>, 
   { userId, limit }: { userId: string, limit: number },
@@ -189,6 +189,24 @@ export const getTopBookmarks = async (
       .limit(limit);
   if (error) {
       throw error;
+  }
+  return data;
+}
+
+// 최근 추가한 북마크
+export const getRecentBookmarks = async (
+  client: SupabaseClient<Database>,
+  { userId, limit }: { userId: string, limit: number },
+) => {
+  const { data, error } = await client
+    .from('content_view')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('content_type_id', 1)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+  if (error) {
+    throw error;
   }
   return data;
 }
