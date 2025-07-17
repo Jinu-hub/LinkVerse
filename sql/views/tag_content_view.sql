@@ -12,6 +12,7 @@ SELECT
     cv.use_count,
     cv.url,
     cv.thumbnail_url,
+    cv.description,
     cv.memo
 FROM tag
 JOIN taggable 

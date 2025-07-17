@@ -10,6 +10,7 @@ SELECT
     content.click_count           AS use_count,
     content.url                   AS url,
     content.thumbnail_url         AS thumbnail_url,
+    content.description           AS description,
     memo.memo_id                  AS memo_id,
     memo.content                  AS memo
 FROM bookmark_view content

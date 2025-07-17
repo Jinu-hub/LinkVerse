@@ -503,6 +503,7 @@ export type Database = {
           category_id: number | null
           click_count: number | null
           created_at: string | null
+          description: string | null
           thumbnail_url: string | null
           title: string | null
           updated_at: string | null
@@ -514,6 +515,7 @@ export type Database = {
           category_id?: number | null
           click_count?: never
           created_at?: string | null
+          description?: string | null
           thumbnail_url?: string | null
           title?: string | null
           updated_at?: string | null
@@ -525,6 +527,7 @@ export type Database = {
           category_id?: number | null
           click_count?: never
           created_at?: string | null
+          description?: string | null
           thumbnail_url?: string | null
           title?: string | null
           updated_at?: string | null
@@ -546,6 +549,7 @@ export type Database = {
           category_id: number | null
           content_type_id: number | null
           created_at: string | null
+          description: string | null
           memo: string | null
           memo_id: number | null
           target_id: number | null
@@ -571,6 +575,7 @@ export type Database = {
           category_id: number | null
           content_type_id: number | null
           created_at: string | null
+          description: string | null
           is_pinned: boolean | null
           memo: string | null
           memo_id: number | null
@@ -598,6 +603,7 @@ export type Database = {
           category_id: number | null
           content_type_id: number | null
           created_at: string | null
+          description: string | null
           memo: string | null
           tag_id: number | null
           tag_name: string | null
@@ -641,6 +647,10 @@ export type Database = {
       }
       sync_memo_with_content_delete: {
         Args: { p_content_type_id: number; p_user_id: string }
+        Returns: number
+      }
+      sync_tag_usage_counts: {
+        Args: Record<PropertyKey, never>
         Returns: number
       }
       sync_tag_usage_with_content: {
