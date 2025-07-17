@@ -15,6 +15,7 @@
 import type { Route } from "./+types/home";
 
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 
 import i18next from "~/core/lib/i18next.server";
 import HeroSection from "~/features/landing/components/hero";
@@ -29,11 +30,12 @@ import { NavigationBar } from "~/core/components/navigation-bar";
 import { Meteors } from "components/magicui/meteors";
 import { useTheme } from "remix-themes";
 import { Particles } from "components/magicui/particles";
-import { TopBookmarks } from "../components/TopBookmarks";
+import { TopBookmarks, type TopBookmark } from "../components/TopBookmarks";
 import { RecentBookmarks } from "../components/RecentBookmarks";
-import { topBookmarks } from "~/features/mock-data";
 import { FiPlus } from "react-icons/fi";
 import { Button } from "~/core/components/ui/button";
+import { getTopBookmarks } from "../lib/homeActions";
+import { toTopBookmarks } from "../lib/homeUtils";
 
 /**
  * Meta function for setting page metadata
@@ -152,6 +154,19 @@ export default function Home({loaderData}: Route.ComponentProps) {
   }
 
   function UserLanding({ name }: { name: string }) {
+
+    const isDark = theme === "dark";
+
+    const [topBookmarks, setTopBookmarks] = useState<TopBookmark[]>([]);
+    useEffect(() => {
+      const fetchTopBookmarks = async () => {
+        const data = await getTopBookmarks();
+        const topBookmarks = await toTopBookmarks(data);
+        setTopBookmarks(topBookmarks);
+      };
+      fetchTopBookmarks();
+    }, []);
+
     return (
       <>
         <div className="flex flex-col items-start z-50 px-8 pt-0 -mt-5 md:-mt-20 space-y-4">
@@ -161,9 +176,9 @@ export default function Home({loaderData}: Route.ComponentProps) {
             staticity={50}
             ease={50}
             size={0.5}
-            color={theme === "dark" ? "#ffffff" : "#000000"}
+            color={isDark ? "#ffffff" : "#000000"}
           />
-          <h1 className="text-3xl font-bold text-gray-400" style={{ pointerEvents: "none" }}>
+          <h1 className={`text-3xl font-bold ${theme === 'dark' ? 'text-gray-400' : 'text-gray-700'}`} style={{ pointerEvents: "none" }}>
             Hello {name}
           </h1>
           {/* 오른쪽 상단 북마크 추가 버튼 */}
@@ -176,8 +191,11 @@ export default function Home({loaderData}: Route.ComponentProps) {
               <FiPlus />
             </Button>
           </div>
-          <TopBookmarks bookmarks={topBookmarks} />
+          
+          <TopBookmarks bookmarks={topBookmarks} theme={theme ?? "dark"} />
+          {/*
           <RecentBookmarks bookmarks={topBookmarks} />
+          */}
         </div>
       </>
     );
