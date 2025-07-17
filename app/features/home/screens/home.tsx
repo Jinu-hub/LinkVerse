@@ -31,11 +31,11 @@ import { Meteors } from "components/magicui/meteors";
 import { useTheme } from "remix-themes";
 import { Particles } from "components/magicui/particles";
 import { TopBookmarks, type TopBookmark } from "../components/TopBookmarks";
-import { RecentBookmarks } from "../components/RecentBookmarks";
+import { RecentBookmarks, type RecentBookmark } from "../components/RecentBookmarks";
 import { FiPlus } from "react-icons/fi";
 import { Button } from "~/core/components/ui/button";
-import { getTopBookmarks } from "../lib/homeActions";
-import { toTopBookmarks } from "../lib/homeUtils";
+import { getRecentBookmarks, getTopBookmarks } from "../lib/homeActions";
+import { toHomeBookmarks } from "../lib/homeUtils";
 
 /**
  * Meta function for setting page metadata
@@ -161,10 +161,20 @@ export default function Home({loaderData}: Route.ComponentProps) {
     useEffect(() => {
       const fetchTopBookmarks = async () => {
         const data = await getTopBookmarks();
-        const topBookmarks = await toTopBookmarks(data);
+        const topBookmarks = await toHomeBookmarks(data);
         setTopBookmarks(topBookmarks);
       };
       fetchTopBookmarks();
+    }, []);
+
+    const [recentBookmarks, setRecentBookmarks] = useState<RecentBookmark[]>([]);
+    useEffect(() => {
+      const fetchRecentBookmarks = async () => {
+        const data = await getRecentBookmarks();
+        const recentBookmarks = await toHomeBookmarks(data);
+        setRecentBookmarks(recentBookmarks);
+      };
+      fetchRecentBookmarks();
     }, []);
 
     return (
@@ -193,9 +203,7 @@ export default function Home({loaderData}: Route.ComponentProps) {
           </div>
           
           <TopBookmarks bookmarks={topBookmarks} theme={theme ?? "dark"} />
-          {/*
-          <RecentBookmarks bookmarks={topBookmarks} />
-          */}
+          <RecentBookmarks bookmarks={recentBookmarks} theme={theme ?? "dark"} />
         </div>
       </>
     );

@@ -1,19 +1,20 @@
 import React from "react";
 import { HoverEffect } from "components/ui/card-hover-effect";
 
-// 북마크 타입 예시 (실제 데이터 구조에 맞게 수정)
-type Bookmark = {
+export type RecentBookmark = {
   id: number;
   title: string;
   description: string;
   link: string;
+  created_at: string;
 };
 
 interface RecentBookmarksProps {
-  bookmarks: Bookmark[];
+  bookmarks: RecentBookmark[];
+  theme: string;
 }
 
-export function RecentBookmarks({ bookmarks }: RecentBookmarksProps) {
+export function RecentBookmarks({ bookmarks, theme }: RecentBookmarksProps) {
   // HoverEffect는 title, description, link 필드를 가진 배열을 받음
   return (
     <div className="w-full mx-auto mt-8 py-0">
@@ -21,7 +22,7 @@ export function RecentBookmarks({ bookmarks }: RecentBookmarksProps) {
         <h1 className="text-2xl md:text-3xl font-bold text-gray-700 dark:text-gray-200 mb-6">
           최근에 추가된 북마크
         </h1>
-        <HoverEffect items={bookmarks} />
+        <HoverEffect items={bookmarks} theme={theme} displayType="recent" />
       </div>
     </div>
   );

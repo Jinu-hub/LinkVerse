@@ -3,18 +3,23 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { useEffect, useState } from "react";
 
+type DisplayType = "top" | "recent";
+
 export const HoverEffect = ({
   items,
   className,
   theme = "dark",
+  displayType = "top",
 }: {
   items: {
     title: string;
     description: string;
     link: string;
+    created_at?: string;
   }[];
   className?: string;
   theme?: string;
+  displayType?: DisplayType;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const isDark = theme === "dark";
@@ -22,7 +27,7 @@ export const HoverEffect = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-2 md:grid-cols-2  lg:grid-cols-5  py-0 gap-4",
+        "grid grid-cols-2 md:grid-cols-2  lg:grid-cols-5  py-0 gap-4 items-stretch",
         className
       )}
     >
@@ -53,11 +58,20 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <Card isDark={isDark}>
+          <Card isDark={isDark} className="h-full">
+            <div className="flex flex-col h-full">
             <CardTitle>{item.title}</CardTitle>
-            <CardDescription>
-              {item.description.length > 30 ? item.description.slice(0, 30) + "..." : item.description}
-            </CardDescription>
+            {displayType === "top" && (
+              <CardDescription>
+                {item.description.length > 30 ? item.description.slice(0, 30) + "..." : item.description}
+              </CardDescription>
+            )}
+            <div className="mt-auto">
+            {displayType === "recent" && (
+              <CardDescription>Added: {formatDate(item.created_at)}</CardDescription>
+            )}
+            </div>
+            </div>
           </Card>
         </a>
       ))}
@@ -80,10 +94,9 @@ export const Card = ({
         `rounded-2xl h-full w-full p-2 overflow-hidden ${isDark ? 'bg-zinc-950' : 'bg-zinc-800'} border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20`,
         className
       )}
+      style={{ display: "flex", flexDirection: "column" }}
     >
-      <div className="relative z-50">
-        <div className="p-2">{children}</div>
-      </div>
+      <div className="relative z-50 flex-1 flex flex-col">{children}</div>
     </div>
   );
 };
@@ -118,6 +131,17 @@ export const CardDescription = ({
     </p>
   );
 };
+
+function formatDate(dateString?: string) {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  const hh = String(date.getHours()).padStart(2, '0');
+  const min = String(date.getMinutes()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+}
 
 /*
 function CardDescriptionTruncated({ description }: { description: string }) {

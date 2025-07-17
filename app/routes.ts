@@ -42,7 +42,10 @@ export default [
     ]),
     ...prefix("/cron", [route("/mailer", "features/cron/api/mailer.tsx")]),
     ...prefix("/blog", [route("/og", "features/blog/api/og.tsx")]),
-    ...prefix("/bookmarks", [route("/top", "features/bookmark/api/bookmarks-top.tsx")]),
+    ...prefix("/bookmarks", [
+      route("/top", "features/bookmark/api/bookmarks-top.tsx"),
+      route("/recent", "features/bookmark/api/bookmarks-recent.tsx"),
+    ]),
   ]),
 
   layout("core/layouts/navigation.layout.tsx", [
