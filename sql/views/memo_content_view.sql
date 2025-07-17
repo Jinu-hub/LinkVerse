@@ -13,7 +13,8 @@ SELECT
     cv.category_id,
     cv.title,
     cv.url,
-    cv.thumbnail_url
+    cv.thumbnail_url,
+    cv.description
 FROM memo
 JOIN content_view cv 
   ON memo.content_type_id = cv.content_type_id
