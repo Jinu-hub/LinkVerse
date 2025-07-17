@@ -36,6 +36,7 @@ import { FiPlus } from "react-icons/fi";
 import { Button } from "~/core/components/ui/button";
 import { getRecentBookmarks, getTopBookmarks } from "../lib/homeActions";
 import { toHomeBookmarks } from "../lib/homeUtils";
+import BookmarkAddDialog from "../components/bookmark-add-dialog";
 
 /**
  * Meta function for setting page metadata
@@ -156,6 +157,7 @@ export default function Home({loaderData}: Route.ComponentProps) {
   function UserLanding({ name }: { name: string }) {
 
     const isDark = theme === "dark";
+    const [addDialogOpen, setAddDialogOpen] = useState(false);
 
     const [topBookmarks, setTopBookmarks] = useState<TopBookmark[]>([]);
     useEffect(() => {
@@ -192,10 +194,10 @@ export default function Home({loaderData}: Route.ComponentProps) {
             Hello {name}
           </h1>
           {/* 오른쪽 상단 북마크 추가 버튼 */}
-          <div className="fixed top-25 right-15 z-50">
+          <div className="fixed top-25 right-15 lg:right-20 xl:right-40 z-50">
             <Button
               className="bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow w-12 h-12 flex items-center justify-center text-2xl cursor-pointer"
-              onClick={() => alert("북마크 추가 기능은 준비 중입니다.")}
+              onClick={() => setAddDialogOpen(true)}
               aria-label="퀵 북마크 추가"
             >
               <FiPlus />
@@ -204,6 +206,17 @@ export default function Home({loaderData}: Route.ComponentProps) {
           
           <TopBookmarks bookmarks={topBookmarks} theme={theme ?? "dark"} />
           <RecentBookmarks bookmarks={recentBookmarks} theme={theme ?? "dark"} />
+
+          <BookmarkAddDialog
+            open={addDialogOpen}
+            onOpenChange={setAddDialogOpen}
+            onSave={() => {
+              setAddDialogOpen(false);
+            }}
+            fieldErrors={{}}
+            setFieldErrors={() => {}}
+            saving={false}
+          />
         </div>
       </>
     );
