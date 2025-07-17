@@ -134,6 +134,7 @@ export function createBookmarkResult(bookmark: any, resTags: string[], resMemo: 
         categoryId: bookmark.category_id ?? 0,
         created_at: bookmark.created_at,
         updated_at: bookmark.updated_at,
+        description: bookmark.description ?? "",
         click_count: 0,
         tags: resTags,
         memo: resMemo,

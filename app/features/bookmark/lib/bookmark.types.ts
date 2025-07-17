@@ -31,6 +31,7 @@ export interface Bookmark {
   tags: string[];
   categoryId: number;
   click_count: number;
+  description: string;
   created_at?: string;
   updated_at?: string;
   memo?: string;

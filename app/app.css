@@ -180,3 +180,12 @@ body {
     @apply border-t-primary! border-l-primary!;
   }
 }
+
+.fade-out {
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+.fade-out.hide {
+  opacity: 0;
+}
