@@ -1,11 +1,12 @@
 import { cn } from "~/core/lib/utils";
 import { AnimatePresence, motion } from "motion/react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const HoverEffect = ({
   items,
   className,
+  theme = "dark",
 }: {
   items: {
     title: string;
@@ -13,8 +14,10 @@ export const HoverEffect = ({
     link: string;
   }[];
   className?: string;
+  theme?: string;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const isDark = theme === "dark";
 
   return (
     <div
@@ -50,9 +53,11 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <Card>
+          <Card isDark={isDark}>
             <CardTitle>{item.title}</CardTitle>
-            <CardDescription>{item.description}</CardDescription>
+            <CardDescription>
+              {item.description.length > 30 ? item.description.slice(0, 30) + "..." : item.description}
+            </CardDescription>
           </Card>
         </a>
       ))}
@@ -63,14 +68,16 @@ export const HoverEffect = ({
 export const Card = ({
   className,
   children,
+  isDark = true,
 }: {
   className?: string;
   children: React.ReactNode;
+  isDark?: boolean;
 }) => {
   return (
     <div
       className={cn(
-        "rounded-2xl h-full w-full p-2 overflow-hidden bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20",
+        `rounded-2xl h-full w-full p-2 overflow-hidden ${isDark ? 'bg-zinc-950' : 'bg-zinc-800'} border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20`,
         className
       )}
     >
@@ -111,3 +118,26 @@ export const CardDescription = ({
     </p>
   );
 };
+
+/*
+function CardDescriptionTruncated({ description }: { description: string }) {
+  const [maxLength, setMaxLength] = useState(30);
+
+  useEffect(() => {
+    function handleResize() {
+      setMaxLength(window.innerWidth <= 640 ? 10 : 30); // 640px 이하는 모바일로 간주
+    }
+    handleResize(); // 최초 실행
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return (
+    <span>
+      {description.length > maxLength
+        ? description.slice(0, maxLength) + "..."
+        : description}
+    </span>
+  );
+}
+*/

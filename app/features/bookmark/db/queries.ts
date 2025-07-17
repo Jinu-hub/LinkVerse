@@ -173,3 +173,22 @@ export const getChildCategoryIds = async (
   if (error) throw error;
   return data;
 }
+
+
+export const getTopBookmarks = async (
+  client: SupabaseClient<Database>, 
+  { userId, limit }: { userId: string, limit: number },
+) => {
+  const { data, error } = await client
+      .from('content_view')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('content_type_id', 1)
+      .gt('use_count', 0)
+      .order('use_count', { ascending: false })
+      .limit(limit);
+  if (error) {
+      throw error;
+  }
+  return data;
+}
