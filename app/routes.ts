@@ -110,6 +110,10 @@ export default [
     ]),
   ]),
 
+  ...prefix("/users/:username", [
+    route("/welcome", "features/users/mail/welcome.tsx"),
+  ]),
+
   ...prefix("/legal", [route("/:slug", "features/legal/screens/policy.tsx")]),
 
   /*
