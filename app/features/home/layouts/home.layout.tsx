@@ -18,7 +18,7 @@ function HomeRedirectionNav() {
       <div className="mx-auto flex h-full w-full max-w-screen-2xl items-center justify-between py-3">
         <h1 className="flex items-center gap-2 text-lg">
           <Link
-            to="/linkverse"
+            to="/space"
             className="text-muted-foreground text-lg font-extrabold"
             viewTransition
           >
