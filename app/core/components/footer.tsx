@@ -11,6 +11,7 @@
  * - Links to legal pages (Privacy Policy, Terms of Service)
  * - View transitions for smooth navigation to legal pages
  */
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 
 /**
@@ -23,6 +24,8 @@ import { Link } from "react-router";
  * @returns A footer component with copyright information and legal links
  */
 export default function Footer() {
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   return (
     <footer className="text-muted-foreground mt-auto flex items-center justify-between border-t py-3 text-sm md:py-5">
       <div className="mx-auto flex h-full w-full max-w-screen-2xl flex-col items-center justify-between gap-2.5 md:order-none md:flex-row md:gap-0">

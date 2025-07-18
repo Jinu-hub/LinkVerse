@@ -189,3 +189,129 @@ body {
 .fade-out.hide {
   opacity: 0;
 }
+
+/* === 글로벌 문서 스타일 === */
+article {
+  font-family: 'Noto Sans KR', 'Helvetica Neue', Arial, sans-serif;
+  color: #22223b;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+article strong, .prose strong {
+  font-weight: bold;
+}
+
+article h1, .prose h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  margin-top: 2rem;
+}
+
+article h2, .prose h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+article h3, .prose h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+article p, .prose p {
+  margin-bottom: 1rem;
+}
+
+article ul, .prose ul, article ol, .prose ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  list-style-position: inside;
+}
+
+article li, .prose li {
+  margin-bottom: 0.5rem;
+  list-style-type: disc;
+}
+
+article table, .prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 15px;
+}
+
+article th, .prose th {
+  background: #f4f4f4;
+  font-weight: bold;
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+article td, .prose td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.75rem;
+}
+
+article blockquote, .prose blockquote {
+  border-left: 4px solid #3b82f6;
+  background: #f0f6ff;
+  color: #1e293b;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  border-radius: 0.5rem;
+}
+
+article a, .prose a {
+  color: #2563eb;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+/* === 다크 모드 === */
+.dark {
+  article {
+    color: #e5e7eb;
+  }
+  article h1, .prose h1 {
+    color: #f3f4f6;
+  }
+  article h2, .prose h2 {
+    color: #addaef;
+  }
+  article h3, .prose h3 {
+    color: #a5b4fc;
+  }
+  article p, .prose p,
+  article li, .prose li {
+    color: #e5e7eb;
+  }
+  article table, .prose table {
+    color: #e5e7eb;
+    background: #23263a;
+  }
+  article th, .prose th {
+    background: #23263a;
+    color: #f1f5f9;
+    border-color: #334155;
+  }
+  article td, .prose td {
+    color: #e5e7eb;
+    border-color: #334155;
+    background: #181a20;
+  }
+  article blockquote, .prose blockquote {
+    color: #bae6fd;
+    border-left: 4px solid #60a5fa;
+    background: #23263a;
+  }
+  article a, .prose a {
+    color: #60a5fa;
+  }
+}
