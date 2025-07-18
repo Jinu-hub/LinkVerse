@@ -1,16 +1,9 @@
 import React from "react";
 import { HoverEffect } from "components/ui/card-hover-effect";
-
-// 북마크 타입 예시 (실제 데이터 구조에 맞게 수정)
-export type TopBookmark = {
-  id: number;
-  title: string;
-  description: string;
-  link: string;
-};
+import type { HomeBookmark } from "../lib/home.types";
 
 interface TopBookmarksProps {
-  bookmarks: TopBookmark[];
+  bookmarks: HomeBookmark[];
   theme: string;
 }
 

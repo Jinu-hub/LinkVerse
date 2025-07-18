@@ -121,7 +121,11 @@ export default [
   ]),
   */
 
-  layout("features/bookmark/layouts/bookmark.layout.tsx", [
+  layout("features/home/layouts/home.layout.tsx", [
+    route("/space", "features/home/screens/space.tsx"),
+  ]),
+
+  layout("features/bookmark/layouts/bookmark.layout.tsx", {id: "bookmark-layout"}, [
     ...prefix("/bookmarks", [
       index("features/bookmark/screens/bookmarks.tsx"),
       route("/api/category", "features/bookmark/api/category-add.tsx"),

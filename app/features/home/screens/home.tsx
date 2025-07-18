@@ -15,7 +15,6 @@
 import type { Route } from "./+types/home";
 
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
 
 import i18next from "~/core/lib/i18next.server";
 import HeroSection from "~/features/landing/components/hero";
@@ -24,19 +23,13 @@ import FinalCTASection from "~/features/landing/components/finalCTASection";
 import WhoItsForSection from "~/features/landing/components/whoItsForSection";
 import HowItWorksSection from "~/features/landing/components/howItWorksSection";
 import makeServerClient from "~/core/lib/supa-client.server";
-import { Await } from "react-router";
-import { Suspense } from "react";
+import { Await, useNavigate } from "react-router";
+import { Suspense, useEffect } from "react";
 import { NavigationBar } from "~/core/components/navigation-bar";
 import { Meteors } from "components/magicui/meteors";
 import { useTheme } from "remix-themes";
 import { Particles } from "components/magicui/particles";
-import { TopBookmarks, type TopBookmark } from "../components/TopBookmarks";
-import { RecentBookmarks, type RecentBookmark } from "../components/RecentBookmarks";
-import { FiPlus } from "react-icons/fi";
-import { Button } from "~/core/components/ui/button";
-import { getRecentBookmarks, getTopBookmarks } from "../lib/homeActions";
-import { toHomeBookmarks } from "../lib/homeUtils";
-import BookmarkAddDialog from "../components/bookmark-add-dialog";
+import { SparklesCore } from "components/ui/sparkles";
 
 /**
  * Meta function for setting page metadata
@@ -78,6 +71,11 @@ export async function loader({ request }: Route.LoaderArgs) {
   const t = await i18next.getFixedT(request);
   const [client] = makeServerClient(request);
   const userPromise = client.auth.getUser();
+  //const { data: { user } } = await client.auth.getUser();
+
+  //if (user) {
+  //  return redirect("/linkverse");
+  //}
   
   // Return translated strings for use in both the component and meta function
   return {
@@ -154,71 +152,44 @@ export default function Home({loaderData}: Route.ComponentProps) {
     );
   }
 
-  function UserLanding({ name }: { name: string }) {
-
-    const isDark = theme === "dark";
-    const [addDialogOpen, setAddDialogOpen] = useState(false);
-
-    const [topBookmarks, setTopBookmarks] = useState<TopBookmark[]>([]);
+  function UserLanding({name}: {name: string}) {
+    
+    const navigate = useNavigate();
     useEffect(() => {
-      const fetchTopBookmarks = async () => {
-        const data = await getTopBookmarks();
-        const topBookmarks = await toHomeBookmarks(data);
-        setTopBookmarks(topBookmarks);
-      };
-      fetchTopBookmarks();
-    }, []);
-
-    const [recentBookmarks, setRecentBookmarks] = useState<RecentBookmark[]>([]);
-    useEffect(() => {
-      const fetchRecentBookmarks = async () => {
-        const data = await getRecentBookmarks();
-        const recentBookmarks = await toHomeBookmarks(data);
-        setRecentBookmarks(recentBookmarks);
-      };
-      fetchRecentBookmarks();
-    }, []);
+      const timer = setTimeout(() => {
+        navigate("/space");
+      }, 3000);
+  
+      return () => clearTimeout(timer);
+    }, [navigate]);
+    
 
     return (
-      <>
-        <div className="flex flex-col items-start z-50 px-8 pt-0 -mt-5 md:-mt-20 space-y-4">
-          <Particles
-            className="fixed inset-0 pointer-events-none z-0"
-            quantity={120}
-            staticity={50}
-            ease={50}
-            size={0.5}
-            color={isDark ? "#ffffff" : "#000000"}
-          />
-          <h1 className={`text-3xl font-bold ${theme === 'dark' ? 'text-gray-400' : 'text-gray-700'}`} style={{ pointerEvents: "none" }}>
-            Hello {name}
-          </h1>
-          {/* 오른쪽 상단 북마크 추가 버튼 */}
-          <div className="fixed top-25 right-15 lg:right-20 xl:right-40 z-50">
-            <Button
-              className="bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow w-12 h-12 flex items-center justify-center text-2xl cursor-pointer"
-              onClick={() => setAddDialogOpen(true)}
-              aria-label="퀵 북마크 추가"
-            >
-              <FiPlus />
-            </Button>
-          </div>
-          
-          <TopBookmarks bookmarks={topBookmarks} theme={theme ?? "dark"} />
-          <RecentBookmarks bookmarks={recentBookmarks} theme={theme ?? "dark"} />
-
-          <BookmarkAddDialog
-            open={addDialogOpen}
-            onOpenChange={setAddDialogOpen}
-            onSave={() => {
-              setAddDialogOpen(false);
-            }}
-            fieldErrors={{}}
-            setFieldErrors={() => {}}
-            saving={false}
-          />
-        </div>
-      </>
+      <div className="h-[40rem] w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
+      <h1 className="md:text-7xl text-3xl lg:text-9xl font-bold text-center text-white relative z-20">
+        Hello {name}
+      </h1>
+      <div className="w-[40rem] h-40 relative">
+        {/* Gradients */}
+        <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
+        <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px w-3/4" />
+        <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-[5px] w-1/4 blur-sm" />
+        <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px w-1/4" />
+ 
+        {/* Core component */}
+        <SparklesCore
+          background="transparent"
+          minSize={0.4}
+          maxSize={1}
+          particleDensity={1200}
+          className="w-full h-full"
+          particleColor="#FFFFFF"
+        />
+ 
+        {/* Radial Gradient to prevent sharp edges */}
+        <div className="absolute inset-0 w-full h-full bg-black [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
+      </div>
+    </div>
     );
   }
 
