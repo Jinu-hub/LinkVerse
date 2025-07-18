@@ -25,6 +25,7 @@ export default function BookmarkAddDialog({
     const [url, setUrl] = useState("");
     const dialogContentRef = useRef<HTMLDivElement>(null);
     const isError = Object.keys(fieldErrors).length > 0;
+    const isSetUrlFromClipboard = useRef(false);
 
     // 북마크 정보 업데이트
     useEffect(() => {
@@ -38,17 +39,19 @@ export default function BookmarkAddDialog({
       if (!open) {
         setUrl("");
         setFieldErrors({});
+        isSetUrlFromClipboard.current = false;
       }
     }, [open]);
 
     // 클립보드에서 URL 읽어오기
     useEffect(() => {
-      if (open && !url) {
+      if (open && !url && !isSetUrlFromClipboard.current) {
         navigator.clipboard.readText().then(text => {
           const urlSchema = z.string().url();
           const result = urlSchema.safeParse(text);
           if (result.success) {
             setUrl(result.data);
+            isSetUrlFromClipboard.current = true;
           }
         });
       }
