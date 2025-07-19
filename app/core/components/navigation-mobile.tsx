@@ -2,6 +2,7 @@ import type { DisplayType } from "~/core/lib/types";
 import { Actions, UserMenu, AuthButtons } from "./navigation-bar";
 import { SheetHeader, SheetFooter, SheetClose } from "./ui/sheet";
 import { Link } from "react-router";
+import { Separator } from "./ui/separator";
 
 interface NavigationMobileProps {
   loading: boolean;
@@ -15,21 +16,29 @@ export function NavigationMobile({ loading, displayType = "default", name, email
   return (
     <>
       <SheetHeader>
-        {displayType !== "bookmarks" && (
-          <SheetClose asChild>
-            <Link to="/bookmarks">Bookmarks</Link>
-          </SheetClose>
-        )}
-        {displayType !== "tags" && (
-          <SheetClose asChild>
-            <Link to="/tags">Tags</Link>
-          </SheetClose>
-        )}
-        {displayType !== "memos" && (
+        {name && (
+          <>
+          {displayType !== "bookmarks" && (
             <SheetClose asChild>
-            <Link to="/memos">Memos</Link>
+              <Link to="/bookmarks">Bookmarks</Link>
             </SheetClose>
+          )}
+          {displayType !== "tags" && (
+            <SheetClose asChild>
+              <Link to="/tags">Tags</Link>
+            </SheetClose>
+          )}
+          {displayType !== "memos" && (
+              <SheetClose asChild>
+              <Link to="/memos">Memos</Link>
+              </SheetClose>
+          )}
+          </>
         )}
+        <Separator orientation="horizontal" />
+        <SheetClose asChild>
+          <Link to="/faq">FAQ</Link>
+        </SheetClose>
         {/*
         <SheetClose asChild>
           <Link to="/blog">Blog</Link>
