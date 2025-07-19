@@ -69,7 +69,6 @@ export async function action({ request }: Route.LoaderArgs) {
   const { data: message, error } = await adminClient
     // @ts-expect-error - PGMQ types are not fully defined in the Supabase client
     .schema("pgmq_public")
-    // @ts-expect-error - PGMQ types are not fully defined in the Supabase client
     .rpc("pop", {
       queue_name: "mailer", // Queue name in Postgres
     });
@@ -93,9 +92,9 @@ export async function action({ request }: Route.LoaderArgs) {
       // Send welcome email using the Resend client
       const { error } = await resendClient.emails.send({
         // Make sure this domain is the Resend domain.
-        from: "Supaplate <hello@supaplate.com>",
+        from: "LinkVerse <hello@mail.linkverse.app>",
         to: [to],
-        subject: "Welcome to Supaplate!",
+        subject: "Welcome to LinkVerse!",
         react: WelcomeEmail({ profile: JSON.stringify(emailData, null, 2) }),
       });
       
