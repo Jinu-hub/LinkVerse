@@ -28,9 +28,8 @@ const TAG_COLORS = [
     { value: "title", label: "제목" , width: "25%", isSortable: true },
     { value: "url", label: "URL" , width: "20%", isSortable: true },
     { value: "createdAt", label: "생성일" , width: "10%", isSortable: true },
-    /*
     { value: "tags", label: "태그입력" , width: "40%", isSortable: false },
-    { value: " ", label: " " , width: "5%", isSortable: false },*/
+    { value: " ", label: " " , width: "5%", isSortable: false },
   ] as const;
 
 export const CONTENT_TYPE_FIELD_MAP: Record<string, { label: string; key: string }[]> = {

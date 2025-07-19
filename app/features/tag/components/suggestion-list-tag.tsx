@@ -36,7 +36,7 @@ export function TagSuggestionList({
   }, [highlightedIdx]);
 
   return (
-    <div className="border rounded bg-white dark:bg-zinc-900 shadow absolute z-50 mt-1 w-full max-h-40 overflow-auto select-none">
+    <div className="border rounded bg-white dark:bg-zinc-900 shadow absolute z-50 mt-1 w-full max-w-[300px] max-h-40 overflow-auto select-none">
       {tagSuggestions.map((tag, idx) => {
         const isNew = !allTags.includes(tag);
         return (

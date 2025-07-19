@@ -21,6 +21,7 @@ interface UntagTableProps {
   onPageChange: (newPage: number) => void;
   search: string;
   highlightText: (text: string, keyword: string) => React.ReactNode;
+  allTags: string[];
 }
 
 const UntagTable: React.FC<UntagTableProps> = ({
@@ -37,6 +38,7 @@ const UntagTable: React.FC<UntagTableProps> = ({
   onPageChange,
   search,
   highlightText,
+  allTags,
 }) => {
   const navigate = useNavigate();
   
@@ -104,21 +106,19 @@ const UntagTable: React.FC<UntagTableProps> = ({
                     </a>
                   </TableCell>
                   <TableCell className="text-xs text-gray-500">{untaggedContent.createdAt.slice(0, 10)}</TableCell>
-                  
-                  {/*
-                  <TableCell className="text-xs text-gray-500">
+                  {/* 태그 입력 필드 */}
+                  <TableCell className="text-xs text-gray-500" >
                      <TagInputForm
                        tags={contentTags[untaggedContent.targetId.toString()] || []}
                        onTagsChange={(tags) => handleTagsChange(untaggedContent.targetId.toString(), tags)}
-                       allTags={[]}
+                       allTags={allTags}
                        placeholder="태그 추가"
                        className="w-full"
                      />
                    </TableCell>
                   <TableCell className="text-xs text-gray-500 text-center">
-                    <Button variant="outline" size="sm">저장</Button>
+                    <Button variant="outline" className="cursor-pointer" size="sm">저장</Button>
                   </TableCell>
-                  */}
                 </TableRow>
               );
             })}
