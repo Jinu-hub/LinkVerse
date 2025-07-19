@@ -8,7 +8,7 @@ import { highlightText } from "~/core/lib/common";
 
 import makeServerClient from "~/core/lib/supa-client.server";
 import { requireAuthentication } from "~/core/lib/guards.server";
-import { getUntaggedContents } from "../db/queries";
+import { getUntaggedContents, getTags } from "../db/queries";
 import type { UntaggedContent, UntaggedSortKey } from "../lib/tag.types";
 import { toUntaggedContent } from "../lib/taUtils";
 import UntagToolbar from "../components/untag-toolbar";
@@ -47,7 +47,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
    await requireAuthentication(client);
    const { data: { user } } = await client.auth.getUser();
    const untaggedContents = await getUntaggedContents(client, { userId: user!.id });
-  return { untaggedContents };
+   const tags = await getTags(client, { userId: user!.id });
+  return { untaggedContents, tags };
 };
 
 export default function UntaggedScreen({ loaderData }: Route.ComponentProps) {
@@ -58,6 +59,7 @@ export default function UntaggedScreen({ loaderData }: Route.ComponentProps) {
   const [rowsPerPage, setRowsPerPage] = useState<number | 'all'>(5);
   const [page, setPage] = useState(1);
   const [selectedType, setSelectedType] = useState<number | null>(null);
+  const allTags = useMemo(() => loaderData.tags.map(t => t.tag_name), [loaderData.tags]);
 
   // DB에서 받아온 데이터를 UntaggedContent 타입으로 변환
   const untaggedContents: UntaggedContent[] = useMemo(() => loaderData.untaggedContents.map((item: any) => 
@@ -145,6 +147,7 @@ export default function UntaggedScreen({ loaderData }: Route.ComponentProps) {
         onPageChange={setPage}
         search={search}
         highlightText={highlightText}
+        allTags={allTags}
       />
       {pagedUntaggedContents.length === 0 && (
         <div className="text-center text-gray-500 py-8">태그를 미설정인 콘텐츠가 없습니다.</div>
