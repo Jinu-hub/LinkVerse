@@ -77,7 +77,7 @@ export default function HomeSpace({loaderData}: Route.ComponentProps) {
   const {userName, initialTopBookmarks, initialRecentBookmarks} = loaderData;
   
   // Get the translation function for the current locale
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [theme] = useTheme();
   const isDark = theme === "dark";
   const [addDialogOpen, setAddDialogOpen] = useState(false);

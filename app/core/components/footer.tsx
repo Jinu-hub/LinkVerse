@@ -40,10 +40,10 @@ export default function Footer() {
         {/* Legal links - appears first on mobile, second on desktop */}
         <div className="order-1 flex gap-10 *:underline md:order-none">
           <Link to="/legal/privacy-policy" viewTransition>
-            Privacy Policy
+            {t('join.privacy')}
           </Link>
           <Link to="/legal/terms-of-service" viewTransition>
-            Terms of Service
+            {t('join.tos')}
           </Link>
         </div>
       </div>

@@ -8,7 +8,7 @@ export default function NotFound() {
       <h1 className="text-5xl font-semibold">Page not found</h1>
       <h2 className="text-2xl">The page you are looking for does not exist.</h2>
       <Button variant="outline" asChild>
-        <Link to="/">Go home &rarr;</Link>
+        <Link to="/space">Go home &rarr;</Link>
       </Button>
     </div>
   );

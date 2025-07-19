@@ -36,7 +36,9 @@ export default function NavigationLayout({ loaderData }: Route.ComponentProps) {
       <div className="mx-auto my-16 w-full max-w-screen-2xl px-5 md:my-32">
         <Outlet />
       </div>
-      <Footer />
+      <div className="flex flex-col justify-between mt-12 px-4 md:px-7 lg:px-14">
+        <Footer />
+      </div>
     </div>
   );
 }
