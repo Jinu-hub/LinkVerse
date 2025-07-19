@@ -1,6 +1,5 @@
 import { Button } from "~/core/components/ui/button";
 import { useState, useRef, useEffect } from "react";
-import { Badge } from "~/core/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +11,6 @@ import { Input } from "~/core/components/ui/input";
 import { Textarea } from "~/core/components/ui/textarea";
 import { CategorySuggestionList } from "./suggestion-list-category";
 import { findCategoryPath } from "../lib/bmUtils";
-import React from "react";
 import { useClickOutside } from '../hooks/useClickOutside';
 import { findChildrenByPath } from '../lib/bmUtils';
 import { useCategoryAutocomplete } from '../hooks/useCategoryAutocomplete';
@@ -20,9 +18,8 @@ import { z } from "zod";
 import { Label } from "~/core/components/ui/label";
 import { Switch } from "~/core/components/ui/switch";
 import type { BookmarkDetailDialogProps } from "../lib/bookmark.types";
-import { cn } from "~/core/lib/utils";
-import { TagSuggestionList } from "./suggestion-list-tag";
 import FormErrors from "~/core/components/form-error";
+import TagInputForm from "~/features/tag/components/tag-input-form";
 
 export default function BookmarkDetailDialog({ 
   open, onOpenChange, bookmark, onSave, categories, allTags, fieldErrors, setFieldErrors, saving }
@@ -30,8 +27,6 @@ export default function BookmarkDetailDialog({
     const [title, setTitle] = useState(bookmark.title);
     const [url, setUrl] = useState(bookmark.url);
     const [tags, setTags] = useState<string[]>(bookmark.tags);
-    const [newTag, setNewTag] = useState("");
-    const [tagSuggestions, setTagSuggestions] = useState<string[]>([]);
     const [categoryId, setCategoryId] = useState(bookmark.categoryId || "");
     const [memo, setMemo] = useState(bookmark.memo);
     const dialogContentRef = useRef<HTMLDivElement>(null);
@@ -61,7 +56,6 @@ export default function BookmarkDetailDialog({
         setUrl(bookmark.url);
         setTags(bookmark.tags);
         setMemo(bookmark.memo);
-        setNewTag("");
         setCategoryId(bookmark.categoryId || 0);
         setCategoryInput(getCategoryPathName(bookmark.categoryId || 0));
         setShowSuggestions(false);
@@ -102,34 +96,9 @@ export default function BookmarkDetailDialog({
       }
     }, [isAddMode, open, url]);
 
-    // 태그 추가
-    const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if ((e.nativeEvent as any).isComposing) return; // IME 조합 중이면 무시
-      if (tagSuggestions.length > 0 && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
-        e.preventDefault();
-        const total = tagSuggestions.length;
-        if (e.key === "ArrowDown") {
-          setHighlightedIdx(prev => (prev + 1) % total);
-        } else if (e.key === "ArrowUp") {
-          setHighlightedIdx(prev => (prev - 1 + total) % total);
-        }
-        return;
-      }
-
-      if (e.key === "Enter" && tagSuggestions.length > 0 && highlightedIdx >= 0) {
-        const selected = tagSuggestions[highlightedIdx];
-        if (!tags.includes(selected)) {
-          setTags([...tags, selected]);
-        }
-        setNewTag("");
-        setTagSuggestions([]);
-        setHighlightedIdx(-1);
-      }
-    };
-    
-    // 태그 삭제
-    const handleRemoveTag = (tag: string) => {
-      setTags(tags.filter(t => t !== tag));
+    // 태그 변경 핸들러
+    const handleTagsChange = (newTags: string[]) => {
+      setTags(newTags);
     };
 
     // 북마크 저장
@@ -168,26 +137,6 @@ export default function BookmarkDetailDialog({
         }
       }
     }, [open, isAddMode]);
-
-    // 태그 추천 리스트 계산
-    useEffect(() => {
-      const trimmed = newTag.trim();
-      if (trimmed.length >= 2) {
-        // 중복 제거: 입력값이 allTags에 있으면 추천에서 제외
-        const filtered = allTags
-          .filter(tag => tag.toLowerCase().includes(trimmed.toLowerCase()))
-          .filter(tag => tag !== trimmed && !tags.includes(tag))
-          .slice(0, 10);
-        setTagSuggestions([trimmed, ...filtered]);
-      } else {
-        setTagSuggestions([]);
-      }
-    }, [newTag, allTags, tags]);
-
-    // 태그 추천 리스트 하이라이트 인덱스 설정
-    useEffect(() => {
-      setHighlightedIdx(tagSuggestions.length > 0 ? 0 : -1);
-    }, [tagSuggestions]);
 
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -263,44 +212,13 @@ export default function BookmarkDetailDialog({
 
             <div className="relative">
               <div className="mb-1 text-base text-muted-foreground">태그</div>
-              <div className="flex flex-wrap gap-2 mb-2">
-                {tags?.map(tag => {
-                  const isNew = !allTags.includes(tag);
-                  return (
-                    <Badge
-                      key={tag}
-                      variant="secondary"
-                      className={cn(
-                        "cursor-pointer",
-                        isNew ? "border border-blue-500 text-blue-500" : ""
-                      )}
-                      onClick={() => handleRemoveTag(tag)}
-                    >
-                      {tag} ✕
-                    </Badge>
-                  );
-                })}
-              </div>
-              <Input
+              <TagInputForm
+                tags={tags}
+                onTagsChange={handleTagsChange}
+                allTags={allTags}
                 placeholder="태그 추가 후 Enter"
-                value={newTag}
-                onChange={e => setNewTag(e.target.value)}
-                onKeyDown={handleAddTag}
               />
               {fieldErrors?.tags ? (<FormErrors errors={fieldErrors.tags} />) : null}
-              {tagSuggestions.length > 0 && (
-                <TagSuggestionList
-                  tagSuggestions={tagSuggestions}
-                  highlightedIdx={highlightedIdx}
-                  setHighlightedIdx={setHighlightedIdx}
-                  onSelect={(tag) => {
-                    setTags([...tags, tag]);
-                    setNewTag("");
-                  }}
-                  allTags={allTags}
-                  setNewTag={setNewTag}
-                />
-              )}
             </div>
   
             <div className="relative">
