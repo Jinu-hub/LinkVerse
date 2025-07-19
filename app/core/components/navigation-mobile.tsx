@@ -33,6 +33,11 @@ export function NavigationMobile({ loading, displayType = "default", name, email
               <Link to="/memos">Memos</Link>
               </SheetClose>
           )}
+          {displayType !== "untagged" && (
+            <SheetClose asChild>
+              <Link to="/untagged">Untagged</Link>
+            </SheetClose>
+          )}
           </>
         )}
         <Separator orientation="horizontal" />

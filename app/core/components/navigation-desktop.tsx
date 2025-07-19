@@ -46,6 +46,15 @@ export function NavigationDesktop({ loading, displayType = "default", name, emai
               Memos
             </Link>
           )}
+          {displayType !== "untagged" && (
+            <Link
+              to="/untagged"
+              viewTransition
+              className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+            >
+              Untagged
+            </Link>
+          )}
         </>
       )}
       <Separator orientation="vertical" />

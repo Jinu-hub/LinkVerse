@@ -1,4 +1,4 @@
-export type DisplayType = "default" | "bookmarks" | "tags" | "memos";
+export type DisplayType = "default" | "bookmarks" | "tags" | "memos" | "untagged";
 
 export interface ContentType {
   id: number;      // DB의 PK (예: content_type_id)

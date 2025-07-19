@@ -4,6 +4,8 @@ export type SortKey = typeof SORT_OPTIONS[number]["value"];
 
 export type SortKeyContents = typeof SORT_OPTIONS_CONTENTS[number]["value"];
 
+export type UntaggedSortKey = "title" | "url" | "createdAt";
+
 export interface Tag { 
   id: number; 
   name: string; 
@@ -25,4 +27,14 @@ export interface TagContent {
   createdAt: string;
   url?: string;
   extra?: Record<string, string>;
+}
+
+export interface UntaggedContent {
+  contentTypeId: number;
+  targetId: number;
+  title: string;
+  url: string;
+  description?: string;
+  memo?: string;
+  createdAt: string;
 }

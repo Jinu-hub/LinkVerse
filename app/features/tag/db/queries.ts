@@ -121,3 +121,15 @@ export const getTagIdsWithCategory = async (
   if (!Array.isArray(data)) return [];
   return data;
 }
+
+export const getUntaggedContents = async (
+  client: SupabaseClient<Database>,
+  { userId }: { userId: string },
+) => {
+  const { data, error } = await client
+    .from('content_untagged_view')
+    .select('*')
+    .eq('user_id', userId);
+  if (error) throw error;
+  return data;
+}
