@@ -544,6 +544,31 @@ export type Database = {
           },
         ]
       }
+      content_untagged_view: {
+        Row: {
+          category_id: number | null
+          content_type_id: number | null
+          created_at: string | null
+          description: string | null
+          memo: string | null
+          target_id: number | null
+          thumbnail_url: string | null
+          title: string | null
+          updated_at: string | null
+          url: string | null
+          use_count: number | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmark_category_id_category_category_id_fk"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["category_id"]
+          },
+        ]
+      }
       content_view: {
         Row: {
           category_id: number | null

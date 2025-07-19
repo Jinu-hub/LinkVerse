@@ -156,4 +156,10 @@ export default [
       route("/api/memo/:id", "features/memo/api/memo-edit.tsx"),
     ]),
   ]),
+
+  layout("features/tag/layouts/untag.layout.tsx", [
+    ...prefix("/untagged", [
+      index("features/tag/screens/untagged.tsx"),
+    ]),
+  ]),
 ] satisfies RouteConfig;

@@ -1,5 +1,5 @@
 import { sortArray } from "~/core/lib/utils";
-import type { SortKey, Tag, TagContent } from "./tag.types";
+import type { SortKey, Tag, TagContent, UntaggedContent } from "./tag.types";
 
 export function toTag(item: any): Tag {
   return {
@@ -23,6 +23,18 @@ export function toTagContent(item: any): TagContent {
     createdAt: item.created_at ?? '',
     url: item.url ?? '',
     extra: {},
+  };
+}
+
+export function toUntaggedContent(item: any): UntaggedContent {
+  return {
+    contentTypeId: Number(item.content_type_id),
+    targetId: item.target_id,
+    title: item.title,
+    url: item.url ?? '',
+    description: item.description ?? '',
+    memo: item.memo ?? '',
+    createdAt: item.created_at ?? '',
   };
 }
 
