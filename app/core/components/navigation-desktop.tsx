@@ -17,33 +17,45 @@ export function NavigationDesktop({ loading, displayType = "default", name, emai
   return (
     <div className="hidden h-full items-center gap-5 md:flex">
       {/* Main navigation links */}
-      {displayType !== "bookmarks" && (
-        <Link
-            to="/bookmarks"
-            viewTransition
-            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-        >
-            Bookmarks
-        </Link>
+      {name && (
+        <>
+          {displayType !== "bookmarks" && (
+            <Link
+              to="/bookmarks"
+              viewTransition
+              className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+            >
+              Bookmarks
+            </Link>
+          )}
+          {displayType !== "tags" && (
+            <Link
+              to="/tags"
+              viewTransition
+              className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+            >
+              Tags
+            </Link>
+          )}
+          {displayType !== "memos" && (
+            <Link
+              to="/memos"
+              viewTransition
+              className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+            >
+              Memos
+            </Link>
+          )}
+        </>
       )}
-      {displayType !== "tags" && (
-        <Link
-            to="/tags"
-            viewTransition
-            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-        >
-            Tags
-        </Link>
-      )}
-      {displayType !== "memos" && (
-        <Link
-          to="/memos"
-          viewTransition
-          className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-        >
-          Memos
-        </Link>
-      )}
+      <Separator orientation="vertical" />
+      <Link
+        to="/faq"
+        viewTransition
+        className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+      >
+        FAQ
+      </Link>
       <Link
         to="/contact"
         viewTransition
