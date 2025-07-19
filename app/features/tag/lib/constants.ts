@@ -25,11 +25,11 @@ const TAG_COLORS = [
   ] as const;
 
   export const SORT_OPTIONS_UNTAGGED = [
-    { value: "title", label: "제목" , width: "25%", isSortable: true },
-    { value: "url", label: "URL" , width: "20%", isSortable: true },
-    { value: "createdAt", label: "생성일" , width: "10%", isSortable: true },
-    { value: "tags", label: "태그입력" , width: "40%", isSortable: false },
-    { value: " ", label: " " , width: "5%", isSortable: false },
+    { value: "title", label: "제목" , width: "25%", isSortable: true, mobileHidden: false },
+    { value: "url", label: "URL" , width: "20%", isSortable: true, mobileHidden: true },
+    { value: "createdAt", label: "생성일" , width: "10%", isSortable: true, mobileHidden: true },
+    { value: "tags", label: "태그입력" , width: "40%", isSortable: false, mobileHidden: false },
+    { value: " ", label: " " , width: "5%", isSortable: false, mobileHidden: false },
   ] as const;
 
 export const CONTENT_TYPE_FIELD_MAP: Record<string, { label: string; key: string }[]> = {
