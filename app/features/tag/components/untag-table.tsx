@@ -6,6 +6,7 @@ import { SORT_OPTIONS_UNTAGGED } from "../lib/constants";
 import { useNavigate } from "react-router";
 import { Button } from "~/core/components/ui/button";
 import TagInputForm from "./tag-input-form";
+import { cn } from "~/core/lib/utils";
 
 interface UntagTableProps {
   pagedUntaggedContents: UntaggedContent[];
@@ -71,10 +72,15 @@ const UntagTable: React.FC<UntagTableProps> = ({
           <TableHeader>
             <TableRow className="bg-gray-100 dark:bg-zinc-800 border-b border-gray-300 dark:border-zinc-700">
               {SORT_OPTIONS_UNTAGGED.map(col => (
-                <TableHead key={col.value} onClick={() => col.isSortable && onSort(col.value)} 
-                  className="cursor-pointer select-none text-base font-bold"
+                <TableHead 
+                  key={col.value} 
+                  onClick={() => col.isSortable && onSort(col.value)} 
+                  className={cn(
+                    "cursor-pointer select-none text-base font-bold",
+                    col.mobileHidden && "hidden md:table-cell"
+                  )}
                   style={{ width: col.width }}
-                  >
+                >
                   {col.label} {col.isSortable && sortKey === col.value && (sortOrder === 'asc' ? '▲' : '▼')}
                 </TableHead>
               ))}
@@ -95,7 +101,7 @@ const UntagTable: React.FC<UntagTableProps> = ({
                       search
                     )}
                   </TableCell>
-                  <TableCell className="whitespace-pre-line max-w-[400px] truncate">
+                  <TableCell className="whitespace-pre-line max-w-[400px] truncate hidden md:table-cell">
                     <a
                       href={untaggedContent.url}
                       target="_blank"
@@ -105,7 +111,7 @@ const UntagTable: React.FC<UntagTableProps> = ({
                       {new URL(untaggedContent.url).hostname}
                     </a>
                   </TableCell>
-                  <TableCell className="text-xs text-gray-500">{untaggedContent.createdAt.slice(0, 10)}</TableCell>
+                  <TableCell className="text-xs text-gray-500 hidden md:table-cell">{untaggedContent.createdAt.slice(0, 10)}</TableCell>
                   {/* 태그 입력 필드 */}
                   <TableCell className="text-xs text-gray-500" >
                      <TagInputForm
