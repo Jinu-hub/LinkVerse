@@ -177,7 +177,7 @@ export default function DashboardSidebar({
         <TeamSwitcher teams={data.teams} />
         */}
         <Button variant="outline" asChild>
-          <Link to="/" viewTransition>
+          <Link to="/space" viewTransition>
             &larr; Go home
           </Link>
         </Button>
