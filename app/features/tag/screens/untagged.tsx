@@ -52,6 +52,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 };
 
 export default function UntaggedScreen({ loaderData }: Route.ComponentProps) {
+  const { untaggedContents: initialUntaggedContents, tags: initialTags } = loaderData;
   // 상태
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<UntaggedSortKey>("createdAt");
@@ -59,11 +60,8 @@ export default function UntaggedScreen({ loaderData }: Route.ComponentProps) {
   const [rowsPerPage, setRowsPerPage] = useState<number | 'all'>(5);
   const [page, setPage] = useState(1);
   const [selectedType, setSelectedType] = useState<number | null>(null);
-  const allTags = useMemo(() => loaderData.tags.map(t => t.tag_name), [loaderData.tags]);
-
-  // DB에서 받아온 데이터를 UntaggedContent 타입으로 변환
-  const untaggedContents: UntaggedContent[] = useMemo(() => loaderData.untaggedContents.map((item: any) => 
-    toUntaggedContent(item)), [loaderData.untaggedContents]);
+  const allTags = useMemo(() => initialTags.map(t => t.tag_name), [initialTags]);
+  const [untaggedContents, setUntaggedContents] = useState<UntaggedContent[]>(initialUntaggedContents.map(toUntaggedContent));
 
   // 필터/검색
   const filtered = useMemo(() =>
@@ -148,6 +146,7 @@ export default function UntaggedScreen({ loaderData }: Route.ComponentProps) {
         search={search}
         highlightText={highlightText}
         allTags={allTags}
+        setUntaggedContents={setUntaggedContents}
       />
       {pagedUntaggedContents.length === 0 && (
         <div className="text-center text-gray-500 py-8">태그를 미설정인 콘텐츠가 없습니다.</div>

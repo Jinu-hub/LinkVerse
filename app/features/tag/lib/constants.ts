@@ -62,6 +62,7 @@ export const createTagValidation = () =>
     );
 
 export const tagSchema = z.object({
+  contentTypeId: z.number(),
   tags: z.array(createTagValidation()).optional().default([]),
 });
 
