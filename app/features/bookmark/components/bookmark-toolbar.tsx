@@ -150,7 +150,7 @@ export function BookmarkToolbar({
         </TabsList>
       </Tabs>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <div className="w-full max-w-sm">
           <Input
             placeholder="북마크 검색"
@@ -159,12 +159,12 @@ export function BookmarkToolbar({
           />
         </div>
         <div className="flex items-center space-x-2">
-          <span className="text-sm text-muted-foreground">표시 개수</span>
+          <span className="text-sm text-muted-foreground hidden sm:inline">표시 개수</span>
           <Select
             value={String(rowsPerPage)}
             onValueChange={onRowsPerPageChange}
           >
-            <SelectTrigger className="w-20 h-8">
+            <SelectTrigger className="w-20 h-8 sm:p-1">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
