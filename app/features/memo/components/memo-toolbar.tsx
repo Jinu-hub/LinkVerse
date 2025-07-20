@@ -24,7 +24,7 @@ const MemoToolbar: React.FC<MemoToolbarProps> = ({
         />
       </div>
       <div className="flex items-center gap-2 ml-auto">
-        <label className="text-sm">표시 개수:</label>
+        <label className="text-sm text-muted-foreground hidden sm:inline">표시 개수</label>
         <select
           className="border rounded px-2 py-1 text-sm"
           value={String(rowsPerPage)}
