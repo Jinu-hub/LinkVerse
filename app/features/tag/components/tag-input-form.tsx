@@ -24,14 +24,28 @@ export default function TagInputForm({
 }: TagInputFormProps) {
   const [newTag, setNewTag] = useState("");
   const [highlightedIdx, setHighlightedIdx] = useState(-1);
+
+  // 태그 정제 함수
+  const sanitizeTag = (tag: string): string => {
+    return tag
+      .trim()
+      .replace(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]/g, '') // 특수문자와 공백 제거
+      .replace(/\s+/g, ''); // 연속된 공백 제거
+  };
   
   // 태그 자동완성 로직
   const tagSuggestions = useMemo(() => {
     if (!newTag.trim()) return [];
-    return allTags.filter(tag => 
-      tag.toLowerCase().includes(newTag.toLowerCase()) && 
+    const sanitizedInput = sanitizeTag(newTag);
+    if (!sanitizedInput) return [];
+    
+    const filtered = allTags.filter(tag => 
+      tag.toLowerCase().includes(sanitizedInput.toLowerCase()) && 
       !tags.includes(tag)
-    ).slice(0, 5);
+    ).slice(0, 4); // 4개만 가져와서 총 5개가 되도록 (입력값 + 4개)
+    
+    // 정제된 현재 입력값을 맨 위에 추가
+    return [sanitizedInput, ...filtered];
   }, [newTag, allTags, tags]);
 
   // 태그 추가
@@ -55,16 +69,17 @@ export default function TagInputForm({
       if (tagSuggestions.length > 0 && highlightedIdx >= 0) {
         // 자동완성에서 선택
         const selected = tagSuggestions[highlightedIdx];
-        if (!tags.includes(selected)) {
-          onTagsChange([...tags, selected]);
+        const sanitizedSelected = sanitizeTag(selected);
+        if (sanitizedSelected && !tags.includes(sanitizedSelected)) {
+          onTagsChange([...tags, sanitizedSelected]);
         }
         setNewTag("");
         setHighlightedIdx(-1);
       } else if (newTag.trim()) {
         // 직접 입력
-        const trimmedTag = newTag.trim();
-        if (!tags.includes(trimmedTag)) {
-          onTagsChange([...tags, trimmedTag]);
+        const sanitizedTag = sanitizeTag(newTag);
+        if (sanitizedTag && !tags.includes(sanitizedTag)) {
+          onTagsChange([...tags, sanitizedTag]);
         }
         setNewTag("");
       }
