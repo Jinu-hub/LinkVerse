@@ -101,7 +101,10 @@ export default function UntaggedScreen({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">태그 미설정 콘텐츠</h1>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-foreground mb-2">Untagged Contents</h1>
+        <p className="text-muted-foreground">태그가 설정되지 않은 콘텐츠</p>
+      </div>
       {/* 콘텐츠 타입 필터 버튼 */}
       <div className="flex gap-2 mb-4 flex-wrap">
         {CONTENT_TYPES.map(type => (

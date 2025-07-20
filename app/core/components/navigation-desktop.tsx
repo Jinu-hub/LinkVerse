@@ -3,6 +3,14 @@ import { Actions } from "./navigation-bar";
 import { UserMenu } from "./navigation-bar";
 import { AuthButtons } from "./navigation-bar";
 import { Separator } from "./ui/separator";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "./ui/dropdown-menu";
+import { ChevronDownIcon } from "lucide-react";
+import { useState } from "react";
 import type { DisplayType } from "~/core/lib/types";
 
 interface NavigationDesktopProps {
@@ -14,6 +22,8 @@ interface NavigationDesktopProps {
 }
 
 export function NavigationDesktop({ loading, displayType = "default", name, email, avatarUrl }: NavigationDesktopProps) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   return (
     <div className="hidden h-full items-center gap-5 md:flex">
       {/* Main navigation links */}
@@ -28,15 +38,77 @@ export function NavigationDesktop({ loading, displayType = "default", name, emai
               Bookmarks
             </Link>
           )}
-          {displayType !== "tags" && (
-            <Link
-              to="/tags"
-              viewTransition
-              className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-            >
-              Tags
-            </Link>
+          
+          {displayType !== "tags" && displayType !== "untagged" && (
+            <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+              <DropdownMenuTrigger asChild>
+                <button 
+                  className="flex items-center gap-1 text-muted-foreground hover:text-foreground text-sm transition-colors bg-transparent border-none p-0 cursor-pointer"
+                  onMouseEnter={() => setIsDropdownOpen(true)}
+                  onMouseLeave={() => setIsDropdownOpen(false)}
+                >
+                  <Link
+                    to="/tags"
+                    viewTransition
+                    className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+                  >
+                    Tags
+                  </Link>
+                  <ChevronDownIcon className="size-3" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="start" 
+                className="w-48"
+                onMouseEnter={() => setIsDropdownOpen(true)}
+                onMouseLeave={() => setIsDropdownOpen(false)}
+              >
+                <DropdownMenuItem asChild>
+                  <Link
+                    to="/tags"
+                    viewTransition
+                    className="w-full cursor-pointer"
+                  >
+                    All Tags
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    to="/untagged"
+                    viewTransition
+                    className="w-full cursor-pointer"
+                  >
+                    Untagged Contents
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
+          
+          {displayType === "untagged" && (
+            <div className="flex items-center gap-1 text-foreground text-sm font-medium">
+              <Link
+                to="/tags"
+                viewTransition
+                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+              >
+                Tags
+              </Link>
+            </div>
+          )}
+          
+          {displayType === "tags" && (
+            <div className="flex items-center gap-1 text-foreground text-sm font-medium">
+              <Link
+                to="/untagged"
+                viewTransition
+                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+              >
+                Untagged
+              </Link>
+            </div>
+          )}
+          
           {displayType !== "memos" && (
             <Link
               to="/memos"
@@ -44,15 +116,6 @@ export function NavigationDesktop({ loading, displayType = "default", name, emai
               className="text-muted-foreground hover:text-foreground text-sm transition-colors"
             >
               Memos
-            </Link>
-          )}
-          {displayType !== "untagged" && (
-            <Link
-              to="/untagged"
-              viewTransition
-              className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-            >
-              Untagged
             </Link>
           )}
         </>
