@@ -39,10 +39,14 @@ export function BookmarkTableRow({
     >
       <TableCell className="flex items-center gap-2">
         <span className="flex items-center gap-1">
-          {highlightText(bookmark.title, search)}
+          {highlightText(bookmark.title.length > 20 
+            ? `${bookmark.title.substring(0, 20)}...` 
+            : bookmark.title, 
+            search
+          )}
         </span>
       </TableCell>
-      <TableCell className="text-xs text-gray-500 dark:text-gray-400 max-w-[180px] truncate">
+      <TableCell className="text-xs text-gray-500 dark:text-gray-400 max-w-[180px] truncate hidden md:table-cell">
         {highlightText(bookmark.url, search)}
       </TableCell>
       <TableCell>

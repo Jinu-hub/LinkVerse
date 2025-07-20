@@ -36,7 +36,9 @@ const MemoNav = ({ title }: MemoNavProps) => {
           {title && (
             <>
               <ChevronsRightIcon className="text-muted-foreground size-4" />
-              <span className="font-semibold text-primary">{title}</span>
+              <span className="font-semibold text-primary">{title.length > 16 
+                ? `${title.substring(0, 16)}...` 
+                : title}</span>
             </>
           )}
         </h1>

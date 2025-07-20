@@ -4,7 +4,8 @@ import type { ContentType } from "~/core/lib/types";
 import type { Memo, SortKey } from "../lib/memo.types";
 import { useNavigate } from "react-router";
 import { contentIconMap, typeColorMap } from "~/core/lib/constants";
-import type { title } from "process";
+import { cn } from "~/core/lib/utils";
+import { SORTABLE_COLUMNS } from "../lib/constants";
 
 interface MemoTableProps {
   pagedMemos: Memo[];
@@ -56,21 +57,18 @@ const MemoTable: React.FC<MemoTableProps> = ({
         <Table>
           <TableHeader>
             <TableRow className="bg-gray-100 dark:bg-zinc-800 border-b border-gray-300 dark:border-zinc-700">
-              <TableHead onClick={() => onSort('contentTypeId')} className="cursor-pointer select-none text-base font-bold">
-                콘텐츠 타입 {sortKey === 'contentTypeId' && (sortOrder === 'asc' ? '▲' : '▼')}
-              </TableHead>
-              <TableHead onClick={() => onSort('title')} className="cursor-pointer select-none text-base font-bold">
-                제목 {sortKey === 'title' && (sortOrder === 'asc' ? '▲' : '▼')}
-              </TableHead>
-              <TableHead onClick={() => onSort('content')} className="cursor-pointer select-none text-base font-bold">
-                내용 {sortKey === 'content' && (sortOrder === 'asc' ? '▲' : '▼')}
-              </TableHead>
-              <TableHead onClick={() => onSort('createdAt')} className="cursor-pointer select-none text-base font-bold">
-                작성일 {sortKey === 'createdAt' && (sortOrder === 'asc' ? '▲' : '▼')}
-              </TableHead>
-              <TableHead onClick={() => onSort('updatedAt')} className="cursor-pointer select-none text-base font-bold">
-                수정일 {sortKey === 'updatedAt' && (sortOrder === 'asc' ? '▲' : '▼')}
-              </TableHead>
+              {SORTABLE_COLUMNS.map(col => (
+                <TableHead 
+                  key={col.key} 
+                  onClick={() => col.isSortable && onSort(col.key)} 
+                  className={cn("cursor-pointer select-none text-base font-bold", 
+                    col.isMobileHidden && "hidden md:table-cell",
+                    col.isSortable && "cursor-pointer")}
+                  style={{ width: col.width }}
+                  >
+                  {col.label} {sortKey === col.key && (sortOrder === 'asc' ? '▲' : '▼')}
+                </TableHead>
+              ))}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -86,29 +84,42 @@ const MemoTable: React.FC<MemoTableProps> = ({
                 >
                   <TableCell>
                     <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${colorClass}`}>
-                      {icon} {type.toUpperCase()}
+                      <span className="md:inline hidden">{icon} {type.toUpperCase()}</span>
+                      <span className="inline md:hidden">{icon}</span>
                     </span>
                   </TableCell>
-                  <TableCell className="font-semibold">{highlightText(memo.title, search)}</TableCell>
+                  <TableCell className="font-semibold">
+                    {highlightText(memo.title.length > 20 
+                      ? `${memo.title.substring(0, 20)}...` 
+                      : memo.title, 
+                      search
+                    )}
+                  </TableCell>
                   <TableCell className="whitespace-pre-line max-w-[400px] truncate">
-                    <span className="sm:inline hidden">
+                    <span className="lg:inline hidden">
                       {(() => {
                         const text = typeof memo.content === 'string' ? memo.content : '';
                         const short = text.length > 80 ? text.slice(0, 80) + '...' : text;
                         return highlightText(short, search);
                       })()}
                     </span>
-                    <span className="inline sm:hidden">
+                    <span className="md:inline lg:hidden hidden">
+                      {(() => {
+                        const text = typeof memo.content === 'string' ? memo.content : '';
+                        const short = text.length > 40 ? text.slice(0, 40) + '...' : text;
+                        return highlightText(short, search);
+                      })()}
+                    </span>
+                    <span className="inline md:hidden">
                       {(() => {
                         const text = typeof memo.content === 'string' ? memo.content : '';
                         const short = text.length > 12 ? text.slice(0, 12) + '...' : text;
-                        // 하이라이트 적용
                         return highlightText(short, search);
                       })()}
                     </span>
                   </TableCell>
                   <TableCell className="text-xs text-gray-500">{memo.createdAt.slice(0, 10)}</TableCell>
-                  <TableCell className="text-xs text-gray-500">{memo.updatedAt.slice(0, 10)}</TableCell>
+                  <TableCell className="text-xs text-gray-500 hidden md:table-cell">{memo.updatedAt.slice(0, 10)}</TableCell>
                 </TableRow>
               );
             })}
