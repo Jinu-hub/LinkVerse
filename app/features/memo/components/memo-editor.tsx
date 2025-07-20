@@ -35,7 +35,7 @@ export function MemoEditor({ memoId, content, readOnly = false
       className="w-full min-h-[240px] rounded border p-2 text-base"
       value={value}
       onChange={handleChange}
-      onBlur={handleBlur}
+      //onBlur={handleBlur}
       placeholder="메모를 입력하세요..."
       disabled={saving}
     />

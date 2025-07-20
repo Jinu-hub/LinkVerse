@@ -1,5 +1,5 @@
 import { bookmarkSchema } from "~/features/bookmark/lib/constants";
-import type { RecentBookmark } from "../components/RecentBookmarks";
+import type { HomeBookmark } from "./home.types";
 
 export const getTopBookmarks = async () => {
   const response = await fetch("/api/bookmarks/top");
@@ -21,7 +21,7 @@ export const getRecentBookmarks = async () => {
 
 export const addBookmark = async (
   url: string,
-  setRecentBookmarks: React.Dispatch<React.SetStateAction<RecentBookmark[]>>
+  setRecentBookmarks: React.Dispatch<React.SetStateAction<HomeBookmark[]>>
 ) => {
   const { data, success, error } = bookmarkSchema.safeParse({ url });
   if (!success) {
@@ -38,7 +38,7 @@ export const addBookmark = async (
     }
     const { bookmark } = await response.json();
 
-    const recentBookmark: RecentBookmark = {
+    const recentBookmark: HomeBookmark = {
       id: bookmark.bookmark_id,
       title: bookmark.title,
       description: bookmark.description,

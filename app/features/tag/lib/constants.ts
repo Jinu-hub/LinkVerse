@@ -1,3 +1,5 @@
+import z from "zod";
+
 // 랜덤 색상 팔레트 (태그별로 색상 다양화)
 const TAG_COLORS = [
     "from-pink-400 to-pink-600",
@@ -47,3 +49,22 @@ export const CONTENT_TYPE_FIELD_MAP: Record<string, { label: string; key: string
     { label: "날짜", key: "date" },
   ],
 };
+
+// 태그 검증 스키마 생성 함수
+export const createTagValidation = () => 
+  z.string()
+    .min(1, "태그는 최소 1자 이상이어야 합니다")
+    .max(20, "태그는 최대 20자까지 가능합니다")
+    .regex(/^[a-zA-Z0-9가-힣]+$/, "태그는 영문, 숫자, 한글만 사용 가능합니다")
+    .refine(
+      (tag) => !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]/.test(tag),
+      "특수문자와 공백은 사용할 수 없습니다"
+    );
+
+export const tagSchema = z.object({
+  tags: z.array(createTagValidation()).optional().default([]),
+});
+
+export const tagSchema2 = z.object({
+  name: createTagValidation().optional().default(""),
+});

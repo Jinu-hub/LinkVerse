@@ -60,7 +60,10 @@ export const HoverEffect = ({
           </AnimatePresence>
           <Card isDark={isDark} className="h-full">
             <div className="flex flex-col h-full">
-            <CardTitle>{item.title}</CardTitle>
+            <CardTitle>{item.title.length > 20 
+              ? `${item.title.substring(0, 20)}...` 
+              : item.title}
+              </CardTitle>
             {displayType === "top" && (
               <CardDescription>
                 {item.description.length > 30 ? item.description.slice(0, 30) + "..." : item.description}

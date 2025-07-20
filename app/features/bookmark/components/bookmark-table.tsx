@@ -7,6 +7,7 @@ import { ALL_CATEGORY_ID, SORTABLE_COLUMNS } from "../lib/constants";
 import { BookmarkTableRow } from "./bookmark-table-row";
 import { deleteBookmark, editBookmark } from "../lib/bmActions";
 import ConfirmDeleteBookmark from "./confirm-delete-bookmark";
+import { cn } from "~/core/lib/utils";
 
 export function BookmarkTable({
   pagedBookmarks,
@@ -56,7 +57,9 @@ export function BookmarkTable({
             <TableRow className="bg-gray-200 dark:bg-zinc-800">
               {SORTABLE_COLUMNS.map(col => (
                 <TableHead key={col.key} onClick={() => sort.onSort(col.key)} 
-                  className="cursor-pointer select-none text-base font-bold"
+                  className={cn("cursor-pointer select-none text-base font-bold", 
+                    col.isMobileHidden && "hidden md:table-cell",
+                    col.isSortable && "cursor-pointer")}
                   style={{ width: col.width }}
                   >
                   {col.label} {sort.sortKey === col.key && (sort.sortOrder === 'asc' ? '▲' : '▼')}
