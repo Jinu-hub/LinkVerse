@@ -5,7 +5,12 @@ import { SheetTrigger } from "~/core/components/ui/sheet";
 import { SheetContent } from "~/core/components/ui/sheet";
 import { NavigationMobile } from "~/core/components/navigation-mobile";
 
-const UntagNav = () => {
+type UntagNavProps = {
+  // 향후 확장을 위한 props (예: 필터링 옵션 등)
+  filterType?: string;
+};
+
+const UntagNav = ({ filterType }: UntagNavProps) => {
   const { isLoggedIn, username, email, avatar, name } = useOutletContext<{
     isLoggedIn: boolean;
     username: string;
@@ -27,8 +32,14 @@ const UntagNav = () => {
           </Link>
           <ChevronsRightIcon className="text-muted-foreground size-4" />
           <Link to="/untagged" className="font-semibold" viewTransition>
-            Untagged Contents
+            Untagged
           </Link>
+          {filterType && (
+            <>
+              <ChevronsRightIcon className="text-muted-foreground size-4" />
+              <span className="font-semibold text-primary">{filterType}</span>
+            </>
+          )}
         </h1>
         {!isLoggedIn ? (
           <NavigationDesktop loading={false} displayType="untagged"/>
@@ -56,10 +67,12 @@ const UntagNav = () => {
   );
 }
 
-export default function TagLayout() {
+export default function UntagLayout() {
+  const location = useLocation();
+  const filterType = location.state?.filterType;
   return (
     <>
-      <UntagNav />
+      <UntagNav filterType={filterType} />
       <div className="mx-auto w-full max-w-screen-2xl px-5 py-16 md:px-10">
         <Outlet />
       </div>

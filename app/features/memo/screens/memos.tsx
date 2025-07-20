@@ -101,8 +101,11 @@ export default function MemosScreen({ loaderData }: Route.ComponentProps) {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">메모 리스트</h1>
+    <div>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-foreground mb-2">Memos</h1>
+        <p className="text-muted-foreground">등록된 메모 목록</p>
+      </div>
       {/* 콘텐츠 타입 필터 버튼 */}
       <div className="flex gap-2 mb-4 flex-wrap">
         {CONTENT_TYPES.map(type => (

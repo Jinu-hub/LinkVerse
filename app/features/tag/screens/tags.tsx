@@ -54,8 +54,11 @@ export default function TagsScreen({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-foreground mb-2">Tags</h1>
+        <p className="text-muted-foreground">등록된 태그 목록</p>
+      </div>
       <div className="flex flex-wrap items-center mb-4 gap-2">
-        <h2 className="text-xl font-bold">태그 목록</h2>
         <input
           className="border rounded px-2 py-1 text-sm"
           placeholder="검색..."
