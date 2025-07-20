@@ -3,7 +3,7 @@ import { getBookmark } from "../db/queries";
 import { bookmarkSchema } from "../lib/constants";
 import { fetchTitleFromUrl } from "../lib/bmUtils";
 import { createBookmark } from "../db/mutations";
-import { createBookmarkResult, createNewCategory, handleBookmarkMemo, handleBookmarkTags } from "../lib/common";
+import { createBookmarkResult, createNewCategory, handleBookmarkMemo, handleContentTags } from "../lib/common";
 
 export const loader = async ({ request }: { request: Request }) => {
   const [client] = makeServerClient(request);
@@ -64,8 +64,9 @@ export async function action({ request }: { request: Request }) {
     // 태그 생성
     let resTags: string[] = [];
     if (tags) {
-      const tagsData = await handleBookmarkTags(client, {
+      const tagsData = await handleContentTags(client, {
         userId: user.id,
+        content_type_id: 1,
         target_id: bookmark.bookmark_id,
         tags: tags,
         mode: "add",
