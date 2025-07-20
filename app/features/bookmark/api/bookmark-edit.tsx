@@ -8,7 +8,7 @@ import {
     createBookmarkResult, 
     createNewCategory, 
     handleBookmarkMemo, 
-    handleBookmarkTags,
+    handleContentTags,
 } from "../lib/common";
 import { deleteMemo } from "~/features/memo/db/mutations";
 
@@ -76,8 +76,9 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
             // 태그 수정
             let resTags: string[] = [];
             if (tags) {
-                const tagsData = await handleBookmarkTags(client, {
+                const tagsData = await handleContentTags(client, {
                     userId: user.id,
+                    content_type_id: 1,
                     target_id: bookmarkId,
                     tags: tags,
                     mode: "update",
@@ -119,8 +120,9 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
             const body = await request.json();
             const { tags } = body;
             if (tags) {
-                await handleBookmarkTags(client, {
+                await handleContentTags(client, {
                     userId: user.id,
+                    content_type_id: 1,
                     target_id: bookmarkId,
                     tags: tags,
                     mode: "delete",

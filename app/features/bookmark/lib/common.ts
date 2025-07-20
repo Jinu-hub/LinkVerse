@@ -33,10 +33,10 @@ export async function createNewCategory(
 }
 
 // 태그 처리 함수
-export async function handleBookmarkTags(
+export async function handleContentTags(
     client: SupabaseClient<Database>,
-    { userId, target_id, tags, mode }: 
-    { userId: string, target_id: number, tags: string[]
+    { userId, content_type_id, target_id, tags, mode }: 
+    { userId: string, content_type_id: number, target_id: number, tags: string[]
         , mode: "add" | "update" | "delete" }) {
         
     // 입력된 태그 목록 
@@ -63,7 +63,7 @@ export async function handleBookmarkTags(
     // 콘텐츠와 태그 연결:삭제
     if (mode === "update" || mode === "delete") {
         await deleteTaggableByTarget(client, {
-            content_type_id: 1,
+            content_type_id,
             target_id,
         });
     }
@@ -73,7 +73,7 @@ export async function handleBookmarkTags(
         for (const tag of existingTags) {
             await createTaggable(client, {
                 tag_id: tag.tag_id,
-                content_type_id: 1,
+                content_type_id,
                 target_id,
             });
         }
