@@ -155,8 +155,12 @@ export function NavigationDesktop({ loading, displayType = "default", name, emai
       */}
       <Separator orientation="vertical" />
       {/* Settings, theme switcher, and language switcher */}
-      <Actions />
-      <Separator orientation="vertical" />
+      {!name && (
+        <>
+          <Actions />
+          <Separator orientation="vertical" />
+        </>
+      )}
       {/* Conditional rendering based on authentication state */}
       {loading ? (
         // Loading state with skeleton placeholder
