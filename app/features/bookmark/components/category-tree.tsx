@@ -207,11 +207,13 @@ function CategoryNode({
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <div className="flex items-center group rounded-md hover:bg-accent">
         {/* 드래그 핸들 (전체보기 제외) */}
+        {/*
         {category.id > ALL_CATEGORY_ID ? (
           <TbGripVertical className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 cursor-grab" />
         ) : (
           <div className="w-5" />
         )}
+        */}
         <CategoryButton
           selected={selectedId === category.id}
           onClick={() => onSelect(category.id)}
@@ -244,7 +246,7 @@ function CategoryNode({
             />
           ))}
           {/* 하위 카테고리 추가 입력창 */}
-          { state.addingToId !== ALL_CATEGORY_ID && state.addingToId === category.id && (
+          { state.addingToId !== ALL_CATEGORY_ID  && state.addingToId === category.id && category.level < 3 && (
             <div className="pl-4">
               <CategoryInput
                 autoFocus
