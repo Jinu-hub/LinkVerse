@@ -54,8 +54,8 @@ export function CategoryButton({
         className={cn("w-full justify-start h-8", selected && "bg-accent text-accent-foreground")}
         onClick={onClick}
       >
-        {hasChildren && <FiChevronRight className={cn("transition-transform mr-2", isOpen && "rotate-90")} />}
         <span className="truncate flex-1 text-left">{children}</span>
+        {hasChildren && <FiChevronRight className={cn("transition-transform ml-2", isOpen && "rotate-90")} />}
       </Button>
     </CollapsibleTrigger>
   );

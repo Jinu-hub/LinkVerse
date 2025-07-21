@@ -20,9 +20,11 @@ export function CategoryActionsMenu({ category }: { category: Category }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => dispatch({ type: "ADD", parentId: category.id })}>
+        {category.level < 3 && (
+          <DropdownMenuItem onClick={() => dispatch({ type: "ADD", parentId: category.id })}>
           하위 카테고리 추가
-        </DropdownMenuItem>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem onClick={() => dispatch({ type: "RENAME", id: category.id })}>
           이름 변경
         </DropdownMenuItem>
