@@ -1,3 +1,4 @@
+-- 주어진 부모 카테고리 ID로부터 모든 하위(자식, 손자 등) 카테고리 ID를 재귀적으로 찾아 반환하는 함수
 CREATE OR REPLACE FUNCTION get_all_child_categories(p_parent_id BIGINT)
 RETURNS TABLE(category_id BIGINT) AS $$
 WITH RECURSIVE subcategories(category_id) AS (
