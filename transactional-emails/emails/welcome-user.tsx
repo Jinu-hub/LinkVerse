@@ -9,7 +9,7 @@ import {
     Button,
   } from "@react-email/components";
   
-  export default function WelcomeUser({ username = "Jinu" }: { username: string }) {
+  export default function WelcomeUser({ username = "user" }: { username: string }) {
     return (
       <Html style={{ colorScheme: "light" }}>
         <Head />

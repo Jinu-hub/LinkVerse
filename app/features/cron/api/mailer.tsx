@@ -18,7 +18,7 @@ import type { Route } from "./+types/mailer";
 
 import * as Sentry from "@sentry/node";
 import { data } from "react-router";
-import WelcomeEmail from "transactional-emails/emails/welcome";
+import WelcomeEmail from "transactional-emails/emails/welcome-user";
 
 import resendClient from "~/core/lib/resend-client.server";
 import adminClient from "~/core/lib/supa-admin-client.server";
@@ -95,7 +95,7 @@ export async function action({ request }: Route.LoaderArgs) {
         from: "LinkVerse <hello@mail.linkverse.app>",
         to: [to],
         subject: "Welcome to LinkVerse!",
-        react: WelcomeEmail({ profile: JSON.stringify(emailData, null, 2) }),
+        react: WelcomeEmail({ username: JSON.stringify(emailData, null, 2) }),
       });
       
       // Log any errors that occur during email sending
