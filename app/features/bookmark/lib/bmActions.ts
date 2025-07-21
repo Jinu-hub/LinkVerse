@@ -1,7 +1,6 @@
 import type { Bookmark, Category } from "./bookmark.types";
 import { toCategory, toUIViewTabs, findRootCategoryId } from "./bmUtils";
 import { bookmarkSchema } from "./constants";
-import { data } from "react-router";
 
 export async function addBookmark({
     title,

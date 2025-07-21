@@ -11,6 +11,7 @@ import {
     handleContentTags,
 } from "../lib/common";
 import { deleteMemo } from "~/features/memo/db/mutations";
+import { getUserActivity } from "~/features/user_activity/db/queries";
 
 export const loader = async ({ request, params }: Route.LoaderArgs) => {
     const [client] = makeServerClient(request);
@@ -98,7 +99,18 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
                 resMemo = memoData?.content ?? "";
             }
 
-            const bookmarkResult = createBookmarkResult(updatedBookmark, resTags, resMemo);
+            // 북마크 결과 생성
+            let bookmarkResult = createBookmarkResult(updatedBookmark, resTags, resMemo);
+            // 클릭 수 조회
+            const userActivity = await getUserActivity(client, {
+                user_id: user.id,
+                content_type_id: 1,
+                target_id: bookmarkId,
+                activity_type: "click",
+            });
+            let clickCount = userActivity?.value ?? 0;
+            bookmarkResult.click_count = clickCount;
+
             return new Response(JSON.stringify({ bookmark: bookmarkResult }), {
                 headers: { "Content-Type": "application/json" },
             });
