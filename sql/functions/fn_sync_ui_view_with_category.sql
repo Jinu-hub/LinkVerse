@@ -1,3 +1,6 @@
+-- 카테고리 테이블의 INSERT, UPDATE, DELETE 시
+-- content_type_id=1이고 parent_category_id가 NULL인 경우 
+--ui_view 테이블을 동기화(추가, 수정, 삭제)하는 트리거 함수
 CREATE OR REPLACE FUNCTION sync_ui_view_with_category()
 RETURNS TRIGGER 
 LANGUAGE plpgsql

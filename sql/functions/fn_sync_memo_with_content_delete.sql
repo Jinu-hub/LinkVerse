@@ -1,3 +1,5 @@
+-- 주어진 content_type_id와 user_id에 대해 
+-- content_view에 존재하지 않는 메모 데이터를 삭제하고, 삭제된 개수를 반환하는 함수
 CREATE OR REPLACE FUNCTION sync_memo_with_content_delete(
   p_content_type_id INT,
   p_user_id UUID
