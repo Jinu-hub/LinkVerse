@@ -38,11 +38,13 @@ export async function loader() {
   const DOMAIN = process.env.SITE_URL;
 
   // Scan the blog directory for MDX files and convert to URLs
+  /*
   const blogUrls = (
     await readdir(path.join(process.cwd(), "app", "features", "blog", "docs"))
   )
     .filter((file) => file.endsWith(".mdx")) // Only include MDX files
     .map((file) => `/blog/${file.replace(".mdx", "")}`);
+  */
 
   // Scan the legal directory for MDX files and convert to URLs
   const legalUrls = (
@@ -54,8 +56,14 @@ export async function loader() {
   // Define static routes that should be included in the sitemap
   const customUrls = ["/", "/login", "/join"];
 
+  const userUrls = ["/space", "/account/edit", "/settings"];
+  const bookmarkUrls = ["/bookmarks"];
+  const tagUrls = ["/tags", "/untagged"];
+  const memoUrls = ["/memos"];
+
   // Combine all URLs and format them according to sitemap protocol
-  const sitemapUrls = [...blogUrls, ...legalUrls, ...customUrls].map((url) => {
+  const sitemapUrls = [...legalUrls, ...customUrls, ...userUrls
+    , ...bookmarkUrls, ...tagUrls, ...memoUrls].map((url) => {
     return `<url>
       <loc>${DOMAIN}${url}</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
