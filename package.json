@@ -11,7 +11,7 @@
     "typecheck": "react-router typegen && tsc",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "postdb:migrate": "npm run db:typegen",
+    "postdb:migrate": "if [ \"$SKIP_TYPEGEN\" != \"1\" ]; then npm run db:typegen; fi",
     "db:typegen": "supabase gen types typescript --project-id fimykmrpgutyinofrxop > database.types.ts",
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",
