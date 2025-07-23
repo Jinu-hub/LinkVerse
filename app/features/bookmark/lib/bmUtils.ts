@@ -221,6 +221,7 @@ export function toBookmarks(bookmarks: any): Bookmark {
     created_at: bookmarks.created_at,
     updated_at: bookmarks.updated_at,
     memo: bookmarks.memo,
+    description: bookmarks.description,
   };
 }
 
