@@ -5,7 +5,7 @@ import { vercelPreset } from "@vercel/react-router/vite";
 
 declare module "react-router" {
   interface Future {
-    unstable_middleware: true;
+    unstable_middleware: false;
   }
 }
 
