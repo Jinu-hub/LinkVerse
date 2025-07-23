@@ -116,6 +116,7 @@ export const mockCategories: Category[] = [
       url: 'https://react.dev',
       tags: ['React', 'Docs'],
       click_count: 5,
+      description: 'React 공식문서',
     },
     {
       id: 2,
@@ -124,6 +125,7 @@ export const mockCategories: Category[] = [
       url: 'https://tailwindcss.com',
       tags: ['CSS', 'Framework'],
       click_count: 3,
+      description: 'TailwindCSS 공식문서',
     },
     {
       id: 3,
@@ -132,6 +134,7 @@ export const mockCategories: Category[] = [
       url: 'https://chat.openai.com',
       tags: ['AI'],
       click_count: 10,
+      description: 'ChatGPT 공식문서',
     },
     {
       id: 4,
@@ -140,6 +143,7 @@ export const mockCategories: Category[] = [
       url: 'https://developer.mozilla.org',
       tags: ['Web', 'Docs'],
       click_count: 8,
+      description: 'MDN Web Docs 공식문서',
     },
     {
       id: 5,
@@ -148,6 +152,7 @@ export const mockCategories: Category[] = [
       url: 'https://www.typescriptlang.org/docs/',
       tags: ['TypeScript', 'Docs'],
       click_count: 6,
+      description: 'TypeScript Handbook 공식문서',
     },
     {
       id: 6,
@@ -155,7 +160,8 @@ export const mockCategories: Category[] = [
       title: 'Node.js',
       url: 'https://nodejs.org',
       tags: ['Node.js', 'Backend'],
-      click_count: 4,
+      click_count: 4, 
+      description: 'Node.js 공식문서',
     },
     {
       id: 7,
@@ -164,6 +170,7 @@ export const mockCategories: Category[] = [
       url: 'https://vercel.com',
       tags: ['Hosting', 'Cloud'],
       click_count: 2,
+      description: 'Vercel 공식문서',
     },
     {
       id: 8,
@@ -172,6 +179,7 @@ export const mockCategories: Category[] = [
       url: 'https://github.com',
       tags: ['Git', 'Repository'],
       click_count: 9,
+      description: 'GitHub 공식문서',
     },
     {
       id: 9,
@@ -180,6 +188,7 @@ export const mockCategories: Category[] = [
       url: 'https://notion.so',
       tags: ['Productivity', 'Tool'],
       click_count: 7,
+      description: 'Notion 공식문서',
     },
     {
       id: 10,
@@ -188,6 +197,7 @@ export const mockCategories: Category[] = [
       url: 'https://figma.com',
       tags: ['Design', 'Tool'],
       click_count: 1,
+      description: 'Figma 공식문서',
     },
     {
       id: 11,
@@ -196,6 +206,7 @@ export const mockCategories: Category[] = [
       url: 'https://velog.io',
       tags: ['Blog', 'Dev'],
       click_count: 4,
+      description: 'Velog 공식문서',
     },
     {
       id: 12,
@@ -204,6 +215,7 @@ export const mockCategories: Category[] = [
       url: 'https://reddit.com/r/programming',
       tags: ['Community', 'Forum'],
       click_count: 8,
+      description: 'Reddit Programming 공식문서',
     },
     {
       id: 13,
@@ -212,6 +224,7 @@ export const mockCategories: Category[] = [
       url: 'https://news.ycombinator.com',
       tags: ['News', 'Startup'],
       click_count: 11,
+      description: 'Hacker News 공식문서',
     },
     {
       id: 14,
@@ -220,6 +233,7 @@ export const mockCategories: Category[] = [
       url: 'https://codepen.io',
       tags: ['Frontend', 'Sandbox'],
       click_count: 2,
+      description: 'CodePen 공식문서',
     },
     {
       id: 15,
@@ -228,6 +242,7 @@ export const mockCategories: Category[] = [
       url: 'https://dev.to',
       tags: ['Blog', 'Community'],
       click_count: 7,
+      description: 'Dev.to 공식문서',
     },
     {
       id: 16,
@@ -236,6 +251,7 @@ export const mockCategories: Category[] = [
       url: 'https://smashingmagazine.com',
       tags: ['Web', 'Design'],
       click_count: 3,
+      description: 'Smashing Magazine 공식문서',
     },
     {
       id: 17,
@@ -244,6 +260,7 @@ export const mockCategories: Category[] = [
       url: 'https://caniuse.com',
       tags: ['Web', 'Compatibility'],
       click_count: 6,
+      description: 'Can I use 공식문서',
     },
     {
       id: 18,
@@ -252,6 +269,7 @@ export const mockCategories: Category[] = [
       url: 'https://w3schools.com',
       tags: ['Web', 'Learning'],
       click_count: 5,
+      description: 'W3Schools 공식문서',
     },
     {
       id: 19,
@@ -260,6 +278,7 @@ export const mockCategories: Category[] = [
       url: 'https://mdxjs.com',
       tags: ['MDX', 'Docs'],
       click_count: 2,
+      description: 'MDX Docs 공식문서',
     },
     {
       id: 20,
@@ -268,6 +287,7 @@ export const mockCategories: Category[] = [
       url: 'https://npmjs.com',
       tags: ['Package', 'Registry'],
       click_count: 9,
+      description: 'NPM 공식문서',
     },
     {
       id: 21,
@@ -276,6 +296,7 @@ export const mockCategories: Category[] = [
       url: 'https://yarnpkg.com',
       tags: ['Package', 'Manager'],
       click_count: 4,
+      description: 'Yarn 공식문서',
     },
     {
       id: 22,
@@ -284,6 +305,7 @@ export const mockCategories: Category[] = [
       url: 'https://babeljs.io',
       tags: ['JS', 'Compiler'],
       click_count: 3,
+      description: 'Babel 공식문서',
     },
     {
       id: 23,
@@ -292,6 +314,7 @@ export const mockCategories: Category[] = [
       url: 'https://eslint.org',
       tags: ['Lint', 'JS'],
       click_count: 6,
+      description: 'ESLint 공식문서',
     },
     {
       id: 24,
@@ -300,6 +323,7 @@ export const mockCategories: Category[] = [
       url: 'https://prettier.io',
       tags: ['Format', 'JS'],
       click_count: 5,
+      description: 'Prettier 공식문서',
     },
     {
       id: 25,
@@ -308,6 +332,7 @@ export const mockCategories: Category[] = [
       url: 'https://uptimerobot.com',
       tags: ['Monitoring', 'Tool'],
       click_count: 1,
+      description: 'Uptime Robot 공식문서',
     },
     {
       id: 26,
@@ -316,6 +341,7 @@ export const mockCategories: Category[] = [
       url: 'https://leetcode.com',
       tags: ['Algorithm', 'Coding'],
       click_count: 12,
+      description: 'LeetCode 공식문서',
     },
     {
       id: 27,
@@ -324,6 +350,7 @@ export const mockCategories: Category[] = [
       url: 'https://freecodecamp.org',
       tags: ['Learning', 'Web'],
       click_count: 5,
+      description: 'freeCodeCamp 공식문서',
     },
     {
       id: 28,
@@ -332,6 +359,7 @@ export const mockCategories: Category[] = [
       url: 'https://css-tricks.com',
       tags: ['CSS', 'Tips'],
       click_count: 6,
+      description: 'CSS-Tricks 공식문서',
     },
     {
       id: 29,
@@ -340,6 +368,7 @@ export const mockCategories: Category[] = [
       url: 'https://fonts.google.com',
       tags: ['Font', 'Design'],
       click_count: 3,
+      description: 'Google Fonts 공식문서',
     },
     {
       id: 30,
@@ -348,6 +377,7 @@ export const mockCategories: Category[] = [
       url: 'https://stackoverflow.com',
       tags: ['Q&A', 'Community'],
       click_count: 15,
+      description: 'Stack Overflow 공식문서',
     },
     {
       id: 31,
@@ -356,6 +386,7 @@ export const mockCategories: Category[] = [
       url: 'https://nomadcoders.notion.site/1ec0ac34463480b38589eb49339f11cd',
       tags: ['Notion', 'nomadcoders', 'makerclub'],
       click_count: 15,
+      description: '메이커클럽 자소서 공식문서',
     },
     {
       id: 32,
@@ -364,6 +395,7 @@ export const mockCategories: Category[] = [
       url: 'https://nomadcoders.co/c/maker-club-2/lobby',
       tags: ['makerclub', 'nomadcoders'],
       click_count: 15,
+      description: '메이커클럽 lobby 공식문서',
     },
     {
       id: 33,
@@ -372,6 +404,7 @@ export const mockCategories: Category[] = [
       url: 'https://nomadcoders.co/maker-masterclass/lobby',
       tags: ['lectures', 'nomadcoders'],
       click_count: 30,
+      description: 'class 마스터클래스 공식문서',
     },
     {
       id: 34,
@@ -380,6 +413,7 @@ export const mockCategories: Category[] = [
       url: 'https://github.com/nomadcoders/wemake/commits/master/',
       tags: ['wemake', 'nomadcoders'],
       click_count: 30,
+      description: 'git wemake 공식문서',
     },
   ]
   
