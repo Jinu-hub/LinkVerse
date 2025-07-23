@@ -263,7 +263,7 @@ export default function App({loaderData}: Route.ComponentProps) {
         navigate(`/error?${searchParams.toString()}`);
       } else if (code) {
         // Redirect to dashboard if authentication succeeded
-        navigate(`/dashboard/account`);
+        navigate(`/`);
       }
     }
   }, [searchParams]);

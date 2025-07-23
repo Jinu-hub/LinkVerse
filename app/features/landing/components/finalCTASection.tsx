@@ -12,16 +12,16 @@ export default function FinalCTASection() {
         <div className="flex justify-center gap-4 flex-wrap">
           <Link to="/join" viewTransition>
             <Button size="lg" 
-              className="text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-zinc-900 cursor-pointer"
+              className="w-40 text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-zinc-900 cursor-pointer"
             >
               시작하기
             </Button>
           </Link>
           <Link to="/login" viewTransition>
             <Button size="lg" variant="outline" 
-              className="text-lg px-8 py-6 border-zinc-300 text-gray-900 dark:border-zinc-700 dark:text-zinc-100 cursor-pointer"
+              className="w-40 text-lg px-8 py-6 border-zinc-300 text-gray-900 dark:border-zinc-700 dark:text-zinc-100 cursor-pointer"
             >
-              계속하기
+              로그인
             </Button>
           </Link>
         </div>

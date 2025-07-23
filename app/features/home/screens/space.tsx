@@ -31,6 +31,7 @@ import BookmarkAddDialog from "../components/bookmark-add-dialog";
 import { toHomeBookmarks } from "../lib/homeUtils";
 import type { HomeBookmark } from "../lib/home.types";
 import Footer from "~/core/components/footer";
+import { redirect } from "react-router";
 
 /**
  * Meta function for setting page metadata
@@ -57,7 +58,9 @@ export async function loader({ request }: Route.LoaderArgs) {
   const t = await i18next.getFixedT(request);
   const [client] = makeServerClient(request);
   const { data: { user } } = await client.auth.getUser();
-
+  if (!user) {
+    throw redirect("/login");
+  }
   const topBookmarksRaw = await getTopBookmarks(client, { userId: user!.id, limit: 10 });
   const recentBookmarksRaw = await getRecentBookmarks(client, { userId: user!.id, limit: 5 });
 
