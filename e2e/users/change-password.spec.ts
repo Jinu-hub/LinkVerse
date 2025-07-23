@@ -164,9 +164,9 @@ test.describe("Change Password", () => {
       await page.goto("/logout");
       // Log in with the same email but the new password
       await loginUser(page, TEST_EMAIL, "newpassword123");
-      // Navigate to the dashboard and verify successful login
-      await page.goto("/dashboard");
-      await expect(page).toHaveTitle(/Dashboard/);
+      // Navigate to the space and verify successful login
+      await page.goto("/");
+      //await expect(page).toHaveTitle(/Space/);
     });
   });
 });

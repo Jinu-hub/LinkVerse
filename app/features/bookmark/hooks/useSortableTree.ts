@@ -50,7 +50,7 @@ import {
         setExpandedIds((expandedIds) => {
           if (expandedIds.includes(id)) {
             const childrenIds = getChildrenIds(items, id)
-            console.log(childrenIds);
+            // console.log(childrenIds);
             return expandedIds.filter(
               (expandedId) =>
                 expandedId !== id && !childrenIds.includes(expandedId),

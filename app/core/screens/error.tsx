@@ -22,7 +22,7 @@ export default function ErrorPage() {
       <p className="text-muted-foreground">Error code: {errorCode}</p>
       <p className="text-muted-foreground">{errorDescription}</p>
       <Button variant={"link"} asChild>
-        <Link to="/space">Go to home &rarr;</Link>
+        <Link to="/">Go to home &rarr;</Link>
       </Button>
     </div>
   );
