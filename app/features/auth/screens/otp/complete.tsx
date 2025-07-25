@@ -110,6 +110,7 @@ export async function action({ request }: Route.ActionArgs) {
 
   // Return validation error if data is invalid
   if (!success) {
+    console.error("[auth] invalid data:", validData);
     return data(
       { error: "Could not verify code. Please try again." },
       { status: 400 },
@@ -128,6 +129,7 @@ export async function action({ request }: Route.ActionArgs) {
 
   // Return error if verification fails
   if (error) {
+    console.error("[auth] error:", error);
     return data({ error: error.message }, { status: 400 });
   }
 
