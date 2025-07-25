@@ -56,10 +56,12 @@ interface EmailMessage {
  * @returns A response with appropriate status code (200 for success, 401 for unauthorized)
  */
 export async function action({ request }: Route.LoaderArgs) {
-  //console.log("[cron] request received:", {
-  //  method: request.method,
-  //  auth: request.headers.get("Authorization"),
-  //});
+  /*
+  console.log("[cron] request received:", {
+    method: request.method,
+    auth: request.headers.get("Authorization"),
+  });
+  */
   // Security check: Verify this is a POST request with the correct secret
   if (
     request.method !== "POST" ||
@@ -70,13 +72,15 @@ export async function action({ request }: Route.LoaderArgs) {
   
   // Pop a message from the Postgres message queue (PGMQ)
   // Note: Using admin client is necessary to access the queue
+  /*
   const { data: message, error } = await adminClient
-    // @ts-expect-error - PGMQ types are not fully defined in the Supabase client
-    .schema("pgmq")
+    .schema("pgmq_public")
     .rpc("pop", {
       queue_name: "mailer", // Queue name in Postgres
     });
-  
+  */
+  const { data: message, error } = await adminClient.rpc("pop_mailer");
+
   // Log any errors that occur when accessing the queue
   if (error) {
     console.error("[cron] error:", error);
@@ -84,15 +88,15 @@ export async function action({ request }: Route.LoaderArgs) {
       error instanceof Error ? error : new Error(String(error)),
     );
   }
-
-  //console.log("[cron] message:", message);
   
   // Process the message if one was retrieved from the queue
-  if (message) {
-    // Extract email details from the message
-    const {
-      message: { to, data: emailData, template },
-    } = message as { message: EmailMessage };
+  if (
+    message &&
+    typeof message === "object" &&
+    "message" in message &&
+    typeof (message as any).message === "object"
+  ) {
+    const { to, data: emailData, template } = (message as any).message;
     
     // Process different email templates
     if (template === "welcome") {
