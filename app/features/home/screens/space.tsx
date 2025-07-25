@@ -62,7 +62,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     throw redirect("/login");
   }
   const topBookmarksRaw = await getTopBookmarks(client, { userId: user!.id, limit: 10 });
-  const recentBookmarksRaw = await getRecentBookmarks(client, { userId: user!.id, limit: 5 });
+  const recentBookmarksRaw = await getRecentBookmarks(client, { userId: user!.id, limit: 10 });
 
   const initialTopBookmarks = await Promise.all(topBookmarksRaw.map(toHomeBookmarks));
   const initialRecentBookmarks = await Promise.all(recentBookmarksRaw.map(toHomeBookmarks));
