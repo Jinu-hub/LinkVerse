@@ -79,7 +79,7 @@ export async function action({ request }: Route.LoaderArgs) {
   
   // Log any errors that occur when accessing the queue
   if (error) {
-    //console.error("[cron] error:", error);
+    console.error("[cron] error:", error);
     Sentry.captureException(
       error instanceof Error ? error : new Error(String(error)),
     );
