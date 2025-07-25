@@ -76,17 +76,17 @@ export async function loader({ request }: Route.LoaderArgs) {
   
   // If not a successful callback, check if it's an error callback
   if (!success) {
-    console.log("[auth] searchParams:", searchParams);
+    //console.log("[auth] searchParams:", searchParams);
     const { data: errorData, success: errorSuccess } = errorSchema.safeParse(
       Object.fromEntries(searchParams),
     );
     
     // If neither a successful nor error callback, return generic error
     if (!errorSuccess) {
-      console.error("[auth] errorData:", errorData);
+      //console.error("[auth] errorData:", errorData);
       return data({ error: "Invalid code" }, { status: 400 });
     }
-    console.log("[auth] error_description:", errorData.error_description);
+    //console.log("[auth] error_description:", errorData.error_description);
     // Return the error description from the provider
     return data({ error: errorData.error_description }, { status: 400 });
   }
