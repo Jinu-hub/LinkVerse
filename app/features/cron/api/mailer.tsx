@@ -71,15 +71,7 @@ export async function action({ request }: Route.LoaderArgs) {
   }
   
   // Pop a message from the Postgres message queue (PGMQ)
-  // Note: Using admin client is necessary to access the queue
-  /*
-  const { data: message, error } = await adminClient
-    .schema("pgmq_public")
-    .rpc("pop", {
-      queue_name: "mailer", // Queue name in Postgres
-    });
-    */
-  
+  // Note: Using admin client is necessary to access the queue  
   const { data: message, error } = await adminClient
     .schema("public")
     .rpc("pop_mailer");
