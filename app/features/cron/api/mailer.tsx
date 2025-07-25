@@ -72,11 +72,7 @@ export async function action({ request }: Route.LoaderArgs) {
   
   // Pop a message from the Postgres message queue (PGMQ)
   // Note: Using admin client is necessary to access the queue  
-  const { data: message, error } = await adminClient
-    .schema("public")
-    .rpc("pop_mailer");
- 
-  //const { data: message, error } = await adminClient.rpc("pop_mailer");
+  const { data: message, error } = await adminClient.rpc("pop_mailer");
 
   // Log any errors that occur when accessing the queue
   if (error) {
@@ -85,6 +81,10 @@ export async function action({ request }: Route.LoaderArgs) {
       error instanceof Error ? error : new Error(String(error)),
     );
   }
+
+  console.log("[cron] message (typeof):", typeof message);
+  console.log("[cron] message (raw):", message);
+  console.log("[cron] message (JSON):", JSON.stringify(message, null, 2));
   
   // Process the message if one was retrieved from the queue
   if (
