@@ -56,6 +56,10 @@ interface EmailMessage {
  * @returns A response with appropriate status code (200 for success, 401 for unauthorized)
  */
 export async function action({ request }: Route.LoaderArgs) {
+  console.log("[cron] request received:", {
+    method: request.method,
+    auth: request.headers.get("Authorization"),
+  });
   // Security check: Verify this is a POST request with the correct secret
   if (
     request.method !== "POST" ||
@@ -75,10 +79,13 @@ export async function action({ request }: Route.LoaderArgs) {
   
   // Log any errors that occur when accessing the queue
   if (error) {
+    console.error("[cron] error:", error);
     Sentry.captureException(
       error instanceof Error ? error : new Error(String(error)),
     );
   }
+
+  console.log("[cron] message:", message);
   
   // Process the message if one was retrieved from the queue
   if (message) {
