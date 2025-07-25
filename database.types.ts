@@ -670,6 +670,10 @@ export type Database = {
         Args: { user_id: string; parent_id: number }
         Returns: number
       }
+      pop_mailer: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       sync_memo_with_content_delete: {
         Args: { p_content_type_id: number; p_user_id: string }
         Returns: number
