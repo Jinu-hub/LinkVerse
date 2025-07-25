@@ -1,7 +1,7 @@
 import { cn } from "~/core/lib/utils";
 import { AnimatePresence, motion } from "motion/react";
 
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 
 type DisplayType = "top" | "recent";
 
@@ -23,7 +23,17 @@ export const HoverEffect = ({
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const isDark = theme === "dark";
-
+  const [isSm, setIsSm] = useState(false);
+  useEffect(() => {
+    function handleResize() {
+      setIsSm(window.innerWidth < 640);
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const displayItems = isSm ? items.slice(0, 6) : items;
+  
   return (
     <div
       className={cn(
@@ -31,7 +41,7 @@ export const HoverEffect = ({
         className
       )}
     >
-      {items.map((item, idx) => (
+      {displayItems.map((item, idx) => (
         <a
           href={item?.url}
           key={item?.url}
@@ -60,9 +70,8 @@ export const HoverEffect = ({
           </AnimatePresence>
           <Card isDark={isDark} className="h-full">
             <div className="flex flex-col h-full">
-            <CardTitle>{item.title.length > 20 
-              ? `${item.title.substring(0, 20)}...` 
-              : item.title}
+              <CardTitle>
+                <ResponsiveTitle title={item.title} />
               </CardTitle>
             {displayType === "top" && (
               <CardDescription>
@@ -111,7 +120,7 @@ export const CardTitle = ({
   children: React.ReactNode;
 }) => {
   return (
-    <h4 className={cn("text-zinc-100 font-bold tracking-wide mt-2", className)}>
+    <h4 className={cn("text-base sm:text-lg text-zinc-100 font-bold tracking-wide mt-2", className)}>
       {children}
     </h4>
   );
@@ -126,7 +135,7 @@ export const CardDescription = ({
   return (
     <p
       className={cn(
-        "mt-4 text-zinc-400 tracking-wide leading-relaxed text-sm",
+        "mt-4 text-zinc-400 tracking-wide leading-relaxed text-xs sm:text-sm",
         className
       )}
     >
@@ -144,6 +153,20 @@ function formatDate(dateString?: string) {
   const hh = String(date.getHours()).padStart(2, '0');
   const min = String(date.getMinutes()).padStart(2, '0');
   return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+}
+
+function ResponsiveTitle({ title }: { title: string }) {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 640);
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const maxLen = isMobile ? 18 : 20;
+  return title.length > maxLen ? title.substring(0, maxLen) + "..." : title;
 }
 
 /*

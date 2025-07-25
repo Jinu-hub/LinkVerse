@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { toBookmarks } from "./bmUtils";
 
 /**
@@ -73,6 +74,8 @@ export async function addCategory({
       // 3. 상태 갱신 및 입력창 닫기
       dispatch({ type: "SET_CATEGORIES", categories: newCategories });
       dispatch({ type: "CANCEL" });
+      toast.success("카테고리가 추가되었습니다.");
+      return { ok: true };
     } catch (e) {
       console.log(e);
       setError("알 수 없는 에러가 발생했습니다.");
@@ -137,6 +140,8 @@ export async function addCategory({
       // 3. 상태 갱신 및 입력창 닫기
       dispatch({ type: "SET_CATEGORIES", categories: newCategories });
       dispatch({ type: "CANCEL" });
+      toast.success("카테고리 이름이 수정되었습니다.");
+      return { ok: true };
     } catch (e) {
       console.log(e);
       setError("알 수 없는 에러가 발생했습니다.");
@@ -193,6 +198,8 @@ export async function addCategory({
       // 3. 상태 갱신 및 입력창 닫기
       dispatch({ type: "SET_CATEGORIES", categories: newCategories });
       dispatch({ type: "CANCEL" });
+      toast.success("카테고리가 삭제되었습니다.");
+      return { ok: true };
     } catch (e) {
       console.log(e);
       //setError("알 수 없는 에러가 발생했습니다.");

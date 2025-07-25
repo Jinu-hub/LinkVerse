@@ -46,14 +46,17 @@ export default function BookmarkAddDialog({
     // 클립보드에서 URL 읽어오기
     useEffect(() => {
       if (open && !url && !isSetUrlFromClipboard.current) {
-        navigator.clipboard.readText().then(text => {
-          const urlSchema = z.string().url();
-          const result = urlSchema.safeParse(text);
-          if (result.success) {
-            setUrl(result.data);
-            isSetUrlFromClipboard.current = true;
-          }
-        });
+        const timer = setTimeout(() => {
+          navigator.clipboard.readText().then(text => {
+            const urlSchema = z.string().url();
+            const result = urlSchema.safeParse(text);
+            if (result.success) {
+              setUrl(result.data);
+              isSetUrlFromClipboard.current = true;
+            }
+          });
+        }, 300); // 300ms 정도 딜레이
+        return () => clearTimeout(timer);
       }
     }, [open, url]);
 

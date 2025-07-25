@@ -1,6 +1,7 @@
 import type { Bookmark, Category } from "./bookmark.types";
 import { toCategory, toUIViewTabs, findRootCategoryId } from "./bmUtils";
 import { bookmarkSchema } from "./constants";
+import { toast } from "sonner";
 
 export async function addBookmark({
     title,
@@ -83,7 +84,7 @@ export async function addBookmark({
         }
         
         setBookmarks(prev => [newBookmark, ...prev]);
-  
+        toast.success("북마크가 추가되었습니다.");
         return { ok: true, data: newBookmark }; 
     } catch (e) {
         console.log(e);
@@ -172,7 +173,7 @@ export async function editBookmark({
         }
 
         setBookmarks(prev => prev.map(b => b.id === id ? updatedBookmark : b));
-
+        toast.success("북마크가 수정되었습니다.");
         return { ok: true, data: updatedBookmark }; 
     } catch (e) {
         console.log(e);
@@ -199,6 +200,7 @@ export async function deleteBookmark({
         return { ok: false, error: "북마크 삭제에 실패했습니다." };
     }
     setBookmarks(prev => prev.filter(b => b.id !== id));
+    toast.success("북마크가 삭제되었습니다.");
     return { ok: true };
 }
 

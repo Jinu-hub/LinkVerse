@@ -86,13 +86,16 @@ export default function BookmarkDetailDialog({
     // 북마크 추가 모드일 때 클립보드에서 URL 읽어오기
     useEffect(() => {
       if (isAddMode && open && !url) {
-        navigator.clipboard.readText().then(text => {
-          const urlSchema = z.string().url();
-          const result = urlSchema.safeParse(text);
-          if (result.success) {
-            setUrl(result.data);
-          }
-        });
+        const timer = setTimeout(() => {
+          navigator.clipboard.readText().then(text => {
+            const urlSchema = z.string().url();
+            const result = urlSchema.safeParse(text);
+            if (result.success) {
+              setUrl(result.data);
+            }
+          });
+        }, 300); // 300ms 정도 딜레이
+        return () => clearTimeout(timer);
       }
     }, [isAddMode, open, url]);
 
