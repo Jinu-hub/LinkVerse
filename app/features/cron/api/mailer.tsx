@@ -82,10 +82,6 @@ export async function action({ request }: Route.LoaderArgs) {
     );
   }
 
-  console.log("[cron] message (typeof):", typeof message);
-  console.log("[cron] message (raw):", message);
-  console.log("[cron] message (JSON):", JSON.stringify(message, null, 2));
-  
   // Process the message if one was retrieved from the queue
   if (
     message &&
@@ -93,25 +89,17 @@ export async function action({ request }: Route.LoaderArgs) {
     "message" in message &&
     typeof (message as any).message === "object"
   ) {
-    console.log("[cron] mailer message found");
-
     const { to, data: emailData, template } = (message as any).message;
-
-    console.log("[cron] to:", to);
-    console.log("[cron] emailData:", emailData);
-    console.log("[cron] template:", template);
-    
     // Process different email templates
     if (template === "welcome") {
-      console.log("[cron] sending welcome email");
-
-      // Send welcome email using the Resend client
       const { error } = await resendClient.emails.send({
         // Make sure this domain is the Resend domain.
         from: "LinkVerse <hello@mail.linkverse.app>",
         to: [to],
         subject: "Welcome to LinkVerse!",
-        react: WelcomeEmail({ username: JSON.stringify(emailData, null, 2) }),
+        react: WelcomeEmail({
+          username: emailData.raw_user_meta_data?.user_name || "user",
+        }),
       });
       
       // Log any errors that occur during email sending
