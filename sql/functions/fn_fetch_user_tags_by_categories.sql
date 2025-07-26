@@ -5,11 +5,14 @@ CREATE OR REPLACE FUNCTION fetch_user_tags_by_categories(
   p_user_id UUID,
   p_category_ids INT[]
 )
-RETURNS INT[] AS $$
+RETURNS INT[]
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path TO public
+AS $$
 DECLARE
   v_tag_ids INT[];
 BEGIN
- 
   SELECT ARRAY(
     SELECT DISTINCT tag_id
     FROM taggable 
@@ -25,4 +28,4 @@ BEGIN
 
   RETURN v_tag_ids;
 END;
-$$ LANGUAGE plpgsql;
+$$;
