@@ -106,7 +106,7 @@ export default function MemosScreen({ loaderData }: Route.ComponentProps) {
         <h1 className="text-3xl font-bold text-foreground mb-2">Memos</h1>
         <p className="text-muted-foreground">등록된 메모 목록</p>
       </div>
-      {/* 콘텐츠 타입 필터 버튼 */}
+      {/* 콘텐츠 타입 필터 버튼 
       <div className="flex gap-2 mb-4 flex-wrap">
         {CONTENT_TYPES.map(type => (
           <button
@@ -126,6 +126,7 @@ export default function MemosScreen({ loaderData }: Route.ComponentProps) {
           </button>
         ))}
       </div>
+      */}
       <MemoToolbar
         searchValue={search}
         onSearchChange={v => { setSearch(v); setPage(1); }}
@@ -135,6 +136,7 @@ export default function MemosScreen({ loaderData }: Route.ComponentProps) {
           setPage(1);
         }}
       />
+      {pagedMemos.length > 0 ? (
       <MemoTable
         pagedMemos={pagedMemos}
         getType={getType}
@@ -150,8 +152,8 @@ export default function MemosScreen({ loaderData }: Route.ComponentProps) {
         search={search}
         highlightText={highlightText}
       />
-      {pagedMemos.length === 0 && (
-        <div className="text-center text-gray-500 py-8">메모가 없습니다.</div>
+      ) : (
+        <div className="text-center text-gray-500 py-8">등록된 메모가 없습니다.</div>
       )}
     </div>
   );

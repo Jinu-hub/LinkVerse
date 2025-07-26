@@ -141,6 +141,7 @@ export default function TagContentsScreen({ loaderData }: Route.ComponentProps) 
           </button>
         </div>
       </div>
+      {/*
       <div className="flex gap-2 mb-4 flex-wrap">
         {CONTENT_TYPES.map(type => (
           <button
@@ -160,6 +161,7 @@ export default function TagContentsScreen({ loaderData }: Route.ComponentProps) 
           </button>
         ))}
       </div>
+      */}
       {/*
       <TagEditDialog
         editButtonTop={editButtonTop}
