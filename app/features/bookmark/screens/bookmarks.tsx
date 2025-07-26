@@ -296,6 +296,7 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
           setBookmarks={setBookmarks}
         />
 
+        {pagedBookmarks.length > 0 ? (
         <BookmarkTable
           pagedBookmarks={pagedBookmarks}
           sort={{
@@ -322,6 +323,9 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
           dispatch={dispatch}
           selectedCategoryId={selectedCategoryId}
         />
+        ) : (
+          <div className="text-left text-gray-500 py-8">등록된 북마크가 없습니다.</div>
+        )}
 
         {/* 모바일: 오른쪽 하단 플로팅 버튼 */}
         <button

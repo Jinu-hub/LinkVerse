@@ -106,6 +106,7 @@ export default function UntaggedScreen({ loaderData }: Route.ComponentProps) {
         <p className="text-muted-foreground">태그가 설정되지 않은 콘텐츠</p>
       </div>
       {/* 콘텐츠 타입 필터 버튼 */}
+      {/*
       <div className="flex gap-2 mb-4 flex-wrap">
         {CONTENT_TYPES.map(type => (
           <button
@@ -125,6 +126,7 @@ export default function UntaggedScreen({ loaderData }: Route.ComponentProps) {
           </button>
         ))}
       </div>
+      */}
       <UntagToolbar
         searchValue={search}
         onSearchChange={v => { setSearch(v); setPage(1); }}
@@ -134,6 +136,7 @@ export default function UntaggedScreen({ loaderData }: Route.ComponentProps) {
           setPage(1);
         }}
       />
+      {pagedUntaggedContents.length > 0 ? (
       <UntagTable
         pagedUntaggedContents={pagedUntaggedContents}
         getType={getType}
@@ -151,8 +154,8 @@ export default function UntaggedScreen({ loaderData }: Route.ComponentProps) {
         allTags={allTags}
         setUntaggedContents={setUntaggedContents}
       />
-      {pagedUntaggedContents.length === 0 && (
-        <div className="text-center text-gray-500 py-8">태그를 미설정인 콘텐츠가 없습니다.</div>
+      ) : (
+        <div className="text-center text-gray-500 py-8">태그 미설정 콘텐츠가 없습니다.</div>
       )}
     </div>
   );

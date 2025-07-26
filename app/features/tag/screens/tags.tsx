@@ -93,6 +93,7 @@ export default function TagsScreen({ loaderData }: Route.ComponentProps) {
           </button>
         </div>
       </div>
+      {pagedTags.length > 0 ? (
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {pagedTags.map(tag => (
           <TagCard
@@ -106,6 +107,9 @@ export default function TagsScreen({ loaderData }: Route.ComponentProps) {
           />
         ))}
       </div>
+      ) : (
+        <div className="text-center text-gray-500 py-8">등록된 태그가 없습니다.</div>
+      )}
       <div className="flex justify-end items-center gap-2 mt-6">
         <button className="border rounded px-2 py-1" onClick={() => setPage(page - 1)} disabled={page <= 1}>&lt;</button>
         <span className="text-sm">{page} / {totalPages}</span>
