@@ -29,8 +29,7 @@ export default function TagInputForm({
   const sanitizeTag = (tag: string): string => {
     return tag
       .trim()
-      .replace(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]/g, '') // 특수문자와 공백 제거
-      .replace(/\s+/g, ''); // 연속된 공백 제거
+      .replace(/[^\p{L}\p{N}]/gu, ''); // 모든 언어의 문자와 숫자만 허용
   };
   
   // 태그 자동완성 로직

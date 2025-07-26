@@ -1,10 +1,14 @@
 -- 주어진 content_type_id에 대해 content_view에 존재하지 않는 taggable 데이터를 삭제하고,
 -- 삭제된 태그의 usage_count를 갱신(0 또는 실제 사용량)하며, 삭제된 개수를 반환하는 함수
 CREATE OR REPLACE FUNCTION sync_tag_usage_counts()
-RETURNS integer AS $$
+RETURNS integer
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path TO public
+AS $$
 DECLARE
   v_tag_ids INT[];
-  v_deleted_count integer;
+  v_deleted_count INTEGER;
 BEGIN
   -- 삭제 대상 tag_id 수집
   SELECT ARRAY(
@@ -55,4 +59,4 @@ BEGIN
 
   RETURN v_deleted_count;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
