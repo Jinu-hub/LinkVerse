@@ -44,4 +44,5 @@ export const bookmarkSchema = z.object({
     newCategoryName: z.string().max(30).nullable().optional(),
     newCategoryLevel: z.number().nullable().optional(),
     memo: z.string().nullable().optional(),
+    description: z.string().nullable().optional(),
 });

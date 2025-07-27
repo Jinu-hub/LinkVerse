@@ -27,17 +27,21 @@ export async function action({ request }: { request: Request }) {
 
   const parsed = bookmarkSchema.safeParse(body);
   if (!parsed.success) {
+    console.log('=== createBookmark invalid data ===', parsed.error);
     return new Response("Invalid data", { status: 400 });
   }
 
-  let { title, url, categoryId, parentCategoryId, newCategoryName, newCategoryLevel, tags, memo } = parsed.data;
+  let { title, url, categoryId, parentCategoryId, newCategoryName, newCategoryLevel, tags, memo, description } = parsed.data;
   
   try {
     // URL로부터 타이틀과 썸네일 이미지 추출
     const metadata = await fetchTitleFromUrl(url);
-    const { title: titleFromUrl, image, description } = metadata;
+    const { title: titleFromUrl, image, description: descriptionFromUrl } = metadata;
     if (!title) {
       title = titleFromUrl ?? "";
+    }
+    if (!description) {
+      description = descriptionFromUrl ?? "";
     }
 
     // 새 카테고리 이름이 있으면 생성
@@ -50,7 +54,6 @@ export async function action({ request }: { request: Request }) {
       });
       categoryId = newCategory.category_id;
     }
-    
     // 북마크 생성
     const bookmark = await createBookmark(client, {
       user_id: user.id,
@@ -58,9 +61,8 @@ export async function action({ request }: { request: Request }) {
       title: title,
       url,
       thumbnail_url: image ?? "",
-      description: description ?? "",
+      description: descriptionFromUrl ?? "",
     });
-
     // 태그 생성
     let resTags: string[] = [];
     if (tags) {
@@ -73,7 +75,6 @@ export async function action({ request }: { request: Request }) {
       });
       resTags = tagsData.map(tag => tag.tag_name);
     }
-
     // 메모 생성
     let resMemo: string = "";
     if (memo) {
@@ -85,7 +86,6 @@ export async function action({ request }: { request: Request }) {
       });
       resMemo = memoData?.content ?? "";
     }
-
     const bookmarkResult = createBookmarkResult(bookmark, resTags, resMemo);
     return new Response(JSON.stringify({ success: true, bookmark: bookmarkResult }), {
         headers: { "Content-Type": "application/json" },

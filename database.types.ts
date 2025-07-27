@@ -667,7 +667,7 @@ export type Database = {
         }[]
       }
       get_max_category_sort_order: {
-        Args: { user_id: string; parent_id: number }
+        Args: { p_user_id: string; p_parent_id: number }
         Returns: number
       }
       pop_mailer: {

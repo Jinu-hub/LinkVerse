@@ -107,6 +107,7 @@ export function BookmarkToolbar({
       </div>
 
       {/* 아래: 나머지 탭들은 grid로 줄바꿈 */}
+      {otherTabs.length > 0 ? (
       <Tabs value={selectedTabId.toString()} className="w-full">
         <TabsList
           className="
@@ -149,6 +150,9 @@ export function BookmarkToolbar({
           ))}
         </TabsList>
       </Tabs>
+      ) : (
+        <div className="text-center text-gray-500 py-8"></div>
+      )}
 
       <div className="flex items-center justify-between gap-4">
         <div className="w-full max-w-sm">
