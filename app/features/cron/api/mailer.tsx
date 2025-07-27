@@ -76,20 +76,32 @@ export async function action({ request }: Route.LoaderArgs) {
 
   // Log any errors that occur when accessing the queue
   if (error) {
-    console.error("[cron] error:", error);
+    console.error("[cron] PGMQ error:", error);
     Sentry.captureException(
       error instanceof Error ? error : new Error(String(error)),
     );
+    return data(null, { status: 200 }); // Continue processing even if queue access fails
+  }
+
+  // Log successful message retrieval for debugging
+  if (message) {
+    console.log("[cron] Retrieved message:", JSON.stringify(message, null, 2));
   }
 
   // Process the message if one was retrieved from the queue
-  if (
-    message &&
-    typeof message === "object" &&
-    "message" in message &&
-    typeof (message as any).message === "object"
-  ) {
-    const { to, data: emailData, template } = (message as any).message;
+  if (message && typeof message === "object") {
+    // Handle both direct message format and nested message format
+    let messageData: any;
+    
+    if ("message" in message && typeof (message as any).message === "object") {
+      // Nested message format (from old pop_mailer)
+      messageData = (message as any).message;
+    } else {
+      // Direct message format (from new pop_mailer)
+      messageData = message;
+    }
+    
+    const { to, data: emailData, template } = messageData;
     // Process different email templates
     if (template === "welcome") {
       const { error } = await resendClient.emails.send({
@@ -98,7 +110,7 @@ export async function action({ request }: Route.LoaderArgs) {
         to: [to],
         subject: "Welcome to LinkVerse!",
         react: WelcomeEmail({
-          username: emailData.raw_user_meta_data?.user_name || "user",
+          username: (emailData as any)?.raw_user_meta_data?.user_name || "user",
         }),
       });
       
