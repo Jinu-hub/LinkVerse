@@ -61,14 +61,13 @@ export async function action({ request }: Route.ActionArgs) {
       });
     }
 
-    await createNewCategory(client, {
+    const newCategory = await createNewCategory(client, {
       userId: user.id,
       name,
       parent_id: parent_id ?? null,
       level: level ?? 1,
     });
-     
-    return data({ success: true }, { status: 200 });
+    return data({ success: true, category: newCategory }, { status: 200 });
   } catch (error: any) {
     return data({ error: error.message }, { status: 400 });
   }

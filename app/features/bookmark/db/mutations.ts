@@ -21,6 +21,7 @@ export const createBookmarkCategory = async (
             updated_at: new Date().toISOString(),
         }).select().single();
     if (error) {
+        console.error('createBookmarkCategory error', error);
         throw error
     }
     return data;
@@ -79,6 +80,7 @@ export const createBookmark = async (
         })
         .select().single();
     if (error) {
+        console.error('createBookmark error', error);
         throw error
     }
     return data;
