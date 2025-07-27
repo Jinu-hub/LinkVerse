@@ -154,8 +154,8 @@ export const getMaxCategorySortOrder = async (
   { userId, parent_id }: { userId: string; parent_id: number | null },
 ): Promise<number> => {
   const { data, error } = await client.rpc('get_max_category_sort_order', {
-    user_id: userId,
-    parent_id: parent_id as any,
+    p_user_id: userId,
+    p_parent_id: parent_id as any,
   });
   if (error) throw error;
   return data ?? 0;
