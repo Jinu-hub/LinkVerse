@@ -47,7 +47,14 @@ export async function addBookmark({
         memo,
     });
     if (!success) {
-        return { ok: false, fieldErrors: error.flatten().fieldErrors };
+        const fieldErrors = error.flatten().fieldErrors as Record<string, string[]>;
+        // 스키마 레벨 에러가 있으면 schema 필드로 추가
+        if (error.issues.some(issue => !issue.path.length)) {
+            fieldErrors.schema = error.issues
+                .filter(issue => !issue.path.length)
+                .map(issue => issue.message);
+        }
+        return { ok: false, fieldErrors };
     }
 
     try {
@@ -139,7 +146,14 @@ export async function editBookmark({
         memo,
     });
     if (!success) {
-        return { ok: false, fieldErrors: error.flatten().fieldErrors };
+        const fieldErrors = error.flatten().fieldErrors as Record<string, string[]>;
+        // 스키마 레벨 에러가 있으면 schema 필드로 추가
+        if (error.issues.some(issue => !issue.path.length)) {
+            fieldErrors.schema = error.issues
+                .filter(issue => !issue.path.length)
+                .map(issue => issue.message);
+        }
+        return { ok: false, fieldErrors };
     }
 
     try {
