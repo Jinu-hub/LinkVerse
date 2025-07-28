@@ -12,6 +12,7 @@ interface MemoEditorProps {
 export function MemoEditor({ memoId, content, readOnly = false
   , onChange, onSave, saving = false }: MemoEditorProps) {
   const [value, setValue] = useState(content)
+  const [originalValue, setOriginalValue] = useState(content); // 원본 값 저장
 
   if (readOnly) {
     return (
@@ -27,7 +28,14 @@ export function MemoEditor({ memoId, content, readOnly = false
   }
 
   const handleBlur = () => {
-    onSave?.(value)
+    // 공백 제거 후 비교 (실질적인 변경만 감지)
+    const trimmedValue = value.trim();
+    const trimmedOriginal = originalValue.trim();
+    
+    if (trimmedValue !== trimmedOriginal) {
+      onSave?.(trimmedValue)
+      setOriginalValue(trimmedValue)
+    }
   }
 
   return (
@@ -35,7 +43,7 @@ export function MemoEditor({ memoId, content, readOnly = false
       className="w-full min-h-[240px] rounded border p-2 text-base"
       value={value}
       onChange={handleChange}
-      //onBlur={handleBlur}
+      onBlur={handleBlur}
       placeholder="메모를 입력하세요..."
       disabled={saving}
     />
