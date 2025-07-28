@@ -45,9 +45,8 @@ const MemoDetailScreen = ({ loaderData }: Route.ComponentProps) => {
       <h1 className="text-2xl font-bold mb-4">{memo!.title}</h1>
       <div className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500">
         <span
-          className={`inline-block px-2.5 py-0.5 rounded-full ${colorClass} font-semibold text-xs border border-primary/30 tracking-wide`}
+          className={`inline-block px-2.5 py-0.5 rounded-full ${colorClass} font-semibold text-xs border border-primary/30 tracking-wide mr-2`}
           style={{ minWidth: "fit-content" }}
-          mr-2
         >
           {type.toUpperCase()}
         </span>

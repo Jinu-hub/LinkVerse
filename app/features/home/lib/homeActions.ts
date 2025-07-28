@@ -1,5 +1,6 @@
 import { bookmarkSchema } from "~/features/bookmark/lib/constants";
 import type { HomeBookmark } from "./home.types";
+import { toast } from "sonner";
 
 export const getTopBookmarks = async () => {
   const response = await fetch("/api/bookmarks/top");
@@ -47,6 +48,7 @@ export const addBookmark = async (
     };
 
     setRecentBookmarks(prev => [recentBookmark, ...prev.slice(0, prev.length - 1)]);
+    toast.success("북마크가 추가되었습니다.");
     return { ok: true, data: bookmark };
   } catch (error) {
     console.error(error);
