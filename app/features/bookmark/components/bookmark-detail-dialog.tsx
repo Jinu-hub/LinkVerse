@@ -193,6 +193,8 @@ export default function BookmarkDetailDialog({
                 disabled={saving}
               />
               {fieldErrors?.newCategoryName ? (<FormErrors errors={fieldErrors.newCategoryName} />) : null}
+              {fieldErrors?.newCategoryLevel ? (<FormErrors errors={fieldErrors.newCategoryLevel} />) : null}
+              {fieldErrors?.schema ? (<FormErrors errors={fieldErrors.schema} />) : null}
               {/* 자동완성 추천 리스트 */}
               {showSuggestions && (
                 <CategorySuggestionList

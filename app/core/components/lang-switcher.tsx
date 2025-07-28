@@ -69,9 +69,9 @@ export default function LangSwitcher() {
         <Button variant="ghost" size="icon" className="text-lg">
           {/* Conditionally render the appropriate flag based on current language */}
           {i18n.language === "en"
-            ? "🇬🇧" // UK flag for English
+            ? "EN" // UK flag for English
             : i18n.language === "ko"
-              ? "🇰🇷" // South Korea flag for Korean
+              ? "KR" // South Korea flag for Korean
               //: i18n.language === "es"
               //  ? "🇪🇸" // Spain flag for Spanish
               : null}
@@ -89,12 +89,12 @@ export default function LangSwitcher() {
         
         {/* Korean language option */}
         <DropdownMenuItem onClick={() => handleLocaleChange("ko")}>
-          🇰🇷 {t("navigation.kr")} {/* Translated name of Korean */}
+          KR {t("navigation.kr")} {/* Translated name of Korean */}
         </DropdownMenuItem>
         
         {/* English language option */}
         <DropdownMenuItem onClick={() => handleLocaleChange("en")}>
-          🇬🇧 {t("navigation.en")} {/* Translated name of English */}
+          EN {t("navigation.en")} {/* Translated name of English */}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

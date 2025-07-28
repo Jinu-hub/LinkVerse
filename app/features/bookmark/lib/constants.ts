@@ -30,6 +30,25 @@ export const SORTABLE_COLUMNS:
     { key: 'click_count', label: '클릭수', width: '10%', isSortable: true, isMobileHidden: false },
   ];
 
+// 카테고리 검증 스키마 생성 함수
+export const createCategoryValidation = () => 
+  z.string()
+    .refine(
+      (category) => category.length === 0 || category.length <= 30,
+      "카테고리명은 최대 30자까지 가능합니다"
+    )
+    /*
+    .refine(
+      (category) => category.length === 0 || /^[a-zA-Z0-9가-힣]+$/.test(category),
+      "카테고리명은 영문, 숫자, 한글만 사용 가능합니다"
+    )
+    .refine(
+      (category) => category.length === 0 || !/[!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?\s]/.test(category),
+      "특수문자와 공백은 사용할 수 없습니다"
+    )
+    */
+;
+
 export const bookmarkSchema = z.object({
     url: z.string()
       .min(1, "URL을 입력해주세요")
@@ -41,8 +60,21 @@ export const bookmarkSchema = z.object({
     tags: z.array(createTagValidation()).optional().default([]),
     categoryId: z.number().nullable().optional(),
     parentCategoryId: z.number().nullable().optional(),
-    newCategoryName: z.string().max(30).nullable().optional(),
-    newCategoryLevel: z.number().nullable().optional(),
+    newCategoryName: createCategoryValidation().nullable().optional(),
+    newCategoryLevel: z.number().max(3, "카테고리 레벨은 최대 3까지 가능합니다").nullable().optional() ,
     memo: z.string().nullable().optional(),
     description: z.string().nullable().optional(),
-});
+}).refine(
+  (data) => {
+    // parentCategoryId = 0, newCategoryName 입력됨, newCategoryLevel > 1인 경우 체크
+    if (data.parentCategoryId === 0 && 
+        data.newCategoryName && 
+        data.newCategoryName.length > 0 && 
+        data.newCategoryLevel && 
+        data.newCategoryLevel > 1) {
+      return false;
+    }
+    return true;
+  },
+  { message: "한번에 2레벨 이상의 새로운 카테고리 생성은 불가능합니다" }
+);
