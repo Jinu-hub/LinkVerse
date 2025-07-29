@@ -323,9 +323,10 @@ export default function SettingsTemp2025() {
               </Button>
             )}
             <Button
+              disabled={true}
               variant="destructive"
               onClick={handleRegisterCSV}
-              disabled={!file || isProcessing}
+              //disabled={!file || isProcessing}
               className="flex items-center gap-2 cursor-pointer"
             >
               {isProcessing ? "처리 중..." : "CSV 데이터등록"}
