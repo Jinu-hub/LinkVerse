@@ -112,6 +112,7 @@ export default [
       route("/account/edit", "features/users/screens/account.tsx"),
       route("/settings", "features/users/screens/settings.tsx"),
       route("/settings-temp2025", "features/users/screens/settings-temp2025.tsx"),
+      route("/todo-temp2025", "features/users/screens/todo-temp2025.tsx"),
     ]),
   ]),
 
