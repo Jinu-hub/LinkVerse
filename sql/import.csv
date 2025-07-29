@@ -1,104 +1,110 @@
-user_id,category,title,url,thumbnail_url,created_at,description,tags,memo,
-,개발>인프라,Namecheap,https://www.namecheap.com  ,,,Buy a domain and everything else you need,"infra,domain",,
-,개발>인프라,Cloudflare,https://www.cloudflare.com,,,"Connect, protect, and build everywhere","infra,dns,domain,protect",,
-,개발>인프라,Vercel,https://vercel.com/,,,Build and deploy on the AI Cloud,"infra,deploy",,
-,개발>인프라,AWS,https://aws.amazon.com/free/,,,AWS Free Tier,"infra,deploy,clude,file,db",,
-,개발>인프라>결제,Stripe,https://stripe.com/en-my,,,Financia linfrastructure to grow your revenue,"infra,payment",,
-,개발>인프라>결제,Lemon squeezy,https://www.lemonsqueezy.com/,,,"Payments, tax & subscriptions for software companies","infra,payment",,
-,개발>인프라>결제,Paddle,https://www.paddle.com/,,,The Merchant of Record for digital products,"infra,payment",,
-,개발>인프라>메일,Resend,https://www.resend.com,,,Email for developers,"infra,mail",,
-,개발>인프라>메일,Mailgun,https://www.mailgun.com/,,,Transactional Email Delivery Service & API for Developers ,"infra,mail",,
-,개발>인프라>메일,ReactMail,https://react.email/,,,The next generation of writing emails,"infra,mail",,
-,개발>인프라>etc,Sentry,https://sentry.io/,,,"Code breaks, fix it faster","infra,error",,
-,개발>인프라>etc,Upstash,https://upstash.com/,,,Serverless Data Platform. The single platform for all your data needs,"infra,cache",,
-,개발>인프라>etc,Algola,https://www.algolia.com/,,,AI search that finds what users need,"infra,search",,
-,개발>인프라>etc,OneSignal,https://onesignal.com/,,,The engagement platform thatcustomers |love,"infra,push",,
-,개발>디자인,Shadcn,https://ui.shadcn.com/,,,Tailwind CSS로 만들어진 예쁜 React 컴포넌트 라이브러리,"components,ui",,
-,개발>디자인>애니메이션,MagicUi,https://magicui.design/,,,UI library for Design Engineers,"components,animate",,
-,개발>디자인>애니메이션,21st,https://21st.dev/,,,"Discover, share & remix the best UI components","components,animate",,
-,개발>디자인>애니메이션,AceternityUi,https://ui.aceternity.com/,,,Make your websites look 10x beautiful,"components,ui",,
-,개발>디자인>아이콘,Lucide,https://lucide.dev/icons/,,,Beautiful & consistent icons,icon,,
-,개발>디자인>아이콘,Icones,https://icones.js.org/,,,,icon,다양한 아이콘의 집약체,
-,개발>디자인,DesignUs,https://ko.designus.design/,,,다양한 UI 소개,"design,reference",,
-,개발>디자인,WWIT Design,https://wwit.design/,,,한국의 모바일 디자인 패턴을 수집,"design,reference",,
-,개발>디자인,Landingfolio,https://www.landingfolio.com/,,,"The Best Landing Page Design Inspiration, Templates and More.","design,reference",,
-,개발>디자인,Design Spells,https://www.designspells.com/,,,Design details that feel like magic.,"design,reference",,
-,개발>디자인,Mobbin,https://mobbin.com/,,,Discover real-world design inspiration.,"design,reference",,
-,개발>디자인,Dribbble,https://dribbble.com/,,,Discover the World’s Top Designers,"design,reference",,
-,개발>디자인,Behance,https://www.behance.net/,,,Creative,"design,reference",,
-,개발>디자인,Awwwards,https://www.awwwards.com/,,,Vote for the latest websites on awwwards,"design,reference",,
-,개발>디자인>참고,옵시디언 그래프뷰,"https://github.com/vasturiano
+user_id,category,title,url,thumbnail_url,created_at,description,tags,memo,,
+,개발>인프라,,https://www.namecheap.com  ,,,Buy a domain and everything else you need,"infra,domain",,,
+,개발>인프라,,https://www.cloudflare.com,,,"Connect, protect, and build everywhere","infra,dns,domain,protect",,,
+,개발>인프라,,https://vercel.com/,,,Build and deploy on the AI Cloud,"infra,deploy",,,
+,개발>인프라,,https://aws.amazon.com/free/,,,AWS Free Tier,"infra,deploy,clude,file,db",,,
+,개발>인프라>결제,,https://stripe.com/en-my,,,Financia linfrastructure to grow your revenue,"infra,payment",,,
+,개발>인프라>결제,,https://www.lemonsqueezy.com/,,,"Payments, tax & subscriptions for software companies","infra,payment",,,
+,개발>인프라>결제,,https://www.paddle.com/,,,The Merchant of Record for digital products,"infra,payment",,,
+,개발>인프라>메일,,https://www.resend.com,,,Email for developers,"infra,mail",,,
+,개발>인프라>메일,,https://www.mailgun.com/,,,Transactional Email Delivery Service & API for Developers ,"infra,mail",,,
+,개발>인프라>메일,,https://react.email/,,,The next generation of writing emails,"infra,mail",,,
+,개발>인프라>etc,,https://sentry.io/,,,"Code breaks, fix it faster","infra,error",,,
+,개발>인프라>etc,,https://upstash.com/,,,Serverless Data Platform. The single platform for all your data needs,"infra,cache",,,
+,개발>인프라>etc,,https://www.algolia.com/,,,AI search that finds what users need,"infra,search",,,
+,개발>인프라>etc,,https://onesignal.com/,,,The engagement platform thatcustomers |love,"infra,push",,,
+,개발>디자인,,https://ui.shadcn.com/,,,Tailwind CSS로 만들어진 예쁜 React 컴포넌트 라이브러리,"components,ui",,,
+,개발>디자인>애니메이션,,https://magicui.design/,,,UI library for Design Engineers,"components,animate",,,
+,개발>디자인>애니메이션,,https://21st.dev/,,,"Discover, share & remix the best UI components","components,animate",,,
+,개발>디자인>애니메이션,,https://ui.aceternity.com/,,,Make your websites look 10x beautiful,"components,ui",,,
+,개발>디자인>아이콘,,https://lucide.dev/icons/,,,Beautiful & consistent icons,icon,,,
+,개발>디자인>아이콘,,https://icones.js.org/,,,,icon,다양한 아이콘의 집약체,,
+,개발>디자인,,https://ko.designus.design/,,,다양한 UI 소개,"design,reference",,,
+,개발>디자인,,https://wwit.design/,,,한국의 모바일 디자인 패턴을 수집,"design,reference",,,
+,개발>디자인,,https://www.landingfolio.com/,,,"The Best Landing Page Design Inspiration, Templates and More.","design,reference",,,
+,개발>디자인,,https://www.designspells.com/,,,Design details that feel like magic.,"design,reference",,,
+,개발>디자인,,https://mobbin.com/,,,Discover real-world design inspiration.,"design,reference",,,
+,개발>디자인,,https://dribbble.com/,,,Discover the World’s Top Designers,"design,reference",,,
+,개발>디자인,,https://www.behance.net/,,,Creative,"design,reference",,,
+,개발>디자인,,https://www.awwwards.com/,,,Vote for the latest websites on awwwards,"design,reference",,,
+,개발>디자인>참고,,"https://github.com/vasturiano
 /react-force-graph?tab=readm
-e-ov-file",,,"This module exports 4 stand-alone React component packages with identical interfaces: react-force-graph-2d, react-force-graph-3d, react-force-graph-vr and react-force-graph-ar. Each can be used to represent a graph data structure in a 2 or 3-dimensional space using a force-directed iterative layout.","design,reference,git,maker1","알아보기 쉽고, 프로젝트에 활용하기 적절",
-,개발>디자인>참고,bento,https://bento.me/en/home,,,Your personal page to show everything you are and create.,"design,reference,maker1","온라인 명함.
-자신이 원하는 정보를 심미적으로 배치.",
-,개발>디자인>참고,A Way To Go,https://a-way-to-go.com/,,,Way to Go is an interactive experience,"design,reference,maker1","・ 마우스와 키보드로 조작하는 주인공이 숲 속을 탐험하는 구조가 과거 회상의 은유로 적절함
-・ 배경 음악, 자연 소리, 리듬감 있는 애니메이션이 몰입감 극대화",
-,개발>디자인>참고,The Shape of Dreams (by The Pudding),"https://pudding.cool/2022/09
+e-ov-file",,,"This module exports 4 stand-alone React component packages with identical interfaces: react-force-graph-2d, react-force-graph-3d, react-force-graph-vr and react-force-graph-ar. Each can be used to represent a graph data structure in a 2 or 3-dimensional space using a force-directed iterative layout.","design,reference,git,maker1","알아보기 쉽고, 프로젝트에 활용하기 적절",,
+,개발>디자인>참고,,https://bento.me/en/home,,,Your personal page to show everything you are and create.,"design,reference,maker1","온라인 명함.
+자신이 원하는 정보를 심미적으로 배치.",,
+,개발>디자인>참고,,https://a-way-to-go.com/,,,Way to Go is an interactive experience,"design,reference,maker1","・ 마우스와 키보드로 조작하는 주인공이 숲 속을 탐험하는 구조가 과거 회상의 은유로 적절함
+・ 배경 음악, 자연 소리, 리듬감 있는 애니메이션이 몰입감 극대화",,
+,개발>디자인>참고,,"https://pudding.cool/2022/09
 /cdmx/",,,This is an audio/visual story exploring the sounds of Mexico City’s streets.,"design,reference,maker1","・ 시간에 따른 감정의 흐름을 시각화한 구조가 EmotionDay 타임라인과 유사함
-・ 폰트와 구성, 애니메이션이 일관되고 부드러워 사용자 피로도가 낮음",
-,개발>디자인>참고,Signaturepro,https://signatureprodesign.com/,,,"Create a beautiful signature with help of professional calligraphers. You fill out the form, we create options, you pick the best signature and learn how to sign with it.","design,reference,maker2",,
-,개발>디자인>참고,크몽,https://kmong.com/,,,"성공이 필요한 순간, 딱 맞는 전문가를 찾아보세요","design,reference,maker2",,
-,개발>디자인>참고,인소일,https://insoil.co.kr/,,,우리는 당신의 일상이 단단히 뿌리내릴 수 있는 다양한 물건들을 직접 만듭니다.,"design,reference,maker2",,
-,개발>디자인>참고,Rover,https://www.rover.com/,,,Loving pet care in your neighborhood™,"design,reference,maker2",,
-,개발>디자인>참고,Eagle,https://eagle.cool/,,,"A better way to collect, search and organize your design files in a logical way and all in one place.","design,reference,maker2",,
-,개발>디자인>참고,Raindrop,https://raindrop.io/,,,All-in-one bookmark manager,"design,reference,maker2",,
-,개발>DB,supabase,https://supabase.com/,,,Supabase is the Postgres development platform.,"db,postgres",,
-,개발>DB,Turso,https://turso.tech/,,,The next evolution of SQLite,"db,sqlite",,
-,AI>생산성 도구,NotebookLM,https://notebooklm.google.com/,,,Google에서 개발한 AI 기반 연구 및 노트 작성 도구,"google,요약,분석","・ Google에서 개발한 AI 기반연구 및 노트 작성 도구
+・ 폰트와 구성, 애니메이션이 일관되고 부드러워 사용자 피로도가 낮음",,
+,개발>디자인>참고,,https://signatureprodesign.com/,,,"Create a beautiful signature with help of professional calligraphers. You fill out the form, we create options, you pick the best signature and learn how to sign with it.","design,reference,maker2",,,
+,개발>디자인>참고,,https://kmong.com/,,,"성공이 필요한 순간, 딱 맞는 전문가를 찾아보세요","design,reference,maker2",,,
+,개발>디자인>참고,,https://insoil.co.kr/,,,우리는 당신의 일상이 단단히 뿌리내릴 수 있는 다양한 물건들을 직접 만듭니다.,"design,reference,maker2",,,
+,개발>디자인>참고,,https://www.rover.com/,,,Loving pet care in your neighborhood™,"design,reference,maker2",,,
+,개발>디자인>참고,,https://eagle.cool/,,,"A better way to collect, search and organize your design files in a logical way and all in one place.","design,reference,maker2",,,
+,개발>디자인>참고,,https://raindrop.io/,,,All-in-one bookmark manager,"design,reference,maker2",,,
+,개발>DB,,https://supabase.com/,,,Supabase is the Postgres development platform.,"db,postgres",,,
+,개발>DB,,https://turso.tech/,,,The next evolution of SQLite,"db,sqlite",,,
+,AI>생산성 도구,,https://notebooklm.google.com/,,,Google에서 개발한 AI 기반 연구 및 노트 작성 도구,"google,요약,분석","・ Google에서 개발한 AI 기반연구 및 노트 작성 도구
 ・ 사용자가 업로드한 웹사이트, YouTube등을 분석하여 요약, 정보 연결 기능
 ・ 활용 예시 : 유튜브 계정에podcast 재생목록을 만들어서30분 넘어가는 영상들 모아 둠
-자기 전에 NotebookLM으로하나씩 요약해서 들음",
-,AI>생산성 도구,Zen Browser,https://zen-browser.app/,,,브라우저에서 사이드 바(side bar)로ai 이용,"브라우저,웹탐색,번역","・ 브라우저에서 사이드 바(side bar)로ai 이용 가능함(ctrl+x로 ON/OFF)
+자기 전에 NotebookLM으로하나씩 요약해서 들음",,
+,AI>생산성 도구,,https://zen-browser.app/,,,브라우저에서 사이드 바(side bar)로ai 이용,"브라우저,웹탐색,번역","・ 브라우저에서 사이드 바(side bar)로ai 이용 가능함(ctrl+x로 ON/OFF)
 ・ 브라우저 안에 내장되어,창 하나로 업무 시 사용 가능하여 편리성이 강화됨
-・ 영어 원서 등을 읽을 때,옆에 켜두고 번역하면서 읽을 때 특히 유용",
-,AI>생산성 도구,Genspark AI,https://www.genspark.ai/browser,,,"에이전트, mcp 스토어, 자동조종모드가 탑재된 ai 브라우저","브라우저,웹탐색,mcp","・ 에이전트, mcp 스토어, 자동조종모드가 탑재된 ai 브라우저
-・ 대표적인 기능 중 하나로, 유튜브 재생 중 해당 내용을 바로 PPT로 변환시켜준다.",
-,AI>생산성 도구,Canva AI,https://www.canva.com/,,,"디자인툴 Canva의 AI, 이미지 생성에 특화","design,graphic,프레젠","・ 디자인툴 Canva의 AI 도입으로더욱 다양한 디자인 만들기 가능
+・ 영어 원서 등을 읽을 때,옆에 켜두고 번역하면서 읽을 때 특히 유용",,
+,AI>생산성 도구,,https://www.genspark.ai/browser,,,"에이전트, mcp 스토어, 자동조종모드가 탑재된 ai 브라우저","브라우저,웹탐색,mcp","・ 에이전트, mcp 스토어, 자동조종모드가 탑재된 ai 브라우저
+・ 대표적인 기능 중 하나로, 유튜브 재생 중 해당 내용을 바로 PPT로 변환시켜준다.",,
+,AI>생산성 도구,,https://www.canva.com/,,,"디자인툴 Canva의 AI, 이미지 생성에 특화","design,graphic,프레젠","・ 디자인툴 Canva의 AI 도입으로더욱 다양한 디자인 만들기 가능
 ・ 이미지 생성에 특화된 모습으로,GPT 에서 할 수 없는 배경 삭제혹은 빈 곳 채우기가 가능
 ・ 신규 업데이트로 노코드 코딩 툴 공개,바이브 코딩이 가능
-・ 차트를 입력하면 자동으로 값 수정,빈 칸의 값 채우기 가능",
-,AI>생산성 도구,Gemini CLI,https://blog.google/technology/developers/introducing-gemini-cli-open-source-ai-agent/,,,"터미널에서 직접 실행 빌드, 테스트, 서버 실행 등
+・ 차트를 입력하면 자동으로 값 수정,빈 칸의 값 채우기 가능",,
+,AI>생산성 도구,,https://blog.google/technology/developers/introducing-gemini-cli-open-source-ai-agent/,,,"터미널에서 직접 실행 빌드, 테스트, 서버 실행 등
 개발 자동화","blog,ai","・ 시스템 직접 제어로 파일 생성, 검색, 수정까지 가능, 강력한 실행 능력
 ・ 터미널에서 직접 실행이 가능하여,기존 개발 환경과 완벽하게 통합 가능
 ・ 터미널에서 사용하는 명령어를 직접 실행하여 빌드, 테스트, 서버 실행 등 개발 자동화 가능
-・ 가장 최신 google gemini 로 뛰어난 코드 생성 능력",
-,AI>생산성 도구,NotebookLM,https://blog.google/technology/google-labs/notebooklm-featured-notebooks/,,,Try featured notebooks on selected topics in NotebookLM,"blog,ai",,
+・ 가장 최신 google gemini 로 뛰어난 코드 생성 능력",,
+,AI>생산성 도구,,https://blog.google/technology/google-labs/notebooklm-featured-notebooks/,,,Try featured notebooks on selected topics in NotebookLM,"blog,ai",,,
 ,미디어>AI,Taskmaster AI,https://www.youtube.com/watch?v=ktr-4JjDsU0&t=39s,,,나만의 프로젝트 PM,"youtube,nomad","・ 일반적으로 AI한테 작업을 시킬 때필요 없는 코드를 건드리는 등원하는 대로 동작하지 않는 경우가 많음
 ・ Taskmaster AI는 AI가 무엇을,어떻게 해야 하는지 정확히 알 수 있도록확실하게 지시
 ・ 나만의 프로젝트 PM 역할로프로젝트를 작은 작업 단위로 쪼개고,우선순위를 정해 줌
-・ 진행 상황도 쉽게 추적할 수 있고,다음에 뭘 해야 할지 바로바로 알 수 있도록 작업을 도와줌",
+・ 진행 상황도 쉽게 추적할 수 있고,다음에 뭘 해야 할지 바로바로 알 수 있도록 작업을 도와줌",,
 ,미디어>AI,Context 7,https://www.youtube.com/watch?v=ktr-4JjDsU0&t=39s,,,가장 최신 문서를 가져와서 프롬프트에,"youtube,nomad","・ AI를 사용하다 보면 존재하지 않는API를 사용하려고 하거나,예전 버젼을 사용하려고 할 때가 있음.
 ・ context 7은 가장 최신 문서를 가져와서프롬프트에 넣어주는 것으로 이 문제를 해결할 수 있게 도와줌
-・ 10,000개 이상의 패키지 문서를 학습하고 있어, 정확도가 매우 높음",
-,미디어>AI,Figma MCP,https://www.youtube.com/watch?v=szUo30BOZlo&t=282s,,,"Figma 파일을 생성, 삭제","youtube,nomad","・ Figma 파일을 생성, 삭제하는 도구 제공
+・ 10,000개 이상의 패키지 문서를 학습하고 있어, 정확도가 매우 높음",,
+,미디어>AI,,https://www.youtube.com/watch?v=szUo30BOZlo&t=282s,,,"Figma 파일을 생성, 삭제","youtube,nomad","・ Figma 파일을 생성, 삭제하는 도구 제공
 ・ 피그마로 만들어진 파일을 바로 구현하도록 명령이 가능
 ・ Tailwind CSS 사용하라는 지시도 가능
-・ 퀄리티가 높아서 바로 활용 가능",
-,미디어>음악,클래식좀 들어라,https://www.youtube.com/@ClassicZomListen,,,클래식 플레이리스트 만들어 올리는 채널,classic,,
-,미디어>생활,원룸 만들기,https://www.youtube.com/@oneroommake,,,"자취생이라면 원룸만들기!
-더 품격있는 자취생활을 위한 원룸만들기의 공식 유튜브 채널입니다",room,,
-,프로젝트>마케팅사례,금강사수세미,https://www.youtube.com/shorts/OK6ijUKMcoU?reload=9&si=9VTOZHFFsm-kaR_x,,,,youtube,,
-,프로젝트>마케팅사례,대나무행주,https://www.youtube.com/shorts/ibo_Dk1TvXg,,,,youtube,,
-,프로젝트>마케팅사례,샘 알트먼 - Startup Playbook,https://playbook.samaltman.com/,,,,startup,"・ 스타트업을 시작하는 창업자들에게 핵심적인 조언을 제공하는 가이드
+・ 퀄리티가 높아서 바로 활용 가능",,
+,미디어>음악,,https://www.youtube.com/@ClassicZomListen,,,클래식 플레이리스트 만들어 올리는 채널,classic,,,
+,미디어>생활,,https://www.youtube.com/@oneroommake,,,"자취생이라면 원룸만들기!
+더 품격있는 자취생활을 위한 원룸만들기의 공식 유튜브 채널입니다",room,,,
+,프로젝트>마케팅사례,금강사수세미,https://www.youtube.com/shorts/OK6ijUKMcoU?reload=9&si=9VTOZHFFsm-kaR_x,,,,youtube,,,
+,프로젝트>마케팅사례,,https://www.youtube.com/shorts/ibo_Dk1TvXg,,,,youtube,,,
+,프로젝트>마케팅사례,,https://playbook.samaltman.com/,,,,startup,"・ 스타트업을 시작하는 창업자들에게 핵심적인 조언을 제공하는 가이드
 ・ 마케팅도 제품의 강점을 극대화 하는방향으로 진행
 ・ 마케팅에서도 초기 사용자 확보와 입소문을 통한 확산이 핵심이 될 수 있음
-・ 특정 타겟 시장에 집중하고 강력한 메시지를 전달하는 것이 효과적",
-,프로젝트>마케팅사례,앤드류 첸의 글,https://andrewchen.com/breaking-down-671-million-push-notifications-by-hour/,,,,"timeline,push","・ 앤드류 첸 - 푸시 알림의 시간대별 효과
+・ 특정 타겟 시장에 집중하고 강력한 메시지를 전달하는 것이 효과적",,
+,프로젝트>마케팅사례,,https://andrewchen.com/breaking-down-671-million-push-notifications-by-hour/,,,,"timeline,push","・ 앤드류 첸 - 푸시 알림의 시간대별 효과
 ・ 푸시 알림의 타이밍이사용자 참여율을 크게 좌우
 ・ 사용자의 활동 패턴을 고려한 맞춤형 메시지가 효과적
-・ 짧고 간결한 콘텐츠가 저녁 시간대에 효과적입니다.",
-,프로젝트>마케팅사례,명함으로 서비스 홍보,https://medium.com/%EC%98%A4%EC%9D%BC%EB%82%98%EC%9A%B0-%ED%8C%80-%EB%B8%94%EB%A1%9C%EA%B7%B8/%EB%AA%A8%EB%93%A0-%ED%8C%80%EC%9B%90%EC%9D%84-%ED%99%8D%EB%B3%B4%ED%8C%80%EC%9C%BC%EB%A1%9C-%EB%A7%8C%EB%93%A4%EC%96%B4%EB%B2%84%EB%A6%AC%EB%8A%94-%EB%A7%88%EB%B2%95%EC%9D%98-%EB%AA%85%ED%95%A8-%EC%A0%9C%EC%9E%91%EA%B8%B0-be1f6a45c7e,,,,startup,"명함 뒷면에 서비스 중인 앱의 메인 화면을 그대로 넣어 '오일 나우'가 어떤 서비스인지를 명함만 받아보고도 알아볼 수 있도록 만들어, 모든 직원을 '홍보팀'으로 만들어 버린 게 인상 깊었습니다.",
-,프로젝트>마케팅사례,스몰브랜더,https://www.instagram.com/smallbrander/,,,작은 브랜드를 발견하고 그들의 성장을 돕습니다.,brand,,
-,프로젝트>마케팅사례,벨로그,https://velog.io/,,,,blog,"개발자 velopert가 1인 개발로 제작한 플랫폼으로 원래 워드프레스로 블로그 운영을 하다가 개발자로서 불편했던 점들을 개선해서 아예 새로 블로그 플랫폼을 개발해야겠다고 생각하여 만들었다고 하며 # 국내의 많은 사용자들을 보유하고 있고 개발자 생태계가 구축되어 있어 올라오는 정보들의 질이 좋은 편이다.
+・ 짧고 간결한 콘텐츠가 저녁 시간대에 효과적입니다.",,
+,프로젝트>마케팅사례,,https://www.instagram.com/smallbrander/,,,작은 브랜드를 발견하고 그들의 성장을 돕습니다.,brand,,,
+,프로젝트>마케팅사례,,https://velog.io/,,,,blog,"개발자 velopert가 1인 개발로 제작한 플랫폼으로 원래 워드프레스로 블로그 운영을 하다가 개발자로서 불편했던 점들을 개선해서 아예 새로 블로그 플랫폼을 개발해야겠다고 생각하여 만들었다고 하며 # 국내의 많은 사용자들을 보유하고 있고 개발자 생태계가 구축되어 있어 올라오는 정보들의 질이 좋은 편이다.
 서비스의 코드가 개발자 Github에 오픈[2]되어 있어, 서비스를 어떻게 운영하는지 직접 볼 수 있다.
-개발자 생태계가 갖춰져 좋은 개발 정보들이 올라온다",
-,프로젝트>마케팅사례,meetme,https://www.nicetomeetme.kr/,,,나답게 성장하는 사람들이 만들어가는 안전한 커뮤니티,community,,
-,프로젝트>마케팅사례,mini more max,https://minimoremax.com/,,,작심삼일은 당신 탓이 아니다,"life,plan",,
-,프로젝트>노마드,사이드 프로젝트,https://nomadcoders.co/community/side_projects?page=2,,,노마드 커뮤티티 사이드 프로젝트 리스트,"community,nomad",,
-,스터디,,,,,,,,
-,업무,,,,,,,,
-,가족,,,,,,,,
-,여행,,,,,,,,
-,음악,,,,,,,,
-,etc,,,,,,,,
+개발자 생태계가 갖춰져 좋은 개발 정보들이 올라온다",,
+,프로젝트>마케팅사례,,https://www.nicetomeetme.kr/,,,나답게 성장하는 사람들이 만들어가는 안전한 커뮤니티,community,,,
+,프로젝트>마케팅사례,,https://minimoremax.com/,,,작심삼일은 당신 탓이 아니다,"life,plan",,,
+,프로젝트>노마드>사이드,펫토피아,https://bristolkon.org,,,"펫토피아는 반려동물 가족을 위한 커뮤니티이자, 반려동물의 성장과 건강, 추억을 가족들과 함께 기록하고 공유할 수 있는 플랫폼입니다. 반려동물 관리, 건강 기록, 미용 관리, 가족 트리 등 반려동물과 함께하는 모든 순간을 한 곳에 담을 수 있습니다.","maker2,pat",,,
+,프로젝트>노마드>사이드,Capsule,https://capsule.diy,,,"Capsule은 글쓰기가 어렵거나 귀찮은 사람들을 위해 만들어진 작고 빠른 SNS 홍보 도우미입니다. 짧은 글과 원하는 분위기를 정한 뒤 세번의 클릭만으로 고품질의 홍보 게시글을 작성하고 바로 SNS에 업로드할 수 있습니다. 더이상 글쓰기 고민으로 시간을 낭비하지 않아도 되고, 홍보를 하고 싶어하는 사용자들에게 도움을 주고자 개발하게 됐습니다.","maker2,ai,sns",,,
+,프로젝트>노마드>사이드,Lemore, https://lemore.life,,,"Lemore는 태국에 거주하는 외국인들을 위한 중고 거래 플랫폼이자, 지역 정보를 공유하고 서로 연결되는 로컬 커뮤니티 공간입니다.""Less is more""라는 이름처럼, 단순히 물건을 사고파는 것을 넘어 불필요한 물건을 정리하며 삶을 정돈하고, 지역 이웃들과 연결되는 경험을 제공합니다.","maker2,life,로컬",,,
+,프로젝트>노마드>사이드,LinkVerse – 링크가 지식이 되는 공간,https://linkverse.app,,,"LinkVerse는 북마크를 단순히 저장하는 데서 끝나지 않고, 태그, 메모기능을 통해 ‘나만의 지식 아카이브’를 구성할 수 있는 개인화된 링크 관리 도구입니다. 정보의 바다 속에서 길을 잃지 않도록, 관심사를 분류하고 연결해주는 역할을 합니다. 지식노동자, 개발자, 기획자 등 웹 리소스를 자주 참고하는 사람들에게 특히 유용하지 않을까 생각합니다.","maker2,web",,,
+,프로젝트>노마드>사이드,HereNow,https://herenow.nsnm.xyz ,,,기본적으로 특정 공간 내의 물건을 관리할 수 있는 서비스입니다.,"maker2,stuff,정리",,,
+,프로젝트>노마드>사이드,Pouch Bus,https://pouchbus.com,,,버스 도착시간이 들쑥날쑥 할 때 버스 실시간 위치 확인하고 싶을 때,"maker2,버스",,,
+,프로젝트>노마드>사이드,what2buy,https://what2buy.cool/,,,인공지능이 어떤 주식을 사면 좋을지 추천해드려요,"maker2,주식",,,
+,프로젝트>노마드>사이드,Day Off Today,https://www.dayoff.today/,,,D.O.T. 도자기 공방 홈페이지,"maker2,도자기",,,
+,스터디>노마드>커뮤니티,,https://nomadcoders.co/community,,,,"community,nomad",,,
+,업무,,,,,,,,,
+,가족,,,,,,,,,
+,여행,,,,,,,,,
+,음악,,,,,,,,,
+,etc,,,,,,,,,
