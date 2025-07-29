@@ -8,10 +8,10 @@ export default function TodoTemp2025() {
     <div className="max-w-4xl mx-auto p-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          🚧 개발 예정 기능들
+          🚧 개발 예정 기능들 / Planned Features
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          예정하고 있었지만 아직 구현하지 못한 기능들입니다.
+          예정하고 있었지만 아직 구현하지 못한 기능들입니다. <br /> Features that were planned but not yet implemented.
         </p>
       </div>
 
@@ -23,13 +23,13 @@ export default function TodoTemp2025() {
               <Upload className="h-6 w-6 text-blue-500" />
               <div>
                 <CardTitle className="flex items-center gap-2">
-                  기존 북마크 Import 기능
+                  기존 북마크 Import 기능 / Bookmark Import
                   <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                     High Priority
                   </Badge>
                 </CardTitle>
                 <CardDescription>
-                  다양한 소스에서 북마크를 가져와서 Linkverse에 통합
+                  다양한 소스에서 북마크를 가져와서 Linkverse에 통합 <br /> Import bookmarks from various sources into Linkverse
                 </CardDescription>
               </div>
             </div>
@@ -41,7 +41,7 @@ export default function TodoTemp2025() {
                 <div>
                   <h4 className="font-medium">CSV Import</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    CSV 파일에서 북마크 데이터를 가져와서 일괄 추가
+                    CSV 파일에서 북마크 데이터를 가져와서 일괄 추가 <br /> Import bookmark data from CSV files for bulk addition
                   </p>
                 </div>
               </div>
@@ -51,7 +51,7 @@ export default function TodoTemp2025() {
                 <div>
                   <h4 className="font-medium">브라우저 HTML Export Import</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Chrome, Firefox, Safari 등에서 내보낸 HTML 파일에서 북마크 추출
+                    Chrome, Firefox, Safari 등에서 내보낸 HTML 파일에서 북마크 추출 <br /> Extract bookmarks from HTML files exported from Chrome, Firefox, Safari, etc.
                   </p>
                 </div>
               </div>
@@ -61,7 +61,7 @@ export default function TodoTemp2025() {
                 <div>
                   <h4 className="font-medium">Browser Extension 연동</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Chrome Extension을 통한 원클릭 북마크 추가 및 동기화
+                    Chrome Extension을 통한 원클릭 북마크 추가 및 동기화 <br /> One-click bookmark addition and sync through Chrome Extension
                   </p>
                 </div>
               </div>
@@ -76,13 +76,13 @@ export default function TodoTemp2025() {
               <Move className="h-6 w-6 text-green-500" />
               <div>
                 <CardTitle className="flex items-center gap-2">
-                  카테고리 Drag & Drop 이동
+                  카테고리 Drag & Drop 이동 / Category Drag & Drop
                   <Badge variant="secondary" className="bg-green-100 text-green-800">
                     Medium Priority
                   </Badge>
                 </CardTitle>
                 <CardDescription>
-                  직관적인 드래그 앤 드롭으로 카테고리 구조 재구성
+                  직관적인 드래그 앤 드롭으로 카테고리 구조 재구성 <br /> Intuitive drag and drop to restructure categories
                 </CardDescription>
               </div>
             </div>
@@ -94,7 +94,7 @@ export default function TodoTemp2025() {
                 <div>
                   <h4 className="font-medium">카테고리 계층구조, 위치 변경</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    드래그 앤 드롭으로 카테고리 간의 위치나 계층구조 변경
+                    드래그 앤 드롭으로 카테고리 간의 위치나 계층구조 변경 <br /> Change category hierarchy and position through drag and drop
                   </p>
                 </div>
               </div>
@@ -104,7 +104,7 @@ export default function TodoTemp2025() {
                 <div>
                   <h4 className="font-medium">북마크 일괄 이동</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    카테고리 이동 시 해당 카테고리에 속한 모든 북마크도 함께 이동
+                    카테고리 이동 시 해당 카테고리에 속한 모든 북마크도 함께 이동 <br /> Move all bookmarks in a category when the category is moved
                   </p>
                 </div>
               </div>
@@ -131,13 +131,13 @@ export default function TodoTemp2025() {
               <Users className="h-6 w-6 text-purple-500" />
               <div>
                 <CardTitle className="flex items-center gap-2">
-                  온보딩 플로우
+                  온보딩 플로우 / Onboarding Flow
                   <Badge variant="secondary" className="bg-purple-100 text-purple-800">
                     User Experience
                   </Badge>
                 </CardTitle>
                 <CardDescription>
-                  신규 사용자를 위한 단계별 안내 및 초기 설정
+                  신규 사용자를 위한 단계별 안내 및 초기 설정 <br /> Step-by-step guidance and initial setup for new users
                 </CardDescription>
               </div>
             </div>
@@ -149,7 +149,7 @@ export default function TodoTemp2025() {
                 <div>
                   <h4 className="font-medium">첫 로그인 사용자 안내</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    신규 가입자에게 Linkverse의 주요 기능들을 간단히 소개
+                    신규 가입자에게 Linkverse의 주요 기능들을 간단히 소개 <br /> Introduce Linkverse's main features to new users
                   </p>
                 </div>
               </div>
@@ -159,7 +159,7 @@ export default function TodoTemp2025() {
                 <div>
                   <h4 className="font-medium">초기 설정 가이드</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    기본 카테고리 생성, 테마 설정, 언어 설정 등 초기 환경 구성
+                    기본 카테고리 생성, 테마 설정, 언어 설정 등 초기 환경 구성 <br /> Initial environment setup including default categories, theme, language settings
                   </p>
                 </div>
               </div>
@@ -169,7 +169,7 @@ export default function TodoTemp2025() {
                 <div>
                   <h4 className="font-medium">기존 북마크 Import 유도</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    기존 브라우저 북마크를 가져오는 방법 안내 및 단계별 가이드
+                    기존 브라우저 북마크를 가져오는 방법 안내 및 단계별 가이드 <br /> Guide users to import existing browser bookmarks with step-by-step instructions
                   </p>
                 </div>
               </div>
@@ -179,7 +179,7 @@ export default function TodoTemp2025() {
                 <div>
                   <h4 className="font-medium">온보딩 완료 체크</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    온보딩 미완료 사용자에게 계속 안내 표시 및 완료 상태 관리
+                    온보딩 미완료 사용자에게 계속 안내 표시 및 완료 상태 관리 <br /> Track onboarding completion status and show guidance to incomplete users
                   </p>
                 </div>
               </div>
@@ -194,13 +194,13 @@ export default function TodoTemp2025() {
               <AlertCircle className="h-6 w-6 text-orange-500" />
               <div>
                 <CardTitle className="flex items-center gap-2">
-                  기타 예정 기능들
+                  기타 예정 기능들 / Other Planned Features
                   <Badge variant="secondary" className="bg-orange-100 text-orange-800">
                     Future
                   </Badge>
                 </CardTitle>
                 <CardDescription>
-                  추가로 고려 중인 기능들
+                  추가로 고려 중인 기능들 <br /> Additional features under consideration
                 </CardDescription>
               </div>
             </div>
@@ -212,7 +212,7 @@ export default function TodoTemp2025() {
                 <div>
                   <h4 className="font-medium">로딩중 화면</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    시간이 걸리는 작업이 있을때 로딩중 화면 고려
+                    시간이 걸리는 작업이 있을때 로딩중 화면 고려 <br /> Consider loading screens for time-consuming operations
                   </p>
                 </div>
               </div>
@@ -222,7 +222,7 @@ export default function TodoTemp2025() {
                 <div>
                   <h4 className="font-medium">퍼포먼스 개선</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    퍼포먼스 개선 및 최적화
+                    퍼포먼스 개선 및 최적화 <br /> Performance improvement and optimization
                   </p>
                 </div>
               </div>
@@ -232,7 +232,7 @@ export default function TodoTemp2025() {
                 <div>
                   <h4 className="font-medium">다국어 지원</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    다국어 지원 (한국어, 영어, 그외 언어)
+                    다국어 지원 (한국어, 영어, 그외 언어) <br /> Multi-language support (Korean, English, other languages)
                   </p>
                 </div>
               </div>
@@ -244,11 +244,12 @@ export default function TodoTemp2025() {
       <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
         <div className="flex items-center gap-2 mb-2">
           <ExternalLink className="h-5 w-5 text-blue-600" />
-          <h3 className="font-semibold text-blue-900 dark:text-blue-100">개발 참고사항</h3>
+          <h3 className="font-semibold text-blue-900 dark:text-blue-100">개발 참고사항 / Development Notes</h3>
         </div>
         <p className="text-sm text-blue-700 dark:text-blue-300">
           이 페이지는 개발 예정 기능들을 정리한 TODO 리스트입니다. 
-          우선순위에 따라 단계적으로 구현될 예정입니다.
+          우선순위에 따라 단계적으로 구현될 예정입니다. <br /> This page is a TODO list of planned features. 
+          Features will be implemented step by step according to priority.
         </p>
       </div>
     </div>
