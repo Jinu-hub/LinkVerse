@@ -47,6 +47,7 @@ export default [
     ...prefix("/bookmarks", [
       route("/top", "features/bookmark/api/bookmarks-top.tsx"),
       route("/recent", "features/bookmark/api/bookmarks-recent.tsx"),
+      route("/bulk-add", "features/bookmark/api/bookmark-bulk-add.tsx"),
     ]),
   ]),
 
@@ -110,6 +111,7 @@ export default [
       */
       route("/account/edit", "features/users/screens/account.tsx"),
       route("/settings", "features/users/screens/settings.tsx"),
+      route("/settings-temp2025", "features/users/screens/settings-temp2025.tsx"),
     ]),
   ]),
 
