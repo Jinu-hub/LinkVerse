@@ -239,6 +239,46 @@ export default function TodoTemp2025() {
             </div>
           </CardContent>
         </Card>
+
+        {/* 장기적 목표 : Linkverse 의 현재 상태 */}
+        <Card className="border-l-4 border-l-indigo-500">
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <AlertCircle className="h-6 w-6 text-indigo-500" />
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  장기적 목표와 Linkverse의 현재 상태 / Long-term Goal And Current State of Linkverse
+                  <Badge variant="secondary" className="bg-indigo-100 text-indigo-800">
+                    Long-term Goal
+                  </Badge>
+                </CardTitle>
+                <CardDescription>
+                  장기적 목표와 현재 구현 상태에 대한 안내 <br /> Information about the long-term goal and current implementation status
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="h-5 w-5 text-indigo-500 mt-0.5" />
+                                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      당초 북마크는 하나의 콘텐츠로서, 다른 여러가지 콘텐츠 ( 책, 영화, 여행, 이미지...등등의 저장 )를 추가할 수 있도록 설계되었습니다.
+                      <br />
+                      Initially, bookmarks were designed as one type of content that could add various other content types (books, movies, travel, images, etc.).
+                      <br />
+                      <br />
+                      하지만 현재로서는 다른 콘텐츠를 추가할 구체적인 계획은 없습니다.
+                      <br />
+                      However, there are currently no plans to support other types of content.
+                    </p>
+                  </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+                
       </div>
 
       <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
