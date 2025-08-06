@@ -7,6 +7,17 @@ import { Input } from "~/core/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "~/core/components/ui/card";
 import { toast } from "sonner";
 import { addCategory, bulkAddBookmark, prepareBookmarksFromCSV } from "../lib/actions";
+import { 
+  Download, 
+  Upload, 
+  FileText, 
+  RefreshCw, 
+  Database, 
+  FileSpreadsheet,
+  CheckCircle,
+  AlertCircle,
+  Info
+} from "lucide-react";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: `Settings | ${import.meta.env.VITE_APP_NAME}` }];
@@ -216,23 +227,6 @@ export default function SettingsTemp2025() {
       const bookmarks = prepareBookmarksFromCSV(parsedData, categoryMap);
       console.log(`\n=== 북마크 준비 완료 ===`);
       console.log(`총 ${bookmarks.length}개의 북마크가 준비되었습니다.`);
-      // 북마크 데이터 샘플 출력 (처음 5개)
-      /*
-      console.log('\n=== 북마크 데이터 샘플 (처음 5개) ===');
-      bookmarks.slice(0, 5).forEach((bookmark, index) => {
-        console.log(`${index + 1}. ID: ${bookmark.bookmark_id}`);
-        console.log(`   제목: ${bookmark.title}`);
-        console.log(`   URL: ${bookmark.url}`);
-        console.log(`   카테고리 ID: ${bookmark.category_id}`);
-        console.log(`   설명: ${bookmark.description}`);
-        console.log(`   태그: ${bookmark.tags}`);
-        console.log(`   메모: ${bookmark.memo}`);
-        console.log('---');
-      });
-      if (bookmarks.length > 5) {
-        console.log(`... 및 ${bookmarks.length - 5}개 더`);
-      }
-      */
 
       // 북마크 리스트를 한 번에 처리
       console.log('\n=== 북마크 일괄 등록 시작 ===');
@@ -273,75 +267,268 @@ export default function SettingsTemp2025() {
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-10 pt-0 pb-8">
-      <h1>임시 비공개 셋팅 페이지(Temporary Private Settings)</h1>
+    <div className="container mx-auto max-w-4xl px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-foreground mb-2">데이터 관리</h1>
+        <p className="text-muted-foreground">북마크 데이터를 CSV 파일로 내보내고 가져올 수 있습니다.</p>
+        <p className="text-muted-foreground">** 현재 개발중입니다. 추후 업데이트 예정입니다. **</p>
+      </div>
       
-      <Card className="w-full max-w-2xl">
-        <CardHeader>
-          <CardTitle>CSV 데이터 등록</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">파일 선택</label>
-            <Input
-              ref={fileInputRef}
-              type="file"
-              accept=".csv"
-              onChange={handleFileUpload}
-              disabled={isProcessing}
-            />
-            {file && (
-              <p className="text-sm text-muted-foreground">
-                선택된 파일: {file.name}
-              </p>
-            )}
-          </div>
-
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={handleViewCSV}
-              disabled={!file || isProcessing}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              {isProcessing ? "처리 중..." : "CSV 미리보기"}
-            </Button>
-            {file && (
-              <Button
-                variant="outline"
-                className="flex items-center gap-2 cursor-pointer"
-                onClick={() => {
-                  setFile(null);
-                  setCsvData([]);
-                  if (fileInputRef.current) {
-                    fileInputRef.current.value = "";
-                  }
-                }}
-                disabled={isProcessing}
-              >
-                초기화
-              </Button>
-            )}
+      <div className="grid gap-6 ">
+        {/* CSV 데이터 다운로드 카드 */}
+        <Card className="relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full -translate-y-16 translate-x-16"></div>
+          <CardHeader className="relative">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+                <Download className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <CardTitle className="text-xl">데이터 내보내기</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">북마크 데이터를 CSV 파일로 다운로드</p>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <Info className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-muted-foreground">
+                  <p>등록된 북마크 데이터를 CSV 파일로 다운로드합니다.</p>
+                  <p className="mt-1">다운로드 받은 CSV 파일을 수정하여 북마크 데이터를 다시 등록할 수 있습니다.</p>
+                </div>
+              </div>
+            </div>
+            
             <Button
               //disabled={true}
-              variant="destructive"
-              onClick={handleRegisterCSV}
-              disabled={!file || isProcessing}
-              className="flex items-center gap-2 cursor-pointer"
+              variant="outline"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white border-0 hover:from-blue-600 hover:to-purple-600 transition-all duration-200 cursor-pointer"
             >
-              {isProcessing ? "처리 중..." : "CSV 데이터등록"}
+              <Download className="w-4 h-4 mr-2" />
+              CSV 데이터 다운로드
             </Button>
-          </div>
+          </CardContent>
+        </Card>
 
-          {csvData.length > 0 && (
+        {/* CSV 템플릿 생성 카드 */}
+        <Card className="relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-full -translate-y-16 translate-x-16"></div>
+          <CardHeader className="relative">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-amber-100 dark:bg-amber-900/20 rounded-lg">
+                <FileSpreadsheet className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <div>
+                <CardTitle className="text-xl">CSV 템플릿 생성</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">구글 스프레드시트로 CSV 템플릿 생성</p>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <Info className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-muted-foreground">
+                  <p>구글 스프레드시트를 사용하여 CSV 템플릿을 쉽게 생성할 수 있습니다.</p>
+                  <p className="mt-1">스프레드시트에서 데이터를 입력하고 CSV로 내보내기만 하면 됩니다.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                <span className="text-sm font-medium">사용 방법</span>
+              </div>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex items-start gap-2">
+                  <span className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 px-2 py-1 rounded text-xs font-medium">1</span>
+                  <span>아래 버튼을 클릭하여 CSV생성 스프레드시트를 복사합니다</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 px-2 py-1 rounded text-xs font-medium">2</span>
+                  <span>스프레드시트에 북마크 데이터를 입력합니다</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 px-2 py-1 rounded text-xs font-medium">3</span>
+                  <span>매크로 실행 → CSV다운로드를 클릭합니다</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-amber-800 dark:text-amber-200">
+                  <p className="font-medium mb-1">⚠️ 인증 안내</p>
+                  <div className="text-xs space-y-1">
+                    <p>• 최초 실행시 구글 인증이 필요합니다 (10초 정도 소요)</p>
+                    <p>• "확인되지 않은 앱" 경고시 → "고급" → "안전하지 않은 앱으로 이동" 클릭 (안전한 템플릿이므로 걱정하지 마세요)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
             <div className="space-y-2">
-              <h3 className="font-medium">CSV 데이터 미리보기</h3>
-              <div className="max-h-60 overflow-auto border rounded-md p-2">
+              <Button
+                variant="outline"
+                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 hover:from-amber-600 hover:to-orange-600 transition-all duration-200 cursor-pointer"
+                onClick={() => {
+                  // 구글 스프레드시트 템플릿 URL (실제 URL로 교체 필요)
+                  const templateUrl = "https://drive.google.com/drive/u/0/folders/14hNa4byDZWnatHqTfdXEaM1-Pq_wZ3CK";
+                  window.open(templateUrl, '_blank');
+                }}
+              >
+                <FileSpreadsheet className="w-4 h-4 mr-2" />
+                구글 스프레드시트 템플릿 열기
+              </Button>
+              
+              <div className="text-center">
+                <button
+                  type="button"
+                  className="text-xs text-muted-foreground hover:text-foreground underline"
+                  onClick={() => {
+                    // CSV 템플릿 다운로드 로직
+                    const csvTemplate = `title,url,category,tags,memo
+예시 북마크,https://example.com,개발,javascript,react,메모 예시
+`;
+                    const blob = new Blob([csvTemplate], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', 'bookmarks_template.csv');
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
+                >
+                  또는 CSV 템플릿 직접 다운로드
+                </button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* CSV 데이터 등록 카드 */}
+        <Card className="relative overflow-hidden md:col-span-2">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-full -translate-y-16 translate-x-16"></div>
+          <CardHeader className="relative">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
+                <Upload className="w-5 h-5 text-green-600 dark:text-green-400" />
+              </div>
+              <div>
+                <CardTitle className="text-xl">데이터 가져오기</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">CSV 파일에서 북마크 데이터 등록</p>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-3">
+                <label className="text-sm font-medium flex items-center gap-2">
+                  <FileSpreadsheet className="w-4 h-4" />
+                  파일 선택
+                </label>
+                <div className="relative">
+                  <Input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".csv"
+                    onChange={handleFileUpload}
+                    disabled={isProcessing}
+                    className="file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                  />
+                  {file && (
+                    <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className="font-medium">{file.name}</span>
+                      <span className="text-xs">({(file.size / 1024).toFixed(1)} KB)</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <label className="text-sm font-medium flex items-center gap-2">
+                  <Info className="w-4 h-4" />
+                  CSV 형식 안내
+                </label>
+                <div className="bg-muted/30 rounded-lg p-3 text-sm text-muted-foreground">
+                  <div className="space-y-1">
+                    <p><strong>필수 컬럼 : url - 북마크 URL</strong></p>
+                    <p><strong>임의 컬럼</strong></p>
+                    <ul className="list-disc list-inside space-y-1 ml-2">
+                      <li>title - 북마크 제목 (미입력시 자동 추출)</li>
+                      <li>category - 카테고리</li>
+                      <li>tags - 태그 (쉼표로 구분)</li>
+                      <li>memo - 메모</li>
+                      <li>description - 설명 (미입력시 자동 추출)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {file && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setFile(null);
+                    setCsvData([]);
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = "";
+                    }
+                  }}
+                  disabled={isProcessing}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  초기화
+                </Button>
+              )}
+              
+              <Button
+                disabled={true}
+                variant="default"
+                onClick={handleRegisterCSV}
+                className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 cursor-pointer"
+              >
+                <Database className="w-4 h-4" />
+                {isProcessing ? "처리 중..." : "CSV 데이터 등록"}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* CSV 데이터 미리보기 */}
+      {csvData.length > 0 && (
+        <Card className="mt-6">
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-amber-100 dark:bg-amber-900/20 rounded-lg">
+                <FileSpreadsheet className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <div>
+                <CardTitle className="text-xl">CSV 데이터 미리보기</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">
+                  총 {csvData.length}행, {csvData[0]?.length || 0}열
+                </p>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="border rounded-lg overflow-hidden">
+              <div className="max-h-80 overflow-auto">
                 <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b">
+                  <thead className="bg-muted/50 sticky top-0">
+                    <tr>
                       {csvData[0]?.map((header, index) => (
-                        <th key={index} className="text-left p-2 font-medium">
+                        <th key={index} className="text-left p-3 font-medium text-foreground">
                           {header}
                         </th>
                       ))}
@@ -349,9 +536,9 @@ export default function SettingsTemp2025() {
                   </thead>
                   <tbody>
                     {csvData.slice(1, 6).map((row, rowIndex) => (
-                      <tr key={rowIndex} className="border-b">
+                      <tr key={rowIndex} className="border-t hover:bg-muted/30 transition-colors">
                         {row.map((cell, cellIndex) => (
-                          <td key={cellIndex} className="p-2">
+                          <td key={cellIndex} className="p-3 text-muted-foreground">
                             {cell}
                           </td>
                         ))}
@@ -359,19 +546,18 @@ export default function SettingsTemp2025() {
                     ))}
                   </tbody>
                 </table>
-                {csvData.length > 6 && (
-                  <p className="text-xs text-muted-foreground mt-2">
+              </div>
+              {csvData.length > 6 && (
+                <div className="p-3 bg-muted/30 border-t">
+                  <p className="text-xs text-muted-foreground text-center">
                     ... 및 {csvData.length - 6}개 행 더
                   </p>
-                )}
-              </div>
-              <p className="text-sm text-muted-foreground">
-                총 {csvData.length}행, {csvData[0]?.length || 0}열
-              </p>
+                </div>
+              )}
             </div>
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
