@@ -1,0 +1,2 @@
+url,title,category,tags,memo,description
+https://example.com(필수입력),예시 북마크(임의:미입력시 자동추출),개발(임의),"javascript,react(임의)",메모 예시(임의),설명 예시(임의:미입력시 자동추출)
