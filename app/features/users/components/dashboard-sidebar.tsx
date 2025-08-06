@@ -55,6 +55,7 @@ const data = {
     },
   ],
   navMain: [
+    /*
     {
       title: "Dashboard",
       url: "#",
@@ -117,6 +118,7 @@ const data = {
         },
       ],
     },
+    */
     {
       title: "Settings",
       url: "#",
@@ -124,16 +126,18 @@ const data = {
       items: [
         {
           title: "Workspace",
-          url: "#",
+          url: "/settings",
         },
         {
-          title: "Team",
-          url: "#",
+          title: "Data",
+          url: "/settings/data",
         },
+        /*
         {
           title: "Integrations",
           url: "#",
         },
+        */
       ],
     },
   ],
@@ -196,6 +200,7 @@ export default function DashboardSidebar({
               <span className="text-base">User Account</span>
             </Link>
           </Button>
+          {/*
           <Button
             variant={isSettings ? "secondary" : "ghost"}
             asChild
@@ -208,10 +213,9 @@ export default function DashboardSidebar({
               <span className="text-base">Settings</span>
             </Link>
           </Button>
+          */}
         </nav>
-        {/*
         <SidebarMain items={data.navMain} />
-        */}
         {/*
         <SidebarProjects projects={data.projects} />
         */}
