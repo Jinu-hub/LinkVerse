@@ -1,4 +1,49 @@
 
+export async function getBookmarkData() {
+  const res = await fetch("/api/bookmarks/get");
+  if (!res.ok) {
+    throw new Error("Failed to get bookmarks");
+  }
+  const { bookmarksWithTagsMemo } = await res.json();
+  return bookmarksWithTagsMemo;
+}
+
+export async function prepareCSVData(bookmarksData: any[]) {
+    const header = ["url", "title", "category", "tags", "memo", "description"];
+    
+    const escapeCSVField = (field: string): string => {
+        if (!field) return '';
+        // 줄바꿈이나 쉼표가 있으면 따옴표로 감싸고, 내부 따옴표는 이스케이프
+        const needsQuotes = field.includes(',') || field.includes('\n') || field.includes('"');
+        if (needsQuotes) {
+            return `"${field.replace(/"/g, '""')}"`;
+        }
+        return field;
+    };
+    
+    const rows = bookmarksData.map(bookmark => [
+        escapeCSVField(bookmark.url || ''),
+        escapeCSVField(bookmark.title || ''),
+        escapeCSVField(bookmark.categoryPathString || ''),
+        bookmark.tags && bookmark.tags.length > 0 ? `"${bookmark.tags.join(',')}"` : '',
+        escapeCSVField(bookmark.memo || ''),
+        escapeCSVField(bookmark.description || '')
+    ]);
+    
+    const allRows = [header, ...rows];
+    return allRows.map(row => row.join(",")).join("\n");
+}
+
+export async function downloadCSV(csvData: string) {
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "bookmarks.csv";
+    a.click();
+}
+
+
 export async function addCategory({
     name,
     parent_id,
