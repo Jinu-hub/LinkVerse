@@ -6,7 +6,7 @@ import { Button } from "~/core/components/ui/button";
 import { Input } from "~/core/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "~/core/components/ui/card";
 import { toast } from "sonner";
-import { addCategory, bulkAddBookmark, prepareBookmarksFromCSV } from "../lib/actions";
+import { addCategory, bulkAddBookmark, downloadCSV, getBookmarkData, prepareBookmarksFromCSV, prepareCSVData } from "../lib/actions";
 import { 
   Download, 
   Upload, 
@@ -118,6 +118,21 @@ export default function SettingsTemp2025() {
     } catch (error) {
       console.error('CSV 처리 오류:', error);
       toast.error('CSV 파일 처리 중 오류가 발생했습니다.');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleDownloadCSV = async () => {
+    setIsProcessing(true);
+    try {
+      const bookmarksWithTagsMemo = await getBookmarkData();
+      const csvData = await prepareCSVData(bookmarksWithTagsMemo);
+      downloadCSV(csvData);
+      toast.success('CSV 파일이 성공적으로 다운로드되었습니다.');
+    } catch (error) {
+      console.error('CSV 다운로드 오류:', error);
+      toast.error('CSV 파일 다운로드 중 오류가 발생했습니다.');
     } finally {
       setIsProcessing(false);
     }
@@ -301,12 +316,22 @@ export default function SettingsTemp2025() {
             </div>
             
             <Button
-              //disabled={true}
+              disabled={isProcessing}
               variant="outline"
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white border-0 hover:from-blue-600 hover:to-purple-600 transition-all duration-200 cursor-pointer"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white border-0 hover:from-blue-600 hover:to-purple-600 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleDownloadCSV}
             >
-              <Download className="w-4 h-4 mr-2" />
-              CSV 데이터 다운로드
+              {isProcessing ? (
+                <>
+                  <div className="w-4 h-4 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  처리 중...
+                </>
+              ) : (
+                <>
+                  <Download className="w-4 h-4 mr-2" />
+                  CSV 데이터 다운로드
+                </>
+              )}
             </Button>
           </CardContent>
         </Card>
@@ -376,7 +401,7 @@ export default function SettingsTemp2025() {
                 className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 hover:from-amber-600 hover:to-orange-600 transition-all duration-200 cursor-pointer"
                 onClick={() => {
                   // 구글 스프레드시트 템플릿 URL (실제 URL로 교체 필요)
-                  const templateUrl = "https://drive.google.com/drive/u/0/folders/14hNa4byDZWnatHqTfdXEaM1-Pq_wZ3CK";
+                  const templateUrl = "https://drive.google.com/drive/u/0/folders/1NXrNh3bADCSi1NguYXAFwpkGNgeAOiy1";
                   window.open(templateUrl, '_blank');
                 }}
               >
