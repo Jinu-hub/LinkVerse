@@ -48,6 +48,7 @@ export default [
       route("/top", "features/bookmark/api/bookmarks-top.tsx"),
       route("/recent", "features/bookmark/api/bookmarks-recent.tsx"),
       route("/bulk-add", "features/bookmark/api/bookmark-bulk-add.tsx"),
+      route("/category-bulk-add", "features/bookmark/api/category-bulk-add.tsx"),
       route("/get", "features/bookmark/api/bookmark-get.tsx"),
     ]),
   ]),
