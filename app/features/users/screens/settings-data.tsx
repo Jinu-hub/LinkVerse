@@ -6,7 +6,7 @@ import { Button } from "~/core/components/ui/button";
 import { Input } from "~/core/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "~/core/components/ui/card";
 import { toast } from "sonner";
-import { addCategory, bulkAddBookmark, downloadCSV, getBookmarkData, prepareBookmarksFromCSV, prepareCSVData } from "../lib/actions";
+import { bulkAddBookmark, bulkAddCategory, buildCategoryMapFromBulkResults, downloadCSV, getBookmarkData, prepareBookmarksFromCSV, prepareCSVData, prepareCategoriesFromCSV, validateParsedCSV } from "../lib/actions";
 import { 
   Download, 
   Upload, 
@@ -145,97 +145,43 @@ export default function SettingsTemp2025() {
     try {
       const text = await file.text();
       const parsedData = parseCSV(text);
-      
-      // 2행부터 카테고리 추출 (인덱스 1부터)
-      const categories = parsedData.slice(1).map(row => row[1]).filter(category => category && category.trim() !== '');
-      
-      // 중복 제거 및 카테고리 정리
-      const uniqueCategories = [...new Set(categories)];
-      
-      // 카테고리 계층 구조 분석 및 시뮬레이션
-      const categoryMap: Record<string, { id: number, level: number, parent_id: number | null }> = {};
-      
-      // 카테고리 레벨 등록 함수
-      const registerCategoryLevel = async (
-        level: number,
-        categories: string[],
-        categoryMap: Record<string, { id: number, level: number, parent_id: number | null }>,
-        getParentInfo: (parts: string[]) => { parentId: number | null, categoryName: string, parentPath: string }
-      ) => {
-        console.log(`\n=== ${level}단계: 레벨 ${level} 카테고리 등록 ===`);
-        const levelCategories = new Set<string>();
-        //let currentParentId = 0;
-        
-        for (const category of categories) {
-          const parts = category.split('>').map(part => part.trim());
-          if (parts.length >= level) {
-            const { parentId, categoryName, parentPath } = getParentInfo(parts);
-            const fullPath = parentPath ? `${parentPath} > ${categoryName}` : categoryName;
-            
-            if (!levelCategories.has(fullPath)) {
-              levelCategories.add(fullPath);
-              
-              if (parentId) {
-                
-                const newCategory = await addCategory({
-                  name: categoryName,
-                  parent_id: parentId,
-                  level: level,
-                });
 
-                categoryMap[fullPath] = {
-                  id: newCategory.category_id,
-                  level: level,
-                  parent_id: parentId
-                };
-                
-                const parentDisplay = parentPath ? `${parentPath.split(' > ').pop()}` : 'null';
-                console.log(`등록: ${categoryName} (ID: ${newCategory.category_id}, 레벨: ${level}, 부모: ${parentDisplay} (ID: ${parentId}))`);
-                //tempCategoryId++;
-              }
+      // CSV Validate
+      const { errors } = validateParsedCSV(parsedData);
+      if (errors.length > 0) {
+        const maxShow = 5;
+        const shown = errors.slice(0, maxShow);
+        const rest = errors.length - shown.length;
+      
+        toast.error(
+          <div className="text-left whitespace-pre-wrap">
+            {`CSV 오류 총 ${errors.length}건\n` +
+              shown.map(e => `🚨 row ${e.row} [${e.field}] - ${e.message}`).join('\n') +
+              (rest > 0 ? `\n그 외 ${rest}건의 에러가 확인되었습니다.` : '')
             }
-          }
-        }
-      };
-      
-      // 1단계: 최상위 카테고리 등록 (레벨 1)
-      const rootCategories = [...new Set(uniqueCategories.map(cat => cat.split('>')[0].trim()))];
-      console.log('=== 1단계: 최상위 카테고리 등록 ===');
-      //let tempCategoryId = 1;
-      for (const rootCat of rootCategories) {
-        const newCategory = await addCategory({
-          name: rootCat,
-          parent_id: 0, 
-          level: 1,
-        });
-        categoryMap[rootCat] = {
-          id: newCategory.category_id,
-          level: 1,
-          parent_id: null
-        };
-        console.log(`등록: ${rootCat} (ID: ${newCategory.category_id}, 레벨: 1, 부모: null)`);
-        //tempCategoryId++;
+          </div>
+        );
+        setIsProcessing(false);
+        return;
       }
+      console.log("=== CSV Validate 완료 ===");
+      console.log("=== 카테고리 일괄 등록 시작 ===");
       
-      // 2단계: 레벨 2 카테고리 등록
-      await registerCategoryLevel(2, uniqueCategories, categoryMap, (parts) => ({
-        parentId: categoryMap[parts[0]]?.id || null,
-        categoryName: parts[1],
-        parentPath: parts[0]
-      }));
-      
-      // 3단계: 레벨 3 카테고리 등록
-      await registerCategoryLevel(3, uniqueCategories, categoryMap, (parts) => ({
-        parentId: categoryMap[`${parts[0]} > ${parts[1]}`]?.id || null,
-        categoryName: parts[2],
-        parentPath: `${parts[0]} > ${parts[1]}`
-      }));
-      
-      console.log('\n=== 최종 카테고리 맵 ===');
-      console.log(categoryMap);
-      
-      toast.success(`카테고리 등록 완료: ${Object.keys(categoryMap).length}개 카테고리 등록됨`);
+      // 1) 카테고리 경로 준비 (3번째 열 → index 2)
+      const categoryPaths = prepareCategoriesFromCSV(parsedData);
 
+      // 2) 카테고리 일괄 등록 (부모 자동解決)
+      const categoryBulkResult = await bulkAddCategory(categoryPaths);
+
+      // 3) 북마크 등록用 categoryMap 構築
+      const categoryMap: Record<string, { id: number, level: number, parent_id: number | null }> = buildCategoryMapFromBulkResults(
+        categoryBulkResult.results
+      );
+
+      console.log(`=== 카태고리 일괄 등록 완료 === ${Object.keys(categoryMap).length}개 카테고리 등록됨`);
+      
+      toast.success(`카테고리 준비 완료: ${Object.keys(categoryMap).length}개 경로 처리됨 (신규 ${categoryBulkResult.created} / 기존 ${categoryBulkResult.existed})`);
+      console.log("categoryMap", categoryMap);
       console.log('=== 북마크 등록 시작 ===');
 
       // actions.ts의 함수로 북마크 준비
@@ -251,7 +197,7 @@ export default function SettingsTemp2025() {
           bookmarks.map(bookmark => ({
             title: bookmark.title,
             url: bookmark.url,
-            categoryId: bookmark.category_id,
+            categoryId: bookmark.category_id || null,
             tags: bookmark.tags,
             memo: bookmark.memo,
             description: bookmark.description,
@@ -286,7 +232,6 @@ export default function SettingsTemp2025() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground mb-2">데이터 관리</h1>
         <p className="text-muted-foreground">북마크 데이터를 CSV 파일로 내보내고 가져올 수 있습니다.</p>
-        <p className="text-muted-foreground">** 현재 개발중입니다. 추후 업데이트 예정입니다. **</p>
       </div>
       
       <div className="grid gap-6 ">
@@ -517,13 +462,22 @@ export default function SettingsTemp2025() {
               )}
               
               <Button
-                disabled={true}
+                disabled={isProcessing}
                 variant="default"
                 onClick={handleRegisterCSV}
-                className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 cursor-pointer"
+                className="flex items-center w-full gap-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 cursor-pointer"
               >
-                <Database className="w-4 h-4" />
-                {isProcessing ? "처리 중..." : "CSV 데이터 등록"}
+                {isProcessing ? (
+                  <>
+                    <div className="w-4 h-4 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    처리 중...
+                  </>
+                ) : (
+                  <>
+                    <Database className="w-4 h-4 mr-2" />
+                    CSV 데이터 등록
+                  </>
+                )}
               </Button>
             </div>
           </CardContent>
