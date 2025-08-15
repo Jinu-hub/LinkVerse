@@ -16,7 +16,9 @@ import {
   FileSpreadsheet,
   CheckCircle,
   AlertCircle,
-  Info
+  Info,
+  Clock,
+  Puzzle
 } from "lucide-react";
 
 export const meta: Route.MetaFunction = () => {
@@ -390,7 +392,7 @@ export default function SettingsTemp2025() {
                 <Upload className="w-5 h-5 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <CardTitle className="text-xl">데이터 가져오기</CardTitle>
+                <CardTitle className="text-xl">데이터 가져오기 (CSV)</CardTitle>
                 <p className="text-sm text-muted-foreground mt-1">CSV 파일에서 북마크 데이터 등록</p>
               </div>
             </div>
@@ -462,7 +464,7 @@ export default function SettingsTemp2025() {
               )}
               
               <Button
-                disabled={isProcessing}
+                disabled={!file || isProcessing}
                 variant="default"
                 onClick={handleRegisterCSV}
                 className="flex items-center w-full gap-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 cursor-pointer"
@@ -482,9 +484,64 @@ export default function SettingsTemp2025() {
             </div>
           </CardContent>
         </Card>
+
+        {/* 데이터 가져오기 (HTML) */}
+        <Card className="relative overflow-hidden md:col-span-2 opacity-60">
+          <div className="absolute inset-0 bg-muted/20 rounded-lg"></div>
+          <CardHeader className="relative">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-muted rounded-lg">
+                <Upload className="w-5 h-5 text-muted-foreground" />
+              </div>
+              <div>
+                <CardTitle className="text-xl">데이터 가져오기 (HTML)</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">브라우저에서 내보낸 HTML 파일에서 북마크 데이터 등록</p>
+                <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-full">
+                  <Clock className="w-3 h-3" />
+                  개발 예정
+                </div>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="relative space-y-4">
+            <div className="text-center py-8 text-muted-foreground">
+              <FileText className="w-12 h-12 mx-auto mb-3 opacity-50" />
+              <p className="text-sm">HTML 북마크 가져오기 기능은</p>
+              <p className="text-sm font-medium">추후 출시 예정입니다</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 데이터 연동 (Google Extension) */}
+        <Card className="relative overflow-hidden md:col-span-2 opacity-60">
+          <div className="absolute inset-0 bg-muted/20 rounded-lg"></div>
+          <CardHeader className="relative">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-muted rounded-lg">
+                <Upload className="w-5 h-5 text-muted-foreground" />
+              </div>
+              <div>
+                <CardTitle className="text-xl">데이터 연동 (Google Extension)</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">Google Extension을 사용하여 북마크 데이터를 연동합니다</p>
+                <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-full">
+                  <Clock className="w-3 h-3" />
+                  개발 예정
+                </div>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="relative space-y-4">
+            <div className="text-center py-8 text-muted-foreground">
+              <Puzzle className="w-12 h-3 mx-auto mb-3 opacity-50" />
+              <p className="text-sm">Google Extension 연동 기능은</p>
+              <p className="text-sm font-medium">추후 출시 예정입니다</p>
+            </div>
+          </CardContent>
+        </Card>
+
       </div>
 
-      {/* CSV 데이터 미리보기 */}
+      {/* CSV 데이터 미리보기
       {csvData.length > 0 && (
         <Card className="mt-6">
           <CardHeader>
@@ -537,6 +594,7 @@ export default function SettingsTemp2025() {
           </CardContent>
         </Card>
       )}
+      */}
     </div>
   );
 }
