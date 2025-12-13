@@ -104,13 +104,30 @@ export async function action({ request }: Route.LoaderArgs) {
     const { to, data: emailData, template } = messageData;
     // Process different email templates
     if (template === "welcome") {
+      // Extract username from raw_user_meta_data
+      // For email/phone auth: raw_user_meta_data.name
+      // For OAuth auth: raw_user_meta_data.full_name
+      const rawUserMetaData = (emailData as any)?.raw_user_meta_data;
+      const username = 
+        rawUserMetaData?.name || 
+        rawUserMetaData?.full_name || 
+        "user";
+      
+      // Log for debugging if username fallback is used
+      if (!rawUserMetaData?.name && !rawUserMetaData?.full_name) {
+        console.log("[cron] Username not found in raw_user_meta_data, using fallback:", {
+          rawUserMetaData,
+          email: to,
+        });
+      }
+      
       const { error } = await resendClient.emails.send({
         // Make sure this domain is the Resend domain.
         from: "LinkVerse <hello@mail.linkverse.app>",
         to: [to],
         subject: "Welcome to LinkVerse!",
         react: WelcomeEmail({
-          username: (emailData as any)?.raw_user_meta_data?.user_name || "user",
+          username: username,
         }),
       });
       
