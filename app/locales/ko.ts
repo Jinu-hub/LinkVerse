@@ -6,9 +6,9 @@ const ko: Translation = {
     subtitle: "링크가 지식이 되는 공간",
   },
   navigation: {
-    kr: "한국어",
-    //es: "스페인어",
     en: "영어",
+    ja: "일본어",
+    ko: "한국어",
   },
   join: {
     heroTitle: "스마트한 북마크 정리",

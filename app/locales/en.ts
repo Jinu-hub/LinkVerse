@@ -7,8 +7,8 @@ const en: Translation = {
   },
   navigation: {
     en: "English",
-    kr: "Korean",
-    //es: "Spanish",
+    ja: "Japanese",
+    ko: "Korean",
   },
   join: {
     heroTitle: "Smarter bookmark organizing",

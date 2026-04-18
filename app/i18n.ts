@@ -8,10 +8,16 @@
 
 /**
  * List of supported languages in the application
- * Currently supports English (en), Spanish (es), and Korean (ko)
+ * Currently supports English (en), Japanese (ja), and Korean (ko)
  * Using 'as const' to create a readonly tuple type for type safety
  */
-export const supportedLngs = ["en", "es", "ko"] as const;
+export const supportedLngs = ["en", "ja", "ko"] as const;
+
+/** BCP 47-style codes listed in `supportedLngs` */
+export type SupportedLng = (typeof supportedLngs)[number];
+
+/** Must be one of `supportedLngs` */
+const fallbackLng: SupportedLng = "en";
 
 /**
  * Default i18next configuration
@@ -19,14 +25,8 @@ export const supportedLngs = ["en", "es", "ko"] as const;
  * translation behavior throughout the application.
  */
 export default {
-  // List of languages the application supports
   supportedLngs,
-  
-  // Fallback language when user's preferred language is not supported
-  // English is used as the default fallback
-  fallbackLng: "en",
-  
-  // The default namespace for translations
-  // All general translations are stored in the 'common' namespace
+  fallbackLng,
+  /** General UI copy lives in this namespace */
   defaultNS: "common",
 };

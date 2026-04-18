@@ -5,8 +5,8 @@ export type Translation = {
   };
   navigation: {
     en: string;
-    kr: string;
-    //es: string;
+    ja: string;
+    ko: string;
   };
   join: {
     heroTitle: string;
