@@ -1,23 +1,26 @@
 // app/features/landing/components/FeatureHighlights.tsx
 
 import { BookMarked, Tags, FileText } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 export default function FeatureHighlights() {
+  const { t } = useTranslation()
+
   const features = [
     {
       icon: <BookMarked className="w-6 h-6 text-blue-600 dark:text-blue-400" />,
-      title: "북마크를 정리하고 분류",
-      desc: "태그와 카테고리로 원하는 정보를 빠르게 찾을 수 있어요.",
+      title: t("home.features.organizeTitle"),
+      desc: t("home.features.organizeDesc"),
     },
     {
       icon: <Tags className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />,
-      title: "자주 사용하는 항목 추천",
-      desc: "클릭 횟수 기반으로 나만의 Top 5를 자동으로 추천해줘요.",
+      title: t("home.features.recommendationsTitle"),
+      desc: t("home.features.recommendationsDesc"),
     },
     {
       icon: <FileText className="w-6 h-6 text-purple-600 dark:text-purple-400" />,
-      title: "메모로 맥락까지 저장",
-      desc: "링크에 대한 생각, 요약, 맥락을 간단한 메모로 남겨보세요.",
+      title: t("home.features.memoTitle"),
+      desc: t("home.features.memoDesc"),
     },
   ]
 
