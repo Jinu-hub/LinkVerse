@@ -112,7 +112,7 @@ export default function LangSwitcher({ forcedLanguage, disabled }: LangSwitcherP
       <DropdownMenuContent align="end">
         {/* Korean language option */}
         <DropdownMenuItem onClick={() => handleLocaleChange("ko")}>
-          KR {t("navigation.kr")} {/* Translated name of Korean */}
+          KR {t("navigation.ko")} {/* Translated name of Korean */}
         </DropdownMenuItem>
         
         {/* Japanese language option */}
