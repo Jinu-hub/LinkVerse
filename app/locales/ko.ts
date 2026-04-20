@@ -57,6 +57,93 @@ const ko: Translation = {
         "복잡한 정리는 이제 그만. 북마크의 새로운 방식, 지금 경험해보세요.",
     },
   },
+  orbit: {
+    meta: {
+      title: "지누 · LinkVerse",
+      description:
+        "지누가 운영하는 LinkVerse — 온라인으로 살아가는 사람들을 위한 도구를 만드는 플랫폼입니다. 북마크로 시작하고, 앞으로도 이어집니다.",
+      ogDescription:
+        "LinkVerse가 운영하는 서비스의 허브 — LinkVerse, NexLetter, Market Memory, 그리고 다음.",
+    },
+    diagram: {
+      ariaLabel: "LinkVerse 궤도 다이어그램",
+      placeholder: "More to come",
+    },
+    hero: {
+      badge: "독립 빌더 · LinkVerse 운영",
+      githubAriaLabel: "GitHub 프로필",
+      githubLabel: "GitHub",
+      headlineBefore: "안녕하세요, 저는 ",
+      headlineAfter: "입니다.",
+      introBeforeLink: "저는 ",
+      introAfterLink:
+        "를 운영하며, 그 위에서 여러 서비스를 만들고 있습니다.",
+      introSecondParagraph:
+        "각 서비스는 독립적으로 동작하면서도, 장기적으로는 하나의 흐름 안에서 연결되도록 하는 것이 목표입니다.",
+      identityServicesLabel: "연결된 서비스들",
+    },
+    manifesto: {
+      sectionTitle: "만드는 방식",
+      highlightKinds: "지식, 정보, 데이터, 맥락",
+      paragraph1Suffix: "을 더 잘 정리하고 연결하는 서비스를 만듭니다. ",
+      paragraph2BeforeHighlight:
+        "LinkVerse를 기반으로, 각 서비스는 독립적으로 동작하면서도 장기적으로는 ",
+      highlightEcosystem: "하나의 생태계로",
+      paragraph2Suffix: "확장됩니다.",
+      principle1Title: "정보를 구조로 바꿉니다",
+      principle1Body:
+        "흩어진 정보와 아이디어, 데이터를 더 잘 읽히고 활용할 수 있는 형태로 정리합니다.",
+      principle2Title: "서비스는 연결되며 확장됩니다",
+      principle2Body:
+        "각 서비스는 개별적으로 동작하지만, 장기적으로는 서로 연결되는 하나의 흐름 안에서 확장되도록 설계합니다.",
+      principle3Title: "작게 시작해 오래 갑니다",
+      principle3Body:
+        "처음은 작더라도, 정체성과 구조가 분명한 서비스로 오래 운영할 수 있게 만드는 것을 중요하게 생각합니다.",
+    },
+    servicesSection: {
+      kicker: "궤도 위의 서비스",
+      title: "LinkVerse의 궤도 위에 있는 서비스들.",
+    },
+    services: {
+      linkVerse: {
+        name: "LinkVerse",
+        tagline: "당신의 링크를 위한 우주.",
+        description:
+          "북마크에 태그와 메모를 더해, 흩어진 링크를 나만의 지식으로 재구성합니다.",
+      },
+      nexLetter: {
+        name: "NexLetter",
+        tagline: "뉴스레터를 다시 상상합니다.",
+        description:
+          "정보를 구조적으로 정리해 전달하는 AI 기반 리포팅 서비스입니다.",
+      },
+      marketMemory: {
+        name: "Market Memory",
+        tagline: "내 시장을 기억합니다.",
+        description:
+          "시장을 분석하고, 시간 속에 판단을 기록·리포팅하는 서비스입니다.",
+      },
+      moreComing: {
+        name: "더 많은 서비스가 합류합니다",
+        tagline: "더 많은 궤도가 곧 이어집니다.",
+        description:
+          "LinkVerse는 계속해서 새로운 서비스를 궤도에 올립니다. 다음은 무엇일까요?",
+      },
+    },
+    status: {
+      live: "운영 중",
+      beta: "베타",
+      soon: "출시 예정",
+    },
+    cardFooter: {
+      stayTuned: "곧 공개",
+      openService: "서비스 열기",
+    },
+    closing: {
+      title: "스캔해 주셔서 감사합니다.",
+      body: "봐 주셔서 감사합니다. LinkVerse와 그 궤도 위의 서비스들을 잠시나마 소개할 수 있어 기쁩니다. 좋은 하루 보내시고, 언젠가 다시 반갑게 연결되길 바랍니다.",
+    },
+  },
   navigation: {
     en: "영어",
     ja: "일본어",

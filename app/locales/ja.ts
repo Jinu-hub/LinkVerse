@@ -58,6 +58,94 @@ const ja: Translation = {
         "複雑な整理は卒業。新しいブックマーク体験をいますぐ。",
     },
   },
+  orbit: {
+    meta: {
+      title: "Jinu · LinkVerse",
+      description:
+        "Jinu が運営する LinkVerse — オンラインで生きる人のためのツールをつくるプラットフォーム。いまはブックマークから、これからも広がります。",
+      ogDescription:
+        "LinkVerse が運営するサービスのハブ — LinkVerse、NexLetter、Market Memory、そして次へ。",
+    },
+    diagram: {
+      ariaLabel: "LinkVerse の軌道ダイアグラム",
+      placeholder: "More to come",
+    },
+    hero: {
+      badge: "インディービルダー · LinkVerse オペレーター",
+      githubAriaLabel: "GitHub プロフィール",
+      githubLabel: "GitHub",
+      headlineBefore: "はじめまして、",
+      headlineAfter: "です。",
+      introBeforeLink: "私は ",
+      introAfterLink:
+        "を運営し、その上で複数のサービスをつくっています。",
+      introSecondParagraph:
+        "各サービスは独立して動きつつ、長期的にはひとつの流れの中でつながることを目指しています。",
+      identityServicesLabel: "つながるサービス",
+    },
+    manifesto: {
+      sectionTitle: "つくり方",
+      highlightKinds: "知識、情報、データ、文脈",
+      paragraph1Suffix:
+        "をよりよく整理し、つなぐサービスをつくっています。",
+      paragraph2BeforeHighlight:
+        "LinkVerse を土台に、各サービスは独立して動きながら、長期的には ",
+      highlightEcosystem: "ひとつのエコシステム",
+      paragraph2Suffix: "として広がるように設計しています。",
+      principle1Title: "情報を構造に変える",
+      principle1Body:
+        "散らばった情報やアイデア、データを、読みやすく使いやすい形に整えます。",
+      principle2Title: "サービスはつながり、広がる",
+      principle2Body:
+        "各サービスは個別に動きつつ、長期的には互いにつながるひとつの流れの中で拡張されるよう設計します。",
+      principle3Title: "小さく始めて、長く続ける",
+      principle3Body:
+        "最初は小さくても、アイデンティティと構造がはっきりしたサービスとして長く運営できることを大切にしています。",
+    },
+    servicesSection: {
+      kicker: "軌道上のサービス",
+      title: "LinkVerse の軌道にあるサービス。",
+    },
+    services: {
+      linkVerse: {
+        name: "LinkVerse",
+        tagline: "あなたのリンクのための宇宙。",
+        description:
+          "タグとメモを足して、散らばったリンクを自分だけの知識に組み立て直します。",
+      },
+      nexLetter: {
+        name: "NexLetter",
+        tagline: "ニュースレターを再発明。",
+        description:
+          "情報を構造的に整えて届ける、AI を使ったレポーティングサービスです。",
+      },
+      marketMemory: {
+        name: "Market Memory",
+        tagline: "マーケットを記憶する。",
+        description:
+          "市場を分析し、時間とともに判断を記録・レポートするサービスです。",
+      },
+      moreComing: {
+        name: "さらにサービスが加わります",
+        tagline: "新しい軌道が続々と。",
+        description:
+          "LinkVerse は新しいサービスを軌道に載せ続けます。次は何でしょう。",
+      },
+    },
+    status: {
+      live: "公開中",
+      beta: "ベータ",
+      soon: "近日公開",
+    },
+    cardFooter: {
+      stayTuned: "お楽しみに",
+      openService: "サービスを開く",
+    },
+    closing: {
+      title: "スキャンありがとうございます。",
+      body: "お読みいただきありがとうございます。LinkVerse とその軌道のサービスを少しでも紹介できてうれしいです。良い一日を。また気持ちよくつながれる日を楽しみにしています。",
+    },
+  },
   navigation: {
     en: "英語",
     ja: "日本語",

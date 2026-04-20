@@ -19,91 +19,83 @@ import type { Route } from "./+types/home-orbit";
 
 import { ArrowUpRight, Bookmark, Mail, Sparkles, Plus } from "lucide-react";
 import { motion } from "motion/react";
+import { useMemo } from "react";
 import { FaGithub } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { useTheme } from "remix-themes";
 
 import { Meteors } from "components/magicui/meteors";
 import { Particles } from "components/magicui/particles";
 import { cn } from "~/core/lib/utils";
+import i18next from "~/core/lib/i18next.server";
 
-export const meta: Route.MetaFunction = () => {
+export const meta: Route.MetaFunction = ({ data }) => {
   return [
-    { title: "Jinu · LinkVerse" },
+    { title: data?.metaTitle ?? "Jinu · LinkVerse" },
     {
       name: "description",
-      content:
-        "Jinu operates LinkVerse — a platform that builds tools for people who live online. Bookmarks today, more to come.",
+      content: data?.metaDescription ?? "",
     },
-    { property: "og:title", content: "Jinu · LinkVerse" },
+    { property: "og:title", content: data?.metaTitle ?? "Jinu · LinkVerse" },
     {
       property: "og:description",
-      content:
-        "The home of services operated by LinkVerse — LinkVerse, NexLetter, Market Memory and what's next.",
+      content: data?.metaOgDescription ?? "",
     },
   ];
 };
 
+export async function loader({ request }: Route.LoaderArgs) {
+  const t = await i18next.getFixedT(request);
+  return {
+    metaTitle: t("orbit.meta.title"),
+    metaDescription: t("orbit.meta.description"),
+    metaOgDescription: t("orbit.meta.ogDescription"),
+  };
+}
+
 type ServiceStatus = "live" | "beta" | "soon";
 
-type Service = {
-  name: string;
-  tagline: string;
-  description: string;
+type OrbitServiceId = "linkVerse" | "nexLetter" | "marketMemory" | "moreComing";
+
+type OrbitServiceRow = {
+  id: OrbitServiceId;
   href: string;
   status: ServiceStatus;
   icon: React.ReactNode;
   accent: string;
 };
 
-const SERVICES: Service[] = [
+const ORBIT_SERVICE_ROWS: OrbitServiceRow[] = [
   {
-    name: "LinkVerse",
-    tagline: "A universe for your links.",
-    description:
-      "북마크에 태그와 메모를 더해, 흩어진 링크를 나만의 지식으로 재구성합니다.",
+    id: "linkVerse",
     href: "https://linkverse.app",
     status: "live",
     icon: <Bookmark className="size-5" />,
     accent: "from-sky-500/20 via-indigo-500/10 to-transparent",
   },
   {
-    name: "NexLetter",
-    tagline: "Newsletters, re-imagined.",
-    description:
-      "정보를 구조적으로 정리해 전달하는 AI 기반 리포팅 서비스입니다.",
+    id: "nexLetter",
     href: "https://nexone.ink",
     status: "beta",
     icon: <Mail className="size-5" />,
     accent: "from-emerald-500/20 via-teal-500/10 to-transparent",
   },
   {
-    name: "Market Memory",
-    tagline: "Your market, remembered.",
-    description:
-      "시장을 분석하고, 시간 속에 판단을 기록, 리포팅하는 서비스입니다.",
+    id: "marketMemory",
     href: "#",
     status: "soon",
     icon: <Sparkles className="size-5" />,
     accent: "from-amber-500/20 via-orange-500/10 to-transparent",
   },
   {
-    name: "더 많은 서비스가 합류합니다",
-    tagline: "More orbits, coming.",
-    description:
-      "LinkVerse는 계속해서 새로운 서비스를 궤도에 올립니다. 다음은 무엇일까요?",
+    id: "moreComing",
     href: "#",
     status: "soon",
     icon: <Plus className="size-5" />,
     accent: "from-fuchsia-500/20 via-purple-500/10 to-transparent",
   },
 ];
-
-const STATUS_LABEL: Record<ServiceStatus, string> = {
-  live: "Live",
-  beta: "Beta",
-  soon: "Coming soon",
-};
 
 const STATUS_STYLE: Record<ServiceStatus, string> = {
   live:
@@ -154,20 +146,37 @@ function Background() {
  * - textAnchor 로 각도별 라벨 정렬이 쉬움
  */
 function OrbitDiagram() {
+  const { t } = useTranslation();
   // 각 위성의 궤도 각도(도)와 브랜드 색상.
   // 각도는 12시(위)를 기준으로 오른쪽이 0°, 시계방향 증가처럼 보이도록 배치.
   // LinkVerse 는 중심에 이미 존재하므로 위성에는 포함하지 않는다.
   // 그 자리에는 "앞으로 합류할 서비스" 슬롯을 점선 플레이스홀더로 암시한다.
-  const satellites: {
-    label: string;
-    angle: number;
-    color?: string;
-    placeholder?: boolean;
-  }[] = [
-    { label: "More to come", angle: -35, placeholder: true },
-    { label: "NexLetter", angle: 80, color: "#10b981" }, // emerald-500
-    { label: "Market Memory", angle: 200, color: "#f59e0b" }, // amber-500
-  ];
+  type DiagramSatellite =
+    | { label: string; angle: number; kind: "placeholder" }
+    | { label: string; angle: number; kind: "satellite"; color: string };
+
+  const satellites: DiagramSatellite[] = useMemo(
+    () => [
+      {
+        label: t("orbit.diagram.placeholder"),
+        angle: -35,
+        kind: "placeholder",
+      },
+      {
+        label: t("orbit.services.nexLetter.name"),
+        angle: 80,
+        kind: "satellite",
+        color: "#10b981",
+      },
+      {
+        label: t("orbit.services.marketMemory.name"),
+        angle: 200,
+        kind: "satellite",
+        color: "#f59e0b",
+      },
+    ],
+    [t],
+  );
   const orbitRadius = 130;
 
   return (
@@ -176,7 +185,7 @@ function OrbitDiagram() {
         viewBox="-260 -200 520 400"
         className="h-auto w-full text-muted-foreground"
         role="img"
-        aria-label="LinkVerse orbit diagram"
+        aria-label={t("orbit.diagram.ariaLabel")}
       >
         <defs>
           <linearGradient id="lv-center" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -256,7 +265,7 @@ function OrbitDiagram() {
           const labelDy = !isLeft && !isRight ? (y < 0 ? -18 : 22) : 4;
 
           return (
-            <g key={s.label} transform={`translate(${x} ${y})`}>
+            <g key={`${s.kind}-${s.angle}`} transform={`translate(${x} ${y})`}>
               {/* 점 + 후광 — 자기 위치에서 팝 인 */}
               <motion.g
                 initial={{ opacity: 0, scale: 0 }}
@@ -267,7 +276,7 @@ function OrbitDiagram() {
                   ease: "easeOut",
                 }}
               >
-                {s.placeholder ? (
+                {s.kind === "placeholder" ? (
                   <>
                     {/* 점선 원 + "+" 로 "앞으로 채워질 슬롯" 을 암시 */}
                     <circle
@@ -303,11 +312,13 @@ function OrbitDiagram() {
                 textAnchor={textAnchor}
                 dominantBaseline="middle"
                 className={cn(
-                  s.placeholder ? "fill-muted-foreground" : "fill-foreground",
+                  s.kind === "placeholder"
+                    ? "fill-muted-foreground"
+                    : "fill-foreground",
                 )}
                 fontSize="12"
-                fontWeight={s.placeholder ? 500 : 600}
-                fontStyle={s.placeholder ? "italic" : "normal"}
+                fontWeight={s.kind === "placeholder" ? 500 : 600}
+                fontStyle={s.kind === "placeholder" ? "italic" : "normal"}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.6 + i * 0.12 }}
@@ -323,6 +334,8 @@ function OrbitDiagram() {
 }
 
 export default function HomeOrbit() {
+  const { t } = useTranslation();
+
   return (
     <div className="relative isolate">
       <Background />
@@ -344,7 +357,7 @@ export default function HomeOrbit() {
               href="https://github.com/Jinu-hub"
               target="_blank"
               rel="noreferrer"
-              aria-label="GitHub profile"
+              aria-label={t("orbit.hero.githubAriaLabel")}
               className="group inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur transition-colors hover:border-foreground/40 hover:text-foreground"
             >
               <FaGithub className="size-3.5" />
@@ -372,16 +385,16 @@ export default function HomeOrbit() {
             transition={{ duration: 0.6, delay: 0.12 }}
             className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl"
           >
-            저는
+            {t("orbit.hero.introBeforeLink")}
             <Link
               to="#linkverse"
               className="font-semibold text-foreground underline-offset-4 hover:underline"
             >
               LinkVerse
             </Link>
-            {"를 "}를 운영하며, 그 위에서 여러 서비스를 만들고 있습니다.
+            {t("orbit.hero.introAfterLink")}
             <br />
-            각 서비스는 독립적으로 동작하면서도, 장기적으로는 하나의 흐름 안에서 연결되도록 하는것이 목표입니다
+            {t("orbit.hero.introSecondParagraph")}
           </motion.p>
 
           {/* identity chain */}
@@ -410,32 +423,46 @@ export default function HomeOrbit() {
           <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
           HOW I BUILD
           </h2>
-          <p className="mt-5 text-2xl font-semibold leading-snug md:text-3xl">
-            <span className="bg-gradient-to-r from-sky-500 to-indigo-500 bg-clip-text text-transparent">
-                지식, 정보, 데이터, 맥락
-            </span>을 더 잘 정리하고 연결하는 서비스를 만듭니다.{" "}
-            <br />
-            LinkVerse를 기반으로, {"각 서비스는 독립적으로 동작하면서도 장기적으로는"}
-            <span className="bg-gradient-to-r from-sky-500 to-indigo-500 bg-clip-text text-transparent">
-               하나의 생태계로
-            </span>확장됩니다 .{" "}
-          </p>
+          <div className="mt-5 space-y-3 text-left text-2xl font-semibold leading-snug md:text-3xl">
+            <p className="flex items-start gap-3">
+              <span
+                aria-hidden
+                className="mt-[0.58em] size-1.5 shrink-0 rounded-full bg-foreground/70"
+              />
+              <span>
+                <span className="bg-gradient-to-r from-sky-500 to-indigo-500 bg-clip-text text-transparent">
+                  {t("orbit.manifesto.highlightKinds")}
+                </span>
+                {t("orbit.manifesto.paragraph1Suffix")}
+              </span>
+            </p>
+            <p className="flex items-start gap-3 text-foreground/95">
+              <span
+                aria-hidden
+                className="mt-[0.58em] size-1.5 shrink-0 rounded-full bg-foreground/70"
+              />
+              <span>
+                {t("orbit.manifesto.paragraph2BeforeHighlight")}
+                <span className="bg-gradient-to-r from-sky-500 to-indigo-500 bg-clip-text text-transparent">
+                  {t("orbit.manifesto.highlightEcosystem")}
+                </span>
+                {t("orbit.manifesto.paragraph2Suffix")}
+              </span>
+            </p>
+          </div>
           <div className="mt-10 grid grid-cols-1 gap-6 text-left md:grid-cols-3">
             {[
               {
-                title: "정보를 구조로 바꿉니다",
-                body:
-                  "흩어진 정보와 아이디어, 데이터를 더 잘 읽히고 활용할 수 있는 형태로 정리합니다.",
+                title: t("orbit.manifesto.principle1Title"),
+                body: t("orbit.manifesto.principle1Body"),
               },
               {
-                title: "서비스는 연결되며 확장됩니다",
-                body:
-                  "각 서비스는 개별적으로 동작하지만, 장기적으로는 서로 연결되는 하나의 흐름 안에서 확장되도록 설계합니다.",
+                title: t("orbit.manifesto.principle2Title"),
+                body: t("orbit.manifesto.principle2Body"),
               },
               {
-                title: "작게 시작해 오래 갑니다",
-                body:
-                  "처음은 작더라도, 정체성과 구조가 분명한 서비스로 오래 운영할 수 있게 만드는 것을 중요하게 생각합니다.",
+                title: t("orbit.manifesto.principle3Title"),
+                body: t("orbit.manifesto.principle3Body"),
               },
             ].map((item) => (
               <div
@@ -459,14 +486,17 @@ export default function HomeOrbit() {
                 SERVICES IN ORBIT
               </h2>
               <p className="mt-2 text-2xl font-semibold md:text-3xl">
-                LinkVerse의 궤도 위에 있는 서비스들.
+                {t("orbit.servicesSection.title")}
               </p>
             </div>
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2">
-            {SERVICES.map((s, i) => {
+            {ORBIT_SERVICE_ROWS.map((s, i) => {
               const disabled = s.href === "#";
+              const name = t(`orbit.services.${s.id}.name`);
+              const tagline = t(`orbit.services.${s.id}.tagline`);
+              const description = t(`orbit.services.${s.id}.description`);
               const Card = (
                 <motion.div
                   initial={{ opacity: 0, y: 16 }}
@@ -496,10 +526,10 @@ export default function HomeOrbit() {
                       </span>
                       <div>
                         <h3 className="text-xl font-bold tracking-tight">
-                          {s.name}
+                          {name}
                         </h3>
                         <p className="text-xs text-muted-foreground">
-                          {s.tagline}
+                          {tagline}
                         </p>
                       </div>
                     </div>
@@ -509,17 +539,19 @@ export default function HomeOrbit() {
                         STATUS_STYLE[s.status],
                       )}
                     >
-                      {STATUS_LABEL[s.status]}
+                      {t(`orbit.status.${s.status}`)}
                     </span>
                   </div>
 
                   <p className="relative mt-5 text-sm leading-relaxed text-muted-foreground">
-                    {s.description}
+                    {description}
                   </p>
 
                   <div className="relative mt-6 flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">
-                      {disabled ? "Stay tuned" : "Open service"}
+                      {disabled
+                        ? t("orbit.cardFooter.stayTuned")
+                        : t("orbit.cardFooter.openService")}
                     </span>
                     <ArrowUpRight
                       className={cn(
@@ -533,7 +565,7 @@ export default function HomeOrbit() {
 
               if (disabled) {
                 return (
-                  <div key={s.name} aria-disabled>
+                  <div key={s.id} aria-disabled>
                     {Card}
                   </div>
                 );
@@ -541,7 +573,7 @@ export default function HomeOrbit() {
 
               return (
                 <Link
-                  key={s.name}
+                  key={s.id}
                   to={s.href}
                   target="_blank"
                   viewTransition
@@ -565,10 +597,7 @@ export default function HomeOrbit() {
               Thanks for scanning.
             </h3>
             <p className="relative mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
-              봐 주셔서 감사합니다. 
-              LinkVerse와 그 궤도 위의 서비스들을
-              잠시나마 소개할 수 있어 기쁩니다. 
-              좋은 하루 보내시고, 언젠가 다시 반갑게 연결되길 바랍니다.
+              {t("orbit.closing.body")}
             </p>
             {/*
             <div className="relative mt-6 flex flex-wrap items-center justify-center gap-3">

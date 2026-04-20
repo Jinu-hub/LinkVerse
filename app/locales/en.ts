@@ -58,6 +58,93 @@ const en: Translation = {
         "Leave messy piles behind—experience a smarter way to manage bookmarks.",
     },
   },
+  orbit: {
+    meta: {
+      title: "Jinu · LinkVerse",
+      description:
+        "Jinu operates LinkVerse — a platform that builds tools for people who live online. Bookmarks today, more to come.",
+      ogDescription:
+        "The home of services operated by LinkVerse — LinkVerse, NexLetter, Market Memory, and what's next.",
+    },
+    diagram: {
+      ariaLabel: "LinkVerse orbit diagram",
+      placeholder: "More to come",
+    },
+    hero: {
+      badge: "INDEPENDENT BUILDER · LinkVerse OPERATOR",
+      githubAriaLabel: "GitHub profile",
+      githubLabel: "GitHub",
+      headlineBefore: "Hi, I'm ",
+      headlineAfter: ".",
+      introBeforeLink: "I run ",
+      introAfterLink: " and build multiple services on top of it.",
+      introSecondParagraph:
+        "Each service operates independently, with the long-term goal of connecting them within one flow.",
+      identityServicesLabel: "connected services",
+    },
+    manifesto: {
+      sectionTitle: "HOW I BUILD",
+      highlightKinds: "Knowledge, information, data, and context",
+      paragraph1Suffix:
+        " — we build services that organize and connect them more clearly.",
+      paragraph2BeforeHighlight:
+        "Built on LinkVerse, each service operates independently, while over the long term they expand into ",
+      highlightEcosystem: "one ecosystem",
+      paragraph2Suffix: ".",
+      principle1Title: "Turn information into structure",
+      principle1Body:
+        "Scattered information, ideas, and data are shaped so they are easier to read and use.",
+      principle2Title: "Services connect and scale",
+      principle2Body:
+        "Each product stands on its own, yet is designed to grow inside one connected flow over time.",
+      principle3Title: "Start small, stay for the long run",
+      principle3Body:
+        "Even when small at first, clarity of identity and structure matters so the product can run for years.",
+    },
+    servicesSection: {
+      kicker: "SERVICES IN ORBIT",
+      title: "Services on LinkVerse's orbit.",
+    },
+    services: {
+      linkVerse: {
+        name: "LinkVerse",
+        tagline: "A universe for your links.",
+        description:
+          "Add tags and notes to bookmarks and reshape scattered links into your own knowledge.",
+      },
+      nexLetter: {
+        name: "NexLetter",
+        tagline: "Newsletters, re-imagined.",
+        description:
+          "An AI-powered reporting service that structures information for clearer delivery.",
+      },
+      marketMemory: {
+        name: "Market Memory",
+        tagline: "Your market, remembered.",
+        description:
+          "Analyze the market, record judgments over time, and report on what changed.",
+      },
+      moreComing: {
+        name: "More services are joining the orbit",
+        tagline: "More orbits, coming.",
+        description:
+          "LinkVerse keeps launching new services onto the orbit. What's next?",
+      },
+    },
+    status: {
+      live: "Live",
+      beta: "Beta",
+      soon: "Coming soon",
+    },
+    cardFooter: {
+      stayTuned: "Stay tuned",
+      openService: "Open service",
+    },
+    closing: {
+      title: "Thanks for scanning.",
+      body: "Thank you for your time. I'm glad I could briefly introduce LinkVerse and the services in its orbit. Have a great day — I hope we connect again soon.",
+    },
+  },
   navigation: {
     en: "English",
     ja: "Japanese",

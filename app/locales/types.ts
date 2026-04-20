@@ -46,6 +46,82 @@ export type Translation = {
       description: string;
     };
   };
+  /** `/orbit` 명함 QR 랜딩 — 화면 전용 문구 */
+  orbit: {
+    meta: {
+      title: string;
+      description: string;
+      ogDescription: string;
+    };
+    diagram: {
+      ariaLabel: string;
+      placeholder: string;
+    };
+    hero: {
+      badge: string;
+      githubAriaLabel: string;
+      githubLabel: string;
+      headlineBefore: string;
+      headlineAfter: string;
+      introBeforeLink: string;
+      introAfterLink: string;
+      introSecondParagraph: string;
+      identityServicesLabel: string;
+    };
+    manifesto: {
+      sectionTitle: string;
+      highlightKinds: string;
+      paragraph1Suffix: string;
+      paragraph2BeforeHighlight: string;
+      highlightEcosystem: string;
+      paragraph2Suffix: string;
+      principle1Title: string;
+      principle1Body: string;
+      principle2Title: string;
+      principle2Body: string;
+      principle3Title: string;
+      principle3Body: string;
+    };
+    servicesSection: {
+      kicker: string;
+      title: string;
+    };
+    services: {
+      linkVerse: {
+        name: string;
+        tagline: string;
+        description: string;
+      };
+      nexLetter: {
+        name: string;
+        tagline: string;
+        description: string;
+      };
+      marketMemory: {
+        name: string;
+        tagline: string;
+        description: string;
+      };
+      moreComing: {
+        name: string;
+        tagline: string;
+        description: string;
+      };
+    };
+    status: {
+      live: string;
+      beta: string;
+      soon: string;
+    };
+    cardFooter: {
+      stayTuned: string;
+      openService: string;
+    };
+    closing: {
+      title: string;
+      body: string;
+    };
+  };
   navigation: {
     en: string;
     ja: string;
