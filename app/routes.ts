@@ -53,6 +53,10 @@ export default [
     ]),
   ]),
 
+  layout("core/layouts/orbit-navigation.layout.tsx", [
+    route("/orbit", "features/home/screens/home-orbit.tsx"),
+  ]),
+
   layout("core/layouts/navigation.layout.tsx", [
     route("/auth/confirm", "features/auth/screens/confirm.tsx"),
     index("features/home/screens/home.tsx"),
