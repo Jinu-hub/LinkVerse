@@ -17,7 +17,7 @@
  */
 import type { Route } from "./+types/home-orbit";
 
-import { ArrowUpRight, Bookmark, Mail, Sparkles, Plus } from "lucide-react";
+import { ArrowUpRight, BookOpen, Bookmark, Mail, Sparkles, Plus } from "lucide-react";
 import { motion } from "motion/react";
 import { useMemo } from "react";
 import { FaGithub } from "react-icons/fa";
@@ -361,9 +361,19 @@ export default function HomeOrbit() {
               className="group inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur transition-colors hover:border-foreground/40 hover:text-foreground"
             >
               <FaGithub className="size-3.5" />
-              <span>GitHub</span>
+              <span>{t("orbit.hero.githubLabel")}</span>
               <ArrowUpRight className="size-3 opacity-60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
             </a>
+            <Link
+              to="/blog"
+              viewTransition
+              aria-label={t("orbit.hero.blogAriaLabel")}
+              className="group inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur transition-colors hover:border-foreground/40 hover:text-foreground"
+            >
+              <BookOpen className="size-3.5" />
+              <span>{t("orbit.hero.blogLabel")}</span>
+              <ArrowUpRight className="size-3 opacity-60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
+            </Link>
           </motion.div>
 
           <motion.h1
@@ -594,30 +604,24 @@ export default function HomeOrbit() {
               className="pointer-events-none absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-emerald-500/10"
             />
             <h3 className="relative text-2xl font-bold md:text-3xl">
-              Thanks for scanning.
+              {t("orbit.closing.title")}
             </h3>
             <p className="relative mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
               {t("orbit.closing.body")}
             </p>
-            {/*
+            <p className="relative mx-auto mt-3 max-w-lg text-xs leading-relaxed text-muted-foreground/90 md:text-sm">
+              {t("orbit.closing.blogHint")}
+            </p>
             <div className="relative mt-6 flex flex-wrap items-center justify-center gap-3">
               <Link
-                to="/linkverse"
+                to="/blog"
                 viewTransition
-                className="inline-flex h-10 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold text-background transition-colors hover:bg-foreground/90"
+                className="group inline-flex h-11 items-center gap-2 rounded-full border border-border bg-background/70 px-6 text-sm font-semibold text-foreground backdrop-blur transition-all hover:-translate-y-0.5 hover:border-foreground/70 hover:bg-background hover:shadow-md hover:shadow-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
               >
-                Try LinkVerse
-                <ArrowUpRight className="size-4" />
-              </Link>
-              <Link
-                to="/contact"
-                viewTransition
-                className="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-background/70 px-5 text-sm font-semibold text-foreground backdrop-blur transition-colors hover:bg-background"
-              >
-                Get in touch
+                {t("orbit.closing.blogCta")}
+                <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Link>
             </div>
-            */}
           </div>
         </section>
       </div>
