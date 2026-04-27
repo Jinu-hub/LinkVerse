@@ -74,6 +74,8 @@ const en: Translation = {
       badge: "INDEPENDENT BUILDER · LinkVerse OPERATOR",
       githubAriaLabel: "GitHub profile",
       githubLabel: "GitHub",
+      blogAriaLabel: "Visit blog",
+      blogLabel: "Blog",
       headlineBefore: "Hi, I'm ",
       headlineAfter: ".",
       introBeforeLink: "I run ",
@@ -143,6 +145,8 @@ const en: Translation = {
     closing: {
       title: "Thanks for scanning.",
       body: "Thank you for your time. I'm glad I could briefly introduce LinkVerse and the services in its orbit. Have a great day — I hope we connect again soon.",
+      blogHint: "The flow of ideas and experiments continues on the blog.",
+      blogCta: "Read the blog",
     },
   },
   navigation: {

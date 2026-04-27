@@ -74,6 +74,8 @@ const ja: Translation = {
       badge: "インディービルダー · LinkVerse オペレーター",
       githubAriaLabel: "GitHub プロフィール",
       githubLabel: "GitHub",
+      blogAriaLabel: "ブログへ移動",
+      blogLabel: "Blog",
       headlineBefore: "はじめまして、",
       headlineAfter: "です。",
       introBeforeLink: "私は ",
@@ -144,6 +146,8 @@ const ja: Translation = {
     closing: {
       title: "スキャンありがとうございます。",
       body: "お読みいただきありがとうございます。LinkVerse とその軌道のサービスを少しでも紹介できてうれしいです。良い一日を。また気持ちよくつながれる日を楽しみにしています。",
+      blogHint: "考えたことや試行錯誤の流れは、ブログでも続いています。",
+      blogCta: "ブログを見る",
     },
   },
   navigation: {

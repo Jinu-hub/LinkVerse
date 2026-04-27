@@ -61,6 +61,8 @@ export type Translation = {
       badge: string;
       githubAriaLabel: string;
       githubLabel: string;
+      blogAriaLabel: string;
+      blogLabel: string;
       headlineBefore: string;
       headlineAfter: string;
       introBeforeLink: string;
@@ -120,6 +122,8 @@ export type Translation = {
     closing: {
       title: string;
       body: string;
+      blogHint: string;
+      blogCta: string;
     };
   };
   navigation: {

@@ -73,6 +73,8 @@ const ko: Translation = {
       badge: "독립 빌더 · LinkVerse 운영",
       githubAriaLabel: "GitHub 프로필",
       githubLabel: "GitHub",
+      blogAriaLabel: "블로그로 이동",
+      blogLabel: "Blog",
       headlineBefore: "안녕하세요, 저는 ",
       headlineAfter: "입니다.",
       introBeforeLink: "저는 ",
@@ -142,6 +144,8 @@ const ko: Translation = {
     closing: {
       title: "스캔해 주셔서 감사합니다.",
       body: "봐 주셔서 감사합니다. LinkVerse와 그 궤도 위의 서비스들을 잠시나마 소개할 수 있어 기쁩니다. 좋은 하루 보내시고, 언젠가 다시 반갑게 연결되길 바랍니다.",
+      blogHint: "생각과 실험의 흐름은 블로그에서도 이어집니다.",
+      blogCta: "블로그 보기",
     },
   },
   navigation: {
