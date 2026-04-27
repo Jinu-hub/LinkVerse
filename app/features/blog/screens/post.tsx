@@ -26,8 +26,31 @@ import {
   TypographyList,
   TypographyOrderedList,
   TypographyP,
+  TypographyLink,
 } from "~/core/components/mdx-typography";
+import CounterExample from "~/features/blog/components/counter-example";
 import { Badge } from "~/core/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/core/components/ui/table";
+
+interface PostFrontmatter {
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+  author: string;
+  slug: string;
+  image?: string;
+  imageAlt?: string;
+}
 
 /**
  * Meta function for the blog post page
@@ -117,7 +140,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 
     // Return both the compiled MDX code and the frontmatter metadata
     return {
-      frontmatter,
+      frontmatter: frontmatter as PostFrontmatter,
       code,
     };
   } catch (error) {
@@ -168,9 +191,10 @@ export default function Post({
       
       {/* Featured image for the post */}
       <img
-        src={`/blog/${frontmatter.slug}.jpg`}
-        alt={frontmatter.title}
+        src={frontmatter.image ?? `/blog/${frontmatter.slug}.jpg`}
+        alt={frontmatter.imageAlt ?? frontmatter.title}
         className="aspect-square w-full rounded-xl object-cover object-center"
+        loading="lazy"
       />
       
       {/* Render the MDX content with custom typography components */}
@@ -186,6 +210,17 @@ export default function Post({
           ul: TypographyList,
           ol: TypographyOrderedList,
           code: TypographyInlineCode,
+          a: TypographyLink,
+          // Table components for MDX table support
+          table: Table,
+          thead: TableHeader,
+          tbody: TableBody,
+          tfoot: TableFooter,
+          tr: TableRow,
+          th: TableHead,
+          td: TableCell,
+          caption: TableCaption,
+          CounterExample,
         }}
       />
     </div>
