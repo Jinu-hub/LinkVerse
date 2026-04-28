@@ -154,6 +154,13 @@ const en: Translation = {
     ja: "Japanese",
     ko: "Korean",
   },
+  blog: {
+    breadcrumb: {
+      orbit: "Orbit",
+      blog: "Blog",
+      orbitAriaLabel: "Go to Orbit",
+    },
+  },
   join: {
     heroTitle: "Smarter bookmark organizing",
     heroSubtitle: "Shall we begin?",

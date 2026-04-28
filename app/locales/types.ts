@@ -131,6 +131,14 @@ export type Translation = {
     ja: string;
     ko: string;
   };
+  /** 블로그 레이아웃 상단 브레드크럼 */
+  blog: {
+    breadcrumb: {
+      orbit: string;
+      blog: string;
+      orbitAriaLabel: string;
+    };
+  };
   join: {
     heroTitle: string;
     heroSubtitle: string;

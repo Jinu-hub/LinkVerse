@@ -155,6 +155,13 @@ const ja: Translation = {
     ja: "日本語",
     ko: "韓国語",
   },
+  blog: {
+    breadcrumb: {
+      orbit: "Orbit",
+      blog: "ブログ",
+      orbitAriaLabel: "Orbit へ移動",
+    },
+  },
   join: {
     heroTitle: "もっと賢いブックマーク整理",
     heroSubtitle: "始めてみませんか？",

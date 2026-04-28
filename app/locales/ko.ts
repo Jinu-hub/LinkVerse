@@ -153,6 +153,13 @@ const ko: Translation = {
     ja: "일본어",
     ko: "한국어",
   },
+  blog: {
+    breadcrumb: {
+      orbit: "Orbit",
+      blog: "블로그",
+      orbitAriaLabel: "Orbit 페이지로 이동",
+    },
+  },
   join: {
     heroTitle: "스마트한 북마크 정리",
     heroSubtitle: "지금 시작해볼까요?",
