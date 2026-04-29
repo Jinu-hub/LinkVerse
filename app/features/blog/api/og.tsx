@@ -19,9 +19,11 @@ import type { Route } from "./+types/og";
 
 import { ImageResponse } from "@vercel/og";
 import { bundleMDX } from "mdx-bundler";
-import path from "node:path";
 import { data } from "react-router";
 import { z } from "zod";
+
+import { getBlogBySlug } from "~/features/blog/lib/blog-index.server";
+import i18n from "~/i18n";
 
 /**
  * Validation schema for OG image request parameters
@@ -32,6 +34,7 @@ import { z } from "zod";
  */
 const paramsSchema = z.object({
   slug: z.string(),
+  lang: z.enum(i18n.supportedLngs).optional(),
 });
 
 /**
@@ -67,20 +70,19 @@ export async function loader({ request }: Route.LoaderArgs) {
     return data(null, { status: 400 });
   }
   
-  // Construct the file path to the MDX file
-  const filePath = path.join(
-    process.cwd(),
-    "app",
-    "features",
-    "blog",
-    "docs",
-    `${params.slug}.mdx`,
-  );
-  
   try {
+    const entry = await getBlogBySlug({
+      lang: params.lang ?? i18n.fallbackLng,
+      slug: params.slug,
+    });
+
+    if (!entry) {
+      throw data(null, { status: 404 });
+    }
+
     // Load and parse the MDX file to extract frontmatter
     const { frontmatter } = await bundleMDX({
-      file: filePath,
+      file: entry.filePath,
     });
     
     // Generate and return the OG image using Vercel's ImageResponse

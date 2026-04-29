@@ -13,7 +13,6 @@ import type { Route } from "./+types/post";
 
 import { bundleMDX } from "mdx-bundler";
 import { getMDXComponent } from "mdx-bundler/client";
-import path from "node:path";
 import { data } from "react-router";
 
 import {
@@ -40,6 +39,8 @@ import {
   TableHeader,
   TableRow,
 } from "~/core/components/ui/table";
+import i18next from "~/core/lib/i18next.server";
+import { getBlogBySlug } from "~/features/blog/lib/blog-index.server";
 
 interface PostFrontmatter {
   title: string;
@@ -90,7 +91,7 @@ export const meta: Route.MetaFunction = ({ data }) => {
     // Open Graph image for social media previews
     {
       name: "og:image",
-      content: `http://localhost:5173/api/blog/og?slug=${data.frontmatter.slug}`,
+      content: `http://localhost:5173/api/blog/og?slug=${data.frontmatter.slug}&lang=${data.lang}`,
     },
     // Open Graph title for social media previews
     {
@@ -121,27 +122,45 @@ export const meta: Route.MetaFunction = ({ data }) => {
  * @returns The processed MDX code and frontmatter metadata
  * @throws 404 error if the post is not found, 500 error for other issues
  */
-export async function loader({ params }: Route.LoaderArgs) {
-  // Construct the full path to the MDX file based on the slug parameter
-  const filePath = path.join(
-    process.cwd(),
-    "app",
-    "features",
-    "blog",
-    "docs",
-    `${params.slug}.mdx`,
-  );
-  
+export async function loader({ params, request }: Route.LoaderArgs) {
   try {
+    const slug = params.slug;
+    if (!slug) {
+      throw data(null, { status: 404 });
+    }
+
+    const locale = await i18next.getLocale(request);
+    const entry = await getBlogBySlug({
+      lang: locale,
+      slug,
+    });
+
+    if (!entry) {
+      throw data(null, { status: 404 });
+    }
+
     // Process the MDX file to extract code and frontmatter
     const { code, frontmatter } = await bundleMDX({
-      file: filePath,
+      file: entry.filePath,
     });
 
     // Return both the compiled MDX code and the frontmatter metadata
+    const mergedFrontmatter = {
+      ...(frontmatter as PostFrontmatter),
+      category: entry.category,
+      slug: entry.slug,
+      date: entry.date,
+      author: entry.author,
+      title: (frontmatter as PostFrontmatter).title ?? entry.title,
+      description: (frontmatter as PostFrontmatter).description ?? entry.description,
+      image: (frontmatter as PostFrontmatter).image ?? entry.image,
+      imageAlt: (frontmatter as PostFrontmatter).imageAlt ?? entry.imageAlt,
+    };
+
     return {
-      frontmatter: frontmatter as PostFrontmatter,
+      frontmatter: mergedFrontmatter,
       code,
+      lang: locale,
     };
   } catch (error) {
     // Handle file not found errors with a 404 response

@@ -13,12 +13,11 @@
  */
 import type { Route } from "./+types/posts";
 
-import { bundleMDX } from "mdx-bundler";
-import { readdir } from "node:fs/promises";
-import path from "node:path";
 import { Link } from "react-router";
 
 import { Badge } from "~/core/components/ui/badge";
+import i18next from "~/core/lib/i18next.server";
+import { getBlogCategories, getBlogList } from "~/features/blog/lib/blog-index.server";
 
 /**
  * Meta function for the blog posts page
@@ -44,15 +43,6 @@ export const meta: Route.MetaFunction = () => {
  * - author: The name of the post author
  * - slug: URL-friendly identifier for the post
  */
-interface Frontmatter {
-  title: string;
-  description: string;
-  date: string;
-  category: string;
-  author: string;
-  slug: string;
-}
-
 /**
  * Loader function for the blog posts page
  *
@@ -65,33 +55,27 @@ interface Frontmatter {
  *
  * @returns Object containing an array of blog post frontmatter data
  */
-export async function loader() {
-  // Get the path to the docs directory containing MDX files
-  const docsPath = path.join(process.cwd(), "app", "features", "blog", "docs");
+export async function loader({ request }: Route.LoaderArgs) {
+  const locale = await i18next.getLocale(request);
+  const url = new URL(request.url);
+  const category = url.searchParams.get("category");
+  const q = url.searchParams.get("q");
 
-  // Read all files in the docs directory
-  const files = await readdir(docsPath);
-
-  // Filter for MDX files only
-  const mdxFiles = files.filter((file) => file.endsWith(".mdx"));
-
-  // Extract frontmatter from each MDX file
-  const frontmatters = await Promise.all(
-    mdxFiles.map(async (file) => {
-      const filePath = path.join(docsPath, file);
-      const { frontmatter } = await bundleMDX({ file: filePath });
-      return frontmatter;
-    }),
-  );
-
-  // Sort posts by date, newest first
-  frontmatters.sort((a, b) => {
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  const entries = await getBlogList({
+    lang: locale,
+    category,
+    q,
   });
 
-  // Return the frontmatter data
+  const allEntriesInLang = await getBlogList({ lang: locale });
+  const categories = getBlogCategories(allEntriesInLang);
+
   return {
-    frontmatters: frontmatters as Frontmatter[],
+    frontmatters: entries,
+    categories,
+    activeCategory: category ?? "",
+    searchQuery: q ?? "",
+    lang: locale,
   };
 }
 
@@ -116,7 +100,7 @@ export async function loader() {
  * @param loaderData - Data from the loader containing blog post frontmatter
  */
 export default function Posts({
-  loaderData: { frontmatters },
+  loaderData: { frontmatters, categories, activeCategory, searchQuery, lang },
 }: Route.ComponentProps) {
   return (
     <div className="flex flex-col gap-16">
@@ -167,6 +151,30 @@ export default function Posts({
           </Link>
         ))}
       </div>
+      {categories.length > 0 && (
+        <div className="text-muted-foreground flex flex-wrap items-center gap-2 text-sm">
+          <span>Filters:</span>
+          {categories.map((category) => {
+            const isActive = category.toLowerCase() === activeCategory.toLowerCase();
+            return (
+              <Link
+                key={category}
+                to={
+                  isActive
+                    ? `/blog${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ""}`
+                    : `/blog?category=${encodeURIComponent(category)}${
+                        searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ""
+                      }`
+                }
+                className={isActive ? "font-semibold underline" : "hover:underline"}
+                viewTransition
+              >
+                {category}
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
