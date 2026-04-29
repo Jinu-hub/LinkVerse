@@ -139,9 +139,16 @@ export type Translation = {
       orbitAriaLabel: string;
     };
     posts: {
+      subtitle: string;
       categoryFilter: string;
       allCategories: string;
       categoryFilterAriaLabel: string;
+      /** 카테고리·기간·정렬 묶음 툴바 */
+      filtersToolbarAriaLabel: string;
+      /** 필터 패널 제목(시각적 블록 헤더) */
+      filtersSectionTitle: string;
+      /** 필터 패널 짧은 설명 */
+      filtersSectionSubtitle: string;
       yearFilter: string;
       monthFilter: string;
       sortFilter: string;

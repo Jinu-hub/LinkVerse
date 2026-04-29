@@ -162,9 +162,13 @@ const ja: Translation = {
       orbitAriaLabel: "Orbit へ移動",
     },
     posts: {
+      subtitle: "開発と日常、考えの軌跡を記録します。",
       categoryFilter: "カテゴリ",
       allCategories: "すべて",
       categoryFilterAriaLabel: "カテゴリで記事を絞り込む",
+      filtersToolbarAriaLabel: "記事の絞り込みと並び順",
+      filtersSectionTitle: "フィルター・並び順",
+      filtersSectionSubtitle: "カテゴリや期間、並び順で記事を絞り込めます。",
       yearFilter: "年",
       monthFilter: "月",
       sortFilter: "並び順",

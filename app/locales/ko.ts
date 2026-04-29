@@ -160,9 +160,14 @@ const ko: Translation = {
       orbitAriaLabel: "Orbit 페이지로 이동",
     },
     posts: {
+      subtitle: "개발과 일상, 생각의 궤적을 기록합니다.",
       categoryFilter: "카테고리",
       allCategories: "전체",
       categoryFilterAriaLabel: "카테고리별로 글 필터",
+      filtersToolbarAriaLabel: "블로그 글 필터 및 정렬",
+      filtersSectionTitle: "필터 · 정렬",
+      filtersSectionSubtitle:
+        "카테고리, 기간, 정렬로 글 목록을 좁혀 볼 수 있어요.",
       yearFilter: "연도",
       monthFilter: "월",
       sortFilter: "정렬",

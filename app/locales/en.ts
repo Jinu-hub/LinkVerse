@@ -161,9 +161,13 @@ const en: Translation = {
       orbitAriaLabel: "Go to Orbit",
     },
     posts: {
+      subtitle: "Record the flow of development and daily life, and the trajectory of thoughts.",
       categoryFilter: "Category",
       allCategories: "All",
       categoryFilterAriaLabel: "Filter posts by category",
+      filtersToolbarAriaLabel: "Filter and sort blog posts",
+      filtersSectionTitle: "Filter & sort",
+      filtersSectionSubtitle: "Choose category, time period, and order.",
       yearFilter: "Year",
       monthFilter: "Month",
       sortFilter: "Sort",
