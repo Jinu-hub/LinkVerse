@@ -143,42 +143,44 @@ export default function Posts({
   const { t, i18n } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-16">
+    <div className="flex flex-col gap-6 md:gap-8">
       {/* Page header with title and subtitle */}
       <header className="flex flex-col items-center">
         <h1 className="text-center text-3xl font-semibold tracking-tight md:text-5xl">
           Jinu's Blog
         </h1>
-        <p className="text-muted-foreground mt-2 text-center font-medium md:text-lg">
+        <p className="text-muted-foreground mt-1.5 text-center font-medium md:text-lg">
           {t("blog.posts.subtitle")}
         </p>
       </header>
 
-      <BlogPostsFilters
-        categories={categories}
-        years={years}
-        months={months}
-        activeCategory={activeCategory}
-        activeYear={activeYear}
-        activeMonth={activeMonth}
-        searchQuery={searchQuery}
-        sort={sort === "oldest" ? "oldest" : "latest"}
-      />
+      {/* 필터와 그리드를 같은 폭 블록에 두고 좌측 정렬 */}
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 md:gap-8 px-4 sm:px-6">
+        <BlogPostsFilters
+          categories={categories}
+          years={years}
+          months={months}
+          activeCategory={activeCategory}
+          activeYear={activeYear}
+          activeMonth={activeMonth}
+          searchQuery={searchQuery}
+          sort={sort === "oldest" ? "oldest" : "latest"}
+        />
 
-      {/* Responsive grid of blog post cards */}
-      <div className="grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-8">
+        {/* 1열: 모바일 · md~: 태블릿/데스크톱 3열 · xl+: 4열 */}
+        <div className="grid w-full grid-cols-1 gap-10 sm:gap-8 md:grid-cols-3 md:gap-6 xl:grid-cols-4 xl:gap-6">
         {frontmatters.map((frontmatter) => (
           <Link
             to={`/blog/${frontmatter.slug}`}
             key={frontmatter.slug}
-            className="flex flex-col gap-4"
+            className="flex flex-col gap-3 md:gap-4"
             viewTransition // Enable smooth transitions between pages
           >
             {/* Post featured image */}
             <img
               src={`/blog/${frontmatter.slug}.jpg`}
               alt={frontmatter.title}
-              className="aspect-square w-full rounded-xl object-cover object-center"
+              className="aspect-[4/3] w-full rounded-xl object-cover object-center"
             />
             {/* Category badge */}
             <Badge variant="secondary" className="text-sm">
@@ -186,11 +188,11 @@ export default function Posts({
             </Badge>
             <div>
               {/* Post title */}
-              <h2 className="text-lg font-bold md:text-2xl">
+              <h2 className="text-lg font-bold md:text-xl">
                 {frontmatter.title}
               </h2>
               {/* Post description */}
-              <p className="text-muted-foreground text-pretty md:text-lg">
+              <p className="text-muted-foreground text-pretty text-base md:text-[1.05rem]">
                 {frontmatter.description}
               </p>
               {/* Author and date information */}
@@ -203,6 +205,7 @@ export default function Posts({
             </div>
           </Link>
         ))}
+        </div>
       </div>
     </div>
   );

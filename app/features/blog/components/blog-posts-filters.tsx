@@ -75,7 +75,7 @@ export function BlogPostsFilters(props: BlogPostsFiltersProps) {
   const { t } = useTranslation();
   const qParam = searchQuery.trim();
   const activeSort: "latest" | "oldest" = sort === "oldest" ? "oldest" : "latest";
-  const [filtersOpen, setFiltersOpen] = useState(true);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const yearChipsInner = (
     <div className="flex flex-wrap gap-2">
@@ -170,7 +170,7 @@ export function BlogPostsFilters(props: BlogPostsFiltersProps) {
   return (
     <section
       aria-labelledby="blog-posts-filters-heading"
-      className="mx-auto w-full max-w-screen-lg px-4 sm:px-0"
+      className="mr-auto w-full max-w-screen-lg"
     >
       <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
         <div className="border-border/80 bg-muted/35 supports-[backdrop-filter]:bg-muted/40 dark:bg-muted/15 cursor-pointer overflow-hidden rounded-2xl border shadow-sm backdrop-blur-[6px]">
