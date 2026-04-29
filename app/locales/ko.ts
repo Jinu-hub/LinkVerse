@@ -159,6 +159,11 @@ const ko: Translation = {
       blog: "블로그",
       orbitAriaLabel: "Orbit 페이지로 이동",
     },
+    posts: {
+      categoryFilter: "카테고리",
+      allCategories: "전체",
+      categoryFilterAriaLabel: "카테고리별로 글 필터",
+    },
   },
   join: {
     heroTitle: "스마트한 북마크 정리",

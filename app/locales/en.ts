@@ -160,6 +160,11 @@ const en: Translation = {
       blog: "Blog",
       orbitAriaLabel: "Go to Orbit",
     },
+    posts: {
+      categoryFilter: "Category",
+      allCategories: "All",
+      categoryFilterAriaLabel: "Filter posts by category",
+    },
   },
   join: {
     heroTitle: "Smarter bookmark organizing",

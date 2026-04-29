@@ -138,6 +138,11 @@ export type Translation = {
       blog: string;
       orbitAriaLabel: string;
     };
+    posts: {
+      categoryFilter: string;
+      allCategories: string;
+      categoryFilterAriaLabel: string;
+    };
   };
   join: {
     heroTitle: string;

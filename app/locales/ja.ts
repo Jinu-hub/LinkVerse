@@ -161,6 +161,11 @@ const ja: Translation = {
       blog: "ブログ",
       orbitAriaLabel: "Orbit へ移動",
     },
+    posts: {
+      categoryFilter: "カテゴリ",
+      allCategories: "すべて",
+      categoryFilterAriaLabel: "カテゴリで記事を絞り込む",
+    },
   },
   join: {
     heroTitle: "もっと賢いブックマーク整理",

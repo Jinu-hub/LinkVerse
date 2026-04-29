@@ -14,10 +14,20 @@
 import type { Route } from "./+types/posts";
 
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import { Badge } from "~/core/components/ui/badge";
 import i18next from "~/core/lib/i18next.server";
+import { cn } from "~/core/lib/utils";
 import { getBlogCategories, getBlogList } from "~/features/blog/lib/blog-index.server";
+
+function blogListHref(opts: { category?: string; q?: string }) {
+  const params = new URLSearchParams();
+  if (opts.category) params.set("category", opts.category);
+  if (opts.q) params.set("q", opts.q);
+  const qs = params.toString();
+  return qs ? `/blog?${qs}` : "/blog";
+}
 
 /**
  * Meta function for the blog posts page
@@ -70,12 +80,15 @@ export async function loader({ request }: Route.LoaderArgs) {
   const allEntriesInLang = await getBlogList({ lang: locale });
   const categories = getBlogCategories(allEntriesInLang);
 
+  const sortedCategories = [...categories].sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: "base" }),
+  );
+
   return {
     frontmatters: entries,
-    categories,
+    categories: sortedCategories,
     activeCategory: category ?? "",
     searchQuery: q ?? "",
-    lang: locale,
   };
 }
 
@@ -100,8 +113,11 @@ export async function loader({ request }: Route.LoaderArgs) {
  * @param loaderData - Data from the loader containing blog post frontmatter
  */
 export default function Posts({
-  loaderData: { frontmatters, categories, activeCategory, searchQuery, lang },
+  loaderData: { frontmatters, categories, activeCategory, searchQuery },
 }: Route.ComponentProps) {
+  const { t } = useTranslation();
+  const qParam = searchQuery.trim();
+
   return (
     <div className="flex flex-col gap-16">
       {/* Page header with title and subtitle */}
@@ -113,6 +129,61 @@ export default function Posts({
           Follow our development journey!
         </p>
       </header>
+
+      {categories.length > 0 && (
+        <section
+          className="mx-auto flex w-full max-w-screen-lg flex-col gap-3"
+          aria-label={t("blog.posts.categoryFilterAriaLabel")}
+        >
+          <span className="text-muted-foreground text-sm font-medium">
+            {t("blog.posts.categoryFilter")}
+          </span>
+          <div className="flex flex-wrap gap-2">
+            <Badge
+              asChild
+              variant={!activeCategory ? "default" : "outline"}
+              className={cn(
+                "h-8 rounded-full px-3 text-sm",
+                !activeCategory ? "" : "hover:bg-accent",
+              )}
+            >
+              <Link
+                to={blogListHref({ q: qParam })}
+                viewTransition
+                aria-current={!activeCategory ? "page" : undefined}
+              >
+                {t("blog.posts.allCategories")}
+              </Link>
+            </Badge>
+            {categories.map((category) => {
+              const isActive =
+                activeCategory.toLowerCase() === category.toLowerCase();
+              return (
+                <Badge
+                  key={category}
+                  asChild
+                  variant={isActive ? "default" : "outline"}
+                  className={cn(
+                    "h-8 rounded-full px-3 text-sm capitalize",
+                    isActive ? "" : "hover:bg-accent",
+                  )}
+                >
+                  <Link
+                    to={blogListHref({
+                      category,
+                      q: qParam,
+                    })}
+                    viewTransition
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    {category.replace(/-/g, " ")}
+                  </Link>
+                </Badge>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Responsive grid of blog post cards */}
       <div className="grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-8">
@@ -151,30 +222,6 @@ export default function Posts({
           </Link>
         ))}
       </div>
-      {categories.length > 0 && (
-        <div className="text-muted-foreground flex flex-wrap items-center gap-2 text-sm">
-          <span>Filters:</span>
-          {categories.map((category) => {
-            const isActive = category.toLowerCase() === activeCategory.toLowerCase();
-            return (
-              <Link
-                key={category}
-                to={
-                  isActive
-                    ? `/blog${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ""}`
-                    : `/blog?category=${encodeURIComponent(category)}${
-                        searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ""
-                      }`
-                }
-                className={isActive ? "font-semibold underline" : "hover:underline"}
-                viewTransition
-              >
-                {category}
-              </Link>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 }
