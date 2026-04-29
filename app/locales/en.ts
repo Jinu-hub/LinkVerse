@@ -164,6 +164,13 @@ const en: Translation = {
       categoryFilter: "Category",
       allCategories: "All",
       categoryFilterAriaLabel: "Filter posts by category",
+      yearFilter: "Year",
+      monthFilter: "Month",
+      sortFilter: "Sort",
+      allPeriod: "All",
+      sortLatest: "Latest",
+      sortOldest: "Oldest",
+      metaLine: "{{author}} · {{date}}",
     },
   },
   join: {

@@ -165,6 +165,13 @@ const ja: Translation = {
       categoryFilter: "カテゴリ",
       allCategories: "すべて",
       categoryFilterAriaLabel: "カテゴリで記事を絞り込む",
+      yearFilter: "年",
+      monthFilter: "月",
+      sortFilter: "並び順",
+      allPeriod: "すべて",
+      sortLatest: "新しい順",
+      sortOldest: "古い順",
+      metaLine: "{{author}} · {{date}}",
     },
   },
   join: {

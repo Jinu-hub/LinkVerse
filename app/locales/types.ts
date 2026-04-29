@@ -142,6 +142,13 @@ export type Translation = {
       categoryFilter: string;
       allCategories: string;
       categoryFilterAriaLabel: string;
+      yearFilter: string;
+      monthFilter: string;
+      sortFilter: string;
+      allPeriod: string;
+      sortLatest: string;
+      sortOldest: string;
+      metaLine: string;
     };
   };
   join: {

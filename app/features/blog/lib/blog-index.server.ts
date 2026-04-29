@@ -38,6 +38,9 @@ export interface BlogListOptions {
   lang: string;
   category?: string | null;
   q?: string | null;
+  year?: string | null;
+  month?: string | null;
+  sort?: "latest" | "oldest";
   includeDraft?: boolean;
 }
 
@@ -262,6 +265,8 @@ function hasSearchMatch(entry: BlogEntry, query: string): boolean {
     entry.title,
     entry.description,
     entry.category,
+    entry.date,
+    entry.year,
     entry.slug,
     entry.tags.join(" "),
     entry.bodyText,
@@ -276,23 +281,42 @@ export async function getBlogList({
   lang,
   category,
   q,
+  year,
+  month,
+  sort = "latest",
   includeDraft = false,
 }: BlogListOptions): Promise<BlogEntry[]> {
   const { entries } = await getBlogIndex();
   const normalizedLang = isSupportedLang(lang) ? lang : i18n.fallbackLng;
   const normalizedCategory = category?.trim().toLowerCase();
   const normalizedQuery = q?.trim();
+  const normalizedYear =
+    year && /^\d{4}$/.test(year.trim()) ? year.trim() : undefined;
+  const normalizedMonth =
+    month && /^(0[1-9]|1[0-2])$/.test(month.trim()) ? month.trim() : undefined;
 
-  return entries.filter((entry) => {
+  const filtered = entries.filter((entry) => {
     if (entry.lang !== normalizedLang) return false;
     if (!includeDraft && entry.draft) return false;
     if (normalizedCategory && entry.category.toLowerCase() !== normalizedCategory) {
       return false;
     }
+    if (normalizedYear && entry.year !== normalizedYear) {
+      return false;
+    }
+    if (normalizedMonth) {
+      const [, entryMonth] = entry.date.split("-");
+      if (entryMonth !== normalizedMonth) return false;
+    }
     if (normalizedQuery && !hasSearchMatch(entry, normalizedQuery)) {
       return false;
     }
     return true;
+  });
+
+  return filtered.sort((a, b) => {
+    const diff = new Date(b.date).getTime() - new Date(a.date).getTime();
+    return sort === "oldest" ? -diff : diff;
   });
 }
 
@@ -314,4 +338,21 @@ export async function getBlogBySlug({
 
 export function getBlogCategories(entries: BlogEntry[]): string[] {
   return [...new Set(entries.map((entry) => entry.category))];
+}
+
+export function getBlogYears(entries: BlogEntry[]): string[] {
+  return [...new Set(entries.map((entry) => entry.year))].sort((a, b) =>
+    b.localeCompare(a),
+  );
+}
+
+export function getBlogMonths(entries: BlogEntry[], year?: string): string[] {
+  const filtered = year ? entries.filter((entry) => entry.year === year) : entries;
+  return [
+    ...new Set(
+      filtered
+        .map((entry) => entry.date.split("-")[1])
+        .filter((value): value is string => Boolean(value)),
+    ),
+  ].sort((a, b) => b.localeCompare(a));
 }

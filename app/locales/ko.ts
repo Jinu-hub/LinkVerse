@@ -163,6 +163,13 @@ const ko: Translation = {
       categoryFilter: "카테고리",
       allCategories: "전체",
       categoryFilterAriaLabel: "카테고리별로 글 필터",
+      yearFilter: "연도",
+      monthFilter: "월",
+      sortFilter: "정렬",
+      allPeriod: "전체",
+      sortLatest: "최신순",
+      sortOldest: "오래된순",
+      metaLine: "{{author}} · {{date}}",
     },
   },
   join: {
