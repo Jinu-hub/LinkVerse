@@ -1,4 +1,4 @@
-import { readFile, readdir } from "node:fs/promises";
+import { access, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
 import i18n, { type SupportedLng } from "~/i18n";
@@ -10,6 +10,8 @@ const BLOG_DOCS_ROOT = path.join(
   "blog",
   "docs",
 );
+const BLOG_PUBLIC_ROOT = path.join(process.cwd(), "public", "blog");
+const BLOG_IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "avif"] as const;
 
 const FILE_NAME_PATTERN = /^(\d{4}-\d{2}-\d{2})-(.+)\.mdx$/;
 
@@ -229,22 +231,59 @@ function createEntryFromFile(
   };
 }
 
+async function resolveEntryImage(entry: BlogEntry): Promise<string | undefined> {
+  const explicitImage = entry.image?.trim();
+  if (explicitImage) {
+    if (
+      explicitImage.startsWith("http://") ||
+      explicitImage.startsWith("https://") ||
+      explicitImage.startsWith("/")
+    ) {
+      return explicitImage;
+    }
+    return `/blog/${explicitImage.replace(/^\/+/, "")}`;
+  }
+
+  for (const ext of BLOG_IMAGE_EXTENSIONS) {
+    const fileName = `${entry.slug}.${ext}`;
+    const absolutePath = path.join(BLOG_PUBLIC_ROOT, fileName);
+    try {
+      await access(absolutePath);
+      return `/blog/${fileName}`;
+    } catch {
+      // Try next extension
+    }
+  }
+
+  return undefined;
+}
+
 export async function buildBlogIndex(): Promise<BlogIndex> {
   const filePaths = await scanMdxFiles(BLOG_DOCS_ROOT);
-  const entries = await Promise.all(
+  const scannedEntries = await Promise.all(
     filePaths.map(async (filePath) => {
       const source = await readFile(filePath, "utf-8");
       return createEntryFromFile(filePath, source);
     }),
   );
 
-  const validEntries = entries
-    .filter((entry): entry is BlogEntry => entry !== null)
+  const validEntries = scannedEntries.filter(
+    (entry): entry is BlogEntry => entry !== null,
+  );
+
+  const entriesWithResolvedImage = await Promise.all(
+    validEntries.map(async (entry) => ({
+      ...entry,
+      image: await resolveEntryImage(entry),
+    })),
+  );
+
+  const sortedEntries = entriesWithResolvedImage
     .sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
 
-  return { entries: validEntries };
+  return { entries: sortedEntries };
 }
 
 export async function getBlogIndex() {

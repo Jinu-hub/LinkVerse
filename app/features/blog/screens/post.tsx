@@ -208,13 +208,18 @@ export default function Post({
         </span>
       </header>
       
-      {/* Featured image for the post */}
-      <img
-        src={frontmatter.image ?? `/blog/${frontmatter.slug}.jpg`}
-        alt={frontmatter.imageAlt ?? frontmatter.title}
-        className="aspect-square w-full rounded-xl object-cover object-center"
-        loading="lazy"
-      />
+      {/* Featured image — full column width inside blog layout (no narrow hero cap) */}
+      <figure className="not-prose group isolate w-full overflow-hidden rounded-2xl border border-border/50 bg-muted/40 shadow-[0_12px_40px_-24px_rgb(0,0,0,0.25)] ring-1 ring-black/[0.04] md:rounded-3xl dark:shadow-none dark:ring-white/10">
+        <img
+          src={frontmatter.image ?? `/blog/${frontmatter.slug}.jpg`}
+          alt={frontmatter.imageAlt ?? frontmatter.title}
+          sizes="(min-width: 1536px) 1408px, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
+          className="aspect-video w-full object-cover object-center transition-transform duration-500 motion-safe:ease-out motion-safe:group-hover:scale-[1.012] md:aspect-[21/9]"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+        />
+      </figure>
       
       {/* Render the MDX content with custom typography components */}
       <MDXContent

@@ -1,0 +1,396 @@
+---
+alwaysApply: true
+---
+
+# Blog MDX Translation Instruction
+
+You are translating a blog post for Jinu's Blog.
+
+Jinu's Blog is a personal record space inside LinkVerse.
+It is not only a technical blog, but also a place to record personal projects, architecture decisions, AI workflows, reflections, daily notes, and the process behind building things.
+
+Your task is to translate the given Korean MDX blog post into the target language.
+
+Target language:
+- English: en
+- Japanese: ja
+
+The goal is not literal translation.
+The goal is to rewrite the article naturally in the target language while preserving the original meaning, structure, tone, and factual details.
+
+---
+
+## 1. Core Translation Principle
+
+Do not translate sentence by sentence.
+
+Instead:
+
+1. Understand the meaning of each paragraph.
+2. Preserve the factual content.
+3. Reconstruct the paragraph naturally in the target language.
+4. Keep the original structure and section flow.
+5. Keep the writer’s calm, honest, reflective voice.
+
+The translated article should feel like it was originally written in the target language.
+
+---
+
+## 2. Blog Tone
+
+Keep the tone:
+
+- calm
+- clear
+- personal but not overly emotional
+- reflective
+- not too promotional
+- not too corporate
+- natural as a maker / developer log
+- focused on current progress and thought process
+
+Avoid:
+
+- exaggerated marketing language
+- overly polished corporate blog tone
+- startup-like hype
+- phrases like “revolutionary”, “groundbreaking”, “perfect”, “game-changing”
+- adding claims that are not in the original
+- making the project sound more complete than it is
+- making uncertain parts sound certain
+
+The article should feel like a thoughtful progress note written by an individual builder.
+
+---
+
+## 3. Things That Must Be Preserved
+
+Do not change the following:
+
+- Project names:
+  - LinkVerse
+  - NexLetter
+  - MarketReport
+
+- Route names:
+  - /orbit
+  - /blog
+
+- Technical terms:
+  - Slack
+  - GitHub
+  - AI Agent
+  - n8n
+  - Railway
+  - OpenAI
+  - gpt-4.1-mini
+  - 429 Rate limit
+  - vector data
+  - pipeline
+  - billing
+  - MDX
+
+- Dates:
+  - 2026-04-29
+  - April 29, 2026
+  - 2026年4月29日
+
+- Code blocks
+- File paths
+- MDX syntax
+- Markdown structure
+- Frontmatter keys
+
+Do not add new facts, features, plans, or claims that are not present in the original text.
+
+---
+
+## 4. MDX Frontmatter Rules
+
+Keep the frontmatter structure.
+
+Update only language-dependent values.
+
+For English:
+
+lang: "en"
+
+For Japanese:
+
+lang: "ja"
+
+Translate only:
+
+- title
+- description
+
+Do not translate:
+
+- category
+- tags
+- status
+- visibility
+- translationKey
+- date
+
+Example Korean title:
+
+title: "2026년 4월 29일, 프로젝트 전반의 개발 진행 상황 정리"
+
+English title example:
+
+title: "Project Development Progress Overview as of April 29, 2026"
+
+Japanese title example:
+
+title: "2026年4月29日時点のプロジェクト全体の開発進捗整理"
+
+Keep the category value as:
+
+category: "projects"
+
+Keep tags as technical identifiers.
+Do not translate tag values unless explicitly instructed.
+
+---
+
+## 5. English Style Guide
+
+When translating into English:
+
+- Use natural maker / developer log style.
+- Keep the writing simple but thoughtful.
+- Avoid dramatic startup language.
+- Avoid overly formal corporate writing.
+- Use clear and calm expressions.
+
+Prefer expressions like:
+
+- At this stage
+- For now
+- The next challenge is
+- This is not a finished conclusion, but a record of where things stand now.
+- The direction is becoming clearer.
+- There are still several issues to work through.
+- I want to leave this as a record of the current state.
+
+The English should feel like a personal project progress note, not a press release.
+
+---
+
+## 6. Japanese Style Guide
+
+When translating into Japanese:
+
+- Use natural Japanese record-style writing.
+- Avoid overly stiff business Japanese.
+- Keep the tone calm and readable.
+- Use polite but not excessively formal language.
+- Avoid sounding like a company announcement.
+- Keep the feeling of a personal development log.
+
+Prefer expressions like:
+
+- 現時点では
+- 今の段階では
+- まずは〜を中心に進めている
+- まだ完成した状態ではない
+- 今後の課題として見えている
+- この記録は、現時点での整理として残しておきたい
+- 少しずつ方向性が見えてきた
+- まだ答えが出ているわけではない
+
+The Japanese should feel like a personal development log written naturally by a builder.
+
+---
+
+## 7. Section Heading Rules
+
+Translate headings naturally.
+
+Do not make headings too flashy.
+
+Examples:
+
+Korean:
+## 배경
+
+English:
+## Background
+
+Japanese:
+## 背景
+
+Korean:
+## 현재 시점의 정리
+
+English:
+## Where Things Stand Now
+
+Japanese:
+## 現時点での整理
+
+Korean:
+## 다음 작업
+
+English:
+## Next Steps
+
+Japanese:
+## 次に進めること
+
+Korean:
+## 짧은 회고
+
+English:
+## A Short Reflection
+
+Japanese:
+## 短い振り返り
+
+---
+
+## 8. Content Preservation Rules
+
+Preserve the meaning of all project statuses.
+
+The following points must remain accurate:
+
+- LinkVerse is currently focused on bookmark features.
+- LinkVerse currently includes bookmark, tag, and memo functionality.
+- LinkVerse may become a platform for the user’s services in the long term.
+- /orbit and /blog will be operated first.
+- NexLetter uses GitHub and Slack data.
+- NexLetter passes data through AI Agent pipelines.
+- NexLetter generates weekly reports and sends them by email.
+- NexLetter is currently waiting for Slack App review.
+- NexLetter’s major challenges include unstructured Slack data, lack of test sources, token volume, rate limits, Railway worker operation, billing policy, and billing flow testing.
+- The rate limit issue may include 429 Rate limit reached for gpt-4.1-mini.
+- MarketReport is a service for publishing reports based on microeconomic, macroeconomic, and market-related sources.
+- MarketReport uses n8n-based automation pipelines.
+- The first stage of the report pipelines is nearly complete.
+- Three report pipelines are currently close to completion.
+- The next focus is how to present the registered data on web pages.
+- Future directions include improving pipelines, increasing report types, using vector data for similarity measurement, and generating higher-level reports from similar reports.
+- The current visible challenge is that the report text is strong, but there is not yet enough material or system structure for graphs, images, or visual support.
+
+Do not overstate the maturity of any project.
+
+For example:
+
+Do not say:
+- The platform is complete.
+- The service is ready for launch.
+- The pipeline is fully finished.
+- The system already solves all data issues.
+
+Use careful wording such as:
+- nearly complete
+- currently being considered
+- still needs more testing
+- remains a challenge
+- may become important later
+- the next issue to work through
+
+---
+
+## 9. Markdown and MDX Rules
+
+Preserve:
+
+- headings
+- paragraph breaks
+- bullet lists
+- inline code
+- route names
+- technical terms
+- frontmatter
+- MDX-compatible formatting
+
+Do not wrap the final result in an additional code block unless explicitly requested.
+
+The output itself should be the translated MDX content.
+
+Do not add translator notes.
+Do not add explanations.
+Do not add comments outside the MDX.
+
+---
+
+## 10. Translation Quality Rules
+
+When translating, prioritize the following order:
+
+1. Factual accuracy
+2. Naturalness in the target language
+3. Preservation of tone
+4. Preservation of structure
+5. Readability
+
+Do not prioritize literal matching if it makes the target language awkward.
+
+However, do not remove important nuance.
+
+For example, if the Korean text says:
+
+"완성된 것은 아직 많지 않다. 하지만 각각의 프로젝트가 어떤 방향으로 가야 할지는 점점 더 선명해지고 있다."
+
+English should preserve the nuance:
+
+"Not many things are fully complete yet. But the direction each project should take is becoming clearer."
+
+Japanese should preserve the nuance:
+
+"まだ完成しているものが多いわけではない。ただ、それぞれのプロジェクトがどの方向に進むべきかは、少しずつ見えてきている。"
+
+---
+
+## 11. Title and Description Rules
+
+The translated title should be natural and not too long.
+
+The description should be short and suitable for a blog list or SEO summary.
+
+Korean source example:
+
+title: "2026년 4월 29일, 프로젝트 전반의 개발 진행 상황 정리"
+description: "LinkVerse, NexLetter, MarketReport의 현재 개발 상황과 앞으로의 과제를 정리한 기록"
+
+English example:
+
+title: "Project Development Progress Overview as of April 29, 2026"
+description: "A progress note on the current state of LinkVerse, NexLetter, and MarketReport, along with the challenges ahead"
+
+Japanese example:
+
+title: "2026年4月29日時点のプロジェクト全体の開発進捗整理"
+description: "LinkVerse、NexLetter、MarketReportの現在の開発状況と今後の課題を整理した記録"
+
+Do not make the title sound like a press release.
+
+---
+
+## 12. Final Output Rules
+
+Return only the translated MDX.
+
+Do not include:
+
+- explanations
+- comments
+- “Here is the translation”
+- “Sure”
+- notes about translation choices
+- additional summaries
+
+The final output must be ready to save as an .mdx file.
+
+---
+
+## 13. Input Format
+
+Target language: [en or ja]
+
+Original MDX:
+
+[PASTE ORIGINAL MDX HERE]

@@ -178,7 +178,7 @@ export default function Posts({
           >
             {/* Post featured image */}
             <img
-              src={`/blog/${frontmatter.slug}.jpg`}
+              src={frontmatter.image ?? `/blog/${frontmatter.slug}.jpg`}
               alt={frontmatter.title}
               className="aspect-[4/3] w-full rounded-xl object-cover object-center"
             />

@@ -1,0 +1,193 @@
+---
+title: "Project Development Progress Overview as of April 29, 2026"
+description: "A progress note on the current state of LinkVerse, NexLetter, and MarketReport, along with the challenges ahead"
+date: "2026-04-29"
+lang: "en"
+category: "projects"
+tags: ["linkverse", "nexletter", "market-report", "side-project", "ai-workflow"]
+status: "draft"
+visibility: "public"
+author: "jinu"
+translationKey: "project-progress-overview-20260429"
+---
+
+## Background
+
+As of April 29, 2026, I want to take a moment to organize where my main projects stand.
+
+Each project I am working on right now has its own character.
+
+LinkVerse is closer to a long-term platform that can become the foundation for the services I build.  
+NexLetter is an automation service that generates AI reports from Slack and GitHub data.  
+MarketReport is a project that produces analysis content on the economy and markets, then presents it as a service.
+
+None of these projects is fully complete yet.  
+Still, some directions are starting to become clear, while other challenges are already visible at this stage.
+
+This post is a record of current progress and decisions.
+
+---
+
+## LinkVerse
+
+LinkVerse is currently centered around bookmark functionality.
+
+Bookmarks support tags and memos, and at this stage I focused on building the basics for personal knowledge organization and link management.
+
+That said, I do not see LinkVerse as only a bookmark service.  
+In the long run, it is meant to become a platform that connects multiple services I build.
+
+Even if individual services exist separately,  
+I believe there should be a central space where I can introduce myself, organize what I make, and keep building up writing and records.  
+So for now, LinkVerse updates will focus on these two areas:
+
+- `/orbit`, which introduces who I am
+- `/blog`, which records my thoughts and work
+
+At this stage, it feels more important to shape LinkVerse as a base space for my activities and projects than to keep adding large features.
+
+Especially for the blog, I want it to be more than a promotion channel. It should be a place to document what I am building, why I made certain decisions, and what process I am going through.
+
+---
+
+## NexLetter
+
+NexLetter is a service that takes GitHub and Slack data, passes it through AI Agent pipelines, generates weekly reports, and sends them by email.
+
+Right now, the Slack App marketplace review is in progress.  
+Once the Slack App is approved, development will continue.
+
+The overall product direction is mostly set.  
+But once development resumes in earnest, there are clear issues that need to be solved.
+
+The biggest challenge is handling unstructured data.
+
+Each team can differ in how Slack conversations happen, how dense work logs are, how discussions flow, and how terms are used.  
+In other words, even if the source is all Slack data, I think there will be cases where it needs to be handled as almost completely different input formats.
+
+There are still not enough test sources in this area.
+
+How to process larger token volumes also needs to be handled more carefully.  
+Even with the same model, if token throughput per minute increases, errors can occur,  
+including issues like `429 Rate limit reached for [model]`.
+
+Of course, one option is raising the limit, but that ultimately depends on OpenAI.  
+From a service design perspective, it seems more important not to rely on higher limits alone, but to decide how input data should be split, summarized, standardized, and processed in stages.
+
+There are also several other tasks remaining:
+
+- Stable operation of Railway workers that run during report generation
+- Billing policy design
+- Testing for a smooth billing system flow
+- Validation across different Slack usage patterns
+- Balancing cost and quality for high-volume data processing
+
+For NexLetter, operational stability matters more than the idea itself.
+
+It is important that AI can write good reports, but more importantly, the service needs to reliably ingest real-world data, process it, control cost, and consistently deliver results users can trust.
+
+For now, I am waiting for the Slack App review result while organizing the issues to address in the next development phase.
+
+---
+
+## MarketReport
+
+MarketReport is a service that publishes reports based on sources about microeconomics, macroeconomics, and overall market trends.
+
+It is currently being built around n8n-based automation pipelines.  
+Multiple AI Agent components take different roles to analyze and organize input sources, then produce a readable final report.
+
+At this point, the first stage of the pipeline is nearly complete.
+
+As of now, three report pipelines have taken shape to a meaningful degree, and the focus is now shifting to how registered data should be presented on web pages.
+
+So while the main question until now was how to generate reports, the next question is how users should read and explore those generated reports.
+
+The directions I am currently considering are:
+
+- How to present report bodies in a way that is easy to read
+- How to separate summaries, SNS-ready copy, full text, and HTML output
+- How to show relationships across reports
+- How to connect reports with high similarity
+- How to design an exploration structure for understanding markets, not just a simple list of posts
+
+Going forward, I plan to improve the pipelines further and expand the range of report types.
+
+In particular, similarity measurement using vector data seems likely to become an important direction.  
+If each report can connect to others with similar themes or flow, instead of existing in isolation, it should make higher-level analysis reports possible.
+
+For example, grouping highly similar reports could produce broader-view reports on a specific industry or market trend.  
+That would move the service beyond summarizing single news items and closer to reading markets through relationships across multiple pieces of information.
+
+There is also a clear challenge at the moment.
+
+The report text itself already shows strong quality and readability.  
+However, the supporting materials and system structure needed to include graphs or visual elements are still not developed enough.
+
+Market reports can be delivered through text alone, but visual aids are needed if readers are to understand them more quickly.
+
+Examples include:
+
+- Graphs showing changes in key metrics
+- Relationship maps between companies or industries
+- Event timelines over time
+- Diagrams explaining market structure
+- Visual structures that connect key claims with evidence
+
+If the current stage has been about improving text quality in the report generation pipeline, the next stage will be about how to support that text visually.
+
+---
+
+## Where Things Stand Now
+
+These three projects move in different directions, but in a broader view they are part of one flow.
+
+LinkVerse is my base space.  
+NexLetter is an automated reporting service that organizes real-world team data through AI.  
+MarketReport is a content service for analyzing and documenting markets and the economy.
+
+Each project exists independently, but together they build the world I am trying to create from different angles.
+
+The key right now is not to finish everything at once.
+
+It is more important to clearly see how far each project has come, what is now possible, and what is still missing.
+
+At this stage, I can summarize it like this:
+
+- LinkVerse is being shaped as platform infrastructure and a personal branding space.
+- NexLetter is waiting to resume development after Slack App review, with unstructured data handling and operational stability still as core challenges.
+- MarketReport has almost completed stage one of report generation pipelines, and the next challenge is web presentation and visualization structure.
+
+Not many things are fully complete yet.  
+But the direction each project should take is becoming clearer.
+
+---
+
+## Next Steps
+
+The next steps will likely differ by project.
+
+For LinkVerse, I will continue organizing around `/orbit` and `/blog` for now.  
+I want to first run a stable space that introduces who I am and another space that keeps my records.
+
+For NexLetter, development will continue once Slack App review is approved.  
+At that point, the focus should not be simple feature additions, but validating unstructured Slack data standardization, high token-volume handling, worker stability, and billing flow together.
+
+MarketReport is currently the project where I am most actively thinking about page structure.  
+I need to work through how to present report bodies, how to connect similar reports, and what structure should support graphs and visuals that complement the text.
+
+---
+
+## A Short Reflection
+
+This is still not a point where everything is complete.
+
+But one thing is clearly different from before.  
+It is no longer just ideas. I can now see implemented features, working pipelines, and concrete issues that need to be solved next.
+
+Even leaving this level of record has value.
+
+When I read this again later,  
+I will be able to see what kinds of problems I was facing in late April 2026, and what direction I was preparing for the next stage.
+
+This is not a final answer yet, but I wanted to organize where things stand for now.
