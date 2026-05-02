@@ -1,0 +1,369 @@
+---
+title: "Rethinking NexLetter's Report Generation Structure"
+description: "Design notes on evolving NexLetter weekly reports toward a Daily Core Data–based pipeline"
+date: "2026-05-02"
+lang: "en"
+category: "architecture"
+tags: ["nexletter", "ai-workflow", "report-generation", "daily-core-data", "architecture"]
+status: "draft"
+visibility: "public"
+author: "jinu"
+translationKey: "nexletter-report-core-data-structure-20260429"
+---
+
+## Rethinking NexLetter's Report Generation Structure
+
+While building NexLetter, I've been circling back to one question:  
+**what unit of data should we process when generating a weekly report?**
+
+In the current setup, weekly reports are closer to “pull everything collected over one week and process it in one go.”
+
+That approach works reasonably well for GitHub data.  
+Commits, PRs, issues, and changed-file counts are somewhat structured, and volume is easier to predict.
+
+Slack is different.
+
+Slack volume swings with how teams communicate in the field.  
+Some teams exchange a lot of messages in a day; others leave only what matters.  
+So even when we say “one week of data,” the token load we actually need to process can vary a lot by customer.
+
+That is where issues like `429 Rate limit reached for [model name]` can show up.
+
+Raising the rate limit itself is one option.  
+But that depends on OpenAI’s policies and the account’s situation.
+
+From a product-design standpoint, rather than relying mainly on higher limits,  
+how we split input data, summarize it, normalize it, and process it in stages probably matters more.
+
+---
+
+## Limits of the Old Approach
+
+The old approach is fairly simple.
+
+```txt
+1 week of raw data
+        ↓
+AI processing pipeline
+        ↓
+Weekly report
+```
+
+For an MVP, it is not bad.  
+The shape is simple and it is fast to implement.
+
+Once data volume starts to grow, though, a few limits appear.
+
+The first is **unstable token volume**.  
+GitHub data is somewhat predictable; Slack data is not.  
+If incident response, long threads, release prep, and scope changes pile up in the same week, that week’s payload can spike suddenly.
+
+The second is **longer processing time**.  
+Analyzing a full week of data and producing a report in one pass stretches the time until you see a result.
+
+The third is **low reuse**.  
+If raw data is processed once and discarded, it is hard to reuse intermediate analysis for anything else.
+
+If you later want daily reports, monthly reports, or period-based analysis of similar issues, you may have to start from raw data again.
+
+So the old path is good for getting started quickly, but as volume grows or you want broader reuse of reports, the cracks start to show.
+
+---
+
+## Direction: Build Daily Core Data First
+
+The alternative I am thinking about looks like this.
+
+Even for a weekly report, we do not process a full week of data in one shot.  
+Instead we collect data every day and turn that day’s input into **Daily Core Data** that we store.
+
+When we generate the weekly report, we do not reprocess all raw data from scratch;  
+we build the final report from roughly five to seven pieces of Daily Core Data that are already cleaned up.
+
+```txt
+Daily raw data
+        ↓
+Generate Daily Core Data
+        ↓
+Store Daily Core Data
+        ↓
+Collect 5–7 Daily Core Data records
+        ↓
+Generate weekly report
+```
+
+Weekends usually have less work, so in practice about five Core Data records may form the bulk of a weekly report.
+
+What matters here is that Daily Core Data is **not** a finished daily report for end users.
+
+Daily Core Data is less “copy you ship to users” and more **intermediate representation**  
+for building weekly or monthly reports.
+
+In other words, NexLetter’s report pipeline shifts toward something like:
+
+```txt
+Raw data
+        ↓
+Core data
+        ↓
+Report
+```
+
+Reusable intermediate data sits between raw data and the final report,  
+and that layer can become the backbone of later extensions.
+
+---
+
+## What Daily Core Data Can Hold
+
+The weekly report is roughly structured like this today.
+
+```txt
+Summary
+KPI INFO
+HIGHLIGHTS
+TOPIC
+PROGRESS AND ROADMAP
+MEMBERS ACTIVITY
+ENDING
+```
+
+`Summary` and `ENDING` fit more naturally at the final weekly stage.
+
+Summary needs the flow of the whole week;  
+Ending is closer to wrapping that week’s tone and what comes next.
+
+The sections below are a better fit for daily Core Data.
+
+```txt
+KPI INFO
+HIGHLIGHTS
+TOPIC
+PROGRESS AND ROADMAP
+MEMBERS ACTIVITY
+```
+
+For example, we could analyze a day’s Slack / GitHub data and normalize it into something like:
+
+```txt
+Daily Core Data
+- Key KPIs for that date
+- Main highlights
+- Topics discussed
+- Progress and upcoming work
+- Per-member activity summary
+- Related tags
+- Issue classification
+- Source metadata
+- Model and prompt versions used
+```
+
+Core Data built this way is not only feedstock for weekly reports.
+
+Later it can support analysis of what issues recurred over a period,  
+what kinds of responses showed up often,  
+which members were active in which areas,  
+and how a project’s trajectory shifted.
+
+---
+
+## Expected Benefits
+
+The biggest upside is smaller processing units.
+
+Instead of one pass over a week of data, day-sized chunks reduce tokens per AI call.  
+That usually lowers the chance of hitting rate limits.
+
+If Daily Core Data already exists,  
+the weekly stage does not need to reread all raw data from the beginning.
+
+Because we only synthesize from structured essentials,  
+report generation time can shrink as well.
+
+The structure also scales.
+
+```txt
+Daily Core Data → daily report
+Daily Core Data × 5 → weekly report
+Daily Core Data × 20–25 → monthly report
+Daily Core Data × N → period-based issue analysis
+```
+
+We may start Daily Core Data for weekly reports first,  
+but the same store can grow into daily or monthly outputs.
+
+If we keep tags and classification alongside summaries,  
+we can move beyond plain summaries toward checking similar responses across periods.
+
+Seen this way, Daily Core Data is not just a cache.  
+It can be the base layer for NexLetter to remember and reinterpret organizational activity.
+
+---
+
+## What Tags / Classification Could Unlock
+
+Daily Core Data will include tags and classification results.
+
+What is interesting is that tags and classification are not just bookkeeping metadata.
+
+For example, when a certain issue or topic appears in a weekly report,  
+we could surface when similar responses happened in the past.
+
+Instead of stopping at “this happened this week,”  
+we could add a short note like “a similar Slack alert failure response appears in the week-12 2026 report.”
+
+```txt
+Reference note
+A similar Slack alert failure response can also be found in the week-12 2026 report.
+At the time, external API rate limits and retry handling were the main discussion points.
+```
+
+Even a short note like that can change the character of the report.
+
+It stops being only a snapshot of the present  
+and starts linking past responses with today’s problem.
+
+People forget that similar issues happened before—especially when records are scattered across Slack and GitHub and hard to find later.
+
+If NexLetter can find related issues from Core Data and point to which weekly report to read,  
+the report becomes more than a summary: it becomes a way to surface organizational memory.
+
+So tags and classification are not just search helpers.
+
+They act as an index for connecting present issues with past responses,  
+seeing patterns in recurring problems,  
+and giving reports deeper context.
+
+---
+
+## Caveats
+
+This shape is not automatically better in every way.
+
+Cost comes first.
+
+Before, you could do one large processing pass when building the weekly report.  
+With Daily Core Data, AI runs every day.  
+More calls mean AI spend can rise.
+
+Scope is another concern.
+
+We need a Daily Core Data stage on top of the existing weekly pipeline  
+plus tables or structures to store it.
+
+We also need retry behavior when daily processing fails, gap detection, and state handling.
+
+Duplication needs thought.
+
+If one issue runs Monday through Wednesday,  
+each day’s Core Data might repeat the same issue.
+
+The weekly stage cannot only concatenate;  
+it needs to merge the same thread into one weekly topic.
+
+Similar-issue surfacing also needs care.
+
+Similar tags do not always mean the same context.  
+When linking to past reports, it feels safer to say “there is a similar response history”  
+than to claim “it is the same problem.”
+
+---
+
+## What the Weekly Stage Needs to Do
+
+If weekly reports build on Daily Core Data, the final step is synthesis, not simple summarization.
+
+At the weekly stage, processing like this becomes important:
+
+```txt
+Weekly synthesis
+- Merge the same topic across multiple days
+- Deduplicate recurring issues
+- Re-rank importance
+- Separate done / in progress / on hold
+- Summarize per-member activity patterns
+- Search for similar past issues
+- Link to relevant past reports
+- Write the weekly summary
+- Write a natural ending
+```
+
+Slack has many fragmented threads;  
+something that looked big on one day may be a small footnote for the week.
+
+Conversely, something quiet on a single day can become important when it repeats over several days.
+
+So the weekly step is not just stacking Daily Core Data;  
+it needs a pass that judges the whole week’s arc.
+
+Add connections to past reports,  
+and the weekly report can go beyond “what we did this week.”
+
+It can show whether a current issue is new,  
+whether similar responses happened before,  
+and how they were handled—because those signals live in the same narrative.
+
+---
+
+## Benefits and Trade-offs
+
+In short, the expected upsides:
+
+| Area | Expected effect |
+|---|---|
+| Token volume | Less data per processing batch |
+| Rate limit risk | Lower peak tokens per minute |
+| Processing speed | Weekly stage can use pre-cleaned data |
+| Report quality | Generation from structured data instead of raw-only summarization |
+| Daily / monthly expansion | Same Core Data can feed other horizons |
+| Similar-issue analysis | Tags / classification help trace recurring responses |
+| Links to past reports | Reference similar past responses inside the report |
+| Easier reprocessing | Rebuilding the final report without rereading all raw data |
+
+Trade-offs:
+
+| Area | Consideration |
+|---|---|
+| AI cost | Daily AI runs increase call volume and spend |
+| Development scope | The existing pipeline needs substantial changes |
+| Data design | Core Data schema needs careful definition |
+| Duplicate issues | Logic is needed to merge the same issue across days |
+| Similar-issue judgment | Same tags can still mean different contexts |
+| Operational complexity | Retries, gap detection, and state management |
+
+---
+
+## Where I Stand Now
+
+I do not think we need a perfect version of this structure immediately.
+
+The direction still feels sound.
+
+At first it looked like a way to dodge rate limits;  
+on reflection it is also a path toward a more stable NexLetter architecture.
+
+Piping raw data straight into final report generation is fine for a fast start.  
+As volume grows and customers and environments diversify, the limits will likely show.
+
+Daily Core Data costs more to implement up front  
+and can raise AI bills.  
+Longer term, though, it may be a better base for speed, quality, scalability, and analysis.
+
+If tags / classification can connect current issues with past reports,  
+NexLetter’s output can grow beyond a plain weekly recap.
+
+It would not stop at “what happened this week,”  
+but could extend to “did something like this happen before,”  
+“how was it handled then,”  
+and “which report should I reread for detail.”
+
+What matters is not only “shipping one good report.”
+
+For NexLetter to keep evolving,  
+ongoing activity needs to accumulate in a form we can reuse.
+
+In that sense Daily Core Data is not just an intermediate artifact;  
+it can be the core data NexLetter uses to remember and interpret how teams move.
+
+I cannot call this a final decision yet,  
+but at this point the direction feels worth taking seriously.

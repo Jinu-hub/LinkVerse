@@ -230,18 +230,48 @@ export function TypographyOrderedList({
  */
 export function TypographyInlineCode({
   children,
-  props,
+  className,
+  ...props
 }: {
   children: React.ReactNode;
-  props: React.HTMLAttributes<HTMLSpanElement>;
-}) {
+} & React.HTMLAttributes<HTMLElement>) {
+  // Fenced code blocks are rendered as <pre><code class="language-...">...</code></pre>.
+  // Keep block code styling minimal here and delegate container visuals to TypographyPre.
+  if (className?.includes("language-")) {
+    return (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    );
+  }
+
+  const inlineCodeClassName =
+    `bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold ${className ?? ""}`.trim();
+
   return (
     <code
-      className="bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold"
+      className={inlineCodeClassName}
       {...props}
     >
       {children}
     </code>
+  );
+}
+
+export function TypographyPre({
+  children,
+  className,
+  ...props
+}: {
+  children: React.ReactNode;
+} & React.HTMLAttributes<HTMLPreElement>) {
+  return (
+    <pre
+      className={`my-6 overflow-x-auto rounded-lg border bg-muted/40 p-4 font-mono text-sm leading-6 ${className ?? ""}`.trim()}
+      {...props}
+    >
+      {children}
+    </pre>
   );
 }
 

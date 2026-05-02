@@ -14,6 +14,7 @@ import type { Route } from "./+types/post";
 import { bundleMDX } from "mdx-bundler";
 import { getMDXComponent } from "mdx-bundler/client";
 import { data } from "react-router";
+import remarkGfm from "remark-gfm";
 
 import {
   TypographyBlockquote,
@@ -25,6 +26,7 @@ import {
   TypographyList,
   TypographyOrderedList,
   TypographyP,
+  TypographyPre,
   TypographyLink,
 } from "~/core/components/mdx-typography";
 import CounterExample from "~/features/blog/components/counter-example";
@@ -142,6 +144,10 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     // Process the MDX file to extract code and frontmatter
     const { code, frontmatter } = await bundleMDX({
       file: entry.filePath,
+      mdxOptions(options) {
+        options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm];
+        return options;
+      },
     });
 
     // Return both the compiled MDX code and the frontmatter metadata
@@ -233,6 +239,7 @@ export default function Post({
           blockquote: TypographyBlockquote,
           ul: TypographyList,
           ol: TypographyOrderedList,
+          pre: TypographyPre,
           code: TypographyInlineCode,
           a: TypographyLink,
           // Table components for MDX table support
