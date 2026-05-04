@@ -25,6 +25,7 @@ import {
   getBlogMonths,
   getBlogYears,
 } from "~/features/blog/lib/blog-index.server";
+import { toBlogLocaleDateString } from "~/features/blog/lib/blog-date-locale";
 
 
 /**
@@ -199,7 +200,11 @@ export default function Posts({
               <span className="text-muted-foreground mt-2 block text-sm">
                 {t("blog.posts.metaLine", {
                   author: frontmatter.author,
-                  date: new Date(frontmatter.date).toLocaleDateString(i18n.language),
+                  date: toBlogLocaleDateString(
+                    frontmatter.date,
+                    i18n.language,
+                  ),
+                  interpolation: { escapeValue: false },
                 })}
               </span>
             </div>

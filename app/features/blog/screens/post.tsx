@@ -11,6 +11,7 @@
  */
 import type { Route } from "./+types/post";
 
+import { useTranslation } from "react-i18next";
 import { bundleMDX } from "mdx-bundler";
 import { getMDXComponent } from "mdx-bundler/client";
 import { data } from "react-router";
@@ -42,6 +43,7 @@ import {
   TableRow,
 } from "~/core/components/ui/table";
 import i18next from "~/core/lib/i18next.server";
+import { toBlogLocaleDateString } from "~/features/blog/lib/blog-date-locale";
 import { getBlogBySlug } from "~/features/blog/lib/blog-index.server";
 
 interface PostFrontmatter {
@@ -193,11 +195,12 @@ export async function loader({ params, request }: Route.LoaderArgs) {
  * @param loaderData - Data from the loader containing frontmatter and compiled MDX code
  */
 export default function Post({
-  loaderData: { frontmatter, code },
+  loaderData: { frontmatter, code, lang },
 }: Route.ComponentProps) {
+  const { t } = useTranslation();
   // Convert the compiled MDX code into a React component
   const MDXContent = getMDXComponent(code);
-  
+
   return (
     <div className="mx-auto w-full space-y-10">
       {/* Post header with category, title, author and date */}
@@ -209,8 +212,11 @@ export default function Post({
           </h1>
         </div>
         <span className="text-muted-foreground">
-          {frontmatter.author} on{" "}
-          {new Date(frontmatter.date).toLocaleDateString("ko-KR")}
+          {t("blog.posts.metaLine", {
+            author: frontmatter.author,
+            date: toBlogLocaleDateString(frontmatter.date, lang),
+            interpolation: { escapeValue: false },
+          })}
         </span>
       </header>
       
