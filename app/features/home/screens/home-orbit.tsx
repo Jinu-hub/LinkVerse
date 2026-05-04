@@ -222,7 +222,7 @@ function OrbitDiagram() {
           r="175"
           fill="none"
           stroke="currentColor"
-          strokeWidth="1"
+          strokeWidth="2"
           strokeDasharray="4 6"
           opacity="0.22"
         >
