@@ -70,7 +70,7 @@ Do not change the following:
 - Project names:
   - LinkVerse
   - NexLetter
-  - MarketReport
+  - MarketMemory
 
 - Route names:
   - /orbit
@@ -266,8 +266,8 @@ The following points must remain accurate:
 - NexLetter is currently waiting for Slack App review.
 - NexLetter’s major challenges include unstructured Slack data, lack of test sources, token volume, rate limits, Railway worker operation, billing policy, and billing flow testing.
 - The rate limit issue may include 429 Rate limit reached for gpt-4.1-mini.
-- MarketReport is a service for publishing reports based on microeconomic, macroeconomic, and market-related sources.
-- MarketReport uses n8n-based automation pipelines.
+- MarketMemory is a service for publishing reports based on microeconomic, macroeconomic, and market-related sources.
+- MarketMemory uses n8n-based automation pipelines.
 - The first stage of the report pipelines is nearly complete.
 - Three report pipelines are currently close to completion.
 - The next focus is how to present the registered data on web pages.
@@ -354,17 +354,17 @@ The description should be short and suitable for a blog list or SEO summary.
 Korean source example:
 
 title: "2026년 4월 29일, 프로젝트 전반의 개발 진행 상황 정리"
-description: "LinkVerse, NexLetter, MarketReport의 현재 개발 상황과 앞으로의 과제를 정리한 기록"
+description: "LinkVerse, NexLetter, MarketMemory의 현재 개발 상황과 앞으로의 과제를 정리한 기록"
 
 English example:
 
 title: "Project Development Progress Overview as of April 29, 2026"
-description: "A progress note on the current state of LinkVerse, NexLetter, and MarketReport, along with the challenges ahead"
+description: "A progress note on the current state of LinkVerse, NexLetter, and MarketMemory, along with the challenges ahead"
 
 Japanese example:
 
 title: "2026年4月29日時点のプロジェクト全体の開発進捗整理"
-description: "LinkVerse、NexLetter、MarketReportの現在の開発状況と今後の課題を整理した記録"
+description: "LinkVerse、NexLetter、MarketMemoryの現在の開発状況と今後の課題を整理した記録"
 
 Do not make the title sound like a press release.
 
