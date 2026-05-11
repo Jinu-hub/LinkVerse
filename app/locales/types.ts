@@ -156,6 +156,21 @@ export type Translation = {
       sortLatest: string;
       sortOldest: string;
       metaLine: string;
+      engagement: {
+        sectionAriaLabel: string;
+        likeCount: string;
+        likeButton: string;
+        commentsTitle: string;
+        noComments: string;
+        guestNameLabel: string;
+        guestNamePlaceholder: string;
+        commentLabel: string;
+        commentPlaceholder: string;
+        submitComment: string;
+        commentEmpty: string;
+        guestNameRequired: string;
+        errorGeneric: string;
+      };
     };
   };
   join: {

@@ -22,6 +22,8 @@ export interface BlogEntry {
   year: string;
   category: string;
   slug: string;
+  /** MDX frontmatter translationKey; empty if omitted */
+  translationKey: string;
   date: string;
   title: string;
   description: string;
@@ -34,6 +36,15 @@ export interface BlogEntry {
   bodyText: string;
   image?: string;
   imageAlt?: string;
+}
+
+/** Stable key for blog_post_like / blog_comment (cross-locale). */
+export function getPostKey(entry: Pick<BlogEntry, "lang" | "slug" | "translationKey">): string {
+  const key = entry.translationKey.trim();
+  if (key.length > 0) {
+    return key;
+  }
+  return `${entry.lang}:${entry.slug}`;
 }
 
 export interface BlogListOptions {
@@ -210,12 +221,14 @@ function createEntryFromFile(
   const draft = parseBoolean(frontmatter.draft, false);
   const date = parseString(frontmatter.date, fileDate);
   const slug = parseString(frontmatter.slug, fileSlug);
+  const translationKey = parseString(frontmatter.translationKey, "");
 
   return {
     lang: langSegment,
     year,
     category,
     slug,
+    translationKey,
     date,
     title,
     description,

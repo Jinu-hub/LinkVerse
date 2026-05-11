@@ -44,7 +44,12 @@ import {
 } from "~/core/components/ui/table";
 import i18next from "~/core/lib/i18next.server";
 import { toBlogLocaleDateString } from "~/features/blog/lib/blog-date-locale";
-import { getBlogBySlug } from "~/features/blog/lib/blog-index.server";
+import BlogPostEngagement from "~/features/blog/components/blog-post-engagement";
+import {
+  getBlogBySlug,
+  getPostKey,
+} from "~/features/blog/lib/blog-index.server";
+import type { BlogEngagementComment } from "~/features/blog/lib/serialize-engagement-comments";
 
 interface PostFrontmatter {
   title: string;
@@ -165,10 +170,40 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       imageAlt: (frontmatter as PostFrontmatter).imageAlt ?? entry.imageAlt,
     };
 
+    const postKey = getPostKey(entry);
+    let likeCount = 0;
+    let engagementComments: BlogEngagementComment[] = [];
+    let isAuthenticated = false;
+    try {
+      const [{ getBlogPostLikeCountByPostKey, getBlogCommentsByPostKey }, serializeMod, makeServerClientMod] =
+        await Promise.all([
+          import("~/features/blog/db/queries"),
+          import("~/features/blog/lib/serialize-engagement-comments"),
+          import("~/core/lib/supa-client.server"),
+        ]);
+      const [client] = makeServerClientMod.default(request);
+      const {
+        data: { user },
+      } = await client.auth.getUser();
+      isAuthenticated = Boolean(user);
+      const [rows, count] = await Promise.all([
+        getBlogCommentsByPostKey(postKey),
+        getBlogPostLikeCountByPostKey(postKey),
+      ]);
+      engagementComments = serializeMod.serializeEngagementComments(rows);
+      likeCount = count;
+    } catch (e) {
+      console.error("blog post engagement loader", e);
+    }
+
     return {
       frontmatter: mergedFrontmatter,
       code,
       lang: locale,
+      postKey,
+      likeCount,
+      engagementComments,
+      isAuthenticated,
     };
   } catch (error) {
     // Handle file not found errors with a 404 response
@@ -195,7 +230,15 @@ export async function loader({ params, request }: Route.LoaderArgs) {
  * @param loaderData - Data from the loader containing frontmatter and compiled MDX code
  */
 export default function Post({
-  loaderData: { frontmatter, code, lang },
+  loaderData: {
+    frontmatter,
+    code,
+    lang,
+    postKey,
+    likeCount,
+    engagementComments,
+    isAuthenticated,
+  },
 }: Route.ComponentProps) {
   const { t } = useTranslation();
   // Convert the compiled MDX code into a React component
@@ -259,6 +302,14 @@ export default function Post({
           caption: TableCaption,
           CounterExample,
         }}
+      />
+
+      <BlogPostEngagement
+        key={postKey}
+        postKey={postKey}
+        initialLikeCount={likeCount}
+        initialComments={engagementComments}
+        isAuthenticated={isAuthenticated}
       />
     </div>
   );

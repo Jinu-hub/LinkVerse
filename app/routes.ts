@@ -132,6 +132,8 @@ export default [
   layout("features/blog/layouts/blog.layout.tsx", [
     ...prefix("/blog", [
       index("features/blog/screens/posts.tsx"),
+      route("api/like", "features/blog/api/post-like.tsx"),
+      route("api/comment", "features/blog/api/post-comment.tsx"),
       route("/:slug", "features/blog/screens/post.tsx"),
     ]),
   ]),
