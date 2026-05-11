@@ -192,6 +192,9 @@ const ja: Translation = {
         errorGeneric: "処理に失敗しました。しばらくしてから再度お試しください。",
       },
     },
+    post: {
+      backFabAriaLabel: "記事一覧へ戻る",
+    },
   },
   join: {
     heroTitle: "もっと賢いブックマーク整理",

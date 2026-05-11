@@ -191,6 +191,9 @@ const en: Translation = {
         errorGeneric: "Something went wrong. Please try again in a moment.",
       },
     },
+    post: {
+      backFabAriaLabel: "Back to blog posts",
+    },
   },
   join: {
     heroTitle: "Smarter bookmark organizing",

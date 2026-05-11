@@ -11,10 +11,11 @@
  */
 import type { Route } from "./+types/post";
 
+import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { bundleMDX } from "mdx-bundler";
 import { getMDXComponent } from "mdx-bundler/client";
-import { data } from "react-router";
+import { data, Link } from "react-router";
 import remarkGfm from "remark-gfm";
 
 import {
@@ -32,6 +33,7 @@ import {
 } from "~/core/components/mdx-typography";
 import CounterExample from "~/features/blog/components/counter-example";
 import { Badge } from "~/core/components/ui/badge";
+import { Button } from "~/core/components/ui/button";
 import {
   Table,
   TableBody,
@@ -311,6 +313,21 @@ export default function Post({
         initialComments={engagementComments}
         isAuthenticated={isAuthenticated}
       />
+
+      <Button
+        asChild
+        variant="outline"
+        size="icon"
+        className="fixed bottom-[max(1.5rem,env(safe-area-inset-bottom,0px))] right-[max(1.5rem,env(safe-area-inset-right,0px))] z-50 size-12 rounded-full border-2 border-muted-foreground/40 bg-card/95 text-foreground shadow-md backdrop-blur-sm transition-[background-color,box-shadow,transform,border-color,color] hover:border-[#5E6AD2] hover:bg-accent/95 hover:text-[#5E6AD2] hover:shadow-lg hover:shadow-[#5E6AD2]/20 focus-visible:border-[#5E6AD2] focus-visible:ring-2 focus-visible:ring-[#5E6AD2]/35 active:scale-[0.98] motion-safe:active:transition-transform dark:border-muted-foreground/50 dark:bg-card/75 dark:hover:border-[#7C89F9] dark:hover:text-[#7C89F9] dark:hover:shadow-[#7C89F9]/25 dark:focus-visible:border-[#7C89F9] dark:focus-visible:ring-[#7C89F9]/35 dark:shadow-black/25 md:bottom-8 md:right-8"
+      >
+        <Link
+          to="/blog"
+          viewTransition
+          aria-label={t("blog.post.backFabAriaLabel")}
+        >
+          <ArrowLeft className="size-5 shrink-0" aria-hidden />
+        </Link>
+      </Button>
     </div>
   );
 }

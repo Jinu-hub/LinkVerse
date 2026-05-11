@@ -172,6 +172,11 @@ export type Translation = {
         errorGeneric: string;
       };
     };
+    /** 단일 글 화면 (`/blog/:slug`) */
+    post: {
+      /** 글 상세 우하단 고정 — 글 목록으로 이동 */
+      backFabAriaLabel: string;
+    };
   };
   join: {
     heroTitle: string;

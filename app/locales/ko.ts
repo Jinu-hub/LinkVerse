@@ -191,6 +191,9 @@ const ko: Translation = {
         errorGeneric: "요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.",
       },
     },
+    post: {
+      backFabAriaLabel: "블로그 글 목록으로 이동",
+    },
   },
   join: {
     heroTitle: "스마트한 북마크 정리",
