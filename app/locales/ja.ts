@@ -190,6 +190,9 @@ const ja: Translation = {
         commentEmpty: "コメントを入力してください。",
         guestNameRequired: "表示名を入力してください。",
         errorGeneric: "処理に失敗しました。しばらくしてから再度お試しください。",
+        replyButton: "返信",
+        cancelReply: "返信をやめる",
+        replyingToHint: "{{name}}への返信を書いています",
       },
     },
     post: {

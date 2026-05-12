@@ -189,6 +189,9 @@ const ko: Translation = {
         commentEmpty: "댓글 내용을 입력해 주세요.",
         guestNameRequired: "닉네임을 입력해 주세요.",
         errorGeneric: "요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.",
+        replyButton: "답글",
+        cancelReply: "답글 취소",
+        replyingToHint: "{{name}}에게 답글 작성 중",
       },
     },
     post: {

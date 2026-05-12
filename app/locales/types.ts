@@ -170,6 +170,9 @@ export type Translation = {
         commentEmpty: string;
         guestNameRequired: string;
         errorGeneric: string;
+        replyButton: string;
+        cancelReply: string;
+        replyingToHint: string;
       };
     };
     /** 단일 글 화면 (`/blog/:slug`) */

@@ -189,6 +189,9 @@ const en: Translation = {
         commentEmpty: "Please enter a comment.",
         guestNameRequired: "Please enter a display name.",
         errorGeneric: "Something went wrong. Please try again in a moment.",
+        replyButton: "Reply",
+        cancelReply: "Cancel reply",
+        replyingToHint: "Replying to {{name}}",
       },
     },
     post: {
