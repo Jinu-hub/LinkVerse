@@ -7,13 +7,107 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
   }
   public: {
     Tables: {
+      blog_comment: {
+        Row: {
+          blog_comment_id: number
+          body: string
+          created_at: string
+          guest_name: string | null
+          parent_comment_id: number | null
+          post_key: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          blog_comment_id?: never
+          body: string
+          created_at?: string
+          guest_name?: string | null
+          parent_comment_id?: number | null
+          post_key: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          blog_comment_id?: never
+          body?: string
+          created_at?: string
+          guest_name?: string | null
+          parent_comment_id?: number | null
+          post_key?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_comment_parent_comment_id_blog_comment_blog_comment_id_fk"
+            columns: ["parent_comment_id"]
+            isOneToOne: false
+            referencedRelation: "blog_comment"
+            referencedColumns: ["blog_comment_id"]
+          },
+        ]
+      }
+      blog_post_like: {
+        Row: {
+          blog_post_like_id: number
+          created_at: string
+          like_count: number
+          post_key: string
+          updated_at: string
+        }
+        Insert: {
+          blog_post_like_id?: never
+          created_at?: string
+          like_count?: number
+          post_key: string
+          updated_at?: string
+        }
+        Update: {
+          blog_post_like_id?: never
+          created_at?: string
+          like_count?: number
+          post_key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      blog_post_like_user: {
+        Row: {
+          created_at: string
+          post_key: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          post_key: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          post_key?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_post_like_user_post_key_blog_post_like_post_key_fk"
+            columns: ["post_key"]
+            isOneToOne: false
+            referencedRelation: "blog_post_like"
+            referencedColumns: ["post_key"]
+          },
+        ]
+      }
       bookmark: {
         Row: {
           bookmark_id: number
@@ -337,6 +431,33 @@ export type Database = {
           },
         ]
       }
+      taggable_delete_log: {
+        Row: {
+          content_type_id: number | null
+          deleted_at: string | null
+          deleted_by: string | null
+          log_id: number
+          tag_id: number | null
+          target_id: number | null
+        }
+        Insert: {
+          content_type_id?: number | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          log_id?: number
+          tag_id?: number | null
+          target_id?: number | null
+        }
+        Update: {
+          content_type_id?: number | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          log_id?: number
+          tag_id?: number | null
+          target_id?: number | null
+        }
+        Relationships: []
+      }
       ui_type: {
         Row: {
           createdAt: string
@@ -654,9 +775,9 @@ export type Database = {
     Functions: {
       fetch_user_tags_by_categories: {
         Args: {
+          p_category_ids: number[]
           p_content_type_id: number
           p_user_id: string
-          p_category_ids: number[]
         }
         Returns: number[]
       }
@@ -667,35 +788,32 @@ export type Database = {
         }[]
       }
       get_max_category_sort_order: {
-        Args: { p_user_id: string; p_parent_id: number }
+        Args: { p_parent_id: number; p_user_id: string }
         Returns: number
       }
-      pop_mailer: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      pop_mailer: { Args: never; Returns: Json }
       sync_memo_with_content_delete: {
         Args: { p_content_type_id: number; p_user_id: string }
         Returns: number
       }
-      sync_tag_usage_counts: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      sync_tag_usage_counts: { Args: never; Returns: number }
       sync_tag_usage_with_content: {
         Args: { p_tag_id: number }
         Returns: undefined
       }
-      sync_taggable_with_content_delete: {
-        Args:
-          | { p_content_type_id: number; p_user_id: string }
-          | {
+      sync_taggable_with_content_delete:
+        | {
+            Args: { p_content_type_id: number; p_user_id: string }
+            Returns: number
+          }
+        | {
+            Args: {
               p_content_type_id: number
-              p_user_id: string
               p_tag_ids: number[]
+              p_user_id: string
             }
-        Returns: number
-      }
+            Returns: number
+          }
     }
     Enums: {
       activity_type_codes:
