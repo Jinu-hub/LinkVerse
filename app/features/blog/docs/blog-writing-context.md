@@ -184,6 +184,8 @@ content/
         projects/
         architecture/
         ai-workflow/
+        devlog/
+        market-notes/
         weekly/
         self-reflection/
         life/
@@ -196,6 +198,8 @@ content/
         projects/
         architecture/
         ai-workflow/
+        devlog/
+        market-notes/
         weekly/
         self-reflection/
         life/
@@ -208,6 +212,8 @@ content/
         projects/
         architecture/
         ai-workflow/
+        devlog/
+        market-notes/
         weekly/
         self-reflection/
         life/
@@ -239,6 +245,8 @@ content/blog/{lang}/{year}/{category}/YYYY-MM-DD-title-slug.mdx
 | projects | 개인 프로젝트 진행 기록 |
 | architecture | 아키텍처, 설계, DB, 폴더 구조, 기술 선택 이유 |
 | ai-workflow | AI 활용, 프롬프트, 에이전트, n8n, Cursor 활용 기록 |
+| devlog | 개발·운영 도구, 워크플로, 툴킷, 작업 환경 스냅샷 |
+| market-notes | 시장·경제·정책 관련 관찰과 해석 기록 |
 | weekly | 주간 회고, 루틴, 진행 상황 |
 | self-reflection | 자기 정리, 감정, 방향성, 삶의 기준 |
 | life | 일상, 운동, 하루 기록, 생활 리듬 |
@@ -251,6 +259,8 @@ content/blog/{lang}/{year}/{category}/YYYY-MM-DD-title-slug.mdx
 - 기술적 판단이 핵심이면 architecture
 - 프로젝트 진행 상황이 핵심이면 projects
 - AI 활용 방식이 핵심이면 ai-workflow
+- 사용 중인 도구·서비스 조합이나 운영 환경 정리가 핵심이면 devlog
+- 시장·경제·정책 이슈를 해석하거나 기록하는 글이면 market-notes
 - 주간 단위의 흐름 정리가 핵심이면 weekly
 - 개인적인 방향성과 마음 정리가 핵심이면 self-reflection
 - 일상 경험이면 life
@@ -272,6 +282,13 @@ self-reflection과 essay의 차이:
 - “Market Memory의 content 구조를 정리한 이유” → architecture
 - “LinkVerse 랜딩 페이지 방향성 정리” → projects
 - “n8n과 AI Agent를 함께 쓰며 느낀 점” → ai-workflow
+- “2026년에 쓰는 개발·운영 툴 정리” → devlog
+- “CLARITY Act와 스테이블코인 규제 흐름” → market-notes
+
+projects와 devlog의 차이:
+
+- projects는 특정 프로젝트의 진행, 방향, 과제가 중심이다.
+- devlog는 프로젝트 하나에 묶이지 않고, 개발·운영 방식이나 툴 조합 자체가 중심이다.
 
 ---
 
@@ -299,11 +316,14 @@ translationKey: ""
 - description: 리스트나 SEO에 사용할 짧은 설명
 - date: 작성일
 - lang: ko / en / ja
-- category: projects / architecture / ai-workflow / weekly / self-reflection / life / travel / memo / essay
+- category: projects / architecture / ai-workflow / devlog / market-notes / weekly / self-reflection / life / travel / memo / essay
 - tags: 관련 키워드 배열
-- status: draft / published / archived
+- status: draft / published / archived (`draft`, `archived`는 목록·상세에서 숨김)
 - visibility: public / private
 - translationKey: 다국어 글을 연결하기 위한 고유 키
+
+카테고리는 `{lang}/{year}/{category}/` 폴더명이 실제 분류 기준이 된다.
+frontmatter의 `category`는 폴더명과 맞춰 두는 것이 좋다.
 
 선택적으로 사용할 수 있는 필드:
 

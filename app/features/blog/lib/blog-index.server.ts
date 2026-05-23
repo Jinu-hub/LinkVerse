@@ -218,7 +218,11 @@ function createEntryFromFile(
     return null;
   }
 
-  const draft = parseBoolean(frontmatter.draft, false);
+  const status = parseString(frontmatter.status).toLowerCase();
+  const draft =
+    parseBoolean(frontmatter.draft, false) ||
+    status === "draft" ||
+    status === "archived";
   const date = parseString(frontmatter.date, fileDate);
   const slug = parseString(frontmatter.slug, fileSlug);
   const translationKey = parseString(frontmatter.translationKey, "");

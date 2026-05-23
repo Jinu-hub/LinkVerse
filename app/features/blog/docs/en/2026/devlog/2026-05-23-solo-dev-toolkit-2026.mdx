@@ -1,0 +1,318 @@
+---
+title: "Tools I Use for Development and Running Services"
+description: "A snapshot of the AI, infrastructure, automation, and note-taking tools I combine as a solo developer in 2026"
+date: "2026-05-23"
+lang: "en"
+category: "devlog"
+tags: ["solo-dev", "tooling", "side-project", "ai-workflow", "infrastructure", "automation"]
+status: "published"
+visibility: "public"
+author: "jinu"
+translationKey: "solo-dev-toolkit-2026"
+---
+
+## Tools I Use for Development and Running Services
+
+When you build software, something matters as much as your tech stack: which tools and services you combine to keep work moving.
+
+Beyond frameworks, languages, and databases, the tools around the edges take up a fair share of the work when you actually build and run a service.
+
+Asking AI for code, managing deployment, sending email, connecting external APIs, building automation flows, organizing data, capturing ideas, and wiring up payments and auth—all of that adds up to one development flow.
+
+In this post, I want to organize the main tools and services I use for development and operations as of 2026.
+
+This is less a write-up of the stack itself and more a record of how a solo developer combines tools to build and run services in practice.
+
+Of course, this list is not fixed.  
+A year or two from now, some of what I use today may drop off naturally, and tools I only touch lightly now may move to a more central role.
+
+In that sense, this is not a “correct answer” list—it is a snapshot of how I develop and operate services at this point in time.
+
+---
+
+## 1. AI / Development Assistants
+
+### Cursor AI
+
+One of the tools I reach for most in day-to-day development.  
+It goes beyond autocomplete: it helps when I need to choose a direction for changes or refactor with the whole project in context.
+
+Especially when working alone, it often feels like having someone next to me reviewing code.  
+The final call is still mine, but for repetitive implementation and structural cleanup, it has raised productivity a lot.
+
+### ChatGPT
+
+I use it across the board—for organizing ideas, design review, checking code direction, writing, and prompt design.
+
+It is a development tool, but it is also close to a thinking tool.  
+Before building a feature, I often use it to clarify concepts, map data flow, or draft blog posts.
+
+For me, ChatGPT is less a simple Q&A box and more a partner for checking project direction and structure.
+
+### Gemini
+
+I use it to compare answers from a different angle than ChatGPT or to get an alternative view on a specific task.
+
+Each AI tool has its own style and strengths, so I tend to compare by situation rather than locking into one.
+
+### Claude Code
+
+A tool I am paying attention to for workflows focused on code work.  
+I see strong potential when dealing with a complex codebase or edits that span many files.
+
+I am not at the stage of handing everything over yet, but I think it could become an important axis in AI-based development workflows.
+
+---
+
+## 2. AI API / Models / Embeddings
+
+### OpenAI API / Models
+
+The core API I use to implement AI features inside services.  
+Not only chatbot-style use—I rely on it for report generation, summarization, classification, tagging, structured data generation, and more.
+
+The services I am building give heavy weight to content and data interpretation, so the OpenAI API is not a small add-on—it is a substantial part of the service structure.
+
+### OpenAI Embeddings API
+
+I use it for similarity between texts and vector search.  
+For example, measuring how similar a past report is to a current one, or surfacing content related to a topic.
+
+As content accumulates, I expect “find similar context” to matter more than plain search.  
+In that sense, the Embeddings API may play a quite important role over the long term.
+
+---
+
+## 3. Deployment / Infrastructure / Operations
+
+### Vercel
+
+I use it to deploy frontend services.  
+A big advantage is how quickly I can ship and see the result.
+
+For a solo developer or a small MVP, deployment friction easily breaks development rhythm.  
+Vercel feels like a good fit for fast experiments and releases.
+
+### Cloudflare
+
+I use it across domains, DNS, Workers, Pages, and more.  
+I do not see it only as CDN or DNS—it is increasingly a platform that can cover a wider slice of application infrastructure.
+
+I think it is one of the better choices for running services with lower cost and complexity as an individual builder.
+
+### Cloudflare Workers
+
+I use it to run light backend logic in a serverless environment.  
+It suits API routing, proxies, and simple server-side behavior.
+
+The upside is attaching features quickly without running a heavy server yourself.
+
+### Cloudflare Pages
+
+Useful for deploying static sites or frontend projects.  
+Together with Workers inside the Cloudflare ecosystem, you can build quite a lot with a relatively simple layout.
+
+### Wrangler
+
+The CLI for developing and deploying Cloudflare Workers.  
+Local development, type generation, deploys—I end up using it whenever I work on Cloudflare-based projects.
+
+Setup can feel fiddly at first, but once it clicks, Workers-based development stays fairly clean.
+
+### Namecheap
+
+I use it to buy and manage domains.  
+When you build services, a domain is more than just an address.
+
+For personal projects or a brand you are shaping, the name and TLD are real decisions.
+
+---
+
+## 4. Database / Backend Foundation
+
+### Supabase
+
+I use it as a backend platform that offers database, auth, storage, vector search, and more.
+
+As a solo developer, not having to build much of the backend yourself matters a lot.  
+I also like that it is PostgreSQL-based.
+
+Vector search in the same place fits well with AI-driven services and content search.
+
+---
+
+## 5. Automation / Workflow
+
+### n8n
+
+I use it to connect APIs and services and to compose automation flows.
+
+It is especially useful when building AI Agent pipelines.  
+You can see the flow visually—fetch data, send it to an LLM, parse the result, write back to the DB.
+
+You could write every pipeline in code, but n8n makes intermediate data and flow visible.  
+Personally, it feels like an important tool when designing AI-based automation.
+
+### Google Drive
+
+For file storage, sharing, and material management.  
+I reach for it more on the operations and documentation side than inside core development.
+
+### Google Sheets
+
+For light data cleanup, test data, and operational tables.  
+Before touching a full database, it helps to sketch structure temporarily or organize data a human needs to review.
+
+---
+
+## 6. Auth / OAuth / Google Integration
+
+### Google Cloud Console
+
+Where I manage what is needed to use Google APIs—OAuth clients, enabling APIs, credentials, and so on.
+
+It feels tedious at first, but you cannot really avoid it if you want Gmail, Drive, Calendar, and similar services wired in.
+
+### Google OAuth
+
+I use it to connect external services to a Google account.  
+Especially when n8n or my own services need Gmail, Drive, and related APIs.
+
+Auth and permissions are a bigger slice of operations than they look.  
+More than the feature itself, the structure that lets users connect and use things safely matters.
+
+---
+
+## 7. Email / Payments / Business Features
+
+### Resend
+
+For sending email from services—signup, notifications, report delivery, transactional mail, and more.
+
+Email looks simple on the surface but matters a lot in real operations.  
+Resend feels like a solid choice for reliable delivery and a developer-friendly API.
+
+### Stripe
+
+A service I consider or use when adding payments.  
+For solo developers and small products, it is one of the most realistic options for global payments.
+
+You do not need a complex billing model on day one, but if you might charge later, it is worth thinking early about how payment infrastructure will attach.
+
+---
+
+## 8. Communication / Collaboration
+
+### GitHub
+
+The code repository and the center of development work.  
+Version control, issues, PRs, deploy hooks—much of the flow revolves around GitHub.
+
+Even for personal projects, GitHub is not just storage; it becomes a record of work and decisions.
+
+### Slack
+
+For team communication and notification flows.  
+Slack data also has strong potential for AI-based reports and work summaries.
+
+When you summarize how a team moved over a period or what issues came up, Slack data can be an important input.
+
+### Telegram
+
+For light alerts, personal bots, and receiving automation messages.  
+It can act as a more personal notification channel than Slack.
+
+---
+
+## 9. Documentation / Knowledge Management
+
+### Obsidian
+
+For personal knowledge management and organizing thought.  
+It works well for linked notes and keeping the thread of ideas.
+
+On projects, sometimes what matters is not a flat document but recording how thinking changed and how ideas connect.  
+Obsidian feels closer to a personal knowledge base than a simple memo app.
+
+### Notion
+
+For planning docs, design docs, project summaries, and operational write-ups.  
+When I want something shared or neatly structured, Notion is easier.
+
+If Obsidian holds the flow of personal thinking, Notion is closer to polished documents and operational material.
+
+---
+
+## 10. External Data / Financial Data
+
+### Twelve Data
+
+For market and financial data.  
+Stock prices, indices, FX—useful when connecting external data into a service.
+
+Free tiers and plans can limit symbols and features, so when you apply it to a real service you need to weigh cost and constraints together.
+
+### Fear & Greed API
+
+A sentiment-style market indicator.  
+Price alone does not always explain mood; indicators like this are good supporting data for dashboards or reports.
+
+### Yahoo Finance / Finance Data Source
+
+For reference and secondary checks on market data.  
+Stable production use may need separate review, but it is still useful for sensing market flow.
+
+---
+
+## 11. Analytics / Monitoring / Design (Candidates)
+
+Some tools are not fully central yet but are worth exploring further.
+
+### Figma
+
+For UI design and screen layout.  
+As a solo developer you do not need pixel-perfect design everywhere, but it helps to shape key screens and user flow.
+
+As a service grows, defining screen direction before jumping straight into code becomes more important.
+
+### PostHog
+
+For product and user behavior analytics.  
+Beyond visitor counts—you can see which features people use and where they drop off.
+
+Too much analytics early in an MVP can be noise, but once real users show up it can become important.
+
+### Google Analytics
+
+A baseline for visitors, referrers, and page views.  
+Still useful for a blog, landing pages, and public services.
+
+### Canva
+
+For quick images, thumbnails, slides, and social graphics.  
+When you do not need a full design stack but want visuals fast, it is a practical option.
+
+---
+
+## Closing
+
+Listing what I use now is not really “I use a lot of dev tools.”
+
+It is closer to seeing the flow needed to build one service.
+
+AI assists thinking and implementation;  
+Supabase and Cloudflare shape backend and infrastructure;  
+Vercel ships quickly;  
+n8n builds automation pipelines;  
+OpenAI API and Embeddings add intelligent features;  
+Google, Slack, GitHub, Notion, and Obsidian carry operations and records.
+
+What matters for a solo developer is not building everything yourself.  
+It is combining the right tools so you can still build and run a service alone.
+
+For me, these tools are less convenience features and more leverage—ways for one person or a small team to cover a larger scope of work.
+
+This list will keep changing.  
+Some tools I will use more deeply; others will naturally fall away.
+
+At this moment, though, I think this list can stand as a record of how I develop and which direction I am taking with the services I build.
