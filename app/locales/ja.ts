@@ -111,21 +111,21 @@ const ja: Translation = {
     services: {
       linkVerse: {
         name: "LinkVerse",
-        tagline: "あなたのリンクのための宇宙。",
+        tagline: "リンクのための宇宙。",
         description:
-          "タグとメモを足して、散らばったリンクを自分だけの知識に組み立て直します。",
+          "タグとメモを足して、散らばったリンクを自分の知識に変えます。 <br />長期的には、複数のサービスをつなぐPlatformとして発展します。",
       },
       nexLetter: {
         name: "NexLetter",
-        tagline: "ニュースレターを再発明。",
+        tagline: "ニュースレターを再設計。",
         description:
-          "情報を構造的に整えて届ける、AI を使ったレポーティングサービスです。",
+          "情報を構造的に整えてより良く届ける、AI を使ったレポーティングサービスです。",
       },
       marketMemory: {
         name: "Market Memory",
-        tagline: "マーケットを記憶する。",
+        tagline: "マーケットを記憶し、再読み直す。",
         description:
-          "市場を分析し、時間とともに判断を記録・レポートするサービスです。",
+          "市場を分析し、時間とともに判断を記録し、変化をレポートするサービスです。",
       },
       moreComing: {
         name: "さらにサービスが加わります",
@@ -137,10 +137,13 @@ const ja: Translation = {
     status: {
       live: "公開中",
       beta: "ベータ",
+      "in-review": "審査中",
+      planned: "追加予定",
       soon: "近日公開",
     },
     cardFooter: {
-      stayTuned: "お楽しみに",
+      stayTuned: "近日公開",
+      preparing: "準備中",
       openService: "サービスを開く",
     },
     closing: {

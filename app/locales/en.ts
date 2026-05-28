@@ -112,19 +112,19 @@ const en: Translation = {
         name: "LinkVerse",
         tagline: "A universe for your links.",
         description:
-          "Add tags and notes to bookmarks and reshape scattered links into your own knowledge.",
+          "Add tags and notes to bookmarks and turn scattered links into your own knowledge. Long-term, it will grow into a platform that connects multiple services.",
       },
       nexLetter: {
         name: "NexLetter",
-        tagline: "Newsletters, re-imagined.",
+        tagline: "Newsletters, re-designed.",
         description:
-          "An AI-powered reporting service that structures information for clearer delivery.",
+          "An AI-powered reporting service that structures information for better delivery.",
       },
       marketMemory: {
         name: "Market Memory",
-        tagline: "Your market, remembered.",
+        tagline: "Market, remembered.",
         description:
-          "Analyze the market, record judgments over time, and report on what changed.",
+          "Analyze the market, record judgments over time, and report on what's changed.",
       },
       moreComing: {
         name: "More services are joining the orbit",
@@ -136,10 +136,13 @@ const en: Translation = {
     status: {
       live: "Live",
       beta: "Beta",
+      "in-review": "In Review",
+      planned: "Planned",
       soon: "Coming soon",
     },
     cardFooter: {
-      stayTuned: "Stay tuned",
+      stayTuned: "Coming soon",
+      preparing: "In progress",
       openService: "Open service",
     },
     closing: {

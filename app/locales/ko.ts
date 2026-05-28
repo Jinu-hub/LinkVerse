@@ -109,21 +109,21 @@ const ko: Translation = {
     services: {
       linkVerse: {
         name: "LinkVerse",
-        tagline: "당신의 링크를 위한 우주.",
+        tagline: "링크를 위한 우주.",
         description:
-          "북마크에 태그와 메모를 더해, 흩어진 링크를 나만의 지식으로 재구성합니다.",
+          "북마크에 태그와 메모를 더해, 흩어진 링크를 나만의 지식으로 재구성합니다. <br />장기적으로는 여러 서비스와 흐름을 연결하는 기반 플랫폼으로 확장됩니다.",
       },
       nexLetter: {
         name: "NexLetter",
-        tagline: "뉴스레터를 다시 상상합니다.",
+        tagline: "뉴스레터를 다시 설계합니다.",
         description:
-          "정보를 구조적으로 정리해 전달하는 AI 기반 리포팅 서비스입니다.",
+          "정보를 구조적으로 정리해 더 읽기 쉽게 전달하는 AI 기반 리포팅 서비스입니다.",
       },
       marketMemory: {
         name: "Market Memory",
-        tagline: "내 시장을 기억합니다.",
+        tagline: "시장을 기억하고 다시 읽습니다.",
         description:
-          "시장을 분석하고, 시간 속에 판단을 기록·리포팅하는 서비스입니다.",
+          "시장을 분석하고, 시간 속에 판단과 흐름을 기록하는 서비스입니다.",
       },
       moreComing: {
         name: "더 많은 서비스가 합류합니다",
@@ -135,10 +135,13 @@ const ko: Translation = {
     status: {
       live: "운영 중",
       beta: "베타",
+      "in-review": "심사 중",
+      planned: "추가 예정",
       soon: "출시 예정",
     },
     cardFooter: {
       stayTuned: "곧 공개",
+      preparing: "준비 중",
       openService: "서비스 열기",
     },
     closing: {

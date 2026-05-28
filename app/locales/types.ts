@@ -113,10 +113,13 @@ export type Translation = {
     status: {
       live: string;
       beta: string;
+      "in-review": string;
+      planned: string;
       soon: string;
     };
     cardFooter: {
       stayTuned: string;
+      preparing: string;
       openService: string;
     };
     closing: {

@@ -54,7 +54,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   };
 }
 
-type ServiceStatus = "live" | "beta" | "soon";
+type ServiceStatus = "live" | "beta" | "soon" | "in-review" | "planned";
 
 type OrbitServiceId = "linkVerse" | "nexLetter" | "marketMemory" | "moreComing";
 
@@ -77,7 +77,7 @@ const ORBIT_SERVICE_ROWS: OrbitServiceRow[] = [
   {
     id: "nexLetter",
     href: "https://nexone.ink",
-    status: "beta",
+    status: "in-review",
     icon: <Mail className="size-5" />,
     accent: "from-emerald-500/20 via-teal-500/10 to-transparent",
   },
@@ -91,7 +91,7 @@ const ORBIT_SERVICE_ROWS: OrbitServiceRow[] = [
   {
     id: "moreComing",
     href: "#",
-    status: "soon",
+    status: "planned",
     icon: <Plus className="size-5" />,
     accent: "from-fuchsia-500/20 via-purple-500/10 to-transparent",
   },
@@ -102,6 +102,10 @@ const STATUS_STYLE: Record<ServiceStatus, string> = {
     "bg-emerald-500/10 text-emerald-600 ring-1 ring-emerald-500/30 dark:text-emerald-300",
   beta:
     "bg-sky-500/10 text-sky-600 ring-1 ring-sky-500/30 dark:text-sky-300",
+  "in-review":
+    "bg-violet-500/10 text-violet-600 ring-1 ring-violet-500/30 dark:text-violet-300",
+  planned:
+    "bg-slate-500/10 text-slate-600 ring-1 ring-slate-500/30 dark:text-slate-300",
   soon:
     "bg-muted text-muted-foreground ring-1 ring-border",
 };
@@ -506,7 +510,10 @@ export default function HomeOrbit() {
               const disabled = s.href === "#";
               const name = t(`orbit.services.${s.id}.name`);
               const tagline = t(`orbit.services.${s.id}.tagline`);
-              const description = t(`orbit.services.${s.id}.description`);
+              const description = t(`orbit.services.${s.id}.description`).replace(
+                /<br\s*\/?>/gi,
+                "\n",
+              );
               const Card = (
                 <motion.div
                   initial={{ opacity: 0, y: 16 }}
@@ -514,7 +521,7 @@ export default function HomeOrbit() {
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.5, delay: i * 0.06 }}
                   className={cn(
-                    "group relative overflow-hidden rounded-2xl border border-border/60 bg-background/50 p-6 backdrop-blur-sm transition-all",
+                    "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-background/50 p-6 backdrop-blur-sm transition-all",
                     "hover:border-foreground/30 hover:shadow-lg hover:shadow-foreground/5",
                     disabled && "opacity-80 hover:opacity-90",
                   )}
@@ -553,14 +560,16 @@ export default function HomeOrbit() {
                     </span>
                   </div>
 
-                  <p className="relative mt-5 text-sm leading-relaxed text-muted-foreground">
+                  <p className="relative mt-5 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
                     {description}
                   </p>
 
-                  <div className="relative mt-6 flex items-center justify-between">
+                  <div className="relative mt-auto flex items-center justify-between pt-6">
                     <span className="text-xs text-muted-foreground">
                       {disabled
-                        ? t("orbit.cardFooter.stayTuned")
+                        ? s.status === "planned"
+                          ? t("orbit.cardFooter.preparing")
+                          : t("orbit.cardFooter.stayTuned")
                         : t("orbit.cardFooter.openService")}
                     </span>
                     <ArrowUpRight
@@ -575,7 +584,7 @@ export default function HomeOrbit() {
 
               if (disabled) {
                 return (
-                  <div key={s.id} aria-disabled>
+                  <div key={s.id} aria-disabled className="h-full">
                     {Card}
                   </div>
                 );
@@ -587,7 +596,7 @@ export default function HomeOrbit() {
                   to={s.href}
                   target="_blank"
                   viewTransition
-                  className="block outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded-2xl"
+                  className="block h-full rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                 >
                   {Card}
                 </Link>
