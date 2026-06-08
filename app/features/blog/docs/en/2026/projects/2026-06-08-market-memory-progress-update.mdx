@@ -17,16 +17,16 @@ This post is a mid-point review of the Market Memory project.
 
 Market Memory is a service I am building so that the market is not something you glance at once and move on from, but something you can accumulate judgments and interpretations about over time.
 
-At first, the core idea was using AI to write market reports.
+At first, the core idea was using AI to write market reports.  
 But as I kept working on it, I realized that simply generating reports was not enough.
 
 What mattered was not each individual report, but the flow that emerges when those reports accumulate.
 
-Which issues keep showing up again and again.
-How the market's view of a particular technology or sector shifts over time.
+Which issues keep showing up again and again.  
+How the market's view of a particular technology or sector shifts over time.  
 How one day's market mood connects to the next day, the next week, and the next month.
 
-That is ultimately why I named it Market Memory.
+That is ultimately why I named it Market Memory.  
 I wanted to build a structure for recording the market and being able to revisit those records later.
 
 ---
@@ -47,11 +47,11 @@ Here is what has been implemented so far.
 * The basic flow of the report generation pipeline
 * Data accumulation based on Korean-language reports
 
-The dashboard, Daily Market Memory, is roughly 50% complete.
+The dashboard, Daily Market Memory, is roughly 50% complete.  
 Some of the core sections are in place, but many areas remain as TODOs.
 
-The menu structure has a basic framework as well.
-Still, it is hard to see the current menu layout as the final form.
+The menu structure has a basic framework as well.  
+Still, it is hard to see the current menu layout as the final form.  
 As I keep building the service, some menus may be merged and others may be broken down further.
 
 At this stage, I think it makes more sense to adjust the information structure naturally while checking how the service actually feels to use, rather than declaring a finished structure too early.
@@ -64,12 +64,12 @@ The number 352 does not simply mean that a lot of reports have been created.
 
 More importantly, a foundation now exists for interpreting market data in a consistent format and continuing to accumulate the results.
 
-In particular, `core_data` is generated alongside Korean-language report writing.
+In particular, `core_data` is generated alongside Korean-language report writing.  
 This data is not just a plain text output. It is closer to an intermediate structure that can later be extended into multilingual report writing or more advanced analysis features.
 
 This seems likely to become an important foundation for Market Memory.
 
-Generating reports in every language from scratch from the beginning would be heavy in both cost and quality control.
+Generating reports in every language from scratch from the beginning would be heavy in both cost and quality control.  
 On the other hand, if I can rerun only the composition pipeline based on already generated `core_data`, I can expand reports into multiple languages while keeping the same analytical structure.
 
 In other words, the Korean reports accumulated so far are not just outputs. They are also base data for a future multilingual service and more advanced report features.
@@ -97,8 +97,8 @@ The basic direction is as follows.
 
 This work is closer to rebuilding already organized analytical data into each language's report format than to simple translation.
 
-If Market Memory were aimed only at Korean-speaking users, this might not be necessary.
-But thinking long term, English and Japanese support would significantly broaden the service's potential.
+If Market Memory were aimed only at Korean-speaking users, this might not be necessary.  
+But thinking long term, English and Japanese support would significantly broaden the service's potential.  
 This should be feasible with only modest changes to the automation pipeline that is already in place.
 
 ---
@@ -111,7 +111,7 @@ I need to organize the display across the whole interface for multilingual use: 
 
 This may look like simply swapping text, but in practice there are more details to watch than it first appears.
 
-For example, phrasing that feels natural in Korean may read a little stiff in Japanese, or become overly explanatory in English.
+For example, phrasing that feels natural in Korean may read a little stiff in Japanese, or become overly explanatory in English.  
 Date, category, tag, and summary display can also feel different by language.
 
 At this stage, the goal is not perfect localization. For now, I want to reach a state where basic multilingual browsing and reading work without friction.
@@ -124,12 +124,12 @@ Daily Market Memory is likely to become an important entry point for Market Memo
 
 Reading reports one by one is still necessary, but users also need a screen where they can quickly grasp "what kind of flow the market had today" when they visit every day.
 
-The dashboard is currently about 50% implemented.
+The dashboard is currently about 50% implemented.  
 From here, I need to check whether the sections already built actually feel meaningful.
 
 One thing to be careful about is letting the dashboard turn into nothing more than a collection of summary cards.
 
-Daily Market Memory should be both "today's summary" and "a record accumulating over time."
+Daily Market Memory should be both "today's summary" and "a record accumulating over time."  
 So it should show not only the current market mood, but also, little by little, what has changed compared with earlier dates.
 
 This is something I expect to keep refining through testing.
@@ -140,7 +140,7 @@ This is something I expect to keep refining through testing.
 
 Market Memory needs basic usability on mobile as well.
 
-A report service cannot be assumed to be read only on desktop.
+A report service cannot be assumed to be read only on desktop.  
 There is a real chance users will read it on mobile during a commute, at lunch, or in a short break.
 
 So I need to check basic screen display and behavior on iOS and Android.
@@ -163,12 +163,12 @@ Report content can get long, so reducing the burden of reading on mobile is espe
 
 I am thinking of Vercel as the deployment target.
 
-That said, Market Memory may use more resources than expected across report generation, report viewing, and dashboard display.
+That said, Market Memory may use more resources than expected across report generation, report viewing, and dashboard display.  
 At the moment, it seems likely that I will need to move to Vercel's Pro plan.
 
 That could mean around $20 per month, but at this stage I think simplicity in development and operations matters more.
 
-Of course, if traffic grows or server costs increase further down the line, other options may need to be considered.
+Of course, if traffic grows or server costs increase further down the line, other options may need to be considered.  
 But for early service validation, I think it makes more sense to deploy quickly and improve, rather than introducing overly complex infrastructure first.
 
 ---
@@ -177,7 +177,7 @@ But for early service validation, I think it makes more sense to deploy quickly 
 
 Market Memory has data that needs to be generated on a regular schedule.
 
-Daily Market Memory in particular needs to be generated at a fixed time each day.
+Daily Market Memory in particular needs to be generated at a fixed time each day.  
 So I need to confirm that cron jobs run reliably.
 
 The areas to check are as follows.
@@ -188,7 +188,7 @@ The areas to check are as follows.
 * Whether report generation state is managed correctly
 * Whether results are reflected properly on screen after generation completes
 
-Automation is convenient, but when it fails quietly, it can be even more dangerous.
+Automation is convenient, but when it fails quietly, it can be even more dangerous.  
 So early on, I think it is still necessary to keep some human review of automated job results.
 
 ---
@@ -207,7 +207,7 @@ The directions I am thinking about now are as follows.
 
 First, the overall completeness of the service needs to improve.
 
-Many features are still TODOs, and the menu structure may still change.
+Many features are still TODOs, and the menu structure may still change.  
 But once enough data has accumulated and the core features are stable, the next step is to give users a reason to come back repeatedly.
 
 Simply having reports is not enough.
@@ -266,7 +266,7 @@ For example, reports like the following could be created.
 * What risks appear repeatedly across multiple reports
 * How past judgments connect to the current market situation
 
-These reports are different from simple news summaries.
+These reports are different from simple news summaries.  
 They are reports with a sense of time.
 
 This also seems like the feature that fits the name Market Memory best.
@@ -290,7 +290,7 @@ I have not finalized specific prices or plan structure yet.
 
 Still, many of the features currently marked as TODOs are likely to become features offered more fully to paid users later.
 
-I do not want to decide this too hastily.
+I do not want to decide this too hastily.  
 I think it is better to decide after confirming where the service's actual value is created.
 
 ---
@@ -299,10 +299,10 @@ I think it is better to decide after confirming where the service's actual value
 
 Once basic usability as a web service is stable, the next step is iOS and Android app support.
 
-For a solo project, building separate native apps is realistically heavy.
+For a solo project, building separate native apps is realistically heavy.  
 So Market Memory is being built around the web first, with a plan to wrap that web service in a Flutter-based app wrapper for iOS / Android distribution.
 
-A Flutter-based app wrapper is already implemented and can be tested at a basic level.
+A Flutter-based app wrapper is already implemented and can be tested at a basic level.  
 From here, I plan to check whether the web screens work reliably on mobile, while also reviewing display and usability issues when wrapped as an app.
 
 By December 2026, I would like to have at least the following prepared.
@@ -324,13 +324,13 @@ There are also challenges I feel most strongly right now.
 
 The first is that I still manage the source material for reports manually.
 
-At the moment, fully automating this part is difficult.
+At the moment, fully automating this part is difficult.  
 Choosing sources for reports involves judgment beyond simple collection.
 
-Which materials to include, which to exclude, and which perspective to prioritize even when the issue is the same.
+Which materials to include, which to exclude, and which perspective to prioritize even when the issue is the same.  
 I still think these judgments are better made by a person.
 
-In the long term, it may become possible to automate collecting source candidates and ranking them by importance or reliability.
+In the long term, it may become possible to automate collecting source candidates and ranking them by importance or reliability.  
 But at this stage, I am accepting that source management remains manual.
 
 This is a limitation, but it is also part of the process of protecting quality.
@@ -341,7 +341,7 @@ This is a limitation, but it is also part of the process of protecting quality.
 
 Another challenge is the visual side of reports.
 
-Most reports today are text-centered.
+Most reports today are text-centered.  
 I try to divide sections in Markdown and structure them for readability, but there are still moments when text alone is not enough.
 
 Market reports are often much easier to understand when images or graphs are included.
@@ -357,7 +357,7 @@ For example, elements like the following would be helpful.
 
 Especially for premium features, I would like to introduce these visual elements more actively.
 
-That said, trying to put graphs into every report right away would make the scope too large.
+That said, trying to put graphs into every report right away would make the scope too large.  
 So for now, I think the realistic path is to stabilize the structure of text-based reports first, then add visualization gradually in advanced features.
 
 ---
@@ -366,7 +366,7 @@ So for now, I think the realistic path is to stabilize the structure of text-bas
 
 Market Memory is still not a finished service.
 
-There are many TODOs, screens still need refinement, and multilingual support remains ahead.
+There are many TODOs, screens still need refinement, and multilingual support remains ahead.  
 The dashboard is only about halfway done, and mobile testing, deployment, and cron stabilization are still needed.
 
 At the same time, I feel the project has moved past the stage of being just an idea.
@@ -375,7 +375,7 @@ At the same time, I feel the project has moved past the stage of being just an i
 
 Most importantly, the direction this project should take is becoming a little clearer.
 
-Market Memory is not simply a service that summarizes market news.
+Market Memory is not simply a service that summarizes market news.  
 It is closer to a service that remembers the market over time and brings those memories back out in a form that can be analyzed again.
 
 Right now, I am still building that structure.
@@ -386,9 +386,9 @@ Right now, I am still building that structure.
 
 When you build a personal project, there comes a point where the list of things to do never seems to end.
 
-At first, I spent a lot of time trying to build the report generation automation pipeline properly.
-After many trials and errors, the pipeline started running to some degree,
-then I needed UI to hold and present those reports.
+At first, I spent a lot of time trying to build the report generation automation pipeline properly.  
+After many trials and errors, the pipeline started running to some degree,  
+then I needed UI to hold and present those reports.  
 Then I needed a dashboard, multilingual support, mobile support, deployment, and even a billing policy.
 
 I started small, but I am reminded again that turning a service into something actually operable requires work across many layers.
@@ -397,5 +397,5 @@ Even so, this level of complexity does not feel bad right now.
 
 If anything, it feels like a sign that the project is taking on the shape of a real service.
 
-This is not a finished answer yet, but as of June 8, 2026, this is where my judgment stands.
+This is not a finished answer yet, but as of June 8, 2026, this is where my judgment stands.  
 For now, what matters is continuing to build on this flow.

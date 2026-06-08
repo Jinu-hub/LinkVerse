@@ -41,12 +41,12 @@ how we split input data, summarize it, normalize it, and process it in stages pr
 
 The old approach is fairly simple.
 
-```txt
-1 week of raw data
-        ↓
-AI processing pipeline
-        ↓
-Weekly report
+```txt  
+1 week of raw data  
+        ↓  
+AI processing pipeline  
+        ↓  
+Weekly report  
 ```
 
 For an MVP, it is not bad.  
@@ -80,16 +80,16 @@ Instead we collect data every day and turn that day’s input into **Daily Core 
 When we generate the weekly report, we do not reprocess all raw data from scratch;  
 we build the final report from roughly five to seven pieces of Daily Core Data that are already cleaned up.
 
-```txt
-Daily raw data
-        ↓
-Generate Daily Core Data
-        ↓
-Store Daily Core Data
-        ↓
-Collect 5–7 Daily Core Data records
-        ↓
-Generate weekly report
+```txt  
+Daily raw data  
+        ↓  
+Generate Daily Core Data  
+        ↓  
+Store Daily Core Data  
+        ↓  
+Collect 5–7 Daily Core Data records  
+        ↓  
+Generate weekly report  
 ```
 
 Weekends usually have less work, so in practice about five Core Data records may form the bulk of a weekly report.
@@ -101,12 +101,12 @@ for building weekly or monthly reports.
 
 In other words, NexLetter’s report pipeline shifts toward something like:
 
-```txt
-Raw data
-        ↓
-Core data
-        ↓
-Report
+```txt  
+Raw data  
+        ↓  
+Core data  
+        ↓  
+Report  
 ```
 
 Reusable intermediate data sits between raw data and the final report,  
@@ -118,14 +118,14 @@ and that layer can become the backbone of later extensions.
 
 The weekly report is roughly structured like this today.
 
-```txt
-Summary
-KPI INFO
-HIGHLIGHTS
-TOPIC
-PROGRESS AND ROADMAP
-MEMBERS ACTIVITY
-ENDING
+```txt  
+Summary  
+KPI INFO  
+HIGHLIGHTS  
+TOPIC  
+PROGRESS AND ROADMAP  
+MEMBERS ACTIVITY  
+ENDING  
 ```
 
 `Summary` and `ENDING` fit more naturally at the final weekly stage.
@@ -135,17 +135,17 @@ Ending is closer to wrapping that week’s tone and what comes next.
 
 The sections below are a better fit for daily Core Data.
 
-```txt
-KPI INFO
-HIGHLIGHTS
-TOPIC
-PROGRESS AND ROADMAP
-MEMBERS ACTIVITY
+```txt  
+KPI INFO  
+HIGHLIGHTS  
+TOPIC  
+PROGRESS AND ROADMAP  
+MEMBERS ACTIVITY  
 ```
 
 For example, we could analyze a day’s Slack / GitHub data and normalize it into something like:
 
-```txt
+```txt  
 Daily Core Data
 - Key KPIs for that date
 - Main highlights
@@ -182,11 +182,11 @@ report generation time can shrink as well.
 
 The structure also scales.
 
-```txt
-Daily Core Data → daily report
-Daily Core Data × 5 → weekly report
-Daily Core Data × 20–25 → monthly report
-Daily Core Data × N → period-based issue analysis
+```txt  
+Daily Core Data → daily report  
+Daily Core Data × 5 → weekly report  
+Daily Core Data × 20–25 → monthly report  
+Daily Core Data × N → period-based issue analysis  
 ```
 
 We may start Daily Core Data for weekly reports first,  
@@ -212,10 +212,10 @@ we could surface when similar responses happened in the past.
 Instead of stopping at “this happened this week,”  
 we could add a short note like “a similar Slack alert failure response appears in the week-12 2026 report.”
 
-```txt
-Reference note
-A similar Slack alert failure response can also be found in the week-12 2026 report.
-At the time, external API rate limits and retry handling were the main discussion points.
+```txt  
+Reference note  
+A similar Slack alert failure response can also be found in the week-12 2026 report.  
+At the time, external API rate limits and retry handling were the main discussion points.  
 ```
 
 Even a short note like that can change the character of the report.
@@ -275,7 +275,7 @@ If weekly reports build on Daily Core Data, the final step is synthesis, not sim
 
 At the weekly stage, processing like this becomes important:
 
-```txt
+```txt  
 Weekly synthesis
 - Merge the same topic across multiple days
 - Deduplicate recurring issues
@@ -309,26 +309,26 @@ and how they were handled—because those signals live in the same narrative.
 
 In short, the expected upsides:
 
-| Area | Expected effect |
-|---|---|
-| Token volume | Less data per processing batch |
-| Rate limit risk | Lower peak tokens per minute |
-| Processing speed | Weekly stage can use pre-cleaned data |
-| Report quality | Generation from structured data instead of raw-only summarization |
-| Daily / monthly expansion | Same Core Data can feed other horizons |
-| Similar-issue analysis | Tags / classification help trace recurring responses |
-| Links to past reports | Reference similar past responses inside the report |
+| Area | Expected effect |  
+|---|---|  
+| Token volume | Less data per processing batch |  
+| Rate limit risk | Lower peak tokens per minute |  
+| Processing speed | Weekly stage can use pre-cleaned data |  
+| Report quality | Generation from structured data instead of raw-only summarization |  
+| Daily / monthly expansion | Same Core Data can feed other horizons |  
+| Similar-issue analysis | Tags / classification help trace recurring responses |  
+| Links to past reports | Reference similar past responses inside the report |  
 | Easier reprocessing | Rebuilding the final report without rereading all raw data |
 
 Trade-offs:
 
-| Area | Consideration |
-|---|---|
-| AI cost | Daily AI runs increase call volume and spend |
-| Development scope | The existing pipeline needs substantial changes |
-| Data design | Core Data schema needs careful definition |
-| Duplicate issues | Logic is needed to merge the same issue across days |
-| Similar-issue judgment | Same tags can still mean different contexts |
+| Area | Consideration |  
+|---|---|  
+| AI cost | Daily AI runs increase call volume and spend |  
+| Development scope | The existing pipeline needs substantial changes |  
+| Data design | Core Data schema needs careful definition |  
+| Duplicate issues | Logic is needed to merge the same issue across days |  
+| Similar-issue judgment | Same tags can still mean different contexts |  
 | Operational complexity | Retries, gap detection, and state management |
 
 ---
