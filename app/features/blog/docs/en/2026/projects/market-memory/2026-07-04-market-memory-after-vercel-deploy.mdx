@@ -1,0 +1,95 @@
+---
+title: "After the Vercel Deploy, Starting to Shape an Operating Rhythm"
+description: "A note on post-beta improvements and the first stage of the marketing pipeline after deploying Market Memory to Vercel"
+date: "2026-07-04"
+lang: "en"
+category: "projects"
+project: "market-memory"
+tags: ["market-memory", "mvp", "vercel", "marketing", "sns", "cron"]
+status: "published"
+visibility: "public"
+translationKey: "market-memory-after-vercel-deploy-20260704"
+author: "jinu"
+series: "Market Memory"
+---
+
+## The Week After Deployment
+
+Last week, the Market Memory beta was successfully deployed to Vercel.
+
+There are still fine adjustments to make, but the main features that needed to be in place for the MVP have largely taken shape.  
+I am now moving, little by little, from a “building” phase toward a phase of refining with operations in mind.
+
+This week, rather than adding major new features,  
+I worked through the smaller adjustments that become necessary once the service is actually deployed and viewed as a live product.
+
+## Improvements Made
+
+The work this week can be grouped into a few areas.
+
+First, I made small UI refinements.  
+Things worked functionally, but some parts still felt awkward on screen, and I adjusted those one by one.
+
+I also worked on mobile optimization.  
+Market Memory is strongly oriented toward reading reports on desktop,  
+but users are likely to visit from mobile as well.  
+In particular, I felt the dashboard and report list needed at least a minimum level of readability on mobile.
+
+I adjusted report titles as well.  
+A report title is not just decoration—it is closer to an entry point that tells the reader what flow they should follow.  
+So I continued refining titles so the direction of each report comes through a little more clearly, rather than staying too generic or stiff.
+
+I also worked on sign-up and login through Google accounts, along with welcome email handling.  
+The basic groundwork is now in place to make the flow of entering the service feel a little more natural.
+
+I adjusted Cron jobs as well.  
+Because Market Memory relies on data that is generated and updated on a daily cycle,  
+Cron is not a minor add-on—it is what shapes the rhythm of the service.  
+At this stage, rather than perfect automation, what matters is building a structure that can run reliably on repeat.
+
+## Designing SNS Posts for Marketing
+
+Starting this week, I also began designing posts for marketing on SNS.
+
+Market Memory reports  
+ultimately need to reach someone,  
+and that person needs to be able to sense “how this service looks at the market.”
+
+So I am first putting together a structure for creating daily posts.
+
+The direction I have in mind is not grand promotion.  
+It is to create short posts for SNS based on the daily market summary and key flows that are already being generated.
+
+Rather than pushing the service hard, it is closer to gradually showing how Market Memory views the market.
+
+## Next Steps
+
+Over this weekend and into early next week, I plan to finish the first-stage workflow for writing daily posts.
+
+What matters at this stage is not perfect marketing automation.  
+First, I want to confirm that posts in a form I can publish every day can be created reliably.
+
+Next week, I plan to run a trial of the daily posting flow.  
+By looking at the posts that are actually generated, I want to adjust tone, length, information density, CTA strength, and similar details.
+
+Alongside that, I also want to try other kinds of posts.  
+For example, weekly summaries, short explainers centered on a specific theme, or light introductions to features of the service.
+
+I will continue Cron work as well.  
+The main Cron task for next week will likely be running the multilingual (i18n) pipeline for original reports.
+
+## Bringing Market Memory Out Into the World
+
+Market Memory is now gradually moving away from being simply a “project to implement features.”
+
+Of course, it is still at the MVP stage, and there is plenty to fix.  
+But after deployment, looking at it with operations in mind,  
+it feels like rhythm will matter more than the features themselves from here on.
+
+Reading the market every day, organizing it, presenting it, and accumulating it again.  
+And not ending that flow only inside the service, but also bringing it outward little by little through SNS and the blog.
+
+Right now, I am in the stage of building that first operating rhythm.
+
+By continuing to stack these small improvements and small records,  
+I want to bring Market Memory out into the world—timidly, little by little, and slowly.
