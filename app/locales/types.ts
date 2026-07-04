@@ -145,6 +145,8 @@ export type Translation = {
       subtitle: string;
       categoryFilter: string;
       allCategories: string;
+      seriesFilter: string;
+      allSeries: string;
       categoryFilterAriaLabel: string;
       /** 카테고리·기간·정렬 묶음 툴바 */
       filtersToolbarAriaLabel: string;

@@ -166,6 +166,8 @@ const ko: Translation = {
       subtitle: "개발과 일상, 생각의 궤적을 기록합니다.",
       categoryFilter: "카테고리",
       allCategories: "전체",
+      seriesFilter: "시리즈",
+      allSeries: "전체",
       categoryFilterAriaLabel: "카테고리별로 글 필터",
       filtersToolbarAriaLabel: "블로그 글 필터 및 정렬",
       filtersSectionTitle: "필터 · 정렬",

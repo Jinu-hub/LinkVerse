@@ -168,6 +168,8 @@ const ja: Translation = {
       subtitle: "開発と日常、考えの軌跡を記録します。",
       categoryFilter: "カテゴリ",
       allCategories: "すべて",
+      seriesFilter: "シリーズ",
+      allSeries: "すべて",
       categoryFilterAriaLabel: "カテゴリで記事を絞り込む",
       filtersToolbarAriaLabel: "記事の絞り込みと並び順",
       filtersSectionTitle: "フィルター・並び順",

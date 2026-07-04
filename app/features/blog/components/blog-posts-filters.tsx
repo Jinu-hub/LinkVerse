@@ -34,6 +34,7 @@ function BlogFilterRow(props: {
 
 function blogListHref(opts: {
   category?: string;
+  series?: string;
   q?: string;
   year?: string;
   month?: string;
@@ -41,6 +42,7 @@ function blogListHref(opts: {
 }) {
   const params = new URLSearchParams();
   if (opts.category) params.set("category", opts.category);
+  if (opts.series) params.set("series", opts.series);
   if (opts.q) params.set("q", opts.q);
   if (opts.year) params.set("year", opts.year);
   if (opts.month) params.set("month", opts.month);
@@ -51,9 +53,11 @@ function blogListHref(opts: {
 
 export type BlogPostsFiltersProps = {
   categories: string[];
+  seriesList: string[];
   years: string[];
   months: string[];
   activeCategory: string;
+  activeSeries: string;
   activeYear: string;
   activeMonth: string;
   searchQuery: string;
@@ -64,9 +68,11 @@ export type BlogPostsFiltersProps = {
 export function BlogPostsFilters(props: BlogPostsFiltersProps) {
   const {
     categories,
+    seriesList,
     years,
     months,
     activeCategory,
+    activeSeries,
     activeYear,
     activeMonth,
     searchQuery,
@@ -76,6 +82,13 @@ export function BlogPostsFilters(props: BlogPostsFiltersProps) {
   const qParam = searchQuery.trim();
   const activeSort: "latest" | "oldest" = sort === "oldest" ? "oldest" : "latest";
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const seriesParam = activeSeries.trim();
+  const listHrefBase = {
+    category: activeCategory || undefined,
+    series: seriesParam || undefined,
+    q: qParam || undefined,
+    sort: activeSort,
+  } as const;
 
   const yearChipsInner = (
     <div className="flex flex-wrap gap-2">
@@ -85,11 +98,7 @@ export function BlogPostsFilters(props: BlogPostsFiltersProps) {
         className={cn("h-8 rounded-full px-3 text-sm", !activeYear ? "" : "hover:bg-accent")}
       >
         <Link
-          to={blogListHref({
-            category: activeCategory || undefined,
-            q: qParam,
-            sort: activeSort,
-          })}
+          to={blogListHref(listHrefBase)}
           viewTransition
         >
           {t("blog.posts.allPeriod")}
@@ -106,10 +115,8 @@ export function BlogPostsFilters(props: BlogPostsFiltersProps) {
           >
             <Link
               to={blogListHref({
-                category: activeCategory || undefined,
-                q: qParam,
+                ...listHrefBase,
                 year,
-                sort: activeSort,
               })}
               viewTransition
             >
@@ -130,10 +137,8 @@ export function BlogPostsFilters(props: BlogPostsFiltersProps) {
       >
         <Link
           to={blogListHref({
-            category: activeCategory || undefined,
-            q: qParam,
+            ...listHrefBase,
             year: activeYear || undefined,
-            sort: activeSort,
           })}
           viewTransition
         >
@@ -151,11 +156,9 @@ export function BlogPostsFilters(props: BlogPostsFiltersProps) {
           >
             <Link
               to={blogListHref({
-                category: activeCategory || undefined,
-                q: qParam,
+                ...listHrefBase,
                 year: activeYear || undefined,
                 month,
-                sort: activeSort,
               })}
               viewTransition
             >
@@ -231,7 +234,8 @@ export function BlogPostsFilters(props: BlogPostsFiltersProps) {
                     >
                       <Link
                         to={blogListHref({
-                          q: qParam,
+                          series: seriesParam || undefined,
+                          q: qParam || undefined,
                           year: activeYear || undefined,
                           month: activeMonth || undefined,
                           sort: activeSort,
@@ -258,7 +262,8 @@ export function BlogPostsFilters(props: BlogPostsFiltersProps) {
                           <Link
                             to={blogListHref({
                               category,
-                              q: qParam,
+                              series: seriesParam || undefined,
+                              q: qParam || undefined,
                               year: activeYear || undefined,
                               month: activeMonth || undefined,
                               sort: activeSort,
@@ -267,6 +272,68 @@ export function BlogPostsFilters(props: BlogPostsFiltersProps) {
                             aria-current={isActive ? "page" : undefined}
                           >
                             {category.replace(/-/g, " ")}
+                          </Link>
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                </BlogFilterRow>
+              ) : null}
+
+              {seriesList.length > 0 ? (
+                <BlogFilterRow
+                  label={t("blog.posts.seriesFilter")}
+                  className="w-full min-w-0"
+                >
+                  <div className="flex min-w-0 flex-1 flex-wrap gap-2">
+                    <Badge
+                      asChild
+                      variant={!seriesParam ? "default" : "outline"}
+                      className={cn(
+                        "h-8 rounded-full px-3 text-sm",
+                        !seriesParam ? "" : "hover:bg-accent",
+                      )}
+                    >
+                      <Link
+                        to={blogListHref({
+                          category: activeCategory || undefined,
+                          q: qParam || undefined,
+                          year: activeYear || undefined,
+                          month: activeMonth || undefined,
+                          sort: activeSort,
+                        })}
+                        viewTransition
+                        aria-current={!seriesParam ? "page" : undefined}
+                      >
+                        {t("blog.posts.allSeries")}
+                      </Link>
+                    </Badge>
+                    {seriesList.map((series) => {
+                      const isActive =
+                        seriesParam.toLowerCase() === series.toLowerCase();
+                      return (
+                        <Badge
+                          key={series}
+                          asChild
+                          variant={isActive ? "default" : "outline"}
+                          className={cn(
+                            "h-8 rounded-full px-3 text-sm",
+                            isActive ? "" : "hover:bg-accent",
+                          )}
+                        >
+                          <Link
+                            to={blogListHref({
+                              category: activeCategory || undefined,
+                              series,
+                              q: qParam || undefined,
+                              year: activeYear || undefined,
+                              month: activeMonth || undefined,
+                              sort: activeSort,
+                            })}
+                            viewTransition
+                            aria-current={isActive ? "page" : undefined}
+                          >
+                            {series}
                           </Link>
                         </Badge>
                       );
@@ -308,8 +375,7 @@ export function BlogPostsFilters(props: BlogPostsFiltersProps) {
                       >
                         <Link
                           to={blogListHref({
-                            category: activeCategory || undefined,
-                            q: qParam,
+                            ...listHrefBase,
                             year: activeYear || undefined,
                             month: activeMonth || undefined,
                             sort: sortValue,

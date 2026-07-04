@@ -23,6 +23,7 @@ import {
   getBlogCategories,
   getBlogList,
   getBlogMonths,
+  getBlogSeries,
   getBlogYears,
 } from "~/features/blog/lib/blog-index.server";
 import { toBlogLocaleDateString } from "~/features/blog/lib/blog-date-locale";
@@ -68,6 +69,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const locale = await i18next.getLocale(request);
   const url = new URL(request.url);
   const category = url.searchParams.get("category");
+  const series = url.searchParams.get("series");
   const q = url.searchParams.get("q");
   const year = url.searchParams.get("year");
   const month = url.searchParams.get("month");
@@ -77,6 +79,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const entries = await getBlogList({
     lang: locale,
     category,
+    series,
     q,
     year,
     month,
@@ -85,6 +88,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   const allEntriesInLang = await getBlogList({ lang: locale });
   const categories = getBlogCategories(allEntriesInLang);
+  const seriesList = getBlogSeries(allEntriesInLang);
   const years = getBlogYears(allEntriesInLang);
   const months = getBlogMonths(
     allEntriesInLang,
@@ -98,9 +102,11 @@ export async function loader({ request }: Route.LoaderArgs) {
   return {
     frontmatters: entries,
     categories: sortedCategories,
+    seriesList,
     years,
     months,
     activeCategory: category ?? "",
+    activeSeries: series ?? "",
     searchQuery: q ?? "",
     activeYear: year ?? "",
     activeMonth: month ?? "",
@@ -132,9 +138,11 @@ export default function Posts({
   loaderData: {
     frontmatters,
     categories,
+    seriesList,
     years,
     months,
     activeCategory,
+    activeSeries,
     searchQuery,
     activeYear,
     activeMonth,
@@ -159,9 +167,11 @@ export default function Posts({
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 md:gap-8 px-4 sm:px-6">
         <BlogPostsFilters
           categories={categories}
+          seriesList={seriesList}
           years={years}
           months={months}
           activeCategory={activeCategory}
+          activeSeries={activeSeries}
           activeYear={activeYear}
           activeMonth={activeMonth}
           searchQuery={searchQuery}
@@ -183,10 +193,17 @@ export default function Posts({
               alt={frontmatter.title}
               className="aspect-[4/3] w-full rounded-xl object-cover object-center"
             />
-            {/* Category badge */}
-            <Badge variant="secondary" className="text-sm">
-              {frontmatter.category}
-            </Badge>
+            {/* Category and series badges */}
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="secondary" className="text-sm">
+                {frontmatter.category}
+              </Badge>
+              {frontmatter.series ? (
+                <Badge variant="outline" className="text-sm">
+                  {frontmatter.series}
+                </Badge>
+              ) : null}
+            </div>
             <div>
               {/* Post title */}
               <h2 className="text-lg font-bold md:text-xl">

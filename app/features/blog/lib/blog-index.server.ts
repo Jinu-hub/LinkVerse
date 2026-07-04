@@ -29,6 +29,8 @@ export interface BlogEntry {
   description: string;
   author: string;
   tags: string[];
+  /** MDX frontmatter series; empty if omitted */
+  series: string;
   draft: boolean;
   filePath: string;
   fileDate: string;
@@ -50,6 +52,7 @@ export function getPostKey(entry: Pick<BlogEntry, "lang" | "slug" | "translation
 export interface BlogListOptions {
   lang: string;
   category?: string | null;
+  series?: string | null;
   q?: string | null;
   year?: string | null;
   month?: string | null;
@@ -193,11 +196,15 @@ function createEntryFromFile(
   const relativePath = path.relative(BLOG_DOCS_ROOT, filePath);
   const segments = relativePath.split(path.sep);
 
-  if (segments.length !== 4) {
+  // {lang}/{year}/{category}/[{subdir}/...]/{fileName}.mdx
+  if (segments.length < 4) {
     return null;
   }
 
-  const [langSegment, year, category, fileName] = segments;
+  const langSegment = segments[0]!;
+  const year = segments[1]!;
+  const category = segments[2]!;
+  const fileName = segments[segments.length - 1]!;
   if (!isSupportedLang(langSegment)) {
     return null;
   }
@@ -238,6 +245,7 @@ function createEntryFromFile(
     description,
     author,
     tags: parseStringArray(frontmatter.tags),
+    series: parseString(frontmatter.series),
     draft,
     filePath,
     fileDate,
@@ -321,6 +329,7 @@ function hasSearchMatch(entry: BlogEntry, query: string): boolean {
     entry.title,
     entry.description,
     entry.category,
+    entry.series,
     entry.date,
     entry.year,
     entry.slug,
@@ -336,6 +345,7 @@ function hasSearchMatch(entry: BlogEntry, query: string): boolean {
 export async function getBlogList({
   lang,
   category,
+  series,
   q,
   year,
   month,
@@ -345,6 +355,7 @@ export async function getBlogList({
   const { entries } = await getBlogIndex();
   const normalizedLang = isSupportedLang(lang) ? lang : i18n.fallbackLng;
   const normalizedCategory = category?.trim().toLowerCase();
+  const normalizedSeries = series?.trim().toLowerCase();
   const normalizedQuery = q?.trim();
   const normalizedYear =
     year && /^\d{4}$/.test(year.trim()) ? year.trim() : undefined;
@@ -355,6 +366,9 @@ export async function getBlogList({
     if (entry.lang !== normalizedLang) return false;
     if (!includeDraft && entry.draft) return false;
     if (normalizedCategory && entry.category.toLowerCase() !== normalizedCategory) {
+      return false;
+    }
+    if (normalizedSeries && entry.series.toLowerCase() !== normalizedSeries) {
       return false;
     }
     if (normalizedYear && entry.year !== normalizedYear) {
@@ -394,6 +408,12 @@ export async function getBlogBySlug({
 
 export function getBlogCategories(entries: BlogEntry[]): string[] {
   return [...new Set(entries.map((entry) => entry.category))];
+}
+
+export function getBlogSeries(entries: BlogEntry[]): string[] {
+  return [
+    ...new Set(entries.map((entry) => entry.series.trim()).filter(Boolean)),
+  ].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
 }
 
 export function getBlogYears(entries: BlogEntry[]): string[] {

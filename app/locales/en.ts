@@ -167,6 +167,8 @@ const en: Translation = {
       subtitle: "Record the flow of development and daily life, and the trajectory of thoughts.",
       categoryFilter: "Category",
       allCategories: "All",
+      seriesFilter: "Series",
+      allSeries: "All",
       categoryFilterAriaLabel: "Filter posts by category",
       filtersToolbarAriaLabel: "Filter and sort blog posts",
       filtersSectionTitle: "Filter & sort",

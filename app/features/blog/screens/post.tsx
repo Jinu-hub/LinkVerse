@@ -58,6 +58,7 @@ interface PostFrontmatter {
   description: string;
   date: string;
   category: string;
+  series?: string;
   author: string;
   slug: string;
   image?: string;
@@ -163,6 +164,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     const mergedFrontmatter = {
       ...(frontmatter as PostFrontmatter),
       category: entry.category,
+      series: entry.series || undefined,
       slug: entry.slug,
       date: entry.date,
       author: entry.author,
@@ -251,7 +253,19 @@ export default function Post({
       {/* Post header with category, title, author and date */}
       <header className="space-y-4">
         <div className="space-y-2">
-          <Badge variant="secondary">{frontmatter.category}</Badge>
+          <div className="flex flex-wrap gap-2">
+            <Badge variant="secondary">{frontmatter.category}</Badge>
+            {frontmatter.series ? (
+              <Badge variant="outline" asChild>
+                <Link
+                  to={`/blog?series=${encodeURIComponent(frontmatter.series)}`}
+                  viewTransition
+                >
+                  {frontmatter.series}
+                </Link>
+              </Badge>
+            ) : null}
+          </div>
           <h1 className="text-3xl font-bold md:text-5xl lg:text-7xl">
             {frontmatter.title}
           </h1>
