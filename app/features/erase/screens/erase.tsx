@@ -41,13 +41,13 @@ const COPY = {
   inputPlaceholder: "예: 오늘 회의에서 했던 바보 같은 말",
   startButton: "지우기 시작",
   disclaimer:
-    "마음에 걸리는 그 어떤 문장이라도 좋아요.\n다만 그냥 지워질 뿐입니다.",
+    "마음에 걸리는 그 어떤 문장이라도 좋아요.\n우주는 이유를 묻지 않습니다.",
   eraseHint: "지우개를 드래그하거나 여러 번 눌러 문장을 문질러 주세요",
   absorbingHint: "블랙홀이 나머지를 처리하는 중…",
   progressLabel: (percent: number) => `${percent}% 지워지는 중`,
   resultKicker: "처리 완료",
   againButton: "다른것도 지우기",
-  footNote: "우주에는 비밀이 없습니다. 다만 찾기가 조금 어려울 뿐입니다.",
+  footNote: "우주에는 비밀이 없습니다. 다만 찾기가 심하게 어려울 뿐입니다 ^ ^",
 } as const;
 
 const RESULTS = [
