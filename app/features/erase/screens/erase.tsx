@@ -350,7 +350,7 @@ function CrumblingText({
 
   return (
     <p
-      className="relative z-10 mx-auto max-w-[min(90vw,36rem)] text-center text-2xl leading-relaxed tracking-wide text-[#f2efe8] md:text-3xl"
+      className="relative z-10 mx-auto max-w-[min(90vw,36rem)] text-center text-3xl leading-relaxed tracking-wide text-[#f2efe8] md:text-4xl"
       style={{ fontFamily: "'Gaegu', 'Caveat', cursive" }}
       aria-live="polite"
     >
@@ -590,19 +590,19 @@ export default function ErasePage() {
             >
               <div className="text-center">
                 <p
-                  className="mb-3 text-sm tracking-[0.2em] text-white/40 uppercase"
+                  className="mb-3 text-base tracking-[0.2em] text-white/40 uppercase md:text-lg"
                   style={{ fontFamily: "'Gaegu', cursive" }}
                 >
                   {COPY.kicker}
                 </p>
                 <h1
-                  className="text-4xl leading-tight text-[#f2efe8] md:text-5xl"
+                  className="whitespace-nowrap text-[clamp(1.85rem,7.2vw,3.75rem)] leading-tight text-[#f2efe8]"
                   style={{ fontFamily: "'Gaegu', 'Caveat', cursive" }}
                 >
                   {COPY.brandTitle}
                 </h1>
                 <p
-                  className="mt-4 text-base text-white/55 md:text-lg"
+                  className="mt-4 text-lg text-white/55 md:text-xl"
                   style={{ fontFamily: "'Gaegu', cursive" }}
                 >
                   {COPY.subtitle}
@@ -625,7 +625,7 @@ export default function ErasePage() {
                   }}
                   rows={3}
                   placeholder={COPY.inputPlaceholder}
-                  className="w-full resize-none rounded-2xl border border-white/15 bg-white/5 px-5 py-4 text-lg text-[#f2efe8] placeholder:text-white/30 outline-none backdrop-blur-sm transition focus:border-white/35 focus:bg-white/8"
+                  className="w-full resize-none rounded-2xl border border-white/15 bg-white/5 px-5 py-5 text-xl text-[#f2efe8] placeholder:text-white/30 outline-none backdrop-blur-sm transition focus:border-white/35 focus:bg-white/8 md:text-2xl"
                   style={{ fontFamily: "'Gaegu', cursive" }}
                 />
                 <button
@@ -634,7 +634,7 @@ export default function ErasePage() {
                   disabled={!draft.trim()}
                   aria-label={COPY.startButton}
                   className={cn(
-                    "group relative w-full overflow-hidden rounded-2xl px-6 py-4 text-lg font-bold transition",
+                    "group relative w-full overflow-hidden rounded-2xl px-6 py-5 text-xl font-bold transition md:text-2xl",
                     draft.trim()
                       ? "cursor-pointer bg-[#f2efe8] text-[#12101a] hover:bg-white"
                       : "cursor-not-allowed bg-white/10 text-white/30",
@@ -642,14 +642,14 @@ export default function ErasePage() {
                   style={{ fontFamily: "'Gaegu', cursive" }}
                 >
                   <span className="relative z-10 inline-flex items-center justify-center gap-2">
-                    <EraserSvg className="size-7 shrink-0" />
+                    <EraserSvg className="size-8 shrink-0 md:size-9" />
                     <span>{COPY.startButton}</span>
                   </span>
                 </button>
               </div>
 
               <p
-                className="max-w-xs whitespace-pre-line text-center text-sm text-white/30"
+                className="max-w-sm whitespace-pre-line text-center text-base text-white/30 md:text-lg"
                 style={{ fontFamily: "'Gaegu', cursive" }}
               >
                 {COPY.disclaimer}
@@ -666,7 +666,7 @@ export default function ErasePage() {
               exit={{ opacity: 0 }}
             >
               <p
-                className="text-sm text-white/40"
+                className="text-base text-white/40 md:text-lg"
                 style={{ fontFamily: "'Gaegu', cursive" }}
               >
                 {stage === "absorbing"
@@ -742,7 +742,7 @@ export default function ErasePage() {
                     />
                   </div>
                   <p
-                    className="text-xs text-white/35"
+                    className="text-sm text-white/35 md:text-base"
                     style={{ fontFamily: "'Gaegu', cursive" }}
                   >
                     {COPY.progressLabel(progressLabel)}
@@ -785,13 +785,13 @@ export default function ErasePage() {
 
               <div>
                 <p
-                  className="mb-3 text-sm tracking-widest text-white/35 uppercase"
+                  className="mb-3 text-base tracking-widest text-white/35 uppercase md:text-lg"
                   style={{ fontFamily: "'Gaegu', cursive" }}
                 >
                   {COPY.resultKicker}
                 </p>
                 <h2
-                  className="text-2xl leading-snug text-[#f2efe8] md:text-3xl"
+                  className="text-3xl leading-snug text-[#f2efe8] md:text-4xl"
                   style={{ fontFamily: "'Gaegu', 'Caveat', cursive" }}
                 >
                   {resultMessage}
@@ -801,14 +801,14 @@ export default function ErasePage() {
               <button
                 type="button"
                 onClick={startOver}
-                className="cursor-pointer rounded-2xl bg-[#f2efe8] px-6 py-3.5 text-base font-bold text-[#12101a] transition hover:bg-white"
+                className="cursor-pointer rounded-2xl bg-[#f2efe8] px-7 py-4 text-lg font-bold text-[#12101a] transition hover:bg-white md:text-xl"
                 style={{ fontFamily: "'Gaegu', cursive" }}
               >
                 {COPY.againButton}
               </button>
 
               <p
-                className="text-xs text-white/25"
+                className="text-sm text-white/25 md:text-base"
                 style={{ fontFamily: "'Gaegu', cursive" }}
               >
                 {COPY.footNote}
