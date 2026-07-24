@@ -47,7 +47,7 @@ const COPY = {
   progressLabel: (percent: number) => `${percent}% 지워지는 중`,
   resultKicker: "처리 완료",
   againButton: "다른것도 지우기",
-  footNote: "우주에는 비밀이 없습니다. 다만 찾기가 심하게 어려울 뿐입니다 ^ ^",
+  footNote: "우주에는 비밀이 없습니다. 다만 찾기가 심하게 어려울 뿐입니다.",
 } as const;
 
 const RESULTS = [
@@ -590,7 +590,7 @@ export default function ErasePage() {
             >
               <div className="text-center">
                 <p
-                  className="mb-3 text-base tracking-[0.2em] text-white/40 uppercase md:text-lg"
+                  className="mb-3 text-lg tracking-[0.2em] text-white/70 md:text-xl"
                   style={{ fontFamily: "'Gaegu', cursive" }}
                 >
                   {COPY.kicker}
@@ -602,7 +602,7 @@ export default function ErasePage() {
                   {COPY.brandTitle}
                 </h1>
                 <p
-                  className="mt-4 text-lg text-white/55 md:text-xl"
+                  className="mt-4 text-xl text-white/70 md:text-2xl"
                   style={{ fontFamily: "'Gaegu', cursive" }}
                 >
                   {COPY.subtitle}
@@ -649,7 +649,7 @@ export default function ErasePage() {
               </div>
 
               <p
-                className="max-w-sm whitespace-pre-line text-center text-base text-white/30 md:text-lg"
+                className="max-w-sm whitespace-pre-line text-center text-lg leading-relaxed text-white/65 md:text-xl"
                 style={{ fontFamily: "'Gaegu', cursive" }}
               >
                 {COPY.disclaimer}
@@ -785,7 +785,7 @@ export default function ErasePage() {
 
               <div>
                 <p
-                  className="mb-3 text-base tracking-widest text-white/35 uppercase md:text-lg"
+                  className="mb-3 text-lg tracking-widest text-white/70 md:text-xl"
                   style={{ fontFamily: "'Gaegu', cursive" }}
                 >
                   {COPY.resultKicker}
@@ -808,7 +808,7 @@ export default function ErasePage() {
               </button>
 
               <p
-                className="text-sm text-white/25 md:text-base"
+                className="max-w-md text-center text-base leading-relaxed text-white/60 md:text-lg"
                 style={{ fontFamily: "'Gaegu', cursive" }}
               >
                 {COPY.footNote}
