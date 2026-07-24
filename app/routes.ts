@@ -57,6 +57,11 @@ export default [
     route("/orbit", "features/home/screens/home-orbit.tsx"),
   ]),
 
+  // Playful side page — no nav / footer
+  layout("features/erase/layouts/erase.layout.tsx", [
+    route("/erase", "features/erase/screens/erase.tsx"),
+  ]),
+
   layout("core/layouts/navigation.layout.tsx", [
     route("/auth/confirm", "features/auth/screens/confirm.tsx"),
     index("features/home/screens/home.tsx"),
