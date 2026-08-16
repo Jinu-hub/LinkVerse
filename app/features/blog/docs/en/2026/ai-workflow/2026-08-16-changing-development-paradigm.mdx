@@ -1,0 +1,276 @@
+---
+title: "From Writing Code to Fitting Pieces Together"
+description: "Notes on how development and the developer's role are shifting as I work with AI and Cloudflare Workers"
+date: "2026-08-14"
+lang: "en"
+category: "ai-workflow"
+tags: ["ai", "development", "cloudflare-workers", "generative-ui"]
+status: "published"
+visibility: "public"
+author: "jinu"
+translationKey: "changing-development-paradigm-20260816"
+---
+
+Lately I often feel that the way I develop is changing little by little.
+
+It is not only about **building with AI**.
+
+Using AI is becoming less special and closer to a default.  
+What feels larger is that developers are spending less time on every line of code,  
+and more time shaping the overall frame, setting direction, and fitting the right pieces together.
+
+At some point, I started working that way too.
+
+## Letting Go of Implementation, Finding Direction
+
+I used to care a lot about how complete my code felt.
+
+A bit exaggerated, it was almost like a kind of perfectionism.
+
+I kept checking whether classes were split well enough, whether there was duplication,  
+whether each method had a clear role, and whether the structure could be a little cleaner.
+
+In particular, I believed that **readable code should work like a detailed design document on its own**.
+
+Even if I opened the code later without extra explanation, the structure and intent should still be clear.  
+I also disliked leaving code I had not fully understood.
+
+Of course, I do not think those standards are useless now.
+
+I still ask AI whether something should be refactored,  
+and when a structure feels too complex, I think about how to simplify it.
+
+But the share of time and energy I put into that has clearly gone down.
+
+What I do more often now is different.
+
+I think about what to build, decide the direction of a feature, and choose how much structure it needs.
+
+Then I pass that to AI.
+
+A large part of the implementation goes to AI.
+
+If the result is close enough to the intent and actually works, I often move on to the next step as is.
+
+The old me might have looked at the code a little longer and only moved after I fully accepted it.
+
+Now I care more about **how quickly an idea can take a real form**.
+
+My attention is shifting from carving every piece myself to judging which pieces are needed.
+
+## Computing Appears Like a Piece, Only When Needed
+
+Recently I started studying Cloudflare Workers and Agent examples more seriously.
+
+It has been much more fun than I expected.
+
+What felt especially interesting was the way of looking at computing.
+
+Traditionally, when I imagine a service, I first picture a central server,  
+and that server's computing power handling requests.
+
+Cloud environments like AWS have already made this structure quite flexible.
+
+But the image I got while touching Cloudflare Workers was a little different.
+
+**Somewhere in the world, computation wakes up when needed, only as much as needed, and disappears when its job is done.**
+
+Leaving aside the exact internal architecture, as a developer looking at a service, that is close to what it feels like.
+
+I like that image quite a bit.
+
+Not keeping one huge fixed thing running all the time,  
+but having the needed function appear at the needed moment.
+
+In a way, computing itself feels like it is becoming a more fluid material.
+
+Rather than stacking everything around one large server,  
+it feels closer to connecting small pieces of capability into a single service.
+
+## Screens Do Not Have to Be Finished Pieces in Advance
+
+I heard something interesting in a similar vein.
+
+Apparently Google is also exploring a direction where AI builds a screen in real time for each person, based on their situation and preferences.
+
+Existing web pages are basically things people prepare in advance.
+
+No matter who visits, the large structure of the page is already decided.
+
+Even with personalization, what usually changes is the recommended content or data.
+
+That might change a little going forward.
+
+When one user opens a page, AI might assemble the UI itself in that moment, according to that person's goal and context.
+
+One person may need a table, another a chart.
+
+One person may need three menus, while another may not need those menus at all.
+
+I do not think every service will suddenly work this way.
+
+Cost would be high, and there seem to be many problems to solve around speed, stability, and consistent user experience.
+
+But the direction itself is interesting.
+
+And it strangely resembles the feeling I got from Cloudflare Workers.
+
+**Rather than fixing everything in advance, make what is needed at the moment it is needed.**
+
+In computing and in screens, a similar direction seems to be appearing.
+
+## From Finishing Development Early to Assembling When Needed
+
+Looking a little wider, coding with AI may also sit inside the same flow.
+
+In the past, people wrote a lot of code ahead of time.
+
+Going forward, people may set intent, rules, and structure,  
+while AI produces a large share of the actual implementation as needed.
+
+In environments like Cloudflare Workers, computation runs when it is needed.
+
+And someday, user interfaces may also be composed more dynamically for each user's situation.
+
+These are different technologies, but I feel a common thread.
+
+**We are slowly moving from finishing fixed things in advance to assembling the needed pieces at the needed moment.**
+
+Code, computing, and screens are all becoming a little more fluid as materials.
+
+Of course, I do not think the old approach will disappear.
+
+Central servers will still be needed,  
+and UI designed and optimized by people will still matter.
+
+In areas where stability and performance matter most, the existing approach will often still be better.
+
+It feels more accurate to say that new approaches are not replacing everything that came before,  
+but that the number of pieces we can assemble as needed keeps growing.
+
+## Connecting and Verifying Matter More Than Making Every Piece
+
+In that flow, the developer's role may also change little by little.
+
+In the past, the ability to write the code itself was a fairly central strength for a developer.
+
+Basic development knowledge will still matter, of course.
+
+But if AI starts handling a large share of implementation,  
+the abilities needed on top of that may shift a little.
+
+Coming up with ideas,
+
+breaking problems into the right size,
+
+deciding which technologies and structures to use,
+
+giving AI enough context and direction,
+
+and connecting the resulting pieces into one system.
+
+And I think one more thing becomes more important here.
+
+**The eye that judges whether a piece was truly made well.**
+
+Just because AI produces code quickly does not mean the result is always good.
+
+It may look fine on the surface while the data model is off,  
+or seem fine for now while being hard to extend later.
+
+Even if two features are each well made,  
+connecting them may tangle the boundaries of responsibility.
+
+In the end, the more AI takes on implementation, the more developers may need  
+**the ability to tell good from bad, and a sense for data modeling and architecture**.
+
+Even without writing every line yourself,
+
+you need to notice what feels wrong,  
+judge which structures will last,  
+and when needed, firmly ask for a rebuild.
+
+The hand that writes code may matter less,  
+while the eye that sees the whole may matter more.
+
+## I Started Valuing Connection and Change Over Finish
+
+So the standards I care about in development have also shifted a little.
+
+I used to ask questions like these more often.
+
+**Is this code clean enough?**
+
+**Is this a structure I can accept?**
+
+**Does the code alone read like a detailed design?**
+
+Those standards still matter.
+
+But lately I ask different questions more often.
+
+**How quickly can this idea be implemented?**
+
+**How easily can I check that it actually works?**
+
+**Is this structure easy to validate?**
+
+**If the direction is wrong, can I throw it away and rebuild without too much cost?**
+
+**When a new idea appears, can I connect it without breaking the existing structure too much?**
+
+In the end, more than making one perfect result from the start,  
+what may matter more is building a structure that can keep replacing pieces, connecting them, and changing.
+
+Seen that way, the developer's role also shifts little by little  
+away from being the person who writes most of the code.
+
+Someone who sets the overall direction,
+
+defines the needed pieces,
+
+uses AI and other tools to produce them,
+
+judges whether they were made well,
+
+and connects them into one system.
+
+Lately I have started to see developers a little more in that light.
+
+## Fitting Pieces Together Feels More Interesting Than Carving Them Well
+
+I do not yet think this is some final answer.
+
+AI is changing quickly,  
+and the Cloudflare technologies I am studying now are still at the stage where I have only just started using them myself.
+
+A few years from now, I may be thinking something entirely different.
+
+Still, there is one change I clearly feel at this stage.
+
+If I used to think a lot about **how well I could write the code**,
+
+now I think more about **how quickly I can turn an idea into a real form, try it, and reassemble it**.
+
+I am spending more time thinking about what to build than about writing the code itself.
+
+Rather than carving every piece myself,  
+I spend more time judging which pieces are needed  
+and how to connect the pieces made by AI and existing technologies.
+
+And checking whether those pieces truly fit together well  
+also seems to be becoming a more important part of a developer's work.
+
+Maybe this is a change that comes naturally from doing development for a long time,  
+or maybe it is a change brought by AI as a tool.
+
+Probably both.
+
+I do not know yet how far this will go.
+
+But lately I have started to see development as a much more fluid kind of work than before.
+
+Not so much making one finished structure,  
+but a structure you can keep making, connecting, verifying, and reassembling when needed.
+
+That side is more interesting to me right now.
