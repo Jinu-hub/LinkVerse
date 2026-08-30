@@ -1,0 +1,228 @@
+---
+title: "How AI Agents Prove Themselves: Watching Moves Before the Proof"
+description: "Watching vooy and Recipe ahead of their launch, and following how an unproven product tests its hypotheses in the market"
+date: "2026-08-30"
+lang: "en"
+category: "ai-workflow"
+tags: ["vooy", "ai-agent", "recipe", "cloudflare", "market-memory", "product-development"]
+status: "published"
+visibility: "public"
+author: "jinu"
+translationKey: "watching-before-proof-20260830"
+---
+
+Recently, I have been running several experiments with AI Agents using Cloudflare Workers.
+
+Rather than rebuilding Market Memory's existing data from scratch,  
+my idea is to build a presentation layer as an Agent,  
+allowing users to retrieve and interact with the accumulated data in a more natural way.
+
+Along the way, I came across a service called `vooy`.
+
+It is a Personal AI Agent that understands user requests inside familiar messaging apps like LINE, KakaoTalk, and Telegram,  
+selects the necessary Tools, and follows through with real actions such as bookings, orders, and checking schedules.
+
+At first, the service itself caught my interest. But looking a bit closer, something else caught my attention instead.
+
+## A Service Not Yet Proven
+
+vooy is not a solo project like mine.
+
+Looking at their blog posts and event photos, a multi-person team seems to be working across research, development, marketing, and events.  
+While I do not know the exact team size, it is clearly in a different weight class from solo development.
+
+Yet on another level, it felt surprisingly familiar.
+
+vooy is also not yet fully open to the general public.
+
+They built a product, and they have a direction they believe in.  
+In the end, though, whether that direction resonates with real users is something that remains to be seen.
+
+No matter how good the technology is or how strong an idea feels, whether the market actually wants it is a separate question.
+
+In that sense, regardless of team size, everyone stands before the very same question:
+
+**Do people truly want what we've envisioned?**
+
+I went through a similar experience while building Market Memory.
+
+Producing functionally satisfying results did not automatically translate into user response.
+
+These days, I often think that testing the hypotheses I set up is just as important as building more features.
+
+## The Concept of Recipes
+
+What interested me most while looking at vooy was `Recipe`.
+
+If vooy itself is a general-purpose Personal Agent capable of using various Tools,  
+a Recipe is closer to a feature where users teach that Agent how to behave to fit their own daily life or work.
+
+For instance:
+
+> On weekday mornings, check today's schedule. If there is an external meeting, calculate weather and travel time to tell me when I should leave.
+
+Suppose someone has a request like this.
+
+With traditional automation, you would have to wire together several pieces yourself — Calendar API, Scheduler, conditional branches, weather API, and messaging.
+
+Even with tools like n8n or Make, you still need to understand automation structures to some degree.
+
+But if Recipe Studio accepts such requests in natural language and configures a large share of the necessary Tools and execution steps, the dynamic changes completely.
+
+From that point on, what matters is not how well you write code.
+
+The weight shifts toward:
+
+**What pain point do you notice in your own life or work?**
+
+and
+
+**Can you describe the flow for how you want to solve that problem?**
+
+A great Recipe that developers never thought of might come from a parent raising children, a sales representative,  
+a frequent traveler, or a restaurant owner.
+
+After all, people understand their own problems best.
+
+If it truly reaches that level of implementation, Recipe could become quite a fascinating concept.
+
+## Why Host Recipe Day?
+
+As it happens, vooy was also running an event called `Recipe Day` ahead of their official launch.
+
+It is an event where participants use Recipe Studio directly to build an AI tailored to their work or daily life.
+
+At first, I thought of it as simple product marketing.
+
+Thinking about it again, though, from a product builder's perspective, it struck me as a remarkably good experiment.
+
+Instead of a dev team imagining 100 use cases inside a conference room, they hand the tool to real people and say:
+
+> Try building the AI you need.
+
+Then Recipes the dev team never anticipated might emerge.
+
+What professions show interest? What problems are people trying to automate?  
+Where do they struggle with usage? Do they keep using the Recipes they made even after the event?
+
+All of this turns into live product data.
+
+In that sense, Recipe Day felt like marketing that doubles as an experiment very close to Product Discovery.
+
+## More Interesting Now Than After Success
+
+So going forward, I plan to follow vooy's moves step by step.
+
+Analyzing services that have already succeeded is helpful, of course.
+
+Once something succeeds, looking back makes almost every past decision seem deliberate and plausible.
+
+Watching it unfold from this stage feels different:
+
+You get to see what they emphasize right now.
+
+Which features they choose to show first.
+
+What kind of users they are trying to bring in.
+
+What real users build that goes beyond initial expectations.
+
+And you can watch how the product and its messaging evolve over time in response to those signals.
+
+If it succeeds, I get to watch the process of success; if the market response turns out weaker than expected, I get to watch the process of course correction.
+
+Either outcome offers meaningful lessons.
+
+Going forward, when I look at vooy, I do not plan to just check whether new features were added.
+
+Instead, I want to watch closely around four things:
+
+### Hypothesis
+
+What does this team believe will work right now?
+
+### Experiment
+
+How are they testing that belief with real users?
+
+### Signal
+
+What kind of response comes back from users?
+
+### Change
+
+How do they alter the product or messaging as a result?
+
+Looking at Recipe right now, it can roughly be framed like this:
+
+**Hypothesis**
+
+Everyday users will want to create AI Agents tailored to their own lives and work, even without coding knowledge.
+
+**Experiment**
+
+Provide Recipe Studio, and have real users create their own Recipes through Recipe Day.
+
+**Signal**
+
+See what Recipes people build, where they struggle, and whether they actually use them repeatedly.
+
+**Change**
+
+Depending on the results, Recipe Studio's UX, Connectors, available features, and vooy's overall positioning may gradually shift.
+
+Keeping notes like this over several months turns into more than just checking out an AI service — it becomes a record of observing a product find its place in the market from the sidelines.
+
+## Questions to Ask Market Memory as Well
+
+Watching this naturally leads me to ask questions about what I am building too.
+
+So far with Market Memory, I mainly thought about structures where I define features and users consume them —  
+showing today's market in 30 seconds,  
+presenting data centered on assets of interest, or opening a Live Market Room at specific times.
+
+Thinking a bit further, though, another direction is possible.
+
+A user might say to the Agent:
+
+> I mainly watch BTC, ETH, and AI-related companies.
+> On weekday mornings, summarize only the issues likely to impact these assets first.
+> If nothing special is happening, you don't need to notify me.
+
+This configuration itself could become a personal Market Recipe.
+
+Rather than designing every user experience in advance, it is a structure where users gradually shape the Agent to fit their own routines and interests.
+
+I am not saying I will implement this right away.
+
+Right now, I am still at the stage of experimenting with moving Market Memory's data presentation layer over to an Agent.
+
+Watching vooy, however, added another question to how I view Agents:
+
+**What can this Agent do?**
+
+and beyond that,
+
+**How easily can a user teach this Agent their own way of doing things?**
+
+## Watching a Team Running a Little Ahead
+
+vooy and I differ in scale and available resources.
+
+Copying their methods directly would not make sense.
+
+Still, there is plenty to learn from the questions they ask and how they go about testing them.
+
+In fact, watching from a point where the results are not yet out might be the more interesting part.
+
+Whether it is a team of twenty or a solo developer, everyone ultimately has to test their hypotheses against the market.
+
+And that answer comes not from the person who wrote the code, but from the user.
+
+Going forward, I plan to quietly watch how vooy launches officially and how Recipe is received by real users.
+
+Rather than copying what I learn into my own project directly, I want to rethink those lessons in ways that fit my own context.
+
+Neither side has a finished answer yet.
+
+That is why keeping a record of these moves right now feels all the more meaningful.
