@@ -1,0 +1,261 @@
+---
+title: "Still Making Dots — One Year as a Solo Developer, 10 Q&As"
+description: "A look back at a year of learning, building, pausing, and starting again — and where indie development goes from here"
+date: "2026-09-01"
+lang: "en"
+category: "self-reflection"
+tags: ["self-reflection", "indie-development", "ai-agent", "market-memory", "n8n"]
+status: "published"
+visibility: "public"
+author: "jinu"
+translationKey: "keep-making-dots-20260901"
+---
+
+Over the past year, I kept learning new things, building, pausing, and starting again.
+
+I shipped a few services. Some are on hold now. For others, I am still exploring their potential.
+
+The way I develop with AI has changed quite a bit, and running services myself showed me problems that development alone cannot solve.
+
+So I wanted to look back at the past year from where I stand now.
+
+What I learned. What I built. Where I got stuck.
+
+And what I am doing now, and where I want to go next.
+
+Rather than a grand retrospective, I made ten questions and answered them myself — as a way to organize my current thoughts.
+
+## 1. What did you study over the past year?
+
+If I look only at formal challenges, Open Claw is the second one I have taken part in, following the Maker Master Class a year ago.
+
+Even so, I kept studying new technologies in between.
+
+I learned how to compose AI Agents and connect tools and data,  
+how to design multi-step automation pipelines with n8n, and how to connect AI to external capabilities through MCP.
+
+Recently, I have also been building Agent structures myself on Cloudflare Workers — using State, Storage, and real-time communication.
+
+Looking back, it feels less like I studied one technology in depth, and more like a year spent following how AI is changing the way we build software.
+
+The projects I made afterward were shaped quite a lot by what I learned along the way.
+
+## 2. What services have you built so far?
+
+Over the past year, I shipped about three services.
+
+The first one from the challenge is on hold for now.
+
+After that, I built a service called `NexLetter`.
+
+It collected conversations from multiple Slack channels, used AI to synthesize and summarize them into weekly reports, and sent those reports by email.
+
+The service itself was reasonably complete, but the Slack App review took longer than expected. The momentum stalled, and the service is currently on hold.
+
+Next is `Market Memory`, which I am still running.
+
+When sources related to global markets are collected, an AI Agent and multiple n8n nodes work together to process the data and create reports.  
+The results are stored in a database and presented on the web.
+
+This service actually launched, and data is still accumulating.
+
+But there is one big problem.
+
+**Almost no one comes.**
+
+I promote it occasionally through Threads and elsewhere, but I have not yet generated what I would call meaningful traffic.
+
+## 3. Why do you keep writing a blog?
+
+I still write a post on the blog about once a week.
+
+It is less a professional tech blog and more a space for what I am building, the judgments I make while developing, personal thoughts and plans, and sometimes notes from daily life.
+
+A large part of the reason I write is not so that someone else can read it right away, but so that I can come back to it later.
+
+When I go back to older posts, I can still see what I was wrestling with then, and why I made certain choices.
+
+Things that results alone cannot show remain in the record.
+
+So I try to keep writing down the process, not only the finished outcomes.
+
+## 4. What has been the hardest part of indie development?
+
+I have always felt reasonably confident about development itself.
+
+When a problem appears, I can find a way through. Even if it takes time, I believe I can eventually shape things the way I want.
+
+But after building a service, a completely different problem was waiting.
+
+**Building a product and getting people to know about it are entirely different skills.**
+
+When I was making Market Memory, I thought that once Phase 1 delivered a basic service and some traffic started to appear,  
+I would build Phase 2 with user feedback.
+
+That expectation was quite wrong.
+
+Before I could even think about Phase 2, bringing people in was already hard.
+
+Creating content that looked worthwhile to me was not the same as creating something people actually needed.
+
+This is the lesson I have been learning most clearly these days.
+
+I never thought development alone would be enough — but I only really felt how wide the gap is after running a service myself.
+
+## 5. Even so, what do you think went well?
+
+One of the technical parts I am most satisfied with in Market Memory is the n8n pipeline.
+
+I did not build one giant Workflow that handles everything.
+
+There is a flow that takes source data and produces Core Data, and another that builds tags and Entity data — companies, people, technologies — from that.
+
+Reports also go through different pipelines depending on their type.
+
+And within each process, multiple Sub Workflows share the work.
+
+The structure grew larger than I first designed,  
+but the experience of making each pipeline move independently while still producing one result is something I expect to use a lot in other projects.
+
+What I am less satisfied with is equally clear.
+
+**What I think is good content may not be what people actually want.**
+
+Improving the technical quality alone cannot solve this.
+
+I am still looking for the answer here.
+
+## 6. How much has AI changed the way you develop?
+
+A year ago, the balance between AI writing code and me writing it myself felt roughly 5:5.
+
+When AI wrote code, I checked it carefully, and I still rewrote a lot myself.
+
+Now it is closer to 9:1.
+
+I spend much less time watching every line.
+
+I leave most of the implementation to AI. When needed, I review the structure or ask it to refactor the code.  
+I spend more time making sure the direction is right in the important places, and that no strange flows have appeared.
+
+In a sense, my role is drifting a little away from implementation itself.
+
+Instead, judgment matters more — what to build, how to structure it, and how far to trust what AI produces.
+
+With Open Claw, that change feels different again.
+
+It is no longer only about writing code faster with AI, but about how to structure and operate the Agent itself.
+
+## 7. What was the most interesting part of Open Claw?
+
+The idea that an Agent on Cloudflare Workers can run when needed, only as much as needed, and then disappear, was personally quite interesting.
+
+When combined with State, Storage, WebSocket, and Scheduling, even a small Agent can do more than you might expect.
+
+What draws me especially is personalization.
+
+Not showing every user the same screen and the same information,  
+but remembering each person's interests and state, and presenting different information accordingly — I felt the structure was a good fit for that.
+
+And I began to wonder whether this might connect to the place where Market Memory is currently stuck.
+
+## 8. What do you most want to build right now?
+
+Rather than starting another entirely new service, I want to connect what I am learning in Open Claw to Market Memory.
+
+Market Memory already has many kinds of content and data.
+
+I plan to start with the most basic and formal report, `Daily Global Market Issues`, and try presenting it in a new way.
+
+For example, a very short summary of the day's market — **Today's 30-Second Briefing** — could be offered as text and audio.
+
+Using the tags and Entity data accumulated so far, I could also show which companies, technologies, or topics have been appearing often lately.
+
+Remembering a user's markets or topics of interest, and giving related content a bit more priority on the next visit, should also be possible.
+
+As a more experimental idea, I am also thinking about a `Live Market Room`.
+
+A space that activates only for a short window at a certain time, where people can see today's briefing and take part in simple votes or exchange opinions.
+
+At this stage, I am still testing several possibilities.
+
+But rather than simply listing existing data on a screen, I want to keep exploring ways to reframe it around each user's context.
+
+## 9. Do you struggle between sticking with one thing and building something new?
+
+A lot.
+
+I have shipped three services so far, and two are currently on hold.
+
+I sometimes wonder whether I should keep pouring everything into Market Memory alone, or whether it would be better to build something around a completely new idea.
+
+Still, I do not think of the paused projects as failures I threw away.
+
+The structure and automation experience from NexLetter carried into Market Memory as well.
+
+The data structures and Agent patterns from Market Memory are also shaping how I look at Open Claw now.
+
+Later, they may connect again in a completely different project.
+
+So these days I think about it a little differently.
+
+**For now, this is about continuing to make dots.**
+
+I do not yet know which dots will connect where.
+
+But if I had made nothing, there would be no dots to connect at all.
+
+## 10. Will you keep doing indie development?
+
+I think I probably will.
+
+I plan to keep studying new technologies too.
+
+Especially now, when things change quickly, simply following a new course or project often makes me look again at development habits I once took for granted.
+
+For Market Memory, I want to hold on a bit longer rather than wrapping it up based only on short-term results.
+
+Right now, traffic remains a large challenge, and there will clearly be parts where the direction needs to change.
+
+If a new idea appears along the way, I might build another one as well.
+
+That is how the past year went too.
+
+Study, build, ship, pause, then build something else.
+
+I still do not know which of those will eventually become a real result.
+
+But one thing is a little clearer than before.
+
+I do not need every dot I leave behind to be a success.
+
+Even paused projects left experience behind, and services that went differently than expected still taught me something.
+
+And those experiences are gradually feeding into what I build next.
+
+Rather than saying I have finished something,
+
+**I am still making dots.**
+
+Even dots that look far apart for now may, when I look back someday, form one continuous line.
+
+For now, that is enough reason to keep building.
+
+---
+
+What led me to write this was a coffee chat with someone I was meeting again after about a year.
+
+Thinking about what we might talk about after so long, I put together a few questions,  
+and answering them myself naturally turned into a look back at the past year.
+
+In the actual coffee chat, we shared some of the stories in this post as well.
+
+Things that happened while building services, the difficulties of indie development, how AI changed the way I build, and what I want to try next.
+
+It was not the kind of conversation where we went through prepared questions one by one.
+
+As the talk flowed, we listened to each other's past year, and talked about what we are building and what we are wrestling with.
+
+It was a really enjoyable conversation.
+
+And maybe this post is one small outcome of that conversation.
