@@ -1,0 +1,265 @@
+---
+title: "NexLetter Might No Longer Be Just a Letter"
+description: "A note on how NexLetter, which began as a weekly report, is expanding into Daily Briefings, Voice, Chat, and a team's work memory, and how that made me rethink its direction"
+date: "2026-10-04"
+lang: "en"
+category: "projects"
+tags: ["nexletter", "side-project", "ai-agent", "briefing", "organizational-memory", "slack"]
+status: "published"
+visibility: "public"
+author: "jinu"
+translationKey: "nexletter-beyond-letter-20261004"
+---
+
+## It Started as a Weekly Report
+
+The initial idea behind NexLetter was fairly simple.
+
+Every day, it would collect and analyze information from multiple sources and build up **Daily Core Data**.  
+Then, at the end of the week, it would analyze the accumulated Core Data again to produce a single **Weekly Report**.
+
+At first, I thought of the daily Core Data mostly as groundwork for improving the quality of the weekly report.
+
+But as I kept thinking about the structure, one question came up.
+
+I was already putting a fair amount of cost and effort into producing good Core Data every day. Did it really make sense to just let it sit for a week?
+
+So I decided to shift the direction a little.
+
+---
+
+## Core Data Can Create Value Every Day
+
+In the new structure, once the Daily Core Data is created, a **Daily Report** is generated the same day.
+
+Up to about three of the most important highlights are then picked out and posted to a Slack channel.
+
+The structure looks something like this.
+
+```text
+Daily Collection
+      ↓
+Daily Core Data
+      ↓
+ ┌────┴─────────┐
+ ↓              ↓
+Highlights    Daily Report
+ ↓              ↓
+Slack           Email
+```
+
+Slack doesn't need to show everything.
+
+It only needs to surface a few important changes worth knowing about today, in a short, easy-to-read form.
+
+This is quite similar to the **30-second Brief** I used while building Market Memory.
+
+People who just want a quick sense of the overall flow can check Slack, and those who want more detail can read the Daily Report delivered by email.
+
+Then, when the week ends, the Core Data accumulated from Monday to Friday is analyzed again.
+
+```text
+Mon Core ┐
+Tue Core │
+Wed Core ├─→ Weekly Analysis → Weekly Report → Email
+Thu Core │
+Fri Core ┘
+```
+
+The important point here is that the Weekly Report is not built by re-summarizing the Daily Reports.
+
+Instead of summarizing text that has already been processed, it **goes back to the Core Data, which is closer to the original sources, and reconstructs the flow of the week from a fresh angle.**
+
+Connections that weren't visible day to day, or changes that unfolded over several days, can surface again in this process.
+
+---
+
+## But Does It Have to Be Slack and Email?
+
+Once I got this far, the experiments I had run while building DAMI naturally came to mind.
+
+If you have a single set of Core Data, there's no reason it has to be consumed in only one form.
+
+With DAMI, I made it possible to consume the same data in several ways: Brief, Voice, Full Report, and Chat.
+
+The same approach can work for NexLetter.
+
+```text
+                 ┌─ Slack Brief
+                 │
+Daily Core Data ─┼─ Daily Report → Email
+                 │
+                 ├─ Voice Briefing
+                 │
+                 └─ Chat
+```
+
+You could listen to the day's key points through Voice on your way to work, or quickly check just the highlights in Slack during the day.
+
+When you want more detail, you can read the Daily Report.
+
+And if a question comes up, you can ask it directly in Chat.
+
+Using something like Cloudflare Workers, it should be quite feasible to add a web-based Chat interface similar to the one I built for DAMI.
+
+By this point, Email is no longer the service itself, but just one of several delivery methods.
+
+---
+
+## Adding Chat Changes Things a Bit
+
+At first glance, Chat might seem like little more than a feature for asking questions about the generated reports.
+
+But if NexLetter is connected to Slack, something much more interesting becomes possible.
+
+Teams discuss a lot of their work in Slack every day.
+
+They share what they're currently working on, bring up problems when they occur, and discuss how to solve them. When work is done, they also leave behind results and outcomes.
+
+Over several months, this adds up to a substantial record of work.
+
+The problem is that even though the records remain, they get harder to dig up as time passes.
+
+For example, when starting a new task, someone might ask:
+
+> Have we ever done something similar to the XXX task I'm working on now?
+
+If it could surface the context of past work rather than just matching keywords, that would change things.
+
+> The YYY task from April is similar to your current work.  
+> At the time, it started with approach A, but problem B came up, so it was later switched to approach C.
+
+And you could follow up with questions like:
+
+> What was the problem back then?
+
+> How long did it take?
+
+> How was it eventually solved?
+
+> Show me the Slack conversation from that time.
+
+> Compare that situation with the current one.
+
+Once this becomes possible, Chat is no longer just an interface for asking questions about reports.
+
+It becomes **an interface for revisiting what the team has done in the past.**
+
+---
+
+## Daily Core Data Becomes the Team's Memory
+
+Seen this way, Daily Core Data takes on a different meaning as well.
+
+Beyond organizing news and external information, it could also structure the flow of work happening in Slack, if needed.
+
+```text
+Slack Conversations
+        ↓
+Daily Analysis
+        ↓
+Daily Work Core
+        ↓
+ ┌────────────────────┐
+ │ Key tasks          │
+ │ Decisions          │
+ │ Progress           │
+ │ Problems & fixes   │
+ │ Outcomes           │
+ │ Related projects   │
+ │ Raw Slack messages │
+ └────────────────────┘
+        ↓
+Long-term Memory
+        ↓
+Chat
+```
+
+In effect, creating the daily briefing also becomes **a way of organizing the team's work memory.**
+
+That gives the service two timelines.
+
+One is **the present**.
+
+It organizes what mattered today and delivers it through Slack, Email, Voice, and so on.
+
+The other is **the past**.
+
+Drawing on the accumulated Core Data and the original data, it lets you revisit past decisions and how work unfolded, through Chat.
+
+Ultimately, I can even picture a direction like this:
+
+> An Agent that tells you what matters today,  
+> and also remembers what we've done in the past.
+
+---
+
+## Does the Name NexLetter Still Fit?
+
+Thinking this through brought up a new concern.
+
+**Does the name NexLetter still describe what I'm trying to build now?**
+
+At first, it fit quite well.
+
+That's because it was a service that generated a Weekly Report and delivered it by email.
+
+Quite literally, I had in mind a more evolved kind of newsletter.
+
+But now, Email is just one of several output methods.
+
+```text
+Collect
+   ↓
+Understand
+   ↓
+Structure
+   ↓
+ ┌───────────────┐
+Slack   Email   Voice
+   └──────┬────────┘
+          ↓
+        Chat
+          ↕
+       Memory
+```
+
+It finds important information, structures it, and delivers it in whatever form is needed.
+
+And when users come back with a question, it pulls the relevant context from the accumulated memory.
+
+The service has grown too broad to simply call it a `Letter`.
+
+It might be closer to a Briefing Agent, or an Agent that picks out a team's Signals.
+
+Taking it further, it could even be seen as an Agent that accumulates an organization's Context or Memory.
+
+I haven't settled on a new name yet.
+
+For now, rather than deciding on a name first, I think **the priority is to make it clearer what this service is becoming.**
+
+---
+
+## It Started with a Letter, But
+
+I didn't set out to build this kind of service from the beginning.
+
+I wanted to make the weekly report a little better, and to do that, I planned to accumulate Daily Core Data.
+
+But if I was already building Daily Core Data, I could just as well make a Daily Report, and pulling out only the key points gave me a Slack Brief.
+
+The same data could become Voice, and with Chat added, it could answer questions.
+
+And when I started connecting it to the work records that keep piling up in Slack, I began to see something beyond a simple report generator: **a way to accumulate the team's memory and bring it back when needed.**
+
+So today's NexLetter has become a little different from the one I first imagined.
+
+I don't know yet whether the name will change too.
+
+But one thing has become clear.
+
+**What I want to build now is not just a service that makes good Letters.**
+
+Something that finds what matters each day and shares it, and whose records, over time, become the team's memory.
+
+Right now, that direction feels a bit more interesting.
