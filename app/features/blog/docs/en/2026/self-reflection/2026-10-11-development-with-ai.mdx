@@ -15,9 +15,16 @@ translationKey: "development-with-ai-20261011"
 
 Since the summer of 2025, I have been building several services and reworking them along the way.
 
-There was LinkVerse, which started as a coding challenge entry; NexLetter, which summarizes work conversations into a weekly email; and Market Memory, which looks at market conditions and turns them into reports. After that came DAMI, which tries to present content in different ways and personalize it, and now IEUM, which I am developing and testing.
+There was LinkVerse, which started as a coding challenge entry;  
+NexLetter, which summarizes work conversations into a weekly email;  
+and Market Memory, which looks at market conditions and turns them into reports.
 
-None of these projects stood on its own. Each one took the technology and questions from the one before it and carried them further. Along the way, the way I look at development changed as well.
+After that came DAMI, which tries to present content in different ways and personalize it,  
+and now IEUM, which I am developing and testing.
+
+None of these projects stood on its own.
+
+Each one took the technology and questions from the one before it and carried them further. Along the way, the way I look at development changed as well.
 
 This post is less about how each project was implemented and more about what changed in between. I wrote it as a record, in an interview format.
 
@@ -27,9 +34,13 @@ This post is less about how each project was implemented and more about what cha
 
 **What mattered most to you when you first built LinkVerse?**
 
-What mattered most was getting hands-on with a new tech stack and finishing something within a fixed amount of time. I wanted to actively try out technologies that were widely used in web development at the time, such as Remix, Supabase, shadcn, and Tailwind CSS.
+What mattered most was getting hands-on with a new tech stack and finishing something within a fixed amount of time.
 
-Since it was my first attempt, there were plenty of difficulties, and gaps in the plan started to show. Above all, the plan itself was far too big. Building the full scope I had in mind was not realistic, so I changed direction and started with the bookmark feature.
+I wanted to actively try out technologies that were widely used in web development at the time, such as Remix, Supabase, shadcn, and Tailwind CSS.
+
+Since it was my first attempt, there were plenty of difficulties, and gaps in the plan started to show.
+
+Above all, the plan itself was far too big. Building the full scope I had in mind was not realistic, so I changed direction and started with the bookmark feature.
 
 That was also when I stopped seeing LinkVerse as just a challenge entry to finish quickly, and began to see it as a platform that could take on more features over the long term.
 
@@ -39,11 +50,17 @@ That was also when I stopped seeing LinkVerse as just a challenge entry to finis
 
 **What did NexLetter, the project after LinkVerse, mean to you?**
 
-NexLetter was the first project where I really started building with LLMs. I designed and implemented a service that summarizes work conversations and sends them out as a weekly email.
+NexLetter was the first project where I really started building with LLMs.
 
-The overall flow still followed a pipeline I had designed. Even so, it meant a lot to me. It was the point where I moved beyond using AI only as a helper and started building something where AI handles the core work of a real service.
+I designed and implemented a service that summarizes work conversations and sends them out as a weekly email.
 
-It was also a service I felt both unsure and hopeful about, in terms of how polished it could become. However, the Slack app review took longer than expected, and that made it hard to carry the service forward the way I had planned.
+The overall flow still followed a pipeline I had designed.
+
+Even so, it meant a lot to me. It was the point where I moved beyond using AI only as a helper and started building something where AI handles the core work of a real service.
+
+It was also a service I felt both unsure and hopeful about, in terms of how polished it could become.
+
+However, the Slack app review took longer than expected, and that made it hard to carry the service forward the way I had planned.
 
 ---
 
@@ -51,15 +68,27 @@ It was also a service I felt both unsure and hopeful about, in terms of how poli
 
 **What did you want to improve with Market Memory?**
 
-This time, I took the LLM pipeline that started with NexLetter and applied it in n8n. It still followed a flow I had designed, but I paid more attention to giving each task a clear role.
+This time, I took the LLM pipeline that started with NexLetter and applied it in n8n.
 
-I split the work into separate pipelines: one for writing the core data, one for organizing the surrounding data, and one for writing the reports. By connecting Google Drive, Supabase, n8n, and other tools, I was able to automate the work.
+It still followed a flow I had designed, but I paid more attention to giving each task a clear role.
 
-How prompts and models were managed also mattered. The overall flow of the pipeline stayed fixed, but the prompts and models used inside it were stored in a database, with their versions managed in a Prompt Bank repository. That let me swap prompts flexibly without changing the pipeline each time.
+I split the work into separate pipelines: one for writing the core data, one for organizing the surrounding data, and one for writing the reports.
 
-I also started using vector data and embeddings. Using embeddings to decide which reports were related let me go a step beyond simply running predefined prompts.
+By connecting Google Drive, Supabase, n8n, and other tools, I was able to automate the work.
 
-I had high expectations, so I promoted it on social media at the same time, but it did not bring in the traffic I had hoped for. It showed me that building a service and getting people to come to it are two separate problems.
+How prompts and models were managed also mattered.
+
+The overall flow of the pipeline stayed fixed, but the prompts and models used inside it were stored in a database, with their versions managed in a Prompt Bank repository.
+
+That let me swap prompts flexibly without changing the pipeline each time.
+
+I also started using vector data and embeddings.
+
+Using embeddings to decide which reports were related let me go a step beyond simply running predefined prompts.
+
+I had high expectations, so I promoted it on social media at the same time, but it did not bring in the traffic I had hoped for.
+
+It showed me that building a service and getting people to come to it are two separate problems.
 
 ---
 
@@ -69,11 +98,19 @@ I had high expectations, so I promoted it on social media at the same time, but 
 
 If Market Memory was closer to a service that displays finished reports, DAMI was the starting point for delivering content in different ways and personalizing it.
 
-The idea was that a single piece of content could be viewed and used as a 30-second brief, audio, the original text, Q&A, or a personalized summary. I wanted the format to adapt to how each user consumes content, and the content itself to change depending on their interests.
+The idea was that a single piece of content could be viewed and used as a 30-second brief, audio, the original text, Q&A, or a personalized summary.
 
-For Q&A, I used vector data and embeddings to find content related to each question. In a sense, I took the embeddings I had used in Market Memory to find related reports, and connected them in DAMI to a feature that answers questions based on the content.
+I wanted the format to adapt to how each user consumes content, and the content itself to change depending on their interests.
 
-Cloudflare Workers played a big role here. Having Workers available made planning and building these features much easier. Looking further ahead, I am also considering services like Hermes as a way to support a wider range of devices.
+For Q&A, I used vector data and embeddings to find content related to each question.
+
+In a sense, I took the embeddings I had used in Market Memory to find related reports, and connected them in DAMI to a feature that answers questions based on the content.
+
+Cloudflare Workers played a big role here.
+
+Having Workers available made planning and building these features much easier.
+
+Looking further ahead, I am also considering services like Hermes as a way to support a wider range of devices.
 
 ---
 
@@ -81,11 +118,19 @@ Cloudflare Workers played a big role here. Having Workers available made plannin
 
 **How is IEUM, which you are developing now, connected to your earlier projects?**
 
-IEUM substantially changes the approach and design of the LLM pipeline I used in NexLetter. Instead of producing weekly summaries, I started building it around creating core data every day and generating reports from that.
+IEUM substantially changes the approach and design of the LLM pipeline I used in NexLetter.
 
-I am bringing over what I learned from NexLetter, but designing the pipeline anew. It also builds on the way DAMI processes and uses content. On top of that, I am making active use of Flue and Cloudflare, and testing is currently underway.
+Instead of producing weekly summaries, I started building it around creating core data every day and generating reports from that.
 
-I do not think the current design is the final answer. If I find a better approach while building it, it may keep changing. What matters is not repeating what earlier projects taught me as is, but reshaping it to fit the problem in front of me now.
+I am bringing over what I learned from NexLetter, but designing the pipeline anew.
+
+It also builds on the way DAMI processes and uses content. On top of that, I am making active use of Flue and Cloudflare, and testing is currently underway.
+
+I do not think the current design is the final answer.
+
+If I find a better approach while building it, it may keep changing.
+
+What matters is not repeating what earlier projects taught me as is, but reshaping it to fit the problem in front of me now.
 
 ---
 
@@ -93,22 +138,50 @@ I do not think the current design is the final answer. If I find a better approa
 
 **Compared to when you started LinkVerse, what has changed the most?**
 
-The share of code I write myself has dropped sharply. I would put it at around 1% now. Not zero, but most of my time goes into instructing AI, setting the direction, and reviewing the results.
+The share of code I write myself has dropped sharply.
 
-On the other hand, the tools and foundations I can draw on have become much stronger. I learned web development stacks like Remix, shadcn, and Tailwind CSS, and I also learned how to connect AI Agents with automation. n8n has become a dependable helper for automating well-defined tasks.
+I would put it at around 1% now. Not zero.
 
-Cloudflare Workers opened up new possibilities for presenting content in different ways and personalizing it. With Flue, I am also testing how an AI Agent can choose tools and skills within a given flow and decide whether to retry. I still have to design the basic flow and pipeline myself, but the space in which AI can make its own decisions and act within that flow is gradually widening.
+But most of my time goes into instructing AI, setting the direction, and reviewing the results.
+
+On the other hand, the tools and foundations I can draw on have become much stronger.
+
+I learned web development stacks like Remix, shadcn, and Tailwind CSS, and I also learned how to connect AI Agents with automation.
+
+n8n has become a dependable helper for automating well-defined tasks.
+
+Cloudflare Workers opened up new possibilities for presenting content in different ways and personalizing it.
+
+With Flue, I am also testing how an AI Agent can choose tools and skills within a given flow and decide whether to retry.
+
+I still have to design the basic flow and pipeline myself, but the space in which AI can make its own decisions and act within that flow is gradually widening.
 
 Going through these changes also broke a belief I had held for a long time.
 
-I used to think coding skill was the most important requirement for building good tools. I was confident in the skills I had built up as a developer, and I believed they were what let me build good tools.
+I used to think coding skill was the most important requirement for building good tools.
 
-Now, though, I have come to accept that we are entering a time when more people can build good tools, as long as they can communicate well with AI. The ability to come up with ideas, spot problems, and explain those problems clearly to AI is becoming more and more important.
+I was confident in the skills I had built up as a developer, and I believed they were what let me build good tools.
 
-That does not mean my 15 years as a developer have become useless. If anything, that experience is what lets me think through the structure of a service, design pipelines, and weigh the consequences of my choices. What I have built up has not disappeared. It is being put to use in a way that fits the present.
+Now, though, I have come to accept that we are entering a time when more people can build good tools, as long as they can communicate well with AI.
 
-Knowing my own strengths, and accepting that some of them may no longer count for as much as times change. Staying open to new technologies and new ways of working. What I am learning now is how to build with AI.
+The ability to come up with ideas, spot problems, and explain those problems clearly to AI is becoming more and more important.
 
-The projects that began with LinkVerse and led to IEUM are not a finished success story. Some services did not get the response I had hoped for, and some parts are still experiments in progress.
+That does not mean my 15 years as a developer have become useless.
 
-Still, by building one thing at a time and carrying what I learned into the next piece of work, the way I look at development is clearly changing. For now, I want to keep recording that process of change.
+If anything, that experience is what lets me think through the structure of a service, design pipelines, and weigh the consequences of my choices.
+
+What I have built up has not disappeared. It is being put to use in a way that fits the present.
+
+Knowing my own strengths, and accepting that some of them may no longer count for as much as times change.
+
+Staying open to new technologies and new ways of working.
+
+What I am learning now is how to build with AI.
+
+The projects that began with LinkVerse and led to IEUM are not a finished success story.
+
+Some services did not get the response I had hoped for, and some parts are still experiments in progress.
+
+Still, by building one thing at a time and carrying what I learned into the next piece of work, the way I look at development is clearly changing.
+
+For now, I want to keep recording that process of change.
