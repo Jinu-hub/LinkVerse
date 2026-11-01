@@ -116,7 +116,7 @@ function parseFrontmatter(source: string): {
   frontmatter: Record<string, FrontmatterValue>;
   body: string;
 } {
-  const match = source.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  const match = source.match(/^\s*---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
 
   if (!match) {
     return { frontmatter: {}, body: source };
